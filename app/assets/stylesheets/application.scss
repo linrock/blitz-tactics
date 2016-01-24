@@ -1,0 +1,33 @@
+/*
+ *= require reset
+ *= require_self
+ *= require_tree .
+*/
+
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: "Open Sans", Helvetica, sans-serif;
+  color: #222;
+}
+
+b {
+  font-weight: bold;
+}
+
+button {
+  border: none;
+  outline: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+}

@@ -1,0 +1,17 @@
+<% square_prefix = local_assigns[:square_prefix] %>
+
+<div class="chessboard">
+  <% polarity = %w( light dark ).cycle %>
+  <% (1..8).to_a.reverse.each do |row| %>
+    <% ('a'..'h').to_a.each do |col| %>
+      <% square_id = "#{col}#{row}"
+         if square_prefix
+           square_id = "#{square_prefix}-#{square_id}"
+         end
+      %>
+      <div class="square <%= polarity.next %>" id="<%= square_id %>"
+           data-square="<%= "#{col}#{row}" %>"></div>
+    <% end %>
+    <% polarity.next %>
+  <% end %>
+</div>
