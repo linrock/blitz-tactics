@@ -1,6 +1,10 @@
 @import "bourbon";
 
 
+.invisible {
+  opacity: 0;
+}
+
 .main {
   
   .chessboard {
@@ -8,7 +12,7 @@
   }
 
   .intro {
-    margin: 0 auto;
+    margin: 50px auto;
     width: 480px;
 
     .title {
@@ -19,6 +23,7 @@
 
     .explanation {
       line-height: 28px;
+      margin: 30px 0;
     }
 
   }
@@ -61,6 +66,19 @@
 
   .piece-buffer {
     display: none;
+  }
+
+}
+
+.start {
+  font-size: 18px;
+  padding: 8px 18px;
+  border-radius: 3px;
+  background: #327CCB;
+  color: white;
+
+  &:hover {
+    opacity: 0.9;
   }
 
 }

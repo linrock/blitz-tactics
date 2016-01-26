@@ -8,9 +8,12 @@
 
 
 window.Views = {};
+window.d = _.clone(Backbone.Events);
 
 $(function() {
 
   new Views.Chessboard;
+  new Views.Puzzles;
+  new Views.StartButton;
 
 });

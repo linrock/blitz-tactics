@@ -31,10 +31,21 @@
 
   class Chessboard extends Backbone.View {
 
+    get el() {
+      return ".chessboard"
+    }
+
     initialize() {
       this.pieces = new Pieces(this)
       this.render("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
       this.showPieces()
+      this.listenToEvents()
+    }
+
+    listenToEvents() {
+      this.listenTo(d, "fen:set", (fen) => {
+        this.render(fen)
+      })
     }
 
     render(fen) {
@@ -62,7 +73,7 @@
 
     showPieces() {
       setTimeout(() => {
-        this.$(".piece").removeClass("invisible")
+        $(".piece").removeClass("invisible")
       }, 100)
     }
 
