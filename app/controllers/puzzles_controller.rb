@@ -1,7 +1,7 @@
 class PuzzlesController < ApplicationController
 
   def index
-    render :json => Puzzles::PUZZLES
+    render :json => Puzzles.shuffled
   end
 
 end
