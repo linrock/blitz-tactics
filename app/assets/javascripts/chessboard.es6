@@ -61,10 +61,13 @@
         accept: ".piece",
         tolerance: "pointer",
         drop: (event, ui) => {
-          d.trigger("move:try", {
+          let move = {
             from: $(ui.draggable).parents(".square").data("square"),
             to: $(event.target).data("square")
-          })
+          }
+          let c = new Chess(this.board.fen)
+          let m = c.move(move)
+          d.trigger("move:try", m)
         }
       })
     }

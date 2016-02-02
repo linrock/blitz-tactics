@@ -3,12 +3,26 @@ class AuerswaldLoader
 
   class Puzzle
 
-    attr_accessor :fen, :moves, :turn
+    attr_accessor :fen, :pgn, :moves, :turn
 
     def initialize(pgn)
-      @fen = pgn[/FEN "(.*)"/, 1]
-      @moves = pgn.split(/\r\n\r/)[1].strip
-      @turn = @moves[/^\d+\.{3}/] && 'b' || 'w'
+      @fen   = pgn[/FEN "(.*)"/, 1]
+      @pgn   = pgn.split(/\r\n\r/)[1].strip
+      @turn  = @pgn[/^\d+\.{3}/] && 'b' || 'w'
+      @moves = @pgn.
+                 gsub(/\(.*\)/, '').
+                 gsub(/\{.*\}/, '').
+                 gsub(/\d+\.{1,3}/, '').
+                 gsub(/\d\-\d/, '').
+                 strip.split(/\s+/)
+    end
+
+    def to_h
+      {
+        :fen   => @fen,
+        :moves => @moves,
+        :turn  => @turn
+      }
     end
 
   end
