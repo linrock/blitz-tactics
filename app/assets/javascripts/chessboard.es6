@@ -61,10 +61,10 @@
         accept: ".piece",
         tolerance: "pointer",
         drop: (event, ui) => {
-          // this.board.move({
-          //   from: $(ui.draggable).parents(".square").data("square"),
-          //   to: $(event.target).data("square"),
-          // }, true)
+          d.trigger("move:try", {
+            from: $(ui.draggable).parents(".square").data("square"),
+            to: $(event.target).data("square")
+          })
         }
       })
     }
@@ -90,6 +90,12 @@
     listenToEvents() {
       this.listenTo(d, "fen:set", (fen) => {
         this.render(fen)
+      })
+      this.listenTo(d, "move:make", (move) => {
+        let c = new Chess
+        c.load(this.fen)
+        c.move(move)
+        d.trigger("fen:set", c.fen())
       })
     }
 
