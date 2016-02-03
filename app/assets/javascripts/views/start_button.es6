@@ -17,6 +17,7 @@
     }
 
     _startPuzzles() {
+      $(".overlay").hide()
       d.trigger("puzzles:next")
     }
 

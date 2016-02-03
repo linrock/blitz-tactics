@@ -17,5 +17,7 @@ $(function() {
   new Views.Chessboard;
   new Views.Puzzles;
   new Views.StartButton;
+  new Views.PuzzleCounter;
+  new Views.Timer;
 
 });

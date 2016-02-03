@@ -6,23 +6,37 @@
 }
 
 .main {
-  
+  position: relative;
+  width: 564px;
+  margin: 50px auto;
+
   .chessboard {
-    margin: 30px auto;
+    margin: 0 auto;
+  }
+
+  .overlay {
+    width: 564px;
+    height: 564px;
+    background: rgba(255,255,255,0.7);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -282px;
   }
 
   .intro {
-    margin: 50px auto;
-    width: 480px;
+    margin: 185px auto;
+    width: 460px;
 
     .title {
       font-weight: bold;
-      font-size: 20px;
+      font-size: 28px;
       margin-bottom: 20px;
     }
 
     .explanation {
-      line-height: 28px;
+      font-size: 20px;
+      line-height: 32px;
       margin: 30px 0;
     }
 
@@ -71,14 +85,29 @@
 }
 
 .start {
-  font-size: 18px;
-  padding: 8px 18px;
+  font-size: 24px;
+  padding: 10px 24px;
   border-radius: 3px;
   background: #327CCB;
   color: white;
 
   &:hover {
     opacity: 0.9;
+  }
+
+}
+
+.status {
+  margin: 50px 0;
+
+  .puzzle-counter {
+    font-size: 32px;
+  }
+
+  .timer {
+    float: right;
+    font-size: 24px;
+    margin-top: -30px;
   }
 
 }

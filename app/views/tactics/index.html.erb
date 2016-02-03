@@ -1,18 +1,27 @@
 <div class="main">
   <%= render :partial => "tactics/chessboard" %>
 
-  <div class="intro">
+  <div class="overlay">
 
-    <h3 class="title">Blitz Tactics</h3>
+    <div class="intro">
 
-    <div class="explanation">
-      Solve as many puzzles as you can in 60 seconds!
-      <br>
-      White to move
+      <h3 class="title">Blitz Tactics</h3>
+
+      <div class="explanation">
+        Solve as many puzzles as you can in 60 seconds!
+        <br>
+        White to move
+      </div>
+
+      <button class="start">Start</button>
+
     </div>
 
-    <button class="start">Start</button>
+  </div>
 
+  <div class="status">
+    <div class="puzzle-counter"></div>
+    <div class="timer"></div>
   </div>
 
 </div>

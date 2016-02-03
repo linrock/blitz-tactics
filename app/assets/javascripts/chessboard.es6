@@ -67,7 +67,9 @@
           }
           let c = new Chess(this.board.fen)
           let m = c.move(move)
-          d.trigger("move:try", m)
+          if (m) {
+            d.trigger("move:try", m)
+          }
         }
       })
     }

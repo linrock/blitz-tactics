@@ -1,4 +1,4 @@
-class AuerswaldLoader
+class TacticsLoader
 
 
   class Puzzle
@@ -13,7 +13,9 @@ class AuerswaldLoader
                  gsub(/\(.*\)/, '').
                  gsub(/\{.*\}/, '').
                  gsub(/\d+\.{1,3}/, '').
+                 gsub(/\$\d+/, '').
                  gsub(/\d\-\d/, '').
+                 gsub('1/2-1/2', '').
                  strip.split(/\s+/)
     end
 
@@ -28,11 +30,22 @@ class AuerswaldLoader
   end
 
 
+  def self.query(options = {})
+    offset = options[:offset] || 0
+    puzzles = []
+    self.new.all_puzzles.each do |puzzle|
+      next unless puzzle.turn == options[:turn]
+      puzzles << puzzle.to_h
+      break if puzzles.length >= options[:n] + offset
+    end
+    puzzles[offset..-1]
+  end
+
   def initialize
     @data = open(Rails.root.join("data/auerswald.pgn"), 'r').read
   end
 
-  def puzzles
+  def all_puzzles
     @data.split('[Event ')[1..-1].map do |pgn|
       Puzzle.new(pgn)
     end
