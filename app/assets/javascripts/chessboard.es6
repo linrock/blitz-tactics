@@ -63,7 +63,8 @@
         drop: (event, ui) => {
           let move = {
             from: $(ui.draggable).parents(".square").data("square"),
-            to: $(event.target).data("square")
+            to: $(event.target).data("square"),
+            promotion: 'q'
           }
           let c = new Chess(this.board.fen)
           let m = c.move(move)
