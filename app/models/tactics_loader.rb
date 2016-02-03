@@ -10,12 +10,13 @@ class TacticsLoader
       @pgn   = pgn.split(/\r\n\r/)[1].strip
       @turn  = @pgn[/^\d+\.{3}/] && 'b' || 'w'
       @moves = @pgn.
+                 gsub(/\n/, ' ').
                  gsub(/\(.*\)/, '').
                  gsub(/\{.*\}/, '').
                  gsub(/\d+\.{1,3}/, '').
                  gsub(/\$\d+/, '').
-                 gsub(/\d\-\d/, '').
                  gsub('1/2-1/2', '').
+                 gsub(/\d\-\d/, '').
                  strip.split(/\s+/)
     end
 

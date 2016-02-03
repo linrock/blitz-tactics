@@ -18,7 +18,7 @@ class PuzzlesController < ApplicationController
       :format  => 'v1',
       :puzzles => TacticsLoader.query({
         :n      => 25,
-        :offset => 50,
+        :offset => 75,
         :turn   => 'w'
       }).shuffle
     }
