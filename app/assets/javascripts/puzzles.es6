@@ -19,6 +19,7 @@
           i: 0
         }
         console.log(this.current.puzzle.moves)
+        d.trigger("puzzle:loaded", this.current)
         d.trigger("fen:set", this.current.puzzle.fen)
         this.i = (this.i + 1) % this.puzzles.length
       })

@@ -19,5 +19,6 @@ $(function() {
   new Views.StartButton;
   new Views.PuzzleCounter;
   new Views.Timer;
+  new Views.Solution;
 
 });
