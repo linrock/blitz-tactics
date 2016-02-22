@@ -1,0 +1,22 @@
+.puzzle-sets {
+  width: 400px;
+  margin: 40px auto;
+
+  h3 {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  a {
+    color: rgba(0,0,0,0.5);
+    display: block;
+    padding: 3px 0;
+    text-decoration: none;
+
+    &:hover {
+      color: rgba(0,0,0,0.95);
+    }
+
+  }
+
+}

@@ -1,6 +1,13 @@
 class PuzzlesController < ApplicationController
 
+  N_PUZZLES = 25
+
+
   def index
+    @n_sets = 50
+  end
+
+  def show
     render_v1
   end
 
@@ -17,8 +24,8 @@ class PuzzlesController < ApplicationController
     render :json => {
       :format  => 'v1',
       :puzzles => TacticsLoader.query({
-        :n      => 25,
-        :offset => 200,
+        :n      => N_PUZZLES,
+        :offset => params[:offset].to_i,
         :turn   => 'w'
       }).shuffle
     }

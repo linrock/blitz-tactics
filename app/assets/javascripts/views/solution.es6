@@ -22,7 +22,6 @@
     }
 
     delayedShowSolution() {
-      console.log('delayed show solution')
       if (this.interval) {
         clearInterval(this.interval)
       }

@@ -1,0 +1,13 @@
+<div class="puzzle-sets">
+
+  <h3>Puzzle sets</h3>
+
+  <ul>
+
+    <% @n_sets.times do |i| %>
+      <li><a href="/?offset=<%= i * 25 %>">Puzzle Set #<%= i+1 %></a></li>
+    <% end %>
+
+  </ul>
+
+</div>

@@ -5,11 +5,16 @@
     initialize() {
       this.i = 0
       this.current = {}
-      $.getJSON("/puzzles", (data) => {
+      this.fetchPuzzles()
+      this.listenToEvents()
+    }
+
+    fetchPuzzles() {
+      let url = `/puzzles${window.location.search}`
+      $.getJSON(url, (data) => {
         this.format = data.format
         this.puzzles = data.puzzles
       })
-      this.listenToEvents()
     }
 
     listenToEvents() {
