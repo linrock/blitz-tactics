@@ -1,5 +1,18 @@
 {
 
+  let uciToMove = (uci) => {
+    let m = {
+      from: uci.slice(0,2),
+      to: uci.slice(2,4)
+    }
+    return m
+  }
+
+  let moveToUci = (move) => {
+    return `${move.from}${move.to}`
+  }
+
+
   class Puzzles extends Backbone.Model {
 
     initialize() {
@@ -23,17 +36,31 @@
           puzzle: this.puzzles[this.i],
           i: 0
         }
-        console.log(this.current.puzzle.moves)
         d.trigger("puzzle:loaded", this.current)
-        d.trigger("fen:set", this.current.puzzle.fen)
         this.i = (this.i + 1) % this.puzzles.length
+
+        if (this.format == "v0" || this.format == "v1") {
+          console.dir(this.current.puzzle)
+          console.log(this.current.puzzle.moves)
+          d.trigger("fen:set", this.current.puzzle.fen)
+        } else if (this.format == "lichess") {
+          let puzzle = this.current.puzzle.puzzle
+          console.dir(puzzle)
+          this.current.state = _.clone(puzzle.lines)
+          d.trigger("fen:set", puzzle.fen)
+          setTimeout(() => {
+            d.trigger("move:make", uciToMove(puzzle.initialMove))
+          }, 500)
+        }
       })
 
       this.listenTo(d, "move:try", (move) => {
         if (this.format == "v1") {
           this.handleV1(move)
-        } else {
+        } else if (this.format == "v0") {
           this.handleV0(move)
+        } else if (this.format == "lichess") {
+          this.handleLichess(move)
         }
       })
     }
@@ -73,6 +100,28 @@
       }
       if (this.current.i == moves.length) {
         d.trigger("puzzles:next")
+      }
+    }
+
+    handleLichess(move) {
+      let attempt = this.current.state[moveToUci(move)]
+      if (attempt == "win") {
+        d.trigger("puzzles:next")
+        return
+      } else {
+        let response = _.keys(attempt)[0]
+        if (!response) {
+          return
+        }
+        if (response.length == 4) {
+          d.trigger("move:make", move)
+          d.trigger("move:make", uciToMove(response))
+          if (attempt[response] == "win") {
+            d.trigger("puzzles:next")
+          } else {
+            this.current.state = attempt[response]
+          }
+        }
       }
     }
 

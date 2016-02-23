@@ -30,4 +30,8 @@ class LichessPuzzle < ActiveRecord::Base
     where("CAST(data->'puzzle'->>'vote' AS INT) > ?", votes)
   end
 
+  def self.white_to_move
+    where("data->'puzzle'->>'color' = 'white'")
+  end
+
 end

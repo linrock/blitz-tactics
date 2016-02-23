@@ -8,7 +8,8 @@ class PuzzlesController < ApplicationController
   end
 
   def show
-    render_v1
+    # render_v1
+    render_lichess
   end
 
   private
@@ -28,6 +29,18 @@ class PuzzlesController < ApplicationController
         :offset => params[:offset].to_i,
         :turn   => 'w'
       }).shuffle
+    }
+  end
+
+  def render_lichess
+    render :json => {
+      :format  => 'lichess',
+      :puzzles => LichessPuzzle.rating_lt(1600).
+                                vote_gt(50).
+                                white_to_move.
+                                take(25).
+                                shuffle.
+                                map(&:data)
     }
   end
 
