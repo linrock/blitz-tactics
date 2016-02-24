@@ -32,7 +32,11 @@
     }
 
     showSolution() {
-      this.$el.text(this.current.puzzle.moves)
+      if (this.current.format === "lichess") {
+        this.$el.text(_.keys(this.current.state))
+      } else {
+        this.$el.text(this.current.puzzle.moves)
+      }
     }
 
   }

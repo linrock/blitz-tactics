@@ -9,7 +9,11 @@
   }
 
   let moveToUci = (move) => {
-    return `${move.from}${move.to}`
+    if (move.promotion) {
+      return `${move.from}${move.to}${move.promotion}`
+    } else {
+      return `${move.from}${move.to}`
+    }
   }
 
 
@@ -34,6 +38,7 @@
     listenToEvents() {
       this.listenTo(d, "puzzles:next", () => {
         this.current = {
+          format: this.format,
           puzzle: this.puzzles[this.i],
           i: 0
         }
