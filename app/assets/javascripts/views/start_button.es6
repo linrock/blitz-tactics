@@ -13,7 +13,9 @@
     }
 
     initialize() {
-      
+      this.listenTo(d, "puzzles:fetched", () => {
+        this.$el.removeClass("disabled")
+      })
     }
 
     _startPuzzles() {

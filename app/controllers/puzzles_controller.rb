@@ -33,14 +33,13 @@ class PuzzlesController < ApplicationController
   end
 
   def render_lichess
+    puzzles = LichessPuzzle.rating_lt(1500).
+                            vote_gt(100).
+                            white_to_move
+    offset = params[:offset].to_i
     render :json => {
       :format  => 'lichess',
-      :puzzles => LichessPuzzle.rating_lt(1600).
-                                vote_gt(50).
-                                white_to_move.
-                                take(25).
-                                shuffle.
-                                map(&:data)
+      :puzzles => puzzles[offset..offset+20].shuffle.map(&:data)
     }
   end
 
