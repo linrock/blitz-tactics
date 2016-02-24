@@ -5,6 +5,9 @@
       from: uci.slice(0,2),
       to: uci.slice(2,4)
     }
+    if (uci.length === 5) {
+      m.promotion = uci[4]
+    }
     return m
   }
 
@@ -122,14 +125,12 @@
         if (!response) {
           return
         }
-        if (response.length == 4) {
-          d.trigger("move:make", move)
-          d.trigger("move:make", uciToMove(response))
-          if (attempt[response] == "win") {
-            d.trigger("puzzles:next")
-          } else {
-            this.current.state = attempt[response]
-          }
+        d.trigger("move:make", move)
+        d.trigger("move:make", uciToMove(response))
+        if (attempt[response] == "win") {
+          d.trigger("puzzles:next")
+        } else {
+          this.current.state = attempt[response]
         }
       }
     }
