@@ -1,5 +1,19 @@
 <div class="main">
-  <%= render :partial => "tactics/chessboard" %>
+  <div class="board-area">
+    <%= render :partial => "tactics/chessboard" %>
+
+    <div class="piece-promotion-modal" style="display: none;">
+      <div class="pieces">
+        <a class="piece" href="javascript:" data-piece="q"><img src="/assets/pieces/wq.png"></a>
+        <a class="piece" href="javascript:" data-piece="r"><img src="/assets/pieces/wr.png"></a>
+        <a class="piece" href="javascript:" data-piece="n"><img src="/assets/pieces/wn.png"></a>
+        <a class="piece" href="javascript:" data-piece="b"><img src="/assets/pieces/wb.png"></a>
+      </div>
+
+      <div class="background"></div>
+    </div>
+
+  </div>
 
   <div class="overlay">
 

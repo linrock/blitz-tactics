@@ -15,6 +15,7 @@ window.d = _.clone(Backbone.Events);
 $(function() {
 
   new Views.Chessboard;
+  new Views.PiecePromotionModal;
   new Views.Puzzles;
   new Views.StartButton;
   new Views.PuzzleCounter;
