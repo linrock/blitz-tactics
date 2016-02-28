@@ -1,5 +1,8 @@
 {
 
+  // When you make a pawn move that requires pawn promotion,
+  // this is what shows up
+  //
   class PiecePromotionModal extends Backbone.View {
 
     get el() {

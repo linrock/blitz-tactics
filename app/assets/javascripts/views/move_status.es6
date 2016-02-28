@@ -10,20 +10,41 @@
     }
 
     initialize() {
+      this.timeSinceSuccess = Date.now()
       this.listenForEvents()
     }
 
     listenForEvents() {
       this.listenTo(d, "move:success", () => {
-        this.$el.removeClass("fade-out")
-        this.$el.html('<div class="success">Perfect!</div>')
-        setTimeout(() => { this.$el.addClass("fade-out") }, 50)
+        let time = Date.now()
+        if (time - this.timeSinceSuccess < 2500) {
+          this.renderMarvelous()
+        } else {
+          this.renderPerfect()
+        }
+        this.timeSinceSuccess = time
       })
       this.listenTo(d, "move:fail", () => {
-        this.$el.removeClass("fade-out")
-        this.$el.html('<div class="fail">Miss</div>')
-        setTimeout(() => { this.$el.addClass("fade-out") }, 50)
+        this.renderFailure()
       })
+    }
+
+    renderPerfect() {
+      this.$el.removeClass("fade-out")
+      this.$el.html('<div class="success">Perfect!</div>')
+      setTimeout(() => { this.$el.addClass("fade-out") }, 50)
+    }
+
+    renderMarvelous() {
+      this.$el.removeClass("fade-out")
+      this.$el.html('<div class="marvelous">Marvelous!</div>')
+      setTimeout(() => { this.$el.addClass("fade-out") }, 50)
+    }
+
+    renderFailure() {
+      this.$el.removeClass("fade-out")
+      this.$el.html('<div class="fail">Miss</div>')
+      setTimeout(() => { this.$el.addClass("fade-out") }, 50)
     }
 
   }

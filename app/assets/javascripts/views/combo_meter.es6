@@ -17,16 +17,16 @@
     listenForEvents() {
       this.listenTo(d, "move:success", () => {
         this.counter += 1
-        this.$el.show()
+        this.$el.fadeIn(75)
         this.$counter.text(this.counter)
       })
       this.listenTo(d, "move:fail", () => {
         this.counter = 0
-        this.$el.hide()
+        this.$el.fadeOut(75)
       })
       this.listenTo(d, "move:too_slow", () => {
         this.counter = 0
-        this.$el.hide()
+        this.$el.fadeOut(75)
       })
     }
 
