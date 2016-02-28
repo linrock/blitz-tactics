@@ -17,7 +17,7 @@
   .overlay {
     width: 564px;
     height: 564px;
-    background: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.6);
     position: absolute;
     top: 0;
     left: 50%;
@@ -25,6 +25,7 @@
   }
 
   .intro {
+    color: #333;
     margin: 185px auto;
     width: 460px;
 
@@ -136,7 +137,7 @@
   font-size: 24px;
   padding: 10px 24px;
   border-radius: 3px;
-  background: #327CCB;
+  background: #2C9BEA;
   color: white;
 
   &:hover {
@@ -160,17 +161,19 @@
   .move-status {
     opacity: 1;
     font-size: 28px;
-    text-align: center;
     margin-bottom: 20px;
-    @include transition(opacity 0.15s ease);
+    text-align: center;
+    text-transform: uppercase;
+    @include transition(opacity 0.1s ease);
 
     &.fade-out {
-      @include transition(opacity 1s ease);
+      @include transition(opacity 1s ease-out 0.2s);
       opacity: 0;
     }
 
     .success {
-      color: green;
+      color: #34FF00;
+      font-weight: 600;
     }
 
     .fail {
