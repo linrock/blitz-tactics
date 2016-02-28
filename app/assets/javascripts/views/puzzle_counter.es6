@@ -1,5 +1,7 @@
 {
 
+  // Number of puzzles solved in this round
+  //
   class PuzzleCounter extends Backbone.View {
 
     get el() {

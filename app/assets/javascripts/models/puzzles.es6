@@ -118,14 +118,17 @@
     handleLichess(move) {
       let attempt = this.current.state[moveToUci(move)]
       if (attempt == "win") {
+        d.trigger("move:success")
         d.trigger("puzzles:next")
         return
       } else {
         let response = _.keys(attempt)[0]
         if (!response) {
+          d.trigger("move:fail")
           return
         }
         d.trigger("move:make", move)
+        d.trigger("move:success")
         d.trigger("move:make", uciToMove(response))
         if (attempt[response] == "win") {
           d.trigger("puzzles:next")
@@ -138,6 +141,7 @@
   }
 
 
-  Views.Puzzles = Puzzles
+  // TODO not a view
+  Models.Puzzles = Puzzles
 
 }

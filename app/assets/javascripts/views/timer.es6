@@ -1,5 +1,7 @@
 {
 
+  // Amount of time spent on this lap so far
+  //
   class Timer extends Backbone.View {
 
     get el() {

@@ -150,10 +150,49 @@
 }
 
 .status {
-  margin: 50px 0;
+  margin: 40px 0;
 
   .puzzle-counter {
-    font-size: 32px;
+    display: none;
+    font-size: 24px;
+  }
+
+  .move-status {
+    opacity: 1;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+    @include transition(opacity 0.15s ease);
+
+    &.fade-out {
+      @include transition(opacity 1s ease);
+      opacity: 0;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .fail {
+      color: red;
+    }
+
+  }
+
+  .combo-meter {
+    display: none;
+    text-align: center;
+
+    .counter {
+      font-size: 32px;
+      margin-right: 5px;
+    }
+
+    .combo-text {
+      position: relative;
+      top: -4px;
+    }
+
   }
 
   .timer {

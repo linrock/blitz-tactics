@@ -1,5 +1,7 @@
 {
 
+  // Click this to start the puzzles
+  //
   class StartButton extends Backbone.View {
 
     get el() {

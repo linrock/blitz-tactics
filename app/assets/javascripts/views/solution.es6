@@ -1,5 +1,7 @@
 {
 
+  // Solution/hint that shows up after some time
+  //
   class Solution extends Backbone.View {
 
     get el() {
@@ -32,6 +34,7 @@
     }
 
     showSolution() {
+      d.trigger("move:too_slow")
       if (this.current.format === "lichess") {
         this.$el.text(_.keys(this.current.state))
       } else {
