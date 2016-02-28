@@ -25,7 +25,7 @@
         Solve puzzles quickly and accurately to make progress! White to move
       </div>
 
-      <button class="start disabled">Start</button>
+      <button class="start blue-button disabled">Start</button>
 
     </div>
 
@@ -36,7 +36,7 @@
 
     <div class="move-status"></div>
 
-    <div class="combo-meter">
+    <div class="combo-meter invisible">
       <span class="counter"></span>
       <span class="combo-text">combo</span>
     </div>
@@ -47,6 +47,19 @@
     </div>
 
     <div class="solution"></div>
+
+    <div class="next-stage" style="display: none;">
+      You've unlocked the next stage!
+
+      <button class="blue-button">Next &raquo;</button>
+    </div>
+
   </div>
 
 </div>
+
+<script>
+  $(function() {
+    blitz.offset = <%= params[:offset].to_i + 20 %>;
+  });
+</script>

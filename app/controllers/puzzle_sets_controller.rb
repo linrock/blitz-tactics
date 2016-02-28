@@ -1,7 +1,4 @@
-class PuzzlesController < ApplicationController
-
-  N_PUZZLES = 25
-
+class PuzzleSetsController < ApplicationController
 
   def index
     @n_sets = 50
@@ -25,7 +22,7 @@ class PuzzlesController < ApplicationController
     render :json => {
       :format  => 'v1',
       :puzzles => TacticsLoader.query({
-        :n      => N_PUZZLES,
+        :n      => Puzzles::SET_SIZE,
         :offset => params[:offset].to_i,
         :turn   => 'w'
       }).shuffle
@@ -39,7 +36,7 @@ class PuzzlesController < ApplicationController
     offset = params[:offset].to_i
     render :json => {
       :format  => 'lichess',
-      :puzzles => puzzles[offset..offset+20].shuffle.map(&:data)
+      :puzzles => puzzles[offset..offset + Puzzles::SET_SIZE].shuffle.map(&:data)
     }
   end
 

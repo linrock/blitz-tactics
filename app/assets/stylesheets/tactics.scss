@@ -5,6 +5,24 @@
   opacity: 0;
 }
 
+.blue-button {
+  font-size: 24px;
+  padding: 10px 24px;
+  border-radius: 3px;
+  background: #2C9BEA;
+  color: white;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &.disabled {
+    opacity: 0.2;
+  }
+
+
+}
+
 .main {
   position: relative;
   width: 564px;
@@ -137,23 +155,6 @@
 
 }
 
-.start {
-  font-size: 24px;
-  padding: 10px 24px;
-  border-radius: 3px;
-  background: #2C9BEA;
-  color: white;
-
-  &:hover {
-    opacity: 0.9;
-  }
-
-  &.disabled {
-    opacity: 0.2;
-  }
-
-}
-
 .status {
   margin: 40px 0;
 
@@ -192,7 +193,7 @@
   }
 
   .combo-meter {
-    display: none;
+    @include transition(opacity 0.075s ease);
     text-align: center;
 
     .counter {

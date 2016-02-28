@@ -1,5 +1,7 @@
 class Puzzles
 
+  SET_SIZE = 20
+
   PUZZLES = [
 
     # Source: 2.1.5.4
