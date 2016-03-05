@@ -23,7 +23,7 @@
       }
       return $("<img>").
         attr("src", `/assets/pieces/${className}.png`).
-        addClass(`invisible piece ${className}`)
+        addClass(`piece ${className}`)
     }
 
   }
@@ -42,13 +42,12 @@
       if (this.initialized) {
         return
       }
-      this.initDraggable()
       this.initDroppable()
       this.initialized = true
     }
 
     initDraggable() {
-      this.board.$(".piece").draggable({
+      this.board.$(".piece:not(.ui-draggable)").draggable({
         stack: ".piece",
         distance: 5,
         revert: true,
@@ -91,11 +90,11 @@
 
     initialize() {
       this.pieces = new Pieces(this)
-      this.render("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-      this.showPieces()
       this.dragAndDrop = new DragAndDrop(this)
+      this.render("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
       this.listenToEvents()
       this.dragAndDrop.init()
+      this.fadeIntoView()
     }
 
     listenToEvents() {
@@ -115,6 +114,7 @@
         fen += " 0 1"
       }
       this.renderFen(fen)
+      this.dragAndDrop.initDraggable()
     }
 
     renderFen(fen) {
@@ -133,10 +133,8 @@
       this.fen = fen
     }
 
-    showPieces() {
-      setTimeout(() => {
-        $(".piece").removeClass("invisible")
-      }, 100)
+    fadeIntoView() {
+      setTimeout(() => { this.$el.removeClass("invisible") }, 1000)
     }
 
     animating() {

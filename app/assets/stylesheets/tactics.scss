@@ -82,6 +82,12 @@
   margin: 12px;
   background: #ddd;
   border: $border-width solid #938172;
+  @include transition(all 0.6s ease);
+
+  &.invisible {
+    opacity: 0;
+    transform: scale3d(0.96, 0.96, 1);
+  }
 
   .square {
     width: $square-size;
