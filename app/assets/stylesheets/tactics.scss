@@ -1,6 +1,12 @@
 @import "bourbon";
 
 
+$border-width: 2px;
+$square-size: 75px;
+$board-size: 8 * $square-size + 2 * $border-width;
+
+
+
 .invisible {
   opacity: 0;
 }
@@ -27,7 +33,7 @@
 
 .main {
   position: relative;
-  width: 564px;
+  width: $board-size;
   margin: 80px auto;
 
   .chessboard {
@@ -35,13 +41,13 @@
   }
 
   .overlay {
-    width: 564px;
-    height: 564px;
+    width: $board-size;
+    height: $board-size;
     background: rgba(0,0,0,0.2);
     position: absolute;
     top: 0;
     left: 50%;
-    margin-left: -282px;
+    margin-left: - ($board-size / 2);
   }
 
   .intro {
@@ -74,11 +80,8 @@
 }
 
 .chessboard {
-  $square-size: 70px;
-  $border-width: 2px;
-
-  width: 8 * $square-size + 2 * $border-width;
-  height: 8 * $square-size + 2 * $border-width;
+  width: $board-size;
+  height: $board-size;
   margin: 12px;
   background: #ddd;
   border: $border-width solid #938172;
