@@ -21,7 +21,6 @@
     }
 
     _startPuzzles() {
-      $(".overlay").hide()
       d.trigger("puzzles:next")
       d.trigger("puzzles:start")
     }

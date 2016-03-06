@@ -1,6 +1,6 @@
 {
 
-  const comboSizeForNextLevel = 10
+  const comboSizeForNextLevel = 100
 
   // Indicates # of successful moves in a row
   //
@@ -33,11 +33,13 @@
         this.counter = 0
         this.pzCounter = 0
         this.$el.addClass("invisible")
+        d.trigger("progress:update", 0)
       })
       this.listenTo(d, "move:too_slow", () => {
         this.counter = 0
         this.pzCounter = 0
         this.$el.addClass("invisible")
+        d.trigger("progress:update", 0)
       })
     }
 

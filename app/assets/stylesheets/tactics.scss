@@ -177,41 +177,11 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
     margin: 0 auto;
   }
 
-  .overlay {
-    width: $board-size;
-    height: $board-size;
-    background: rgba(0,0,0,0.2);
-    position: absolute;
-    top: 0;
-    left: 50%;
-    margin-left: - ($board-size / 2);
-  }
-
-  .intro {
-    background: white;
-    border-radius: 1px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.4);
-    color: #333;
-    margin: 152px auto;
-    padding: 30px 35px;
-    width: 460px;
-
-    .title {
-      font-weight: bold;
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    .explanation {
-      font-size: 20px;
-      line-height: 32px;
-      margin: 30px 0;
-    }
-
-  }
-
 }
 
+
+// Board + piece promotion modal
+//
 .board-area {
   position: relative;
   float: left;
@@ -380,9 +350,9 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
 
   }
 
-}
+  .solution {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+  }
 
-.solution {
-  font-size: 14px;
-  color: rgba(255,255,255,0.5);
 }
