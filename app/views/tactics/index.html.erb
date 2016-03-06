@@ -19,7 +19,7 @@
 
     <div class="intro">
 
-      <h3 class="title">Blitz Tactics</h3>
+      <h3 class="title">Blitz Tactics #<%= @tactics_set_id %></h3>
 
       <div class="explanation">
         Solve puzzles quickly and accurately to make progress! White to move
@@ -60,6 +60,6 @@
 
 <script>
   $(function() {
-    blitz.offset = <%= params[:offset].to_i + 20 %>;
+    blitz.offset = <%= @next_offset %>;
   });
 </script>
