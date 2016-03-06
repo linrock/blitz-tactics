@@ -1,5 +1,7 @@
 {
 
+  const updateInterval = 500
+
   // Amount of time spent on this lap so far
   //
   class Timer extends Backbone.View {
@@ -28,7 +30,17 @@
     }
 
     elapsedTime() {
-      return ((Date.now() - this.startTime) / 1000).toFixed(1)
+      return ~~((Date.now() - this.startTime) / 1000)
+    }
+
+    formattedTime(integer) {
+      let minutes = ~~( integer / 60 )
+      let seconds = integer % 60
+      return `${minutes}:${("0" + seconds).slice(-2)}`
+    }
+
+    formattedElapsed() {
+      return this.formattedTime(this.elapsedTime())
     }
 
     startTimer() {
@@ -36,7 +48,7 @@
         return
       }
       this.startTime = Date.now()
-      this.timer = setInterval(() => { this.$timer.text(this.elapsedTime()) }, 100)
+      this.timer = setInterval(() => { this.$timer.text(this.formattedElapsed()) }, updateInterval)
     }
 
     stopTimer() {
@@ -48,7 +60,7 @@
 
     nextLap() {
       this.stopTimer()
-      this.$laps.prepend(`<div>${this.elapsedTime()}</div>`)
+      this.$laps.prepend(`<div>${this.formattedElapsed()}</div>`)
       this.startTimer()
     }
 
