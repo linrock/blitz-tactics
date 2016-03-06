@@ -1,6 +1,6 @@
 {
 
-  const updateInterval = 500
+  const updateInterval = 50
 
   // Amount of time spent on this lap so far
   //
@@ -30,7 +30,7 @@
     }
 
     elapsedTime() {
-      return ~~((Date.now() - this.startTime) / 1000)
+      return ~~(( Date.now() - this.startTime) / 1000 )
     }
 
     formattedTime(integer) {
@@ -47,8 +47,15 @@
       if (this.timer) {
         return
       }
+      let lastElapsed
       this.startTime = Date.now()
-      this.timer = setInterval(() => { this.$timer.text(this.formattedElapsed()) }, updateInterval)
+      this.timer = setInterval(() => {
+        let elapsed = this.formattedElapsed()
+        if (elapsed != lastElapsed) {
+          lastElapsed = elapsed
+          this.$timer.text(elapsed)
+        }
+      }, updateInterval)
     }
 
     stopTimer() {
