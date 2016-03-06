@@ -16,7 +16,6 @@
     listenForEvents() {
       this.listenTo(d, "puzzle_sets:next", () => {
         this.$button.attr("href", `/?offset=${blitz.offset}`)
-        this.$el.show()
       })
     }
 

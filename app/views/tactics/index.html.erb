@@ -1,4 +1,42 @@
+<header class="main-header" data-state="intro">
+
+  <div class="intro">
+    <div class="container">
+
+      <div class="left">
+        <h1 class="title">Blitz tactics &mdash; white to move</h1>
+        <h2 class="explanation">Solve puzzles quickly and accurately to unlock new levels</h2>
+      </div>
+
+      <div class="right">
+        <% if false %>
+          <div class="instructions">White to move</div>
+        <% end %>
+        <button class="start blue-button disabled">Start</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress"></div>
+  </div>
+
+  <div class="next-stage">
+    <div class="container">
+      <div class="left">You've unlocked the next level!</div>
+      <div class="right">
+        <a class="blue-button" href="javascript:">Next &raquo;</a>
+      </div>
+    </div>
+  </div>
+
+</header>
+
 <div class="main">
+
+  <label class="level">Level <%= @tactics_set_id %></label>
+
   <div class="board-area">
     <%= render :partial => "tactics/chessboard" %>
 
@@ -13,50 +51,53 @@
       <div class="background"></div>
     </div>
 
-  </div>
+    <div class="overlay" style="display: none;">
 
-  <div class="overlay">
+      <div class="intro">
 
-    <div class="intro">
+        <h3 class="title">Blitz Tactics #<%= @tactics_set_id %></h3>
 
-      <h3 class="title">Blitz Tactics #<%= @tactics_set_id %></h3>
+        <div class="explanation">
+          Solve puzzles quickly and accurately to make progress! White to move
+        </div>
 
-      <div class="explanation">
-        Solve puzzles quickly and accurately to make progress! White to move
+        <button class="start blue-button disabled">Start</button>
+
       </div>
 
-      <button class="start blue-button disabled">Start</button>
-
     </div>
 
   </div>
 
-  <div class="status">
-    <div class="puzzle-counter"></div>
-
-    <div class="move-status"></div>
-
-    <div class="combo-meter invisible">
-      <span class="counter"></span>
-      <span class="combo-text">combo</span>
-    </div>
+  <aside class="sidebar">
 
     <div class="times">
       <div class="timer"></div>
       <div class="laps"></div>
     </div>
 
-    <div class="solution"></div>
+  </aside>
 
-    <div class="next-stage" style="display: none;">
-      You've unlocked the next stage!
+</div>
 
-      <a class="blue-button" href="javascript:">Next &raquo;</a>
-    </div>
+<div class="status">
+  <div class="move-status"></div>
 
+  <div class="combo-meter invisible">
+    <span class="counter"></span>
+    <span class="combo-text">combo</span>
+  </div>
+
+  <div class="solution"></div>
+
+  <div class="next-stage" style="display: none;">
+    You've unlocked the next stage!
+
+    <a class="blue-button" href="javascript:">Next &raquo;</a>
   </div>
 
 </div>
+
 
 <script>
   $(function() {

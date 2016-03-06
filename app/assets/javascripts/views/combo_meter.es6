@@ -1,5 +1,7 @@
 {
 
+  const comboSizeForNextLevel = 10
+
   // Indicates # of successful moves in a row
   //
   class ComboMeter extends Backbone.View {
@@ -39,8 +41,18 @@
       })
     }
 
+    checkProgress() {
+      let progress = ~~( 100 * this.counter / comboSizeForNextLevel )
+      if (progress > 100) {
+        progress = 100
+      }
+      d.trigger("progress:update", progress)
+      console.log(progress)
+      return progress
+    }
+
     nextStageUnlocked() {
-      return this.pzCounter >= 40 || this.counter >= 120
+      return this.checkProgress() == 100
     }
 
   }

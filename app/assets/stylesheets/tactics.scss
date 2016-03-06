@@ -5,6 +5,11 @@ $border-width: 2px;
 $square-size: 75px;
 $board-size: 8 * $square-size + 2 * $border-width;
 
+$sidebar-size: 75px;
+$sidebar-margin: 40px;
+
+$main-width: $board-size + $sidebar-size + $sidebar-margin;
+
 
 
 .invisible {
@@ -19,10 +24,10 @@ $board-size: 8 * $square-size + 2 * $border-width;
   display: inline-block;
   color: white;
   text-decoration: none;
-  @include transition(opacity 0.15s ease);
+  @include transition(opacity 0.25s ease);
 
   &:hover {
-    opacity: 0.9;
+    background: #51B7FF;
   }
 
   &.disabled {
@@ -31,10 +36,142 @@ $board-size: 8 * $square-size + 2 * $border-width;
 
 }
 
+.main-header {
+  height: 75px;
+  @include clearfix;
+
+  .left {
+    float: left;
+  }
+
+  .right {
+    float: right;
+  }
+
+  .blue-button {
+    padding: 8px 26px 9px;
+    margin-top: 12px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  }
+
+  .container {
+    margin: 0 auto;
+    width: $main-width;
+    overflow: hidden;
+    padding-right: $sidebar-size + $sidebar-margin;
+  }
+
+  &[data-state="intro"] {
+
+    .intro {
+      display: block;
+    }
+
+    .progress-bar, .next-stage {
+      display: none;
+    }
+
+  }
+
+  &[data-state="progress"] {
+
+    .progress-bar {
+      display: block;
+    }
+
+    .intro, .next-stage {
+      display: none;
+    }
+
+  }
+
+  &[data-state="next-stage"] {
+
+    .next-stage {
+      display: block;
+    }
+
+    .intro, .progress-bar {
+      display: none;
+    }
+
+  }
+
+
+  // Intro message that shows up on initial pageload
+  //
+  .intro {
+    width: 100%;
+    height: 75px;
+    background: #393939;
+    padding: 5px 0;
+
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 38px;
+    }
+
+    .explanation {
+      font-size: 15px;
+      opacity: 0.7;
+    }
+
+    .instructions {
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 66px;
+      text-shadow: 0 0 5px rgba(0,0,0,0.7);
+    }
+
+  }
+
+
+  // Progress bar that fills up as you get closer to the next level
+  //
+  .progress-bar {
+    width: 100%;
+    height: 5px;
+
+    .progress {
+      background: yellow;
+      width: 0;
+      height: 5px;
+      @include transition(width 0.5s ease-in-out);
+    }
+
+  }
+
+
+  // Prompts you to go to the next level
+  //
+  .next-stage {
+    width: 100%;
+    height: 75px;
+    background: #393939;
+    padding: 5px 0;
+
+    .left {
+      font-size: 22px;
+      line-height: 64px;
+    }
+
+  }
+
+}
+
 .main {
   position: relative;
-  width: $board-size;
-  margin: 80px auto;
+  width: $main-width;
+  margin: 45px auto 30px;
+  @include clearfix;
+
+  .level {
+    display: block;
+    color: #979797;
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
 
   .chessboard {
     margin: 0 auto;
@@ -77,6 +214,33 @@ $board-size: 8 * $square-size + 2 * $border-width;
 
 .board-area {
   position: relative;
+  float: left;
+}
+
+
+// The sidebar that contains the time of the current lap
+// plus times from previous laps
+
+.sidebar {
+  float: left;
+  font-size: 24px;
+  line-height: 32px;
+  width: $sidebar-size;
+  height: $board-size;
+  margin-left: $sidebar-margin;
+
+  .times {
+    margin-top: -7px;
+  }
+
+  .timer {
+    color: rgba(255,255,255,1);
+  }
+
+  .laps {
+    color: rgba(255,255,255,0.5);
+  }
+
 }
 
 .chessboard {
@@ -167,12 +331,9 @@ $board-size: 8 * $square-size + 2 * $border-width;
 }
 
 .status {
-  margin: 40px 0;
-
-  .puzzle-counter {
-    display: none;
-    font-size: 24px;
-  }
+  margin: 0 auto;
+  width: $main-width;
+  padding-right: $sidebar-size + $sidebar-margin;
 
   .move-status {
     opacity: 1;
@@ -219,22 +380,9 @@ $board-size: 8 * $square-size + 2 * $border-width;
 
   }
 
-  .timer {
-    float: right;
-    font-size: 24px;
-    margin-top: -30px;
-  }
-
-  .laps {
-    float: right;
-    line-height: 28px;
-    color: rgba(255,255,255,0.5);
-  }
-
 }
 
 .solution {
-  margin-top: 26px;
   font-size: 14px;
   color: rgba(255,255,255,0.5);
 }
