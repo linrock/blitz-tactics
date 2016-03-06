@@ -23,7 +23,7 @@
       }
       return $("<img>").
         attr("src", `/assets/pieces/${className}.png`).
-        addClass(`piece ${className}`)
+        addClass(`piece ${className} ${piece.color}`)
     }
 
   }
@@ -47,7 +47,7 @@
     }
 
     initDraggable() {
-      this.board.$(".piece:not(.ui-draggable)").draggable({
+      this.board.$(".piece:not(.ui-draggable):not(.b)").draggable({
         stack: ".piece",
         distance: 5,
         revert: true,
