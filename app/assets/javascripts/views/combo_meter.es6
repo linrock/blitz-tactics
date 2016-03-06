@@ -7,7 +7,7 @@
   class ComboMeter extends Backbone.View {
 
     get el() {
-      return $(".combo-meter")
+      return ".combo-meter"
     }
 
     initialize() {
@@ -21,7 +21,10 @@
       this.listenTo(d, "move:success", () => {
         this.counter += 1
         this.$el.removeClass("invisible")
-        this.$counter.text(this.counter)
+        if (this.counter > 50) {
+          this.$counter.addClass("large")
+        }
+        this.setCounter(this.counter)
       })
       this.listenTo(d, "puzzles:next", () => {
         this.pzCounter += 1
@@ -30,17 +33,19 @@
         }
       })
       this.listenTo(d, "move:fail", () => {
-        this.counter = 0
-        this.pzCounter = 0
-        this.$el.addClass("invisible")
-        d.trigger("progress:update", 0)
+        this.droppedCombo()
       })
       this.listenTo(d, "move:too_slow", () => {
-        this.counter = 0
-        this.pzCounter = 0
-        this.$el.addClass("invisible")
-        d.trigger("progress:update", 0)
+        this.droppedCombo()
       })
+    }
+
+    setCounter(counter) {
+      this.$counter.text(counter)
+      this.$counter.addClass("zoomed")
+      setTimeout(() => {
+        this.$counter.removeClass("zoomed")
+      }, 25)
     }
 
     checkProgress() {
@@ -51,6 +56,14 @@
       d.trigger("progress:update", progress)
       console.log(progress)
       return progress
+    }
+
+    droppedCombo() {
+      this.counter = 0
+      this.pzCounter = 0
+      this.$el.addClass("invisible")
+      this.$counter.removeClass("large")
+      d.trigger("progress:update", 0)
     }
 
     nextStageUnlocked() {

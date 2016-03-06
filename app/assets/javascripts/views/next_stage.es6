@@ -5,7 +5,7 @@
   class NextStage extends Backbone.View {
 
     get el() {
-      return $(".next-stage")
+      return ".next-stage"
     }
 
     initialize() {

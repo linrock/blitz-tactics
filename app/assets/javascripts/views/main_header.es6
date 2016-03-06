@@ -5,7 +5,7 @@
   class MainHeader extends Backbone.View {
 
     get el() {
-      return $(".main-header")
+      return ".main-header"
     }
 
     initialize() {

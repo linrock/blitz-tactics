@@ -5,7 +5,7 @@
   class PuzzleCounter extends Backbone.View {
 
     get el() {
-      return $(".puzzle-counter")
+      return ".puzzle-counter"
     }
 
     initialize() {

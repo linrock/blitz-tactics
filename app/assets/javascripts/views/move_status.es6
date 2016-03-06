@@ -6,7 +6,7 @@
   class MoveStatus extends Backbone.View {
 
     get el() {
-      return $(".move-status")
+      return ".move-status"
     }
 
     initialize() {

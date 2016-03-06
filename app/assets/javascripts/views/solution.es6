@@ -1,15 +1,17 @@
 {
 
+  const hintDelay = 7000
+
   // Solution/hint that shows up after some time
   //
   class Solution extends Backbone.View {
 
     get el() {
-      return $(".solution")
+      return ".solution"
     }
 
     initialize() {
-      this.interval = false
+      this.timeout = false
       this.listenForEvents()
     }
 
@@ -24,19 +26,20 @@
     }
 
     delayedShowSolution() {
-      if (this.interval) {
-        clearInterval(this.interval)
+      if (this.timeout) {
+        clearTimeout(this.timeout)
       }
-      this.$el.text('')
-      this.interval = setInterval(() => {
+      this.$el.addClass("invisible").text("")
+      this.timeout = setTimeout(() => {
         this.showSolution()
-      }, 7000)
+      }, hintDelay)
     }
 
     showSolution() {
       d.trigger("move:too_slow")
+      this.$el.removeClass("invisible")
       if (this.current.format === "lichess") {
-        this.$el.text(_.keys(this.current.state))
+        this.$el.text(`Hint: ${_.keys(this.current.state)}`)
       } else {
         this.$el.text(this.current.puzzle.moves)
       }

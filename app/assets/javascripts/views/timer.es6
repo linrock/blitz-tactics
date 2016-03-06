@@ -5,7 +5,7 @@
   class Timer extends Backbone.View {
 
     get el() {
-      return $(".times")
+      return ".times"
     }
 
     initialize() {

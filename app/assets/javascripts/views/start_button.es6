@@ -5,7 +5,7 @@
   class StartButton extends Backbone.View {
 
     get el() {
-      return $(".start")
+      return ".start"
     }
 
     get events() {

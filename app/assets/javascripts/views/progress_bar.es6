@@ -5,7 +5,7 @@
   class ProgressBar extends Backbone.View {
 
     get el() {
-      return $(".progress-bar")
+      return ".progress-bar"
     }
 
     initialize() {

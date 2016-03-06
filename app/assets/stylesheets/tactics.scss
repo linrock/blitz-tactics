@@ -335,17 +335,28 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   }
 
   .combo-meter {
-    @include transition(opacity 0.075s ease);
     text-align: center;
+    @include transition(opacity 0.08s ease);
 
     .counter {
-      font-size: 32px;
+      display: inline-block;
+      font-size: 40px;
       margin-right: 5px;
+
+      &.large {
+        font-size: 52px;
+      }
+
+      &.zoomed {
+        @include transform(scale3d(1.25, 1.25, 1));
+      }
+
     }
 
     .combo-text {
       position: relative;
-      top: -4px;
+      text-transform: uppercase;
+      top: -6px;
     }
 
   }
@@ -353,6 +364,10 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   .solution {
     font-size: 14px;
     color: rgba(255,255,255,0.5);
+    text-align: center;
+    position: relative;
+    top: -30px;
+    @include transition(opacity 0.08s ease);
   }
 
 }
