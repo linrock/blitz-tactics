@@ -52,6 +52,9 @@
         i: 0
       }
       d.trigger("puzzle:loaded", this.current)
+      if (this.i + 1 === this.puzzles.length) {
+        d.trigger("puzzles:lap")
+      }
       this.i = (this.i + 1) % this.puzzles.length
 
       if (this.format == "v0" || this.format == "v1") {
