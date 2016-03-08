@@ -15,35 +15,42 @@
     }
 
     listenForEvents() {
-      this.listenTo(d, "move:success", () => {
-        let time = Date.now()
-        if (time - this.timeSinceSuccess < 2500) {
-          this.renderMarvelous()
-        } else {
-          this.renderPerfect()
-        }
-        this.timeSinceSuccess = time
-      })
-      this.listenTo(d, "move:fail", () => {
-        this.renderFailure()
-      })
+      this.listenTo(d, "move:success", _.bind(this.renderSuccess, this))
+      this.listenTo(d, "move:fail", _.bind(this.renderFailure, this))
     }
 
-    renderPerfect() {
-      this.$el.removeClass("fade-out")
-      this.$el.html('<div class="success">Perfect!</div>')
-      setTimeout(() => { this.$el.addClass("fade-out") }, 50)
-    }
-
-    renderMarvelous() {
-      this.$el.removeClass("fade-out")
-      this.$el.html('<div class="marvelous">Marvelous!</div>')
-      setTimeout(() => { this.$el.addClass("fade-out") }, 50)
+    renderSuccess() {
+      let time = Date.now()
+      let tDiff = time - this.timeSinceSuccess
+      if (tDiff < 2500) {
+        this.renderPerfect()
+      } else if (tDiff < 5000) {
+        this.renderGreat()
+      } else {
+        this.renderGood()
+      }
+      this.timeSinceSuccess = time
     }
 
     renderFailure() {
+      this.renderFadingMessage('<div class="fail">Miss</div>')
+    }
+
+    renderPerfect() {
+      this.renderFadingMessage('<div class="perfect">Perfect!</div>')
+    }
+
+    renderGreat() {
+      this.renderFadingMessage('<div class="great">Great!</div>')
+    }
+
+    renderGood() {
+      this.renderFadingMessage('<div class="good">Good!</div>')
+    }
+
+    renderFadingMessage(html) {
       this.$el.removeClass("fade-out")
-      this.$el.html('<div class="fail">Miss</div>')
+      this.$el.html(html)
       setTimeout(() => { this.$el.addClass("fade-out") }, 50)
     }
 

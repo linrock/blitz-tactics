@@ -169,10 +169,54 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
 
 }
 
+.move-indicator {
+  width: $main-width;
+  margin: 0 auto;
+  padding-right: $sidebar-size + $sidebar-margin;
+  text-align: center;
+  position: relative;
+  top: -5px;
+
+  .move-status {
+    opacity: 1;
+    font-size: 28px;
+    height: 28px;
+    text-transform: uppercase;
+    @include transition(opacity 0.02s ease);
+
+    &.fade-out {
+      @include transition(opacity 1s ease-out 0.2s);
+      opacity: 0;
+    }
+
+    .perfect {
+      color: #FFF260;
+      font-weight: 600;
+      font-size: 36px;
+    }
+
+    .great {
+      color: #34FF00;
+      font-weight: 600;
+    }
+
+    .good {
+      color: #2AE2EA;
+      font-weight: 600;
+    }
+
+    .fail {
+      color: red;
+    }
+
+  }
+
+}
+
 .main {
   position: relative;
   width: $main-width;
-  margin: 45px auto 30px;
+  margin: 25px auto 30px;
   @include clearfix;
 
   .level {
@@ -334,35 +378,6 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   margin: 0 auto;
   width: $main-width;
   padding-right: $sidebar-size + $sidebar-margin;
-
-  .move-status {
-    opacity: 1;
-    font-size: 28px;
-    margin-bottom: 20px;
-    text-align: center;
-    text-transform: uppercase;
-    @include transition(opacity 0.1s ease);
-
-    &.fade-out {
-      @include transition(opacity 1s ease-out 0.2s);
-      opacity: 0;
-    }
-
-    .success {
-      color: #34FF00;
-      font-weight: 600;
-    }
-
-    .marvelous {
-      color: #FFF260;
-      font-weight: 600;
-    }
-
-    .fail {
-      color: red;
-    }
-
-  }
 
   .combo-meter {
     text-align: center;
