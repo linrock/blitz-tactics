@@ -48,12 +48,6 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
     float: right;
   }
 
-  .blue-button {
-    padding: 8px 26px 9px;
-    margin-top: 12px;
-    box-shadow: 0 0 4px rgba(0,0,0,0.2);
-  }
-
   .sub-header {
     position: absolute;
     top: 0;
@@ -112,7 +106,7 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   .intro {
     width: 100%;
     height: 75px;
-    background: black;
+    background: #090909;
     padding: 5px 0;
 
     .title {
@@ -160,13 +154,19 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   //
   .next-stage {
     width: 100%;
-    height: 75px;
-    background: black;
+    height: 65px;
+    background: #090909;
     padding: 5px 0;
 
     .left {
       font-size: 22px;
-      line-height: 64px;
+      line-height: 55px;
+    }
+
+    .blue-button {
+      padding: 8px 26px 9px;
+      margin-top: 7px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.2);
     }
 
   }
@@ -179,7 +179,7 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   padding-right: $sidebar-size + $sidebar-margin;
   text-align: center;
   position: relative;
-  top: -5px;
+  top: 0;
 
   .move-status {
     opacity: 1;
@@ -387,12 +387,21 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
 
 }
 
-.status {
+.under-board {
   margin: 0 auto;
   width: $main-width;
   padding-right: $sidebar-size + $sidebar-margin;
 
-  .combo-meter {
+  .solution {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    position: absolute;
+    width: $board-size;
+    @include transition(opacity 0.08s ease);
+  }
+
+  .combo-counter {
     text-align: center;
     @include transition(opacity 0.08s ease);
 
@@ -421,15 +430,6 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
       top: -6px;
     }
 
-  }
-
-  .solution {
-    font-size: 14px;
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-    position: relative;
-    top: -30px;
-    @include transition(opacity 0.08s ease);
   }
 
 }

@@ -4,10 +4,10 @@
 
   // Indicates # of successful moves in a row
   //
-  class ComboMeter extends Backbone.View {
+  class ComboCounter extends Backbone.View {
 
     get el() {
-      return ".combo-meter"
+      return ".combo-counter"
     }
 
     initialize() {
@@ -74,6 +74,6 @@
   }
 
 
-  Views.ComboMeter = ComboMeter
+  Views.ComboCounter = ComboCounter
 
 }
