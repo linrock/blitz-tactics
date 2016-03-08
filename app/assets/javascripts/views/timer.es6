@@ -62,6 +62,7 @@
     nextLap() {
       this.stopTimer()
       this.$laps.prepend(`<div>${this.formattedElapsed()}</div>`)
+      this.startTime = false
       this.startTimer()
     }
 
