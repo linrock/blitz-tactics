@@ -17,6 +17,22 @@ window.d = _.clone(Backbone.Events);
 window.blitz = {};
 
 
+// Preload piece images
+//
+(function() {
+  var colors = [ "w", "b" ];
+  var pieces = [ "k", "q", "r", "b", "n" ];
+
+  for (var i in pieces) {
+    for (var j in colors) {
+      var img = new Image();
+      img.src = "/assets/pieces/" + colors[j] + pieces[i] + ".png";
+    }
+  }
+
+})();
+
+
 $(function() {
 
   _.each(Views, function(view) { new view; });

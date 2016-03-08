@@ -91,10 +91,9 @@
     initialize() {
       this.pieces = new Pieces(this)
       this.dragAndDrop = new DragAndDrop(this)
-      this.render("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+      // this.render("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
       this.listenToEvents()
       this.dragAndDrop.init()
-      this.fadeIntoView()
     }
 
     listenToEvents() {
@@ -131,10 +130,6 @@
         }
       }
       this.fen = fen
-    }
-
-    fadeIntoView() {
-      setTimeout(() => { this.$el.removeClass("invisible") }, 1000)
     }
 
     animating() {

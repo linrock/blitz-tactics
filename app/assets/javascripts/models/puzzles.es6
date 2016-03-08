@@ -39,6 +39,30 @@
     }
 
     listenToEvents() {
+      this.listenTo(d, "puzzles:fetched", () => {
+        this.current = {
+          format: this.format,
+          puzzle: this.puzzles[this.i],
+          i: 0
+        }
+        d.trigger("puzzle:loaded", this.current)
+        this.i = (this.i + 1) % this.puzzles.length
+
+        if (this.format == "v0" || this.format == "v1") {
+          console.dir(this.current.puzzle)
+          console.log(this.current.puzzle.moves)
+          d.trigger("fen:set", this.current.puzzle.fen)
+        } else if (this.format == "lichess") {
+          let puzzle = this.current.puzzle.puzzle
+          console.dir(puzzle)
+          this.current.state = _.clone(puzzle.lines)
+          d.trigger("fen:set", puzzle.fen)
+          setTimeout(() => {
+            d.trigger("move:make", uciToMove(puzzle.initialMove))
+          }, 500)
+        }
+      })
+
       this.listenTo(d, "puzzles:next", () => {
         this.current = {
           format: this.format,
