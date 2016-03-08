@@ -49,7 +49,7 @@
     initDraggable() {
       this.board.$(".piece:not(.ui-draggable):not(.b)").draggable({
         stack: ".piece",
-        distance: 5,
+        distance: 10,
         revert: true,
         revertDuration: 0
       })
@@ -82,6 +82,63 @@
   }
 
 
+  // Point and click pieces to select and move them
+  //
+  class PointAndClick {
+
+    constructor(board) {
+      this.board = board
+      this.moveablePieces = ".piece.w"
+      this.selectedSquare = false
+      this.listenForEvents()
+    }
+
+    listenForEvents() {
+      this.board.$el.on("click", ".square", (event) => {
+        let square = $(event.currentTarget).data("square")
+        this.selectSquare(square)
+      })
+      this.board.listenTo(d, "move:try", () => {
+        this.clearSelected()
+      })
+      this.board.listenTo(d, "move:make", () => {
+        this.clearSelected()
+      })
+    }
+
+    selectSquare(square) {
+      if (this.board.$(`#${square} ${this.moveablePieces}`).length) {
+        this.clearSelected()
+        this.selectedSquare = square
+        this.board.$(`#${this.selectedSquare}`).addClass("selected")
+      } else if (this.selectedSquare && square != this.selectedSquare) {
+        let c = new Chess(this.board.fen)
+        let move = {
+          from: this.selectedSquare,
+          to: square
+        }
+        let $piece = this.board.$(`#${this.selectedSquare} .piece`)
+        if (($piece.hasClass("wp") || $piece.hasClass("bp")) &&
+            (move.to[1] == "8" || move.to[1] == "1")) {
+          d.trigger("move:promotion", { fen: this.board.fen, move: move })
+        } else {
+          let m = c.move(move)
+          if (m) {
+            d.trigger("move:try", m)
+          }
+        }
+        this.clearSelected()
+      }
+    }
+
+    clearSelected() {
+      this.selectedSquare = false
+      this.board.$(".square.selected").removeClass("selected")
+    }
+
+  }
+
+
   class Chessboard extends Backbone.View {
 
     get el() {
@@ -91,6 +148,7 @@
     initialize() {
       this.pieces = new Pieces(this)
       this.dragAndDrop = new DragAndDrop(this)
+      this.pointAndClick = new PointAndClick(this)
       // this.render("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
       this.listenToEvents()
       this.dragAndDrop.init()

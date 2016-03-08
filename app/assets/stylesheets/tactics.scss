@@ -315,11 +315,20 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
       background: rgb(206, 179, 162);
     }
 
+    &.selected {
+      background: #FFFF86;
+    }
+
     .piece {
       width: 100%;
       height: 100%;
       position: relative;
       @include transition(opacity 0.3s ease, transform 0.12s ease-in-out);
+
+      &.w:hover {
+        cursor: pointer;
+      }
+
     }
 
   }
