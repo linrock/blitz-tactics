@@ -65,16 +65,7 @@
             from: $piece.parents(".square").data("square"),
             to: $(event.target).data("square")
           }
-          let c = new Chess(this.board.fen)
-          if (($piece.hasClass("wp") || $piece.hasClass("bp")) &&
-              (move.to[1] == "8" || move.to[1] == "1")) {
-            d.trigger("move:promotion", { fen: this.board.fen, move: move })
-          } else {
-            let m = c.move(move)
-            if (m) {
-              d.trigger("move:try", m)
-            }
-          }
+          this.board.movePiece($piece, move)
         }
       })
     }
@@ -112,21 +103,12 @@
         this.selectedSquare = square
         this.board.$(`#${this.selectedSquare}`).addClass("selected")
       } else if (this.selectedSquare && square != this.selectedSquare) {
-        let c = new Chess(this.board.fen)
         let move = {
           from: this.selectedSquare,
           to: square
         }
         let $piece = this.board.$(`#${this.selectedSquare} .piece`)
-        if (($piece.hasClass("wp") || $piece.hasClass("bp")) &&
-            (move.to[1] == "8" || move.to[1] == "1")) {
-          d.trigger("move:promotion", { fen: this.board.fen, move: move })
-        } else {
-          let m = c.move(move)
-          if (m) {
-            d.trigger("move:try", m)
-          }
-        }
+        this.board.movePiece($piece, move)
         this.clearSelected()
       }
     }
@@ -188,6 +170,19 @@
         }
       }
       this.fen = fen
+    }
+
+    movePiece($piece, move) {
+      let c = new Chess(this.fen)
+      if (($piece.hasClass("wp") || $piece.hasClass("bp")) &&
+          (move.to[1] == "8" || move.to[1] == "1")) {
+        d.trigger("move:promotion", { fen: this.fen, move: move })
+      } else {
+        let m = c.move(move)
+        if (m) {
+          d.trigger("move:try", m)
+        }
+      }
     }
 
     animating() {
