@@ -54,6 +54,12 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
     box-shadow: 0 0 4px rgba(0,0,0,0.2);
   }
 
+  .sub-header {
+    position: absolute;
+    top: 0;
+    @include transition(opacity 0.15s ease);
+  }
+
   .container {
     margin: 0 auto;
     width: $main-width;
@@ -64,11 +70,12 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   &[data-state="intro"] {
 
     .intro {
-      display: block;
+      opacity: 1;
     }
 
     .progress-bar, .next-stage {
-      display: none;
+      opacity: 0;
+      pointer-events: none;
     }
 
   }
@@ -76,11 +83,12 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   &[data-state="progress"] {
 
     .progress-bar {
-      display: block;
+      opacity: 1;
     }
 
     .intro, .next-stage {
-      display: none;
+      opacity: 0;
+      pointer-events: none;
     }
 
   }
@@ -88,11 +96,12 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   &[data-state="next-stage"] {
 
     .next-stage {
-      display: block;
+      opacity: 1;
     }
 
     .intro, .progress-bar {
-      display: none;
+      opacity: 0;
+      pointer-events: none;
     }
 
   }
@@ -121,7 +130,7 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
       font-size: 20px;
       font-weight: bold;
       line-height: 66px;
-      text-shadow: 0 0 5px rgba(0,0,0,0.7);
+      text-shadow: 0 0 6px rgba(0,0,0,0.8);
     }
 
   }

@@ -25,6 +25,7 @@
     initialize() {
       this.i = 0
       this.current = {}
+      this.started = false
       this.fetchPuzzles()
       this.listenToEvents()
     }
@@ -39,69 +40,50 @@
     }
 
     listenToEvents() {
-      this.listenTo(d, "puzzles:fetched", () => {
-        this.current = {
-          format: this.format,
-          puzzle: this.puzzles[this.i],
-          i: 0
-        }
-        d.trigger("puzzle:loaded", this.current)
-        this.i = (this.i + 1) % this.puzzles.length
-
-        if (this.format == "v0" || this.format == "v1") {
-          console.dir(this.current.puzzle)
-          console.log(this.current.puzzle.moves)
-          d.trigger("fen:set", this.current.puzzle.fen)
-        } else if (this.format == "lichess") {
-          let puzzle = this.current.puzzle.puzzle
-          console.dir(puzzle)
-          this.current.state = _.clone(puzzle.lines)
-          d.trigger("fen:set", puzzle.fen)
-          setTimeout(() => {
-            d.trigger("move:make", uciToMove(puzzle.initialMove))
-          }, 500)
-        }
-      })
-
-      this.listenTo(d, "puzzles:next", () => {
-        this.current = {
-          format: this.format,
-          puzzle: this.puzzles[this.i],
-          i: 0
-        }
-        d.trigger("puzzle:loaded", this.current)
-        if (this.i + 1 === this.puzzles.length) {
-          d.trigger("puzzles:lap")
-        }
-        this.i = (this.i + 1) % this.puzzles.length
-
-        if (this.format == "v0" || this.format == "v1") {
-          console.dir(this.current.puzzle)
-          console.log(this.current.puzzle.moves)
-          d.trigger("fen:set", this.current.puzzle.fen)
-        } else if (this.format == "lichess") {
-          let puzzle = this.current.puzzle.puzzle
-          console.dir(puzzle)
-          this.current.state = _.clone(puzzle.lines)
-          d.trigger("fen:set", puzzle.fen)
-          setTimeout(() => {
-            d.trigger("move:make", uciToMove(puzzle.initialMove))
-          }, 500)
-        }
-      })
-
-      this.listenTo(d, "move:try", (move) => {
-        if (this.format == "v1") {
-          this.handleV1(move)
-        } else if (this.format == "v0") {
-          this.handleV0(move)
-        } else if (this.format == "lichess") {
-          this.handleLichess(move)
-        }
-      })
+      this.listenTo(d, "puzzles:fetched", _.bind(this.nextPuzzle, this))
+      this.listenTo(d, "puzzles:next", _.bind(this.nextPuzzle, this))
+      this.listenTo(d, "move:try", _.bind(this.tryMove, this))
     }
 
-    handleV0(move) {
+    nextPuzzle() {
+      this.current = {
+        format: this.format,
+        puzzle: this.puzzles[this.i],
+        i: 0
+      }
+      d.trigger("puzzle:loaded", this.current)
+      this.i = (this.i + 1) % this.puzzles.length
+
+      if (this.format == "v0" || this.format == "v1") {
+        console.dir(this.current.puzzle)
+        console.log(this.current.puzzle.moves)
+        d.trigger("fen:set", this.current.puzzle.fen)
+      } else if (this.format == "lichess") {
+        let puzzle = this.current.puzzle.puzzle
+        console.dir(puzzle)
+        this.current.state = _.clone(puzzle.lines)
+        d.trigger("fen:set", puzzle.fen)
+        setTimeout(() => {
+          d.trigger("move:make", uciToMove(puzzle.initialMove))
+        }, 500)
+      }
+    }
+
+    tryMove(move) {
+      if (!this.started) {
+        this.started = true
+        d.trigger("puzzles:start")
+      }
+      if (this.format == "v1") {
+        this.handleV1Move(move)
+      } else if (this.format == "v0") {
+        this.handleV0Move(move)
+      } else if (this.format == "lichess") {
+        this.handleLichessMove(move)
+      }
+    }
+
+    handleV0Move(move) {
       let solution = this.current.puzzle.solution
       if (move.from == solution[0][0] && move.to == solution[0][1]) {
         solution.shift()
@@ -121,7 +103,7 @@
       }
     }
 
-    handleV1(move) {
+    handleV1Move(move) {
       let moves = this.current.puzzle.moves
       let nextMove = moves[this.current.i]
       if (move.san == nextMove) {
@@ -139,7 +121,7 @@
       }
     }
 
-    handleLichess(move) {
+    handleLichessMove(move) {
       let attempt = this.current.state[moveToUci(move)]
       if (attempt == "win") {
         d.trigger("move:success")

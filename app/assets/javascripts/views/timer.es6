@@ -18,15 +18,9 @@
     }
 
     listenForEvents() {
-      this.listenTo(d, "puzzles:next", () => {
-        if (this.startTime) {
-          return
-        }
-        this.startTimer()
-      })
-      this.listenTo(d, "puzzles:lap", () => {
-        this.nextLap()
-      })
+      this.listenTo(d, "puzzles:start", _.bind(this.startTimer, this))
+      this.listenTo(d, "puzzles:next", _.bind(this.startTimer, this))
+      this.listenTo(d, "puzzles:lap", _.bind(this.nextLap, this))
     }
 
     elapsedTime() {
@@ -44,7 +38,7 @@
     }
 
     startTimer() {
-      if (this.timer) {
+      if (this.startTime || this.timer) {
         return
       }
       let lastElapsed
