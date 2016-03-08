@@ -5,8 +5,9 @@ class PuzzleSetsController < ApplicationController
   end
 
   def show
-    # render_v1
-    render_lichess
+    respond_to do |format|
+      format.json { render_lichess }
+    end
   end
 
   private
@@ -30,14 +31,24 @@ class PuzzleSetsController < ApplicationController
   end
 
   def render_lichess
-    puzzles = LichessPuzzle.rating_lt(1600).
-                            vote_gt(50).
-                            white_to_move
     offset = params[:offset].to_i
     render :json => {
       :format  => 'lichess',
-      :puzzles => puzzles[offset..offset + Puzzles::SET_SIZE].shuffle.map(&:data)
+      :puzzles => cached_puzzles[offset..offset + Puzzles::SET_SIZE].shuffle.map(&:data)
     }
+  end
+
+  def puzzles
+    LichessPuzzle.rating_lt(1600).vote_gt(50).white_to_move
+  end
+
+  def cached_puzzles
+    cache_key = "puzzles.rating_lt(1600).vote_gt(50).white_to_move:ids"
+    puzzle_ids = Rails.cache.read(cache_key)
+    return LichessPuzzle.where(id: puzzle_ids) if puzzle_ids.present?
+    puzzle_ids = puzzles.pluck(:id)
+    Rails.cache.write(cache_key, puzzle_ids)
+    LichessPuzzle.where(id: puzzle_ids)
   end
 
 end
