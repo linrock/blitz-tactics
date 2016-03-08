@@ -186,22 +186,25 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
     font-size: 28px;
     height: 28px;
     text-transform: uppercase;
+    transform: translate3d(0,0,0);
     @include transition(opacity 0.02s ease);
 
     &.fade-out {
-      @include transition(opacity 1s ease-out 0.2s);
+      @include transition(opacity 0.9s ease-out 0.2s, transform 0.05s ease-in-out);
       opacity: 0;
+      transform: translate3d(0,-4px,0);
     }
 
     .perfect {
       color: #FFF260;
       font-weight: 600;
-      font-size: 36px;
+      font-size: 38px;
     }
 
     .great {
       color: #34FF00;
       font-weight: 600;
+      font-size: 32px;
     }
 
     .good {
