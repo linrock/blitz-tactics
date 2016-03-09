@@ -226,6 +226,23 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   margin: 25px auto 30px;
   @include clearfix;
 
+  .level-selector {
+    font-size: 20px;
+    color: rgba(255,255,255,0.2);
+    transform: scale3d(0.5,1,1);
+    position: absolute;
+    top: -1px;
+    left: -24px;
+    text-decoration: none;
+    padding: 0 6px;
+    @include transition(color 0.12s ease);
+
+    &:hover {
+      color: rgba(255,255,255,0.4);
+    }
+
+  }
+
   .level {
     display: block;
     color: #979797;
