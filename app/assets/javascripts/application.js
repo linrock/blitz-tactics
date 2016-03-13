@@ -37,5 +37,6 @@ $(function() {
 
   _.each(Views, function(view) { new view; });
   new Models.Puzzles;
+  new Models.Notifier;
 
 });

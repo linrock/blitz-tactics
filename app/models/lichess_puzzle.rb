@@ -34,4 +34,8 @@ class LichessPuzzle < ActiveRecord::Base
     where("data->'puzzle'->>'color' = 'white'")
   end
 
+  def rating
+    data.dig("puzzle", "rating")
+  end
+
 end

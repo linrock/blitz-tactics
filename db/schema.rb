@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160313063553) do
+ActiveRecord::Schema.define(version: 20160313074949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "levels", force: :cascade do |t|
+    t.string   "slug"
+    t.string   "secret_key"
+    t.integer  "puzzle_ids", array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "levels", ["secret_key"], name: "index_levels_on_secret_key", unique: true, using: :btree
+  add_index "levels", ["slug"], name: "index_levels_on_slug", unique: true, using: :btree
 
   create_table "lichess_puzzles", force: :cascade do |t|
     t.integer  "puzzle_id",  null: false
@@ -39,6 +50,7 @@ ActiveRecord::Schema.define(version: 20160313063553) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "username"
+    t.jsonb    "profile"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

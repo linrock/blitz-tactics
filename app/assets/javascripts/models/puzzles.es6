@@ -30,9 +30,16 @@
       this.listenToEvents()
     }
 
+    getPuzzleSource() {
+      if (window.location.pathname.startsWith("/level-")) {
+        return window.location.pathname
+      } else {
+        return `/puzzles${window.location.search}`
+      }
+    }
+
     fetchPuzzles() {
-      let url = `/puzzles${window.location.search}`
-      $.getJSON(url, (data) => {
+      $.getJSON(this.getPuzzleSource(), (data) => {
         this.format = data.format
         this.puzzles = data.puzzles
         d.trigger("puzzles:fetched")

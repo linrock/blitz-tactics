@@ -4,9 +4,9 @@
 
   <ul>
 
-    <% @n_sets.times do |i| %>
+    <% Level.all.each do |level| %>
       <li>
-        <a href="/?offset=<%= i * 20 %>">Level <%= i + 1 %></a>
+        <a href="/<%= level.slug %>"><%= level.name %></a>
       </li>
     <% end %>
 
