@@ -16,6 +16,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 
+gem 'devise'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 
