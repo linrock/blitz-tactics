@@ -16,6 +16,7 @@ class LevelsController < ApplicationController
 
   def index
     @levels = Level.all.order("id ASC")
+    @unlocked = current_user&.unlocked_levels
   end
 
 end

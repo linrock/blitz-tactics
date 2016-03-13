@@ -1,13 +1,17 @@
-<div class="puzzle-sets">
+<div class="level-list">
 
   <h3>Blitz Tactics</h3>
 
   <ul>
 
     <% @levels.each do |level| %>
-      <li>
-        <a href="/<%= level.slug %>"><%= level.name %></a>
-      </li>
+      <% if @unlocked.nil? || @unlocked.include?(level.id) %>
+        <li>
+          <a href="/<%= level.slug %>"><%= level.name %></a>
+        </li>
+      <% else %>
+        <li><%= level.name %></li>
+      <% end %>
     <% end %>
 
   </ul>

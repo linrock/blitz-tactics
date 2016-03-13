@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
     self.save!
   end
 
+  def unlocked_levels
+    Set.new(self.profile["levels_unlocked"])
+  end
+
   private
 
   def set_default_profile
