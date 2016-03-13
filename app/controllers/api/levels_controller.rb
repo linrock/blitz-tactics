@@ -4,8 +4,9 @@ class Api::LevelsController < ApplicationController
 
   def attempt
     if @user
-      params[:id]
-      @user.level_attempts
+      attempt = @user.level_attempts.find_or_create_by(:level_id => params[:id])
+      attempt.update_attribute :last_attempt_at, Time.now
+      # attempt.rounds.create!(payload)
     end
     render :json => {}
   end

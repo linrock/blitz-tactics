@@ -24,4 +24,19 @@
 
   }
 
+  .level-row {
+    overflow: hidden;
+  }
+
+  .level-name {
+    width: 100px;
+    float: left;
+  }
+
+  .level-attempt {
+    float: left;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
 }

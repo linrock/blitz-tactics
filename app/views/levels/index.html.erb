@@ -5,13 +5,17 @@
   <ul>
 
     <% @levels.each do |level| %>
-      <% if @unlocked.nil? || @unlocked.include?(level.id) %>
-        <li>
-          <a href="/<%= level.slug %>"><%= level.name %></a>
-        </li>
-      <% else %>
-        <li><%= level.name %></li>
-      <% end %>
+      <li class="level-row">
+        <% if @unlocked.nil? || @unlocked.include?(level.id) %>
+          <a href="/<%= level.slug %>" class="level-name"><%= level.name %></a>
+          <span class="level-attempt">
+            <% date = @attempts[level.id]&.first&.last_attempt_at %>
+            <%= time_ago_in_words(date) if date.present? %>
+          </span>
+        <% else %>
+          <span class="level-name"><%= level.name %></span>
+        <% end %>
+      </li>
     <% end %>
 
   </ul>

@@ -15,6 +15,9 @@ window.Models = {};
 
 window.d = _.clone(Backbone.Events);
 window.blitz = {};
+window.config = {
+  comboSizeForNextLevel: 100
+};
 
 
 // Preload piece images

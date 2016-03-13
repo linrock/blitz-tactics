@@ -11,10 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160313074949) do
+ActiveRecord::Schema.define(version: 20160313213221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "completed_rounds", force: :cascade do |t|
+    t.integer  "level_attempt_id", null: false
+    t.integer  "time_elapsed"
+    t.integer  "errors_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "level_attempts", force: :cascade do |t|
+    t.integer  "user_id",         null: false
+    t.integer  "level_id",        null: false
+    t.datetime "last_attempt_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "level_attempts", ["level_id"], name: "index_level_attempts_on_level_id", using: :btree
+  add_index "level_attempts", ["user_id"], name: "index_level_attempts_on_user_id", using: :btree
 
   create_table "levels", force: :cascade do |t|
     t.string   "slug"

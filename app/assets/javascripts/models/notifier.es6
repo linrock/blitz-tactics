@@ -7,13 +7,12 @@
     }
 
     listenToEvents() {
-      this.listenTo(d, "puzzles:lap", this.roundComplete)
+      this.listenTo(d, "round:complete", this.roundComplete)
       this.listenTo(d, "level:complete", this.levelComplete)
     }
 
     roundComplete(levelId, payload) {
-      console.log("TODO notify server of attempt")
-      $.post(`/api/levels/${blitz.levelId}/attempt`)
+      $.post(`/api/levels/${levelId}/attempt`, payload)
     }
 
     levelComplete(levelId) {

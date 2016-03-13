@@ -62,8 +62,15 @@
     nextLap() {
       this.stopTimer()
       this.$laps.prepend(`<div>${this.formattedElapsed()}</div>`)
+      this.notify()
       this.startTime = false
       this.startTimer()
+    }
+
+    notify() {
+      d.trigger("round:complete", blitz.levelId, {
+        time_elapsed: this.elapsedTime()
+      })
     }
 
   }

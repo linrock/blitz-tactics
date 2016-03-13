@@ -1,7 +1,5 @@
 {
 
-  const comboSizeForNextLevel = 100
-
   // Indicates # of successful moves in a row
   //
   class ComboCounter extends Backbone.View {
@@ -12,8 +10,9 @@
 
     initialize() {
       this.$counter = this.$(".counter")
-      this.pzCounter = 0    // Number of puzzles in a row
-      this.counter = 0      // Number of moves in a row
+      this.pzCounter = 0      // Number of puzzles in a row
+      this.counter = 0        // Number of moves in a row
+      this.unlocked = false   // Next level unlocked
       this.listenForEvents()
     }
 
@@ -32,7 +31,8 @@
       })
       this.listenTo(d, "puzzles:next", () => {
         this.pzCounter += 1
-        if (this.nextStageUnlocked()) {
+        if (!this.unlocked && this.nextStageUnlocked()) {
+          this.unlocked = true
           d.trigger("level:complete", blitz.levelId)
         }
       })
@@ -50,7 +50,7 @@
     }
 
     checkProgress() {
-      let progress = ~~( 100 * this.counter / comboSizeForNextLevel )
+      let progress = ~~( 100 * this.counter / config.comboSizeForNextLevel )
       if (progress > 100) {
         progress = 100
       }
