@@ -14,8 +14,8 @@
     }
 
     listenForEvents() {
-      this.listenTo(d, "puzzle_sets:next", () => {
-        this.$button.attr("href", `/?offset=${blitz.offset}`)
+      this.listenTo(d, "level:unlocked", (href) => {
+        this.$button.attr("href", href)
       })
     }
 

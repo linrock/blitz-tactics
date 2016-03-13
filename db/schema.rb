@@ -18,8 +18,9 @@ ActiveRecord::Schema.define(version: 20160313074949) do
 
   create_table "levels", force: :cascade do |t|
     t.string   "slug"
+    t.integer  "next_level_id"
     t.string   "secret_key"
-    t.integer  "puzzle_ids", array: true
+    t.integer  "puzzle_ids",    array: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end

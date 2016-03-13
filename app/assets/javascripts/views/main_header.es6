@@ -12,7 +12,7 @@
       this.listenTo(d, "puzzles:start", () => {
         this.$el.attr("data-state", "progress")
       })
-      this.listenTo(d, "puzzle_sets:next", () => {
+      this.listenTo(d, "level:unlocked", () => {
         this.$el.attr("data-state", "next-stage")
       })
     }

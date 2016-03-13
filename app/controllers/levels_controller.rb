@@ -14,4 +14,8 @@ class LevelsController < ApplicationController
     end
   end
 
+  def index
+    @levels = Level.all.order("id ASC")
+  end
+
 end

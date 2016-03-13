@@ -32,7 +32,7 @@
 
     getPuzzleSource() {
       if (window.location.pathname.startsWith("/level-")) {
-        return window.location.pathname
+        return window.location.pathname + ".json"
       } else {
         return `/puzzles${window.location.search}`
       }

@@ -4,7 +4,7 @@ class Level < ActiveRecord::Base
   validates_presence_of :slug
   validates_presence_of :secret_key
 
-  before_create :set_secret_key
+  before_validation :set_secret_key
 
 
   def name
@@ -22,7 +22,7 @@ class Level < ActiveRecord::Base
   private
 
   def set_secret_key
-    self.secret_key = SecureRandom.hex(8)
+    self.secret_key ||= SecureRandom.hex(8)
   end
 
 end

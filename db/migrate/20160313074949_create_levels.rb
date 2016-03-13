@@ -2,6 +2,7 @@ class CreateLevels < ActiveRecord::Migration
   def change
     create_table :levels do |t|
       t.string :slug
+      t.integer :next_level_id
       t.string :secret_key
       t.integer :puzzle_ids, :array => true
       t.timestamps

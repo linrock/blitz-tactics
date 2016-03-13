@@ -9,9 +9,16 @@
     listenToEvents() {
       this.listenTo(d, "puzzles:lap", () => {
         console.log("TODO notify server of attempt")
+        $.post(`/api/v1/puzzles/${blitz.levelId}/attempt`)
       })
-      this.listenTo(d, "puzzle_sets:next", () => {
-        console.log("TODO notify server of success")
+      this.listenTo(d, "level:complete", () => {
+        $.post(`/api/v1/puzzles/${blitz.levelId}/attempt`, (data, error) => {
+          if (error) {
+            console.error(error)
+          } else {
+            d.trigger("level:unlocked", data.next.href)
+          }
+        })
       })
     }
 

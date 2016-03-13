@@ -4,7 +4,7 @@
 
   <ul>
 
-    <% Level.all.each do |level| %>
+    <% @levels.each do |level| %>
       <li>
         <a href="/<%= level.slug %>"><%= level.name %></a>
       </li>
