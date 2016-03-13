@@ -12,7 +12,7 @@
     }
 
     roundComplete(levelId, payload) {
-      $.post(`/api/levels/${levelId}/attempt`, payload)
+      $.post(`/api/levels/${levelId}/attempt`, { round: payload })
     }
 
     levelComplete(levelId) {
