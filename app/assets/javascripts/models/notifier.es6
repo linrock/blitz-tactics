@@ -7,18 +7,18 @@
     }
 
     listenToEvents() {
-      this.listenTo(d, "puzzles:lap", () => {
-        console.log("TODO notify server of attempt")
-        $.post(`/api/v1/puzzles/${blitz.levelId}/attempt`)
-      })
-      this.listenTo(d, "level:complete", () => {
-        $.post(`/api/v1/puzzles/${blitz.levelId}/attempt`, (data, error) => {
-          if (error) {
-            console.error(error)
-          } else {
-            d.trigger("level:unlocked", data.next.href)
-          }
-        })
+      this.listenTo(d, "puzzles:lap", this.roundComplete)
+      this.listenTo(d, "level:complete", this.levelComplete)
+    }
+
+    roundComplete(levelId, payload) {
+      console.log("TODO notify server of attempt")
+      $.post(`/api/levels/${blitz.levelId}/attempt`)
+    }
+
+    levelComplete(levelId) {
+      $.post(`/api/levels/${levelId}/complete`, (data) => {
+        d.trigger("level:unlocked", data.next.href)
       })
     }
 

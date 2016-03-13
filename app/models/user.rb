@@ -20,10 +20,14 @@ class User < ActiveRecord::Base
     Set.new(self.profile["levels_unlocked"])
   end
 
+  def highest_level_unlocked
+    self.profile["levels_unlocked"].max
+  end
+
   private
 
   def set_default_profile
-    self.profile ||= { "levels_unlocked": [] }
+    self.profile ||= { "levels_unlocked": [1] }
   end
 
 end

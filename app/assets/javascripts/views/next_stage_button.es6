@@ -2,7 +2,7 @@
 
   // Button that lets you go to the next stage/puzzle set
   //
-  class NextStage extends Backbone.View {
+  class NextStageButton extends Backbone.View {
 
     get el() {
       return ".next-stage"
@@ -22,6 +22,6 @@
   }
 
 
-  Views.NextStage = NextStage
+  Views.NextStageButton = NextStageButton
 
 }

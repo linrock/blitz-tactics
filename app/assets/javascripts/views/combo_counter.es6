@@ -33,7 +33,7 @@
       this.listenTo(d, "puzzles:next", () => {
         this.pzCounter += 1
         if (this.nextStageUnlocked()) {
-          d.trigger("level:complete")
+          d.trigger("level:complete", blitz.levelId)
         }
       })
       this.listenTo(d, "move:fail", () => {
