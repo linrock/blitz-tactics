@@ -19,6 +19,7 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
 .blue-button {
   font-size: 24px;
   padding: 10px 24px;
+  border: 0;
   border-radius: 3px;
   background: #2C9BEA;
   display: inline-block;
@@ -28,6 +29,7 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
 
   &:hover {
     background: #51B7FF;
+    cursor: pointer;
   }
 
   &.disabled {

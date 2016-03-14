@@ -1,0 +1,46 @@
+.registration {
+
+  width: 250px;
+  margin: 0 auto;
+
+  h2 {
+    font-size: 28px;
+    margin: 50px 0 40px;
+  }
+
+  a {
+    color: rgba(255,255,255,0.8);
+
+    &:hover {
+      color: rgba(255,255,255,1);
+    }
+
+  }
+
+  form {
+    margin-bottom: 30px;
+  }
+
+  .field {
+    margin: 25px 0;
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input {
+      padding: 10px 15px;
+      font-size: 14px;
+      border: 0;
+      border-radius: 2px;
+      width: 250px;
+    }
+
+  }
+
+  .blue-button {
+    font-size: 18px;
+  }
+
+}

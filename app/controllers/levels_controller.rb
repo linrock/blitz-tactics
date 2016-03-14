@@ -18,7 +18,7 @@ class LevelsController < ApplicationController
   def index
     @levels = Level.all.order("id ASC")
     @unlocked = current_user&.unlocked_levels
-    @attempts = current_user&.level_attempts.group_by(&:level_id) || {}
+    @attempts = current_user&.level_attempts&.group_by(&:level_id) || {}
   end
 
 end
