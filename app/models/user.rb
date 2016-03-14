@@ -24,6 +24,13 @@ class User < ActiveRecord::Base
     self.profile["levels_unlocked"].max
   end
 
+  def round_times_for_level(level_id)
+    rounds = level_attempts.find(level_id).completed_rounds.order("id DESC")
+    rounds.map do |round|
+      Time.at(round.time_elapsed).strftime("%M:%S").gsub(/^0/, '')
+    end
+  end
+
   private
 
   def set_default_profile
