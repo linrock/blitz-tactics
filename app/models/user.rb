@@ -25,7 +25,9 @@ class User < ActiveRecord::Base
   end
 
   def round_times_for_level(level_id)
-    rounds = level_attempts.find(level_id).completed_rounds.order("id DESC")
+    attempt = level_attempts.find_by_id(level_id)
+    return [] unless attempt
+    rounds = attempt.completed_rounds.order("id DESC")
     rounds.map do |round|
       Time.at(round.time_elapsed).strftime("%M:%S").gsub(/^0/, '')
     end
