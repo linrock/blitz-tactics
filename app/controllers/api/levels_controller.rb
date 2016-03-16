@@ -6,7 +6,7 @@ class Api::LevelsController < ApplicationController
     if @user
       attempt = @user.level_attempts.find_or_create_by(:level_id => params[:id])
       attempt.update_attribute :last_attempt_at, Time.now
-      attempt.completed_rounds.create!(round_params)
+      attempt.completed_rounds.create(round_params)
     end
     render :json => {}
   end
