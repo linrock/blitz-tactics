@@ -88,6 +88,11 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
       }
     }
 
+    .user-name {
+      color: rgba(255,255,255,0.5);
+      font-size: 15px;
+    }
+
   }
 
   &[data-state="intro"] {

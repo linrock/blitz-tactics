@@ -1,40 +1,13 @@
-<header class="main-header" data-state="intro">
+<%= render :partial => "layouts/main_header" %>
 
-  <div class="sub-header intro">
-    <div class="container">
-
-      <div class="left">
-        <h1 class="title">Blitz tactics</h1>
-        <h2 class="explanation">Solve puzzles quickly and accurately to unlock new levels</h2>
-      </div>
-
-      <div class="right">
-        <div class="instructions">White to move</div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="sub-header progress-bar">
-    <div class="progress"></div>
-  </div>
-
-  <div class="sub-header next-stage">
-    <div class="container">
-      <div class="left">You've unlocked the next level!</div>
-      <div class="right">
-        <a class="blue-button" href="javascript:">Next &raquo;</a>
-      </div>
-    </div>
-  </div>
-
-</header>
 
 <div class="move-indicator">
   <div class="move-status">&nbsp;</div>
 </div>
 
 <div class="main">
+
+  <div class="instructions">White to move</div>
 
   <a href="/levels" class="level-selector">&lt;</a>
 

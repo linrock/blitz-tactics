@@ -1,0 +1,43 @@
+<header class="main-header" data-state="intro">
+
+  <div class="sub-header intro">
+    <div class="container">
+
+      <div class="left">
+        <h1 class="title">Blitz tactics</h1>
+        <h2 class="explanation">Solve puzzles quickly and accurately to unlock new levels</h2>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sub-header progress-bar">
+    <div class="progress"></div>
+  </div>
+
+  <div class="sub-header next-stage">
+    <div class="container">
+      <div class="left">You've unlocked the next level!</div>
+      <div class="right">
+        <a class="blue-button" href="javascript:">Next &raquo;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="persistent user-area">
+    <div class="container">
+      <div class="right">
+        <% if current_user %>
+          <div class="user-name">
+            <%= current_user.username %>
+          </div>
+        <% else %>
+          <a href="<%= new_user_registration_path %>" class="sign-in">
+            <%= fa_icon "sign-in" %> Sign up
+          </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</header>
