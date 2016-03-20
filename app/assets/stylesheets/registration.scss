@@ -1,11 +1,16 @@
 .registration {
 
-  width: 250px;
+  width: 265px;
   margin: 0 auto;
 
   h2 {
     font-size: 28px;
-    margin: 50px 0 40px;
+    margin: 50px 0 25px;
+  }
+
+  p {
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
   }
 
   a {
@@ -18,7 +23,7 @@
   }
 
   form {
-    margin-bottom: 30px;
+    margin: 50px 0 30px;
   }
 
   .field {
@@ -34,13 +39,19 @@
       font-size: 14px;
       border: 0;
       border-radius: 2px;
-      width: 250px;
+      width: 100%;
     }
 
   }
 
   .blue-button {
     font-size: 18px;
+  }
+
+  .registration-links {
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+    margin-top: 60px;
   }
 
 }
