@@ -8,10 +8,6 @@
         <h2 class="explanation">Solve puzzles quickly and accurately to unlock new levels</h2>
       </div>
 
-      <div class="right">
-        <div class="instructions">White to move</div>
-      </div>
-
     </div>
   </div>
 
@@ -28,6 +24,20 @@
     </div>
   </div>
 
+  <div class="persistent user-area">
+    <div class="container">
+      <div class="right">
+        <% if current_user %>
+          <%= current_user.username %>
+        <% else %>
+          <a href="<%= new_user_registration_path %>" class="sign-in">
+            <%= fa_icon "sign-in" %> Sign up
+          </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
 </header>
 
 <div class="move-indicator">
@@ -35,6 +45,8 @@
 </div>
 
 <div class="main">
+
+  <div class="instructions">White to move</div>
 
   <a href="/sets" class="level-selector">&lt;</a>
 
