@@ -63,38 +63,6 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
     padding-right: $sidebar-size + $sidebar-margin;
   }
 
-  .user-area {
-    position: absolute;
-    z-index: 10;
-    line-height: 75px;
-    width: 100%;
-
-    a {
-      color: rgba(255,255,255,0.6);
-      text-decoration: none;
-      @include transition(color 0.15s ease);
-
-      &:hover {
-        color: rgba(255,255,255,1);
-      }
-    }
-
-    .sign-in {
-      font-size: 15px;
-
-      i {
-        font-size: 13px;
-        margin-right: 3px;
-      }
-    }
-
-    .user-name {
-      color: rgba(255,255,255,0.5);
-      font-size: 15px;
-    }
-
-  }
-
   &[data-state="intro"] {
 
     .intro {
@@ -184,6 +152,7 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
     height: 65px;
     background: #090909;
     padding: 5px 0;
+    z-index: 11;
 
     .left {
       font-size: 22px;
@@ -194,6 +163,43 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
       padding: 8px 26px 9px;
       margin-top: 7px;
       box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    }
+
+  }
+
+
+  // Sign up OR user name if signed in
+  //
+  .user-area {
+    position: absolute;
+    z-index: 10;
+    line-height: 75px;
+    width: 100%;
+
+    a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      @include transition(color 0.15s ease);
+
+      &:hover {
+        color: rgba(255,255,255,1);
+      }
+    }
+
+    .sign-in {
+      font-size: 15px;
+      margin-right: 5px;
+
+      i {
+        font-size: 13px;
+        margin-right: 3px;
+      }
+    }
+
+    .user-name {
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      margin-right: 5px;
     }
 
   }
