@@ -10,4 +10,11 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up) << :username
   end
 
+  def authorize_admin!
+    unless current_user && current_user.id == 1
+      raise ActionController::RoutingError.new('Not Found')
+      return
+    end
+  end
+
 end

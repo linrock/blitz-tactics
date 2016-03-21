@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Blitz Tactics</title>
+  <title>Blitz tactics</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= favicon_link_tag 'favicon.ico' %>
+  <%= favicon_link_tag       'favicon.ico' %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body data-controller="<%= params[:controller] %>"
+      data-action="<%= params[:action] %>">
 
 <%= yield %>
 

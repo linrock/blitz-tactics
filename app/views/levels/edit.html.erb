@@ -1,0 +1,13 @@
+<div class="container">
+
+  <div class="level-name">
+    <%= @level.name %>
+  </div>
+
+  <div class="puzzle-ids">
+    <% @level.puzzle_ids.each do |id| %>
+      <div class="puzzle-id"><%= id %></div>
+    <% end %>
+  </div>
+
+</div>

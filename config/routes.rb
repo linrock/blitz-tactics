@@ -4,13 +4,13 @@ Rails.application.routes.draw do
 
   root 'tactics#index'
 
-  get '/sets'    => 'puzzle_sets#index'
-  get '/puzzles' => 'puzzle_sets#show'
+  get '/puzzles'     => 'puzzle_sets#show'
 
   post '/api/levels/:id/attempt'  => 'api/levels#attempt'
   post '/api/levels/:id/complete' => 'api/levels#complete'
 
-  get '/levels'      => 'levels#index'
-  get '/:level_slug' => 'levels#show'
+  get '/levels'           => 'levels#index'
+  get '/:level_slug'      => 'levels#show'
+  get '/:level_slug/edit' => 'levels#edit'
 
 end

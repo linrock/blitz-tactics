@@ -1,5 +1,8 @@
 {
 
+  const perfectTiming = 2500
+  const greatTiming = 5000
+
   // Encouragement when successful, 
   // discouragement when making a wrong move
   //
@@ -22,9 +25,9 @@
     renderSuccess() {
       let time = Date.now()
       let tDiff = time - this.timeSinceSuccess
-      if (tDiff < 2500) {
+      if (tDiff < perfectTiming) {
         this.renderPerfect()
-      } else if (tDiff < 5000) {
+      } else if (tDiff < greatTiming) {
         this.renderGreat()
       } else {
         this.renderGood()
