@@ -317,7 +317,6 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   font-size: 24px;
   line-height: 32px;
   width: $sidebar-size;
-  height: $board-size;
   margin-left: $sidebar-margin;
 
   .times {
@@ -361,12 +360,6 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   margin: 12px;
   background: #ddd;
   border: $border-width solid #938172;
-  @include transition(all 0.6s ease);
-
-  &.invisible {
-    opacity: 0;
-    transform: scale3d(0.96, 0.96, 1);
-  }
 
   .square {
     width: $square-size;
@@ -497,3 +490,53 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   }
 
 }
+
+
+@media screen and (max-width: 1440px) {
+  $square-size-sm: 65px;
+  $board-size-sm: 8 * $square-size-sm + 2 * $border-width;
+  $main-width-sm: $board-size-sm + $sidebar-size + $sidebar-margin;
+
+  .container {
+    width: $main-width-sm;
+  }
+
+  .main-header .container {
+    width: $main-width-sm;
+  }
+
+  .move-indicator {
+    width: $main-width-sm;
+  }
+
+  .main {
+    width: $main-width-sm;
+
+    .instructions {
+      width: $board-size-sm;
+    }
+
+  }
+
+  .under-board {
+    width: $main-width-sm;
+
+    .solution {
+      width: $board-size-sm;
+    }
+
+  }
+
+  .chessboard {
+    width: $board-size-sm;
+    height: $board-size-sm;
+
+    .square {
+      width: $square-size-sm;
+      height: $square-size-sm;
+    }
+
+  }
+
+}
+
