@@ -1,17 +1,40 @@
+@import "bourbon";
+
+
 body[data-controller="levels"][data-action="edit"] {
 
 .container {
-  width: 600px;
+  width: 750px;
   margin: 0 auto;
 }
 
 .level-name {
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
   margin: 50px 0;
-  font-size: 16px;
 }
 
 .puzzle-id {
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
   margin: 5px 0;
+}
+
+.boards {
+  @include clearfix;
+  margin: 40px 0 100px;
+
+  .board {
+    float: left;
+    margin-bottom: 15px;
+
+    .puzzle-id {
+      text-align: center;
+    }
+
+  }
+
 }
 
 }
