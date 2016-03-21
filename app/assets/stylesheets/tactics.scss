@@ -492,7 +492,7 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
 }
 
 
-@media screen and (max-width: 1440px) {
+@media screen and (max-height: 900px) {
   $square-size-sm: 65px;
   $board-size-sm: 8 * $square-size-sm + 2 * $border-width;
   $main-width-sm: $board-size-sm + $sidebar-size + $sidebar-margin;
