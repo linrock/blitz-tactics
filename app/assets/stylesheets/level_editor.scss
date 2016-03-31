@@ -1,7 +1,8 @@
 @import "bourbon";
 
 
-body[data-controller="levels"][data-action="edit"] {
+body[data-controller="levels"][data-action="edit"],
+body[data-controller="puzzles"][data-action="search"] {
 
 .container {
   width: 750px;

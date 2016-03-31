@@ -1,0 +1,13 @@
+<div class="container">
+
+  <div class="level-name">
+    Puzzle search
+  </div>
+
+  <div class="boards">
+    <%= render :partial    => "puzzles/mini_view",
+               :collection => @puzzles,
+               :as         => :puzzle %>
+  </div>
+
+</div>
