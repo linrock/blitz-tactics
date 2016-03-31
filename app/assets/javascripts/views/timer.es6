@@ -60,6 +60,9 @@
     }
 
     nextLap() {
+      if (this.elapsedTime() === 0) {
+        return
+      }
       this.stopTimer()
       this.$laps.prepend(`<div>${this.formattedElapsed()}</div>`)
       this.notify()

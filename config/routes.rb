@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   get '/:level_slug'      => 'levels#show'
   get '/:level_slug/edit' => 'levels#edit'
 
+  get '/puzzles/:id'      => 'puzzles#show'
+
 end

@@ -1,0 +1,16 @@
+<% fen = puzzle.data["puzzle"]["fen"] %>
+
+<div class="board">
+  <%= render :partial => "levels/mini_board",
+             :locals => { :puzzle_id => puzzle.id } %>
+  <a class="puzzle-id" href="/puzzles/<%= puzzle.id %>"><%= puzzle.id %></a>
+</div>
+
+<script>
+  $(function() {
+    new Views.MiniChessboard({
+      el: ".puzzle-<%= puzzle.id %>",
+      fen: "<%= fen %>"
+    });
+  });
+</script>

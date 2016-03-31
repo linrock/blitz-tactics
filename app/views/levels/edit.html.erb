@@ -5,25 +5,9 @@
   </div>
 
   <div class="boards">
-    <% @level.puzzles.each do |puzzle| %>
-      <% fen = puzzle.data["puzzle"]["fen"] %>
-
-      <div class="board">
-        <%= render :partial => "levels/mini_board",
-                   :locals => { :puzzle_id => puzzle.id } %>
-        <div class="puzzle-id"><%= puzzle.id %></div>
-      </div>
-
-      <script>
-        $(function() {
-          new Views.MiniChessboard({
-            el: ".puzzle-<%= puzzle.id %>",
-            fen: "<%= fen %>"
-          });
-        });
-      </script>
-
-    <% end %>
+    <%= render :partial    => "puzzles/mini_view",
+               :collection => @level.puzzles,
+               :as         => :puzzle %>
   </div>
 
 </div>

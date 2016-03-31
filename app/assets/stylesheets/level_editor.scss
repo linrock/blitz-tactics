@@ -19,6 +19,13 @@ body[data-controller="levels"][data-action="edit"] {
   color: rgba(255,255,255,0.7);
   font-size: 14px;
   margin: 5px 0;
+  display: block;
+  text-decoration: none;
+
+  &:hover {
+    color: rgba(255,255,255,0.9);
+  }
+
 }
 
 .boards {
