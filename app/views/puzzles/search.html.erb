@@ -4,6 +4,8 @@
     Puzzle search
   </div>
 
+  <div class="search-results"><%= @n_puzzles %> puzzles found</div>
+
   <div class="boards">
     <%= render :partial    => "puzzles/mini_view",
                :collection => @puzzles,
