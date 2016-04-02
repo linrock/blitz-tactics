@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20160313213221) do
 
   create_table "lichess_puzzles", force: :cascade do |t|
     t.integer  "puzzle_id",  null: false
-    t.json     "data",       null: false
+    t.jsonb    "data",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
