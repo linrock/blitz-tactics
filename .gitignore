@@ -8,6 +8,7 @@
 /.bundle
 
 /data/lichess
+*.swp
 
 # Ignore all logfiles and tempfiles.
 /log/*
