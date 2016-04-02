@@ -34,6 +34,26 @@ class LichessPuzzle < ActiveRecord::Base
     where("data->'puzzle'->>'color' = 'white'")
   end
 
+  def self.n_pieces_query
+    "char_length(
+       regexp_replace(
+       split_part(data->'puzzle'->>'fen', ' ', 1),
+                  '[^a-zA-Z]', '', 'g')
+     )"
+  end
+
+  def self.n_pieces_eq(n)
+    where("#{n_pieces_query} = ?", n)
+  end
+
+  def self.n_pieces_lt(n)
+    where("#{n_pieces_query} < ?", n)
+  end
+
+  def self.n_pieces_gt(n)
+    where("#{n_pieces_query} > ?", n)
+  end
+
   def rating
     data.dig("puzzle", "rating")
   end
