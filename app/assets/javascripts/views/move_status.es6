@@ -36,7 +36,7 @@
     }
 
     renderFailure() {
-      this.renderFadingMessage('<div class="fail">Miss</div>')
+      this.renderFadingMessage('<div class="fail">Wrong</div>')
     }
 
     renderPerfect() {

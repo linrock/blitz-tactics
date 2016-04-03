@@ -34,6 +34,7 @@
 
   .move-status {
     opacity: 1;
+    font-family: Montserrat, Arial, sans-serif;
     font-size: 28px;
     height: 28px;
     text-transform: uppercase;
@@ -47,19 +48,19 @@
     }
 
     .perfect {
-      color: #FFF260;
+      color: #34FF00;
       font-weight: 600;
       font-size: 38px;
     }
 
     .great {
-      color: #34FF00;
+      color: #2AE2EA;
       font-weight: 600;
       font-size: 32px;
     }
 
     .good {
-      color: #2AE2EA;
+      color: #FFF260;
       font-weight: 600;
     }
 

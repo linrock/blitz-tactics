@@ -105,6 +105,6 @@
   }
 
 
-  Models.Puzzles = Puzzles
+  Services.Puzzles = Puzzles
 
 }

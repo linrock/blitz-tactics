@@ -14,6 +14,7 @@
 
 window.Views = {};
 window.Models = {};
+window.Services = {};
 
 window.d = _.clone(Backbone.Events);
 window.blitz = {};
@@ -57,8 +58,8 @@ $(function() {
       new Views.Timer;
       new Views.NextStageButton;
 
-      new Models.Puzzles;
-      new Models.Notifier;
+      new Services.Puzzles;
+      new Services.Notifier;
     },
 
     "home#index": function() {
@@ -92,7 +93,7 @@ $(function() {
       new Views.PuzzleCounter;
       new Views.PuzzleHint;
 
-      new Models.Puzzles;
+      new Services.Puzzles;
     },
 
   };

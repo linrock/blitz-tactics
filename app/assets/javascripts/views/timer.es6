@@ -2,7 +2,7 @@
 
   const updateInterval = 50
 
-  // Amount of time spent on this lap so far
+  // Amount of time spent on this round so far
   //
   class Timer extends Backbone.View {
 

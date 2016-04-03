@@ -30,6 +30,6 @@
   }
 
 
-  Models.Notifier = Notifier
+  Services.Notifier = Notifier
 
 }
