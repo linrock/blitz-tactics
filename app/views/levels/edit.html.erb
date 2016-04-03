@@ -1,7 +1,7 @@
 <div class="level-editor container" data-slug="<%= @level.slug %>">
 
   <div class="level-name">
-    <%= @level.name %>
+    <a href="/<%= @level.slug %>" target="_blank"><%= @level.name %></a>
   </div>
 
   <form class="add-level" data-remote="true">
