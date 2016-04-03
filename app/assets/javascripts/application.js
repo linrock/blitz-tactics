@@ -50,14 +50,31 @@ $(function() {
       new Views.Instructions;
       new Views.MainHeader;
       new Views.MoveStatus;
-      new Views.NextStageButton;
       new Views.PiecePromotionModal;
       new Views.ProgressBar;
       new Views.PuzzleCounter;
       new Views.PuzzleHint;
       new Views.Timer;
+      new Views.NextStageButton;
 
       new Models.Puzzles;
+      new Models.Notifier;
+    },
+
+    "home#index": function() {
+      new Views.ComboCounter;
+      new Views.Chessboard;
+      new Views.Instructions;
+      new Views.MainHeader;
+      new Views.MoveStatus;
+      new Views.PiecePromotionModal;
+      new Views.ProgressBar;
+      new Views.PuzzleCounter;
+      new Views.PuzzleHint;
+      new Views.Timer;
+      new Views.NextStageButton;
+
+      new Models.Puzzles({ source: "/level-1" });
       new Models.Notifier;
     },
 

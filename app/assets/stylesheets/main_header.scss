@@ -1,0 +1,171 @@
+@import "bourbon";
+@import "_variables";
+
+
+.main-header {
+  height: 70px;
+  @include clearfix;
+
+  .left {
+    float: left;
+  }
+
+  .right {
+    float: right;
+  }
+
+  .sub-header {
+    position: absolute;
+    top: 0;
+    @include transition(opacity 0.15s ease);
+  }
+
+  .container {
+    margin: 0 auto;
+    width: $main-width;
+    overflow: hidden;
+    padding-right: $sidebar-size + $sidebar-margin;
+  }
+
+  &[data-state="intro"] {
+
+    .intro {
+      opacity: 1;
+    }
+
+    .progress-bar, .next-stage {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+  }
+
+  &[data-state="progress"] {
+
+    .progress-bar {
+      opacity: 1;
+    }
+
+    .intro, .next-stage {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+  }
+
+  &[data-state="next-stage"] {
+
+    .next-stage {
+      opacity: 1;
+    }
+
+    .intro, .progress-bar {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+  }
+
+
+  // Intro message that shows up on initial pageload
+  //
+  .intro {
+    width: 100%;
+    height: 70px;
+    background: #090909;
+    padding: 5px 0;
+
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 34px;
+      margin-top: 2px;
+      opacity: 0.9;
+      text-shadow: 0 0 1px rgba(255,255,255,0.3);
+    }
+
+    .explanation {
+      font-size: 13px;
+      opacity: 0.6;
+      text-shadow: 0 0 1px rgba(255,255,255,0.3);
+    }
+
+  }
+
+
+  // Progress bar that fills up as you get closer to the next level
+  //
+  .progress-bar {
+    width: 100%;
+    height: 5px;
+
+    .progress {
+      background: yellow;
+      width: 0;
+      height: 5px;
+      @include transition(width 0.5s ease-in-out);
+    }
+
+  }
+
+
+  // Prompts you to go to the next level
+  //
+  .next-stage {
+    width: 100%;
+    height: 65px;
+    background: #090909;
+    padding: 5px 0;
+    z-index: 11;
+
+    .left {
+      font-size: 22px;
+      line-height: 55px;
+    }
+
+    .blue-button {
+      padding: 8px 26px 9px;
+      margin-top: 7px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    }
+
+  }
+
+
+  // Sign up OR user name if signed in
+  //
+  .user-area {
+    position: absolute;
+    z-index: 10;
+    line-height: 70px;
+    width: 100%;
+
+    a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      @include transition(color 0.15s ease);
+
+      &:hover {
+        color: rgba(255,255,255,1);
+      }
+    }
+
+    .sign-in {
+      font-size: 15px;
+      margin-right: 5px;
+
+      i {
+        font-size: 13px;
+        margin-right: 3px;
+      }
+    }
+
+    .user-name {
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      margin-right: 5px;
+    }
+
+  }
+
+}

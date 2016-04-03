@@ -1,67 +1,10 @@
 <%= render :partial => "layouts/main_header" %>
 
-
-<div class="move-indicator">
-  <div class="move-status">&nbsp;</div>
-</div>
-
-<div class="main">
-
-  <div class="instructions">White to move</div>
-
-  <a href="/levels" class="level-selector">&lt;</a>
-
-  <label class="level"><%= @level.name %></label>
-
-  <div class="board-area">
-    <%= render :partial => "tactics/chessboard" %>
-
-    <div class="piece-promotion-modal" style="display: none;">
-      <div class="pieces">
-        <a class="piece" href="javascript:" data-piece="q">
-          <img src="/assets/pieces/wq.png">
-        </a>
-        <a class="piece" href="javascript:" data-piece="r">
-          <img src="/assets/pieces/wr.png">
-        </a>
-        <a class="piece" href="javascript:" data-piece="n">
-          <img src="/assets/pieces/wn.png">
-        </a>
-        <a class="piece" href="javascript:" data-piece="b">
-          <img src="/assets/pieces/wb.png">
-        </a>
-      </div>
-
-      <div class="background"></div>
-    </div>
-
-  </div>
-
-  <aside class="sidebar">
-
-    <div class="times">
-      <div class="timer"></div>
-      <div class="laps">
-        <% @round_times.take(10).each do |time_elapsed| %>
-          <div><%= time_elapsed %></div>
-        <% end %>
-      </div>
-    </div>
-
-  </aside>
-
-</div>
-
-<div class="under-board">
-
-  <div class="puzzle-hint"></div>
-
-  <div class="combo-counter invisible">
-    <span class="counter"></span>
-    <span class="combo-text">combo</span>
-  </div>
-
-</div>
+<%= render :partial => "interface/main",
+           :locals  => {
+             :title => @level.name,
+             :round_times => @round_times
+           } %>
 
 <script>
   $(function() {

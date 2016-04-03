@@ -1,0 +1,35 @@
+<% round_times = local_assigns[:round_times] || [] %>
+
+<div class="move-indicator">
+  <div class="move-status">&nbsp;</div>
+</div>
+
+<div class="main">
+
+  <div class="instructions">White to move</div>
+
+  <a href="/levels" class="level-selector">&lt;</a>
+
+  <label class="level"><%= title %></label>
+
+  <div class="board-area">
+    <%= render :partial => "interface/chessboard" %>
+    <%= render :partial => "interface/piece_promotion_modal" %>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="times">
+      <div class="timer"></div>
+      <div class="laps">
+        <% round_times.each do |time_elapsed| %>
+          <div><%= time_elapsed %></div>
+        <% end %>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<%= render :partial => "interface/under_board" %>

@@ -22,11 +22,11 @@
 
   class Puzzles extends Backbone.Model {
 
-    initialize() {
+    initialize(options = {}) {
       this.i = 0
       this.current = {}
       this.started = false
-      this.fetchPuzzles()
+      this.fetchPuzzles(options.source)
       this.listenToEvents()
     }
 
@@ -34,8 +34,10 @@
       return window.location.pathname + ".json"
     }
 
-    fetchPuzzles() {
-      let source = this.getPuzzleSource()
+    fetchPuzzles(source) {
+      if (!source) {
+        source = this.getPuzzleSource()
+      }
       $.getJSON(source, (data) => {
         this.format = data.format
         this.puzzles = data.puzzles
