@@ -9,8 +9,7 @@ class LevelsController < ApplicationController
       format.html {}
       format.json {
         render :json => {
-          :format  => 'lichess',
-          :puzzles => @puzzles.map(&:data)
+          :puzzles => @puzzles.map(&:simplified_data)
         }
       }
     end

@@ -38,17 +38,13 @@
     showSolution() {
       d.trigger("move:too_slow")
       this.$el.removeClass("invisible")
-      if (this.current.format === "lichess") {
-        let hints = []
-        _.each(_.keys(this.current.state), (move) => {
-          if (this.current.state[move] !== "retry") {
-            hints.push(move)
-          }
-        })
-        this.$el.text(`Hint: ${_.sample(hints)}`)
-      } else {
-        this.$el.text(this.current.puzzle.moves)
-      }
+      let hints = []
+      _.each(_.keys(this.current.state), (move) => {
+        if (this.current.state[move] !== "retry") {
+          hints.push(move)
+        }
+      })
+      this.$el.text(`Hint: ${_.sample(hints)}`)
     }
 
   }
