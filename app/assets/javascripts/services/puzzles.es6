@@ -67,7 +67,9 @@
       this.current.state = _.clone(puzzle.lines)
       d.trigger("fen:set", puzzle.fen)
       setTimeout(() => {
-        d.trigger("move:make", uciToMove(puzzle.initialMove))
+        let move = uciToMove(puzzle.initialMove)
+        d.trigger("move:make", move)
+        d.trigger("move:highlight", move)
       }, 500)
     }
 
@@ -93,10 +95,11 @@
         }
         d.trigger("move:make", move)
         d.trigger("move:success")
-        d.trigger("move:make", uciToMove(response))
         if (attempt[response] == "win") {
           d.trigger("puzzles:next")
         } else {
+          d.trigger("move:make", uciToMove(response))
+          d.trigger("move:highlight", uciToMove(response))
           this.current.state = attempt[response]
         }
       }

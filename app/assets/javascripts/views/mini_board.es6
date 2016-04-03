@@ -43,7 +43,6 @@
   class MiniChessboard extends Backbone.View {
 
     initialize(options = {}) {
-      console.log("init miniboard")
       this.pieces = new Pieces(this)
       if (options.fen) {
         let fen = options.fen
@@ -52,7 +51,6 @@
           let move = c.move(uciToMove(options.initialMove))
           this.highlightSquare(move.from, "#fffcdd")
           this.highlightSquare(move.to, "#fff79b")
-
           fen = c.fen()
         }
         this.render(fen)
