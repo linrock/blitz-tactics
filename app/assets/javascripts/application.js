@@ -2,6 +2,7 @@
 //= require jquery_ujs
 //= require jquery-ui/draggable
 //= require jquery-ui/droppable
+//= require jquery-ui/sortable
 //= require imagesloaded.pkgd
 //= require underscore
 //= require backbone

@@ -1,7 +1,7 @@
 <% square_prefix = local_assigns[:square_prefix] %>
 <% puzzle_id = local_assigns[:puzzle_id] %>
 
-<div class="mini-chessboard puzzle-<%= puzzle_id %>">
+<div class="mini-chessboard puzzle-<%= puzzle_id %>" data-id="<%= puzzle_id %>">
   <% polarity = %w( light dark ).cycle %>
   <% (1..8).to_a.reverse.each do |row| %>
     <% ('a'..'h').to_a.each do |col| %>
