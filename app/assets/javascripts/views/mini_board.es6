@@ -50,8 +50,8 @@
         if (options.initialMove) {
           let c = new Chess(fen)
           let move = c.move(uciToMove(options.initialMove))
-          this.highlightSquare(move.from, "rgb(255, 252, 174)")
-          this.highlightSquare(move.to, "rgb(255, 249, 60)")
+          this.highlightSquare(move.from, "#fffcdd")
+          this.highlightSquare(move.to, "#fff79b")
 
           fen = c.fen()
         }
