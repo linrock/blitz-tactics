@@ -227,18 +227,24 @@
   top: 0;
   z-index: 100;
 
+  .prompt {
+    color: rgba(0,0,0,0.9);
+    font-size: 16px;
+    padding: 18px 0;
+    text-align: center;
+  }
+
   .pieces {
     background: white;
     position: absolute;
     z-index: 3;
     width: 400px;
-    height: 120px;
+    height: 150px;
     left: 82px;
     top: 202px;
     text-align: center;
-    padding-top: 18px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
-    border-radius: 1px;
+    box-shadow: 0 0 7px rgba(0,0,0,0.5);
+    border-radius: 2px;
 
     .piece {
       width: 80px;
