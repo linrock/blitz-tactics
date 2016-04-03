@@ -1,13 +1,14 @@
 {
 
-  const hintDelay = 7000
+  const comboDroppedIn = 7000
+  const hintDelay = 750
 
   // Solution/hint that shows up after some time
   //
-  class Solution extends Backbone.View {
+  class PuzzleHint extends Backbone.View {
 
     get el() {
-      return ".solution"
+      return ".puzzle-hint"
     }
 
     initialize() {
@@ -18,38 +19,39 @@
     listenForEvents() {
       this.listenTo(d, "puzzle:loaded", (current) => {
         this.current = current
-        this.delayedShowSolution()
+        this.delayedShowHint()
       })
       this.listenTo(d, "move:make", () => {
-        this.delayedShowSolution()
+        this.delayedShowHint()
       })
     }
 
-    delayedShowSolution() {
+    delayedShowHint() {
       if (this.timeout) {
         clearTimeout(this.timeout)
       }
       this.$el.addClass("invisible").text("")
       this.timeout = setTimeout(() => {
-        this.showSolution()
-      }, hintDelay)
+        d.trigger("move:too_slow")
+        setTimeout(() => {
+          this.showHint()
+        }, hintDelay)
+      }, comboDroppedIn)
     }
 
-    showSolution() {
-      d.trigger("move:too_slow")
-      this.$el.removeClass("invisible")
+    showHint() {
       let hints = []
       _.each(_.keys(this.current.state), (move) => {
         if (this.current.state[move] !== "retry") {
           hints.push(move)
         }
       })
-      this.$el.text(`Hint: ${_.sample(hints)}`)
+      this.$el.removeClass("invisible").text(`Hint: ${_.sample(hints)}`)
     }
 
   }
 
 
-  Views.Solution = Solution
+  Views.PuzzleHint = PuzzleHint;
 
 }

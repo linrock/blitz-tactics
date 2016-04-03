@@ -449,7 +449,7 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   width: $main-width;
   padding-right: $sidebar-size + $sidebar-margin;
 
-  .solution {
+  .puzzle-hint {
     font-size: 14px;
     color: rgba(255,255,255,0.5);
     text-align: center;
@@ -460,7 +460,7 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
 
   .combo-counter {
     text-align: center;
-    @include transition(opacity 0.08s ease);
+    @include transition(opacity 0.25s ease);
 
     .counter {
       display: inline-block;
@@ -521,7 +521,7 @@ $main-width: $board-size + $sidebar-size + $sidebar-margin;
   .under-board {
     width: $main-width-sm;
 
-    .solution {
+    .puzzle-hint {
       width: $board-size-sm;
     }
 

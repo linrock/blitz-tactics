@@ -38,49 +38,53 @@ window.config = {
 })();
 
 
-window.init = {
-
-  level: function() {
-    new Views.ComboCounter;
-    new Views.Chessboard;
-    new Views.Instructions;
-    new Views.MainHeader;
-    new Views.MoveStatus;
-    new Views.NextStageButton;
-    new Views.PiecePromotionModal;
-    new Views.ProgressBar;
-    new Views.PuzzleCounter;
-    new Views.Solution;
-    new Views.Timer;
-
-    new Models.Puzzles;
-    new Models.Notifier;
-  },
-
-  puzzle: function() {
-    new Views.ComboCounter;
-    new Views.Chessboard;
-    new Views.Instructions;
-    new Views.MainHeader;
-    new Views.MoveStatus;
-    new Views.PiecePromotionModal;
-    new Views.PuzzleCounter;
-    new Views.Solution;
-
-    new Models.Puzzles;
-  },
-
-};
-
-
+// Initialize views depending on the page
+//
 $(function() {
 
-  var key = $("body").data("controller") + "#" + $("body").data("action");
+  var init = {
 
-  if (key === "levels#show") {
-    init.level();
-  } else if (key === "puzzles#show") {
-    init.puzzle();
+    "levels#show": function() {
+      new Views.ComboCounter;
+      new Views.Chessboard;
+      new Views.Instructions;
+      new Views.MainHeader;
+      new Views.MoveStatus;
+      new Views.NextStageButton;
+      new Views.PiecePromotionModal;
+      new Views.ProgressBar;
+      new Views.PuzzleCounter;
+      new Views.PuzzleHint;
+      new Views.Timer;
+
+      new Models.Puzzles;
+      new Models.Notifier;
+    },
+
+    "levels#edit": function() {
+      new Views.LevelEditor;
+    },
+
+    "puzzles#show": function() {
+      new Views.ComboCounter;
+      new Views.Chessboard;
+      new Views.Instructions;
+      new Views.MainHeader;
+      new Views.MoveStatus;
+      new Views.PiecePromotionModal;
+      new Views.PuzzleCounter;
+      new Views.PuzzleHint;
+
+      new Models.Puzzles;
+    },
+
+  };
+
+
+  var pageKey = $("body").data("controller") + "#" + $("body").data("action");
+
+  if (typeof init[pageKey] === "function") {
+    init[pageKey]();
   }
 
 });

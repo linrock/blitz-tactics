@@ -31,18 +31,11 @@
     }
 
     getPuzzleSource() {
-      if (window.location.pathname.startsWith("/level-")) {
-        return window.location.pathname + ".json"
-      } else if (window.location.pathname.startsWith("/puzzles/")) {
-        return window.location.pathname + ".json"
-      }
+      return window.location.pathname + ".json"
     }
 
     fetchPuzzles() {
       let source = this.getPuzzleSource()
-      if (!source) {
-        return
-      }
       $.getJSON(source, (data) => {
         this.format = data.format
         this.puzzles = data.puzzles
@@ -110,7 +103,6 @@
   }
 
 
-  // TODO not a view
   Models.Puzzles = Puzzles
 
 }
