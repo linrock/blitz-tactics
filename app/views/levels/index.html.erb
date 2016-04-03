@@ -2,6 +2,12 @@
 
   <h3>Blitz Tactics</h3>
 
+  <% if current_user %>
+    <div class="current-user">
+      You are logged in as <span class="username"><%= current_user.username %></span>
+    </div>
+  <% end %>
+
   <ul>
 
     <% @levels.each do |level| %>
