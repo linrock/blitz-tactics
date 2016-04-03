@@ -17,5 +17,6 @@ Rails.application.routes.draw do
 
   get '/:level_slug'      => 'levels#show'
   get '/:level_slug/edit' => 'levels#edit'
+  put '/:level_slug'      => 'levels#update'
 
 end

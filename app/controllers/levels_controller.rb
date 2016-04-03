@@ -1,5 +1,5 @@
 class LevelsController < ApplicationController
-  before_filter :authorize_admin!, :only => [:edit]
+  before_filter :authorize_admin!, :only => [:edit, :update]
 
   def show
     @level = Level.find_by(:slug => params[:level_slug])
@@ -25,6 +25,17 @@ class LevelsController < ApplicationController
   def edit
     @level = Level.find_by(:slug => params[:level_slug])
     @puzzles = @level.puzzles
+  end
+
+  def update
+    @level = Level.find_by(:slug => params[:level_slug])
+    if params[:puzzle_ids]
+      @level.puzzle_ids = params[:puzzle_ids]
+      @level.save!
+    end
+    render :partial    => "puzzles/mini_view",
+           :collection => @level.puzzles,
+           :as         => :puzzle
   end
 
 end

@@ -6,6 +6,7 @@
 //= require imagesloaded.pkgd
 //= require underscore
 //= require backbone
+//= require mousetrap
 //= require chess
 //= require_self
 //= require_tree .

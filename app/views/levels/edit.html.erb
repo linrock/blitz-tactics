@@ -1,8 +1,12 @@
-<div class="level-editor container">
+<div class="level-editor container" data-slug="<%= @level.slug %>">
 
   <div class="level-name">
     <%= @level.name %>
   </div>
+
+  <form class="add-level" data-remote="true">
+    <input type="text" placeholder="Add level #" class="add-level-id">
+  </form>
 
   <div class="boards">
     <%= render :partial    => "puzzles/mini_view",
