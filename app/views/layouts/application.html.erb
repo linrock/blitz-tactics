@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Blitz tactics</title>
+  <title><%= content_for?(:title) && "#{yield(:title)} | Blitz tactics" || "Blitz tactics" %></title>
   <meta name="description" content="Fast-paced chess tactics trainer. Complete levels by solving puzzles quickly and accurately.">
   <meta name="keywords" content="chess tactics, tactics trainer">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
