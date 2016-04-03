@@ -38,10 +38,49 @@ window.config = {
 })();
 
 
+window.init = {
+
+  level: function() {
+    new Views.ComboCounter;
+    new Views.Chessboard;
+    new Views.Instructions;
+    new Views.MainHeader;
+    new Views.MoveStatus;
+    new Views.NextStageButton;
+    new Views.PiecePromotionModal;
+    new Views.ProgressBar;
+    new Views.PuzzleCounter;
+    new Views.Solution;
+    new Views.Timer;
+
+    new Models.Puzzles;
+    new Models.Notifier;
+  },
+
+  puzzle: function() {
+    new Views.ComboCounter;
+    new Views.Chessboard;
+    new Views.Instructions;
+    new Views.MainHeader;
+    new Views.MoveStatus;
+    new Views.PiecePromotionModal;
+    new Views.PuzzleCounter;
+    new Views.Solution;
+
+    new Models.Puzzles;
+  },
+
+};
+
+
 $(function() {
 
-  _.each(Views, function(view) { new view; });
-  new Models.Puzzles;
-  new Models.Notifier;
+  var key = $("body").data("controller") + "#" + $("body").data("action");
+
+  if (key === "levels#show") {
+    init.level();
+  } else if (key === "puzzles#show") {
+    init.puzzle();
+  }
 
 });

@@ -7,7 +7,7 @@ class PuzzlesController < ApplicationController
       format.json {
         render :json => {
           :format  => 'lichess',
-          :puzzles => [@puzzle.data]
+          :puzzles => [@puzzle.simplified_data]
         }
       }
     end
