@@ -19,7 +19,7 @@ class PuzzlesController < ApplicationController
       @puzzles = @puzzles.n_pieces_eq(params[:pieces])
     end
     @n_puzzles = @puzzles.count
-    @puzzles = @puzzles.limit(100)
+    @puzzles = @puzzles.page(params[:page]).per(100)
     respond_to do |format|
       format.html {}
       format.json {

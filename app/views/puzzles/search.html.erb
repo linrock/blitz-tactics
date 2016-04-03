@@ -6,6 +6,16 @@
 
   <div class="search-results"><%= @n_puzzles %> puzzles found</div>
 
+  <div class="prev-next">
+    <%= link_to_previous_page @puzzles, fa_icon("chevron-left") %>
+
+    <div class="current-page">
+      Page <%= params[:page] || 1 %>
+    </div>
+
+    <%= link_to_next_page @puzzles, fa_icon("chevron-right") %>
+  </div>
+
   <div class="boards">
     <%= render :partial    => "puzzles/mini_view",
                :collection => @puzzles,

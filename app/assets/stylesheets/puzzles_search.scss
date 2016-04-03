@@ -1,0 +1,39 @@
+[data-controller="puzzles"][data-action="search"] {
+
+  .search-results {
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    font-size: 14px;
+    margin: 30px auto;
+  }
+
+  .prev-next {
+    text-align: center;
+
+    a {
+      border-radius: 99px;
+      background: #777;
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+      color: inherit;
+      padding-top: 7px;
+
+      &[rel="previous"] {
+        padding-right: 1px;
+      }
+
+      &[rel="next"] {
+        padding-left: 1px;
+      }
+
+    }
+
+    .current-page {
+      display: inline-block;
+      margin: 0 10px;
+    }
+
+  }
+
+}
