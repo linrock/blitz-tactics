@@ -1,0 +1,23 @@
+.about.container {
+
+  width: 400px;
+  margin: 60px auto;
+
+  .question {
+    font-weight: 600;
+  }
+
+  .answer {
+    color: rgba(255,255,255,0.6);
+    margin: 10px 0 35px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .cta {
+    margin-top: 55px;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+  }
+
+}

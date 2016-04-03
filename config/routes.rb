@@ -10,10 +10,12 @@ Rails.application.routes.draw do
   post '/api/levels/:id/complete' => 'api/levels#complete'
 
   get '/levels'           => 'levels#index'
-  get '/:level_slug'      => 'levels#show'
-  get '/:level_slug/edit' => 'levels#edit'
-
   get '/puzzles/search'   => 'puzzles#search'
   get '/puzzles/:id'      => 'puzzles#show'
+
+  get '/about'            => 'static#about'
+
+  get '/:level_slug'      => 'levels#show'
+  get '/:level_slug/edit' => 'levels#edit'
 
 end
