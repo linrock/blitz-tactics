@@ -4,6 +4,7 @@ class Level < ActiveRecord::Base
   validates_presence_of :slug
   validates_presence_of :secret_key
   validate :require_unique_puzzle_ids
+  validate :require_puzzles_to_exist
 
   before_validation :set_secret_key
 
@@ -34,6 +35,12 @@ class Level < ActiveRecord::Base
   def require_unique_puzzle_ids
     if puzzle_ids.uniq.length != puzzle_ids.length
       errors.add :puzzle_ids, "must all be unique!"
+    end
+  end
+
+  def require_puzzles_to_exist
+    if LichessPuzzle.find(puzzle_ids).length != puzzle_ids.length
+      errors.add :puzzle_ids, "must all exist!"
     end
   end
 
