@@ -1,4 +1,5 @@
 <% fen = puzzle.data["puzzle"]["fen"] %>
+<% initial_move = puzzle.data["puzzle"]["initialMove"] %>
 
 <div class="board">
   <%= render :partial => "levels/mini_board",
@@ -10,7 +11,8 @@
   $(function() {
     new Views.MiniChessboard({
       el: ".puzzle-<%= puzzle.id %>",
-      fen: "<%= fen %>"
+      fen: "<%= fen %>",
+      initialMove: "<%= initial_move %>"
     });
   });
 </script>

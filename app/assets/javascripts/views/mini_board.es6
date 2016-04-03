@@ -1,5 +1,18 @@
 {
 
+  // TODO copy/paste from models/puzzles
+  //
+  let uciToMove = (uci) => {
+    let m = {
+      from: uci.slice(0,2),
+      to: uci.slice(2,4)
+    }
+    if (uci.length === 5) {
+      m.promotion = uci[4]
+    }
+    return m
+  }
+
   // For handling the DOM elements of the pieces on the board
   //
   class Pieces {
@@ -33,7 +46,16 @@
       console.log("init miniboard")
       this.pieces = new Pieces(this)
       if (options.fen) {
-        this.render(options.fen)
+        let fen = options.fen
+        if (options.initialMove) {
+          let c = new Chess(fen)
+          let move = c.move(uciToMove(options.initialMove))
+          this.highlightSquare(move.from, "rgb(255, 252, 174)")
+          this.highlightSquare(move.to, "rgb(255, 249, 60)")
+
+          fen = c.fen()
+        }
+        this.render(fen)
       }
     }
 
@@ -57,6 +79,10 @@
           }
         }
       }
+    }
+
+    highlightSquare(id, color) {
+      this.$getSquare(id).css({ background: color })
     }
 
     $getSquare(id) {
