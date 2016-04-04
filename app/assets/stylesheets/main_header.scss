@@ -100,9 +100,11 @@
     height: 5px;
 
     .progress {
+      position: fixed;
       background: yellow;
       width: 0;
       height: 5px;
+      z-index: 100;
       @include transition(width 0.5s ease-in-out);
     }
 
