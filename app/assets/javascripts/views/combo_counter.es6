@@ -27,12 +27,8 @@
         }
         this.setCounter(this.counter)
       })
-      this.listenTo(d, "move:fail", () => {
-        this.droppedCombo()
-      })
-      this.listenTo(d, "move:too_slow", () => {
-        this.droppedCombo()
-      })
+      this.listenTo(d, "move:fail", _.bind(this.droppedCombo, this))
+      this.listenTo(d, "move:too_slow", _.bind(this.droppedCombo, this))
     }
 
     setCounter(counter) {
@@ -44,7 +40,6 @@
       this.counter = 0
       this.$el.addClass("invisible")
       this.$counter.removeClass("large")
-      d.trigger("progress:update", 0)
     }
 
   }

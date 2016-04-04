@@ -22,6 +22,8 @@
           d.trigger("level:complete", blitz.levelId)
         }
       })
+      this.listenTo(d, "move:fail", _.bind(this.resetProgress, this))
+      this.listenTo(d, "move:too_slow", _.bind(this.resetProgress, this))
     }
 
     nextStageUnlocked() {
@@ -35,6 +37,11 @@
       }
       d.trigger("progress:update", progress)
       return progress
+    }
+
+    resetProgress() {
+      this.pzCounter = 0
+      d.trigger("progress:update", 0)
     }
 
   }
