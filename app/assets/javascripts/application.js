@@ -60,6 +60,7 @@ $(function() {
 
       new Services.Puzzles;
       new Services.Notifier;
+      new Services.LevelProgress;
     },
 
     "home#index": function() {
@@ -75,8 +76,9 @@ $(function() {
       new Views.Timer;
       new Views.NextStageButton;
 
-      new Models.Puzzles({ source: "/level-1" });
-      new Models.Notifier;
+      new Services.Puzzles({ source: "/level-1" });
+      new Services.Notifier;
+      new Services.LevelProgress;
     },
 
     "levels#edit": function() {

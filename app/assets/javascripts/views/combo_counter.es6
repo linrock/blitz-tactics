@@ -9,10 +9,8 @@
     }
 
     initialize() {
+      this.counter = 0
       this.$counter = this.$(".counter")
-      this.pzCounter = 0      // Number of puzzles in a row
-      this.counter = 0        // Number of moves in a row
-      this.unlocked = false   // Next level unlocked
       this.listenForEvents()
     }
 
@@ -29,13 +27,6 @@
         }
         this.setCounter(this.counter)
       })
-      this.listenTo(d, "puzzles:next", () => {
-        this.pzCounter += 1
-        if (!this.unlocked && this.nextStageUnlocked()) {
-          this.unlocked = true
-          d.trigger("level:complete", blitz.levelId)
-        }
-      })
       this.listenTo(d, "move:fail", () => {
         this.droppedCombo()
       })
@@ -49,26 +40,11 @@
       setTimeout(() => { this.$counter.removeClass("emphasis") }, 25)
     }
 
-    checkProgress() {
-      let progress = ~~( 100 * this.counter / config.comboSizeForNextLevel )
-      if (progress > 100) {
-        progress = 100
-      }
-      d.trigger("progress:update", progress)
-      console.log(progress)
-      return progress
-    }
-
     droppedCombo() {
       this.counter = 0
-      this.pzCounter = 0
       this.$el.addClass("invisible")
       this.$counter.removeClass("large")
       d.trigger("progress:update", 0)
-    }
-
-    nextStageUnlocked() {
-      return this.checkProgress() == 100
     }
 
   }
