@@ -1,6 +1,8 @@
 @import "bourbon";
 @import "_variables";
 
+$combo-indicator-font: Orbitron, Arial, sans-serif;
+
 
 .blue-button {
   font-size: 24px;
@@ -34,7 +36,7 @@
 
   .move-status {
     opacity: 1;
-    font-family: Montserrat, Arial, sans-serif;
+    font-family: $combo-indicator-font;
     font-size: 28px;
     height: 28px;
     text-transform: uppercase;
@@ -285,6 +287,7 @@
 
   .combo-counter {
     text-align: center;
+    font-family: $combo-indicator-font;
     @include transition(opacity 0.25s ease);
 
     .counter {

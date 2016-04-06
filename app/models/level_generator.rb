@@ -1,11 +1,11 @@
 class LevelGenerator
 
   LEVEL_SIZE = 20
-
+  N_LEVELS   = 50
 
   def puzzle_source
-    puzzles = LichessPuzzle.rating_lt(1400).vote_gt(28).white_to_move.take(1000)
-    puzzles.shuffle(random: Random.new(1))
+    puzzles = LichessPuzzle.rating_lt(1400).vote_gt(28).white_to_move
+    puzzles.take(LEVEL_SIZE * N_LEVELS).shuffle(random: Random.new(1))
   end
 
   def build_levels!
