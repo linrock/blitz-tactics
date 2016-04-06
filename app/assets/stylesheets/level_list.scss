@@ -4,7 +4,7 @@
 
   h3 {
     font-size: 24px;
-    margin-bottom: 60px;
+    margin-bottom: 48px;
   }
 
   li {
@@ -49,13 +49,16 @@
 
 }
 
-.current-user {
+.description {
   color: rgba(255,255,255,0.8);
   margin-bottom: 30px;
   font-size: 14px;
+  line-height: 24px;
 
-  .username {
-    font-weight: bold;
+  .current-user {
+    .username {
+      font-weight: bold;
+    }
   }
 
 }

@@ -4,11 +4,18 @@
 
   <h3>Blitz Tactics</h3>
 
-  <% if current_user %>
-    <div class="current-user">
-      You are logged in as <span class="username"><%= current_user.username %></span>
-    </div>
-  <% end %>
+  <div class="description">
+
+    <% if current_user %>
+      <div class="current-user">
+        You are logged in as <span class="username"><%= current_user.username %></span>
+      </div>
+      <div class="your-levels">
+        You have not created any levels yet
+      </div>
+    <% end %>
+
+  </div>
 
   <ul>
 

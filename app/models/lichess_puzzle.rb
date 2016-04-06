@@ -1,7 +1,8 @@
 class LichessPuzzle < ActiveRecord::Base
 
   def self.load_from_json_files!
-    Dir.glob(Rails.root.join("data/lichess/*.json")).each do |file|
+    files = Dir.glob(Rails.root.join("data/lichess/*.json"))
+    files.sort_by {|path| path[/\d+/].to_i }.each do |file|
       puzzle_id = file[/(\d+)\.json/, 1].to_i
       next if LichessPuzzle.exists?(:puzzle_id => puzzle_id)
       data = open(file).read.strip
