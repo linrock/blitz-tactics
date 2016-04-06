@@ -7,10 +7,11 @@ class Level < ActiveRecord::Base
   validate :require_puzzles_to_exist
 
   before_validation :set_secret_key
+  before_validation :set_default_options
 
 
   def name
-    slug.gsub('-', ' ').capitalize
+    super || slug.gsub('-', ' ').capitalize
   end
 
   def next_level
@@ -30,6 +31,10 @@ class Level < ActiveRecord::Base
 
   def set_secret_key
     self.secret_key ||= SecureRandom.hex(8)
+  end
+
+  def set_default_options
+    self.options ||= {}
   end
 
   def require_unique_puzzle_ids

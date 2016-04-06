@@ -15,6 +15,12 @@ class LichessPuzzle < ActiveRecord::Base
     nil
   end
 
+  def self.from_puzzle_ids(puzzle_ids)
+    puzzles = []
+    puzzle_ids.each {|id| puzzles << find_by(puzzle_id: id) }
+    puzzles
+  end
+
   def self.rating_gt(min_rating)
     where("CAST(data->'puzzle'->>'rating' AS INT) > ?", min_rating)
   end

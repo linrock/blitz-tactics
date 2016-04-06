@@ -4,7 +4,8 @@ class LevelGenerator
 
 
   def puzzle_source
-    LichessPuzzle.rating_lt(1700).vote_gt(50).white_to_move.shuffle
+    puzzles = LichessPuzzle.rating_lt(1400).vote_gt(28).white_to_move.take(1000)
+    puzzles.shuffle(random: Random.new(1))
   end
 
   def build_levels!
