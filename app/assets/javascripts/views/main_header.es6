@@ -11,7 +11,12 @@
     initialize() {
       this.listenTo(d, "puzzles:start", () => {
         this.$el.attr("data-state", "progress")
-        $(".user-name").fadeOut(100)
+
+        if (this.$(".user-area.logged-in").length) {
+          this.$(".user-area.logged-in").fadeOut(100)
+        } else {
+          this.$(".user-area").addClass("slight-fade")
+        }
       })
       this.listenTo(d, "level:unlocked", () => {
         this.$el.attr("data-state", "next-stage")

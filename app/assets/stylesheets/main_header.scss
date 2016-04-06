@@ -20,13 +20,6 @@
     @include transition(opacity 0.15s ease);
   }
 
-  .container {
-    margin: 0 auto;
-    width: $main-width;
-    overflow: hidden;
-    padding-right: $sidebar-size + $sidebar-margin;
-  }
-
   &[data-state="intro"] {
 
     .intro {
@@ -141,10 +134,13 @@
     z-index: 10;
     line-height: 70px;
     width: 100%;
+    color: rgba(255,255,255,0.6);
 
     a {
-      color: rgba(255,255,255,0.6);
+      color: inherit;
+      font-size: 15px;
       text-decoration: none;
+      margin-left: 20px;
       @include transition(color 0.15s ease);
 
       &:hover {
@@ -153,8 +149,7 @@
     }
 
     .sign-in {
-      font-size: 15px;
-      margin-right: 5px;
+      margin-right: 1px;
 
       i {
         font-size: 13px;
@@ -163,9 +158,14 @@
     }
 
     .user-name {
-      color: rgba(255,255,255,0.5);
+      margin-left: 20px;
+      display: inline-block;
       font-size: 14px;
       margin-right: 5px;
+    }
+
+    &.slight-fade {
+      color: rgba(255,255,255,0.4);
     }
 
   }

@@ -24,9 +24,12 @@
     </div>
   </div>
 
-  <div class="persistent user-area">
+  <div class="persistent user-area <% if current_user %>logged-in<% end %>">
     <div class="container">
       <div class="right">
+
+        <a href="/about">About</a>
+
         <% if current_user %>
           <div class="user-name">
             <%= current_user.username %>
@@ -36,6 +39,7 @@
             <%= fa_icon "sign-in" %> Sign up
           </a>
         <% end %>
+
       </div>
     </div>
   </div>

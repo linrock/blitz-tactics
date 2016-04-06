@@ -39,7 +39,6 @@
         source = this.getPuzzleSource()
       }
       $.getJSON(source, (data) => {
-        this.format = data.format
         this.puzzles = data.puzzles
         d.trigger("puzzles:fetched", this.puzzles)
       })
@@ -53,7 +52,6 @@
 
     nextPuzzle() {
       this.current = {
-        format: this.format,
         puzzle: this.puzzles[this.i],
         i: 0
       }

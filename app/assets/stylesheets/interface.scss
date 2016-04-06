@@ -4,6 +4,13 @@
 $combo-indicator-font: Orbitron, Arial, sans-serif;
 
 
+.container {
+  margin: 0 auto;
+  width: $main-width;
+  overflow: hidden;
+  padding-right: $sidebar-size + $sidebar-margin;
+}
+
 .blue-button {
   font-size: 24px;
   padding: 10px 24px;
@@ -313,55 +320,6 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
       position: relative;
       text-transform: uppercase;
       top: -6px;
-    }
-
-  }
-
-}
-
-
-@media screen and (max-height: 900px) {
-  $square-size-sm: 65px;
-  $board-size-sm: 8 * $square-size-sm + 2 * $border-width;
-  $main-width-sm: $board-size-sm + $sidebar-size + $sidebar-margin;
-
-  .container {
-    width: $main-width-sm;
-  }
-
-  .main-header .container {
-    width: $main-width-sm;
-  }
-
-  .move-indicator {
-    width: $main-width-sm;
-  }
-
-  .main {
-    width: $main-width-sm;
-
-    .instructions {
-      width: $board-size-sm;
-    }
-
-  }
-
-  .under-board {
-    width: $main-width-sm;
-
-    .puzzle-hint {
-      width: $board-size-sm;
-    }
-
-  }
-
-  .chessboard {
-    width: $board-size-sm;
-    height: $board-size-sm;
-
-    .square {
-      width: $square-size-sm;
-      height: $square-size-sm;
     }
 
   }
