@@ -20,6 +20,7 @@
     listenForEvents() {
       this.listenTo(d, "move:success", _.bind(this.renderSuccess, this))
       this.listenTo(d, "move:fail", _.bind(this.renderFailure, this))
+      this.listenTo(d, "move:almost", _.bind(this.renderAlmost, this))
     }
 
     renderSuccess() {
@@ -37,6 +38,10 @@
 
     renderFailure() {
       this.renderFadingMessage('<div class="fail">Wrong</div>')
+    }
+
+    renderAlmost() {
+      this.renderFadingMessage('<div class="almost">Almost</div>')
     }
 
     renderPerfect() {

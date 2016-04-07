@@ -81,7 +81,7 @@
 
     handleMove(move) {
       let attempt = this.current.state[moveToUci(move)]
-      if (attempt == "win") {
+      if (attempt === "win") {
         d.trigger("move:success")
         d.trigger("puzzles:next")
         return
@@ -93,8 +93,10 @@
         }
         d.trigger("move:make", move)
         d.trigger("move:success")
-        if (attempt[response] == "win") {
+        if (attempt[response] === "win") {
           d.trigger("puzzles:next")
+        } else if (attempt[response] === "retry") {
+          d.trigger("move:almost")
         } else {
           d.trigger("move:make", uciToMove(response))
           d.trigger("move:highlight", uciToMove(response))
