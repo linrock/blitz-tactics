@@ -33,39 +33,65 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
 
 }
 
-.move-indicator {
+.above-board {
+  height: 80px;
+  position: relative;
   width: $main-width;
   margin: 0 auto;
   padding-right: $sidebar-size + $sidebar-margin;
-  text-align: center;
-  position: relative;
-  top: 0;
+
+  .instructions {
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(0,0,0,0.8);
+    width: $board-size;
+    text-align: center;
+    margin: 0 auto;
+    position: absolute;
+    top: 24px;
+  }
+
+  .puzzle-hint {
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    margin: 0 auto;
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    padding-right: $sidebar-size + $sidebar-margin;
+    @include transition(opacity 0.08s ease);
+  }
 
   .move-status {
     opacity: 1;
     font-family: $combo-indicator-font;
-    font-size: 28px;
-    height: 28px;
+    font-size: 32px;
+    width: 100%;
+    position: absolute;
+    padding-right: $sidebar-size + $sidebar-margin;
+    text-align: center;
     text-transform: uppercase;
-    transform: translate3d(0,0,0);
+    transform: scale3d(1,1,1);
+    top: 10px;
     @include transition(opacity 0.02s ease);
 
     &.fade-out {
       @include transition(opacity 0.9s ease-out 0.2s, transform 0.05s ease-in-out);
       opacity: 0;
-      transform: translate3d(0,-4px,0);
+      transform: scale3d(0.92,0.92,1);
     }
 
     .perfect {
       color: #34FF00;
       font-weight: 600;
-      font-size: 38px;
+      font-size: 40px;
     }
 
     .great {
       color: #2AE2EA;
       font-weight: 600;
-      font-size: 32px;
+      font-size: 36px;
     }
 
     .good {
@@ -83,6 +109,43 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
 
   }
 
+  .combo-counter {
+    text-align: center;
+    font-family: $combo-indicator-font;
+    position: absolute;
+    top: 55px;
+    width: 100%;
+    padding-right: $sidebar-size + $sidebar-margin;
+    @include transition(opacity 0.25s ease);
+
+    .counter {
+      display: inline-block;
+      font-size: 24px;
+      margin-right: 5px;
+
+      &.large {
+        font-size: 52px;
+      }
+
+      &.on-fire {
+        font-size: 70px;
+      }
+
+      &.emphasis {
+        @include transform(scale3d(1.25, 1.25, 1));
+      }
+
+    }
+
+    .combo-text {
+      position: relative;
+      text-transform: uppercase;
+      font-size: 14px;
+      top: -2px;
+    }
+
+  }
+
 }
 
 .main {
@@ -90,17 +153,6 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
   width: $main-width;
   margin: 20px auto 30px;
   @include clearfix;
-
-  .instructions {
-    font-size: 21px;
-    font-weight: bold;
-    line-height: 66px;
-    text-shadow: 0 0 6px rgba(0,0,0,0.8);
-    width: $board-size;
-    position: absolute;
-    top: -43px;
-    text-align: center;
-  }
 
   .level-selector {
     font-size: 20px;
@@ -117,13 +169,6 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
       color: rgba(255,255,255,0.4);
     }
 
-  }
-
-  .level {
-    display: block;
-    color: #979797;
-    font-size: 16px;
-    margin-bottom: 16px;
   }
 
   .chessboard {
@@ -286,46 +331,12 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
   margin: 0 auto;
   width: $main-width;
   padding-right: $sidebar-size + $sidebar-margin;
+  text-align: center;
 
-  .puzzle-hint {
-    font-size: 14px;
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-    position: absolute;
-    width: $board-size;
-    @include transition(opacity 0.08s ease);
-  }
-
-  .combo-counter {
-    text-align: center;
-    font-family: $combo-indicator-font;
-    @include transition(opacity 0.25s ease);
-
-    .counter {
-      display: inline-block;
-      font-size: 40px;
-      margin-right: 5px;
-
-      &.large {
-        font-size: 52px;
-      }
-
-      &.on-fire {
-        font-size: 70px;
-      }
-
-      &.emphasis {
-        @include transform(scale3d(1.25, 1.25, 1));
-      }
-
-    }
-
-    .combo-text {
-      position: relative;
-      text-transform: uppercase;
-      top: -6px;
-    }
-
+  .level-name {
+    display: block;
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
   }
 
 }

@@ -1,16 +1,23 @@
 <% round_times = local_assigns[:round_times] || [] %>
 
-<div class="move-indicator">
+<div class="above-board">
+
+  <div class="instructions">White to move</div>
+
+  <div class="puzzle-hint"></div>
+
   <div class="move-status">&nbsp;</div>
+
+  <div class="combo-counter invisible">
+    <span class="counter">&nbsp;</span>
+    <span class="combo-text">combo</span>
+  </div>
+
 </div>
 
 <div class="main">
 
-  <div class="instructions">White to move</div>
-
   <a href="/levels" class="level-selector">&lt;</a>
-
-  <label class="level"><%= title %></label>
 
   <div class="board-area">
     <%= render :partial => "interface/chessboard" %>
@@ -32,4 +39,6 @@
 
 </div>
 
-<%= render :partial => "interface/under_board" %>
+<div class="under-board">
+  <label class="level-name"><%= title %> &mdash; No quarter</label>
+</div>
