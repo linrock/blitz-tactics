@@ -7,8 +7,8 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
 .container {
   margin: 0 auto;
   width: $main-width;
-  overflow: hidden;
   padding-right: $sidebar-size + $sidebar-margin;
+  @include clearfix;
 }
 
 .blue-button {
