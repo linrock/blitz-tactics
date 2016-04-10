@@ -6,6 +6,11 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
 
 body {
   @include transition(background 0.6s ease);
+
+  &.unlocked {
+    background: #313131;
+  }
+
 }
 
 .container {
@@ -406,7 +411,7 @@ body {
     height: 65px;
     z-index: 11;
     position: absolute;
-    top: 19px;
+    top: 18px;
     @include transition(opacity 0.2s ease);
 
     &.invisible {
@@ -415,19 +420,30 @@ body {
     }
 
     .left {
-      float: left;
+      display: inline-block;
       font-size: 18px;
+      margin-right: 20px;
+      position: relative;
+      top: 1px;
     }
 
     .right {
-      float: right;
+      display: inline-block;
     }
 
     .blue-button {
       font-size: 17px;
-      padding: 7px 22px 7px;
-      margin-top: -7px;
+      font-weight: bold;
+      padding: 8px 20px 8px;
       box-shadow: 0 0 4px rgba(0,0,0,0.2);
+      @include transition(background 0.12s ease);
+
+      i {
+        font-size: 16px;
+        position: relative;
+        left: 6px;
+      }
+
     }
 
   }

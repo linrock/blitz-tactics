@@ -59,12 +59,14 @@
     </div>
   <% end %>
 
-  <div class="next-stage invisible container">
-    <div class="left">You've unlocked the next level!</div>
-    <div class="right">
-      <a class="blue-button" href="javascript:">Next &raquo;</a>
+  <% if @level && @level.next_level %>
+    <div class="next-stage invisible container">
+      <div class="left">You've unlocked the next level!</div>
+      <div class="right">
+        <a class="blue-button" href="javascript:"><%= @level.next_level.number %> <%= fa_icon "angle-double-right" %></a>
+      </div>
     </div>
-  </div>
+  <% end %>
 
 </div>
 
