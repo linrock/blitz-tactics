@@ -46,7 +46,7 @@
           hints.push(move)
         }
       })
-      this.$el.removeClass("invisible").text(`Hint: ${_.sample(hints)}`)
+      this.$el.removeClass("invisible").text(`Hint - ${_.sample(hints)}`)
     }
 
   }

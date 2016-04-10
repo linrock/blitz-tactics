@@ -5,7 +5,7 @@ $header-height: 40px;
 
 .real-main-header {
   height: $header-height;
-  background: #090909;
+  background: #121212;
   width: 100%;
   @include clearfix;
   @include transition(transform 0.2s ease, background 0.2s ease);
@@ -56,7 +56,8 @@ $header-height: 40px;
     color: #6D6D6D;
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 12px;
+    letter-spacing: 0.3px;
     @include transition(color 0.15s ease);
 
     &:hover {
