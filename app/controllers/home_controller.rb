@@ -2,6 +2,7 @@ class HomeController < ApplicationController
   before_filter :redirect_to_highest_level
 
   def index
+    @level = Level.first
   end
 
   private

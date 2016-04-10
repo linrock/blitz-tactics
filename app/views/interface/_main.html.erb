@@ -43,9 +43,13 @@
 
 <div class="under-board">
   <label class="level-name">
-    <%= level_id %>
-    <% if level_name %>
-      &mdash; <%= level_name %>
+    <% if @level %>
+      <%= @level.number %>
+      <% if @level.name %>
+        &mdash; <%= @level.name %>
+      <% end %>
+    <% elsif (title = local_assigns[:title]) %>
+      <%= title %>
     <% end %>
   </label>
 
