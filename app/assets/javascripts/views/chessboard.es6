@@ -51,7 +51,9 @@
         stack: ".piece",
         distance: 10,
         revert: true,
-        revertDuration: 0
+        revertDuration: 0,
+        containment: "body",
+        scroll: false
       })
     }
 

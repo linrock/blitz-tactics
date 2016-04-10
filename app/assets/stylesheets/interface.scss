@@ -367,9 +367,10 @@ body {
 }
 
 .under-board {
-  margin: 25px auto;
-  width: $main-width;
+  margin: 0 auto;
+  padding: 25px 0;
   padding-right: $sidebar-size + $sidebar-margin;
+  width: $main-width;
   text-align: center;
   position: relative;
 
