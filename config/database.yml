@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: blitz-tactics_production
-  username: blitz-tactics
+  username: rails
   password: <%= ENV['BLITZ-TACTICS_DATABASE_PASSWORD'] %>
