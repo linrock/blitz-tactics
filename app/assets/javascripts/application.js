@@ -58,6 +58,7 @@ $(function() {
       new Views.Timer;
       new Views.NextStageButton;
       new Views.UnlockedLevelBanner;
+      new Views.Background;
 
       new Services.Puzzles;
       new Services.Notifier;
@@ -77,6 +78,7 @@ $(function() {
       new Views.Timer;
       new Views.NextStageButton;
       new Views.UnlockedLevelBanner;
+      new Views.Background;
 
       new Services.Puzzles({ source: "/level-1" });
       new Services.Notifier;

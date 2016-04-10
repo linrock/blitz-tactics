@@ -4,6 +4,10 @@
 $combo-indicator-font: Orbitron, Arial, sans-serif;
 
 
+body {
+  @include transition(background 0.6s ease);
+}
+
 .container {
   margin: 0 auto;
   width: $main-width;
@@ -114,18 +118,21 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
     .perfect {
       color: #34FF00;
       font-weight: 600;
-      font-size: 42px;
+      letter-spacing: 3px;
+      font-size: 40px;
     }
 
     .great {
       color: #2AE2EA;
       font-weight: 600;
+      letter-spacing: 3px;
       font-size: 38px;
     }
 
     .good {
       color: #FFF260;
       font-weight: 600;
+      letter-spacing: 3px;
       font-size: 38px;
     }
 
