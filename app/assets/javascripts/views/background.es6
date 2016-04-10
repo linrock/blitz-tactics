@@ -12,7 +12,7 @@
 
     listenForEvents() {
       this.listenTo(d, "level:unlocked", () => {
-        this.$el.css("background", "#272727")
+        this.$el.css("background", "#373737")
       })
     }
 

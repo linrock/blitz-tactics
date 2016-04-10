@@ -400,7 +400,7 @@ body {
     height: 65px;
     z-index: 11;
     position: absolute;
-    top: 0;
+    top: 19px;
     @include transition(opacity 0.2s ease);
 
     &.invisible {
@@ -410,18 +410,17 @@ body {
 
     .left {
       float: left;
-      font-size: 22px;
+      font-size: 18px;
     }
 
     .right {
       float: right;
-      top: -4px;
     }
 
     .blue-button {
-      font-size: 18px;
+      font-size: 17px;
       padding: 7px 22px 7px;
-      margin-top: -6px;
+      margin-top: -7px;
       box-shadow: 0 0 4px rgba(0,0,0,0.2);
     }
 
