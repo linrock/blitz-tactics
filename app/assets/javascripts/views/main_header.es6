@@ -10,15 +10,11 @@
 
     initialize() {
       this.listenTo(d, "puzzles:start", () => {
-        this.$el.attr("data-state", "progress")
-
-        if (this.$(".user-area.logged-in").length) {
-          this.$(".user-area.logged-in").fadeOut(100)
+        if (blitz.loggedIn) {
+          this.$el.addClass("hidden");
         } else {
-          this.$(".user-area").addClass("slight-fade")
+          this.$el.addClass("faded");
         }
-
-        this.$el.addClass("hidden");
       })
     }
 

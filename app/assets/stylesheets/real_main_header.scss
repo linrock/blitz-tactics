@@ -8,20 +8,24 @@ $header-height: 40px;
   background: #090909;
   width: 100%;
   @include clearfix;
-  @include transition(transform 0.2s ease);
+  @include transition(transform 0.2s ease, background 0.2s ease);
 
   &.hidden {
     transform: translate3d(0,-$header-height,0);
   }
 
+  &.faded {
+    background: none;
+
+    .logo {
+      display: none;
+    }
+
+  }
+
   &:hover {
     transform: translate3d(0,0,0);
   }
-
-  // .container {
-  //   width: 100%;
-  //   padding: 0 30px;
-  // }
 
   .logo {
     color: #6D6D6D;
