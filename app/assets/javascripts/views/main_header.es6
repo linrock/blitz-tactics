@@ -5,7 +5,7 @@
   class MainHeader extends Backbone.View {
 
     get el() {
-      return ".main-header"
+      return ".real-main-header"
     }
 
     initialize() {
@@ -17,6 +17,8 @@
         } else {
           this.$(".user-area").addClass("slight-fade")
         }
+
+        this.$el.addClass("hidden");
       })
       this.listenTo(d, "level:unlocked", () => {
         this.$el.attr("data-state", "next-stage")
