@@ -37,7 +37,7 @@
     }
 
     renderFailure() {
-      this.renderFadingMessage('<div class="fail">Wrong</div>')
+      this.renderFadingMessage('<div class="fail">Try Again</div>')
     }
 
     renderAlmost() {

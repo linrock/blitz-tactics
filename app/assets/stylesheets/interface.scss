@@ -90,7 +90,7 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
     text-align: center;
     text-transform: uppercase;
     transform: scale3d(1,1,1);
-    top: -4px;
+    top: 0px;
     @include transition(opacity 0.02s ease);
 
     &.fade-out {
@@ -102,18 +102,19 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
     .perfect {
       color: #34FF00;
       font-weight: 600;
-      font-size: 40px;
+      font-size: 42px;
     }
 
     .great {
       color: #2AE2EA;
       font-weight: 600;
-      font-size: 36px;
+      font-size: 38px;
     }
 
     .good {
       color: #FFF260;
       font-weight: 600;
+      font-size: 38px;
     }
 
     .almost {
@@ -121,7 +122,9 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
     }
 
     .fail {
-      color: red;
+      color: #D24190;
+      position: relative;
+      top: 15px;
     }
 
   }
@@ -130,7 +133,7 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
     text-align: center;
     font-family: $combo-indicator-font;
     position: absolute;
-    top: 43px;
+    top: 45px;
     width: 100%;
     padding-right: $sidebar-size + $sidebar-margin;
     @include transition(opacity 0.25s ease);
