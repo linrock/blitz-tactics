@@ -4,7 +4,7 @@ class LevelsController < ApplicationController
   def show
     @level = Level.find_by(:slug => params[:level_slug])
     @puzzles = @level.puzzles
-    @round_times = current_user&.round_times_for_level(@level.id).take(10) || []
+    @round_times = current_user&.round_times_for_level(@level.id)&.take(10) || []
     respond_to do |format|
       format.html {}
       format.json {

@@ -6,8 +6,6 @@
       <%= fa_icon "bolt" %> <span class="large">B</span>litz <span class="large">T</span>actics
     </a>
 
-    <a href="/about" class="link-left about">About</a>
-
     <% if current_user %>
       <a href="/levels" class="link-right user-name">
         <%= current_user.username %>
@@ -17,6 +15,10 @@
         <%= fa_icon "sign-in" %> Sign up
       </a>
     <% end %>
+
+    <a href="/contact" class="link-right contact">Contact</a>
+
+    <a href="/about" class="link-right about">About</a>
 
   </div>
 

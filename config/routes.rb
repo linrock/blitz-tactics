@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/puzzles/:id'      => 'puzzles#show'
 
   get '/about'            => 'static#about'
+  get '/contact'          => 'static#contact'
 
   get '/levels'           => 'levels#index'
   get '/:level_slug'      => 'levels#show'

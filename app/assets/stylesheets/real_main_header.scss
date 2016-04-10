@@ -18,9 +18,10 @@ $header-height: 40px;
     transform: translate3d(0,0,0);
   }
 
-  .container {
-    width: 800px;
-  }
+  // .container {
+  //   width: 100%;
+  //   padding: 0 30px;
+  // }
 
   .logo {
     color: #6D6D6D;
@@ -30,6 +31,7 @@ $header-height: 40px;
     font-family: "Orbitron", sans-serif;
     text-transform: uppercase;
     line-height: $header-height + 2px;
+    letter-spacing: 0.8px;
 
     &:hover {
       color: #ffe800;
@@ -37,7 +39,7 @@ $header-height: 40px;
 
     i {
       font-size: 15px;
-      margin-right: 3px;
+      margin-right: 5px;
     }
 
     .large {
@@ -49,7 +51,8 @@ $header-height: 40px;
   a {
     color: #6D6D6D;
     text-decoration: none;
-    font-size: 14px;
+    text-transform: uppercase;
+    font-size: 13px;
     @include transition(color 0.15s ease);
 
     &:hover {
@@ -60,14 +63,20 @@ $header-height: 40px;
 
   .link-left {
     float: left;
-    margin-left: 35px;
+    margin-left: 30px;
     line-height: $header-height;
   }
 
   .link-right {
     float: right;
     margin-right: 3px;
+    margin-left: 30px;
     line-height: $header-height;
+  }
+
+  .sign-in {
+    font-weight: bold;
+    color: rgba(255,255,255,0.75);
   }
 
   .user-name {
