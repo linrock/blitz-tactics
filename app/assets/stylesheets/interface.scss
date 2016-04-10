@@ -376,8 +376,14 @@ body {
 
   .level-name {
     display: block;
-    color: rgba(255,255,255,0.4);
-    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    font-size: 16px;
+    @include transition(color 0.2s ease);
+
+    &.faded {
+      color: rgba(255,255,255,0.4);
+    }
+
   }
 
   .onboarding {

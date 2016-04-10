@@ -60,7 +60,7 @@ $(function() {
       initInterfaceBase();
       new Views.ProgressBar;
       new Views.Timer;
-      new Views.UnlockedLevelBanner;
+      new Views.LevelIndicator;
       new Views.Background;
 
       new Services.Puzzles;
@@ -72,7 +72,7 @@ $(function() {
       initInterfaceBase();
       new Views.ProgressBar;
       new Views.Timer;
-      new Views.UnlockedLevelBanner;
+      new Views.LevelIndicator;
       new Views.Background;
       new Views.Onboarding;
 
