@@ -389,6 +389,7 @@ body {
     width: 100%;
     padding: 10px 0;
     padding-right: $sidebar-size + $sidebar-margin;
+    text-shadow: 0 0 3px rgba(0,0,0,0.4);
     @include transition(opacity 0.2s ease);
   }
 

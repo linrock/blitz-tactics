@@ -35,7 +35,7 @@ $header-height: 40px;
     font-family: "Orbitron", sans-serif;
     text-transform: uppercase;
     line-height: $header-height + 2px;
-    letter-spacing: 0.8px;
+    letter-spacing: 1.5px;
 
     &:hover {
       color: #ffe800;
@@ -57,7 +57,7 @@ $header-height: 40px;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 11px;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
     @include transition(color 0.15s ease);
 
     &:hover {
