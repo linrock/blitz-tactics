@@ -20,9 +20,6 @@
 
         this.$el.addClass("hidden");
       })
-      this.listenTo(d, "level:unlocked", () => {
-        this.$el.attr("data-state", "next-stage")
-      })
     }
 
   }

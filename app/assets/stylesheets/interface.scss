@@ -50,6 +50,41 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
 
 }
 
+// Prompts you to go to the next level
+//
+.next-stage {
+  width: 100%;
+  height: 65px;
+  background: #090909;
+  padding: 5px 0;
+  z-index: 11;
+  position: fixed;
+  top: 0;
+  @include transition(opacity 0.2s ease);
+
+  &.invisible {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .left {
+    float: left;
+    font-size: 22px;
+    line-height: 55px;
+  }
+
+  .right {
+    float: right;
+  }
+
+  .blue-button {
+    padding: 8px 26px 9px;
+    margin-top: 7px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  }
+
+}
+
 .above-board {
   height: 90px;
   position: relative;

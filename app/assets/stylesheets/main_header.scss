@@ -104,29 +104,6 @@
   }
 
 
-  // Prompts you to go to the next level
-  //
-  .next-stage {
-    width: 100%;
-    height: 65px;
-    background: #090909;
-    padding: 5px 0;
-    z-index: 11;
-
-    .left {
-      font-size: 22px;
-      line-height: 55px;
-    }
-
-    .blue-button {
-      padding: 8px 26px 9px;
-      margin-top: 7px;
-      box-shadow: 0 0 4px rgba(0,0,0,0.2);
-    }
-
-  }
-
-
   // Sign up OR user name if signed in
   //
   .user-area {
