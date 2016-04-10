@@ -45,42 +45,12 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
     background: yellow;
     width: 0;
     height: 5px;
-    @include transition(width 0.5s ease-in-out);
-  }
+    @include transition(width 0.5s ease-in-out, background 0.3s ease-in-out);
 
-}
-
-// Prompts you to go to the next level
-//
-.next-stage {
-  width: 100%;
-  height: 65px;
-  background: #090909;
-  padding: 5px 0;
-  z-index: 11;
-  position: fixed;
-  top: 0;
-  @include transition(opacity 0.2s ease);
-
-  &.invisible {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .left {
-    float: left;
-    font-size: 22px;
-    line-height: 55px;
-  }
-
-  .right {
-    float: right;
-  }
-
-  .blue-button {
-    padding: 8px 26px 9px;
-    margin-top: 7px;
-    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    &.complete {
+      width: 100%;
+      background: #63F706;
+    }
   }
 
 }
@@ -394,11 +364,46 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
   width: $main-width;
   padding-right: $sidebar-size + $sidebar-margin;
   text-align: center;
+  position: relative;
 
   .level-name {
     display: block;
     color: rgba(255,255,255,0.4);
     font-size: 15px;
+  }
+
+  // Prompts you to go to the next level
+  //
+  .next-stage {
+    width: 100%;
+    height: 65px;
+    z-index: 11;
+    position: absolute;
+    top: 0;
+    @include transition(opacity 0.2s ease);
+
+    &.invisible {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .left {
+      float: left;
+      font-size: 22px;
+    }
+
+    .right {
+      float: right;
+      top: -4px;
+    }
+
+    .blue-button {
+      font-size: 18px;
+      padding: 7px 22px 7px;
+      margin-top: -6px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    }
+
   }
 
 }

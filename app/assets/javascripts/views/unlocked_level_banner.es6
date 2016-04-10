@@ -11,6 +11,8 @@
     initialize() {
       this.listenTo(d, "level:unlocked", () => {
         this.$el.removeClass("invisible")
+        // TODO One view for all level stuff?
+        $(".level-name").addClass("invisible")
       })
     }
 

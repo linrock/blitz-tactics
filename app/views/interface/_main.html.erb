@@ -1,7 +1,6 @@
 <% round_times = local_assigns[:round_times] || [] %>
 
 <%= render :partial => "interface/progress_bar" %>
-<%= render :partial => "interface/unlocked_level_banner" %>
 
 <div class="above-board">
 
@@ -44,4 +43,12 @@
 
 <div class="under-board">
   <label class="level-name"><%= title %> &mdash; No quarter</label>
+
+  <div class="next-stage invisible container">
+    <div class="left">You've unlocked the next level!</div>
+    <div class="right">
+      <a class="blue-button" href="javascript:">Next &raquo;</a>
+    </div>
+  </div>
+
 </div>
