@@ -58,14 +58,21 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
   padding-right: $sidebar-size + $sidebar-margin;
 
   .instructions {
-    font-size: 22px;
     font-weight: bold;
-    text-shadow: 0 0 6px rgba(0,0,0,0.8);
+    text-shadow: 0 0 8px rgba(0,0,0,0.9);
     width: $board-size;
     text-align: center;
     margin: 0 auto;
     position: absolute;
-    top: 24px;
+    font-size: 25px;
+    top: 40px;
+    @include transition(all 0.35s ease-out);
+
+    &.smaller {
+      font-size: 22px;
+      top: 24px;
+    }
+
   }
 
   .puzzle-hint {
