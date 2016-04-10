@@ -1,11 +1,11 @@
 {
 
-  // Main header with intro, progress bar, instructions
+  // Main header hides for logged-in users, and fades for logged out
   //
   class MainHeader extends Backbone.View {
 
     get el() {
-      return ".real-main-header"
+      return ".main-header"
     }
 
     initialize() {

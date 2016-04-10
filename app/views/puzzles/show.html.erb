@@ -1,7 +1,5 @@
 <% content_for(:title) { "Puzzle #{@puzzle.id}" } %>
 
-<%= render :partial => "layouts/main_header" %>
-
 <%= render :partial => "interface/main",
            :locals  => {
              :title => "Puzzle #{@puzzle.id}"
