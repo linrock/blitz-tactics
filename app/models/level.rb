@@ -10,8 +10,8 @@ class Level < ActiveRecord::Base
   before_validation :set_default_options
 
 
-  def name
-    super || slug.gsub('-', ' ').capitalize
+  def number
+    slug.gsub('-', ' ').capitalize
   end
 
   def next_level

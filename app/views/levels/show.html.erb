@@ -2,7 +2,8 @@
 
 <%= render :partial => "interface/main",
            :locals  => {
-             :title => @level.name,
+             :level_id    => @level.number,
+             :level_name  => @level.name,
              :round_times => @round_times
            } %>
 

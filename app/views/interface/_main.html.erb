@@ -42,7 +42,12 @@
 </div>
 
 <div class="under-board">
-  <label class="level-name"><%= title %> &mdash; No quarter</label>
+  <label class="level-name">
+    <%= level_id %>
+    <% if level_name %>
+      &mdash; <%= level_name %>
+    <% end %>
+  </label>
 
   <div class="next-stage invisible container">
     <div class="left">You've unlocked the next level!</div>
