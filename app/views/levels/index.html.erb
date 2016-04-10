@@ -31,7 +31,7 @@
 
             <span class="level-attempt">
               <% last_attempt = attempt.last_attempt_at %>
-              <%= time_ago_in_words(last_attempt) if last_attempt.present? %>
+              <%= "#{time_ago_in_words(last_attempt).gsub(/about\s+/, '')} ago" if last_attempt.present? %>
             </span>
 
           <% end %>
