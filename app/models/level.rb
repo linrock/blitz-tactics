@@ -27,6 +27,16 @@ class Level < ActiveRecord::Base
     pz
   end
 
+  # TODO better import/export system
+  def export_puzzle_ids
+    puzzles.map(&:id)
+  end
+
+  def set_puzzle_ids!(ids)
+    self.puzzle_ids = ids
+    self.save!
+  end
+
   private
 
   def set_secret_key
