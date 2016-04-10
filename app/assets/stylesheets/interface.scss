@@ -106,7 +106,7 @@ body {
     text-align: center;
     text-transform: uppercase;
     transform: scale3d(1,1,1);
-    top: 0px;
+    top: 5px;
     @include transition(opacity 0.02s ease);
 
     &.fade-out {
@@ -152,7 +152,7 @@ body {
     text-align: center;
     font-family: $combo-indicator-font;
     position: absolute;
-    top: 45px;
+    top: 50px;
     width: 100%;
     padding-right: $sidebar-size + $sidebar-margin;
     @include transition(opacity 0.25s ease);
@@ -378,6 +378,18 @@ body {
     display: block;
     color: rgba(255,255,255,0.4);
     font-size: 15px;
+  }
+
+  .onboarding {
+    background: #1f1f1f;
+    position: absolute;
+    top: 16px;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+    padding: 10px 0;
+    padding-right: $sidebar-size + $sidebar-margin;
+    @include transition(opacity 0.2s ease);
   }
 
   // Prompts you to go to the next level
