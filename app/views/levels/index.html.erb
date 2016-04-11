@@ -1,47 +1,51 @@
 <% content_for(:title) { "Level list" } %>
 
-<div class="level-list">
+<div class="container">
 
-  <div class="description">
+  <div class="level-list">
 
-    <% if current_user %>
-      <div class="current-user">
-        You are logged in as <span class="username"><%= current_user.username %></span>
-      </div>
-      <div class="your-levels">
-        You have not created any levels yet
-      </div>
-    <% end %>
+    <div class="description">
+
+      <% if current_user %>
+        <div class="current-user">
+          You are logged in as <span class="username"><%= current_user.username %></span>
+        </div>
+        <div class="your-levels">
+          You have not created any levels yet
+        </div>
+      <% end %>
+
+    </div>
+
+    <ul>
+
+      <% @levels.each do |level| %>
+        <li class="level-row">
+          <% if @unlocked.nil? || @unlocked.include?(level.id) %>
+            <a href="/<%= level.slug %>" class="level-name"><%= level.number %></a>
+
+            <% if (attempt = @attempts[level.id]&.first) %>
+
+              <span class="round-attempt">
+                <% last_round = attempt.completed_rounds.order("id DESC").first %>
+                <%= last_round.formatted_time_spent if last_round.present? %>
+              </span>
+
+              <span class="level-attempt">
+                <% last_attempt = attempt.last_attempt_at %>
+                <%= "#{time_ago_in_words(last_attempt).gsub(/about\s+/, '')} ago" if last_attempt.present? %>
+              </span>
+
+            <% end %>
+
+          <% else %>
+            <span class="level-name"><%= level.number %></span>
+          <% end %>
+        </li>
+      <% end %>
+
+    </ul>
 
   </div>
-
-  <ul>
-
-    <% @levels.each do |level| %>
-      <li class="level-row">
-        <% if @unlocked.nil? || @unlocked.include?(level.id) %>
-          <a href="/<%= level.slug %>" class="level-name"><%= level.number %></a>
-
-          <% if (attempt = @attempts[level.id]&.first) %>
-
-            <span class="round-attempt">
-              <% last_round = attempt.completed_rounds.order("id DESC").first %>
-              <%= last_round.formatted_time_spent if last_round.present? %>
-            </span>
-
-            <span class="level-attempt">
-              <% last_attempt = attempt.last_attempt_at %>
-              <%= "#{time_ago_in_words(last_attempt).gsub(/about\s+/, '')} ago" if last_attempt.present? %>
-            </span>
-
-          <% end %>
-
-        <% else %>
-          <span class="level-name"><%= level.number %></span>
-        <% end %>
-      </li>
-    <% end %>
-
-  </ul>
 
 </div>
