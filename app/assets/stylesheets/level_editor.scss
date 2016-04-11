@@ -10,11 +10,15 @@ body[data-controller="puzzles"][data-action="search"] {
   padding-right: 0;
 }
 
+.level-info {
+  @include clearfix;
+  margin: 50px 0;
+}
+
 .level-name {
   font-weight: bold;
   font-size: 18px;
-  text-align: center;
-  margin: 50px 0;
+  float: left;
 
   a {
     color: inherit;
@@ -23,14 +27,31 @@ body[data-controller="puzzles"][data-action="search"] {
 
 }
 
+.update-level-name {
+  display: inline-block;
+
+  input {
+    color: rgba(255,255,255,0.9);
+    font-size: 16px;
+    border: 0;
+    background: none;
+    outline: none;
+  }
+
+}
+
+.add-level {
+  float: right;
+}
+
 .add-level-id {
   display: block;
-  font-size: 16px;
+  font-size: 15px;
   font-family: "Open Sans";
   border: 0;
   border-radius: 1px;
   margin: 0 auto;
-  padding: 8px 18px;
+  padding: 7px 17px;
 }
 
 .puzzle-id {

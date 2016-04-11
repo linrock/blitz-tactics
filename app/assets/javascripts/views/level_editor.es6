@@ -8,8 +8,9 @@
 
     get events() {
       return {
-        "click .board"       : "_toggleSelection",
-        "submit .add-level"  : "_addLevel"
+        "click .board"               : "_toggleSelection",
+        "submit .update-level-name"  : "_updateLevelName",
+        "submit .add-level"          : "_addLevel"
       }
     }
 
@@ -18,6 +19,7 @@
         return
       }
       this.$addLevelInput = this.$(".add-level-id")
+      this.$levelNameInput = this.$(".update-level-name input")
       this.makeBoardsSortable()
       this.bindKeyboardEvents()
     }
@@ -72,6 +74,19 @@
     _toggleSelection(e) {
       let $board = $(e.currentTarget)
       $board.toggleClass("selected")
+    }
+
+    _updateLevelName(e) {
+      $.ajax({
+        url: `/${this.$el.data("slug")}`,
+        method: "PUT",
+        data: {
+          name: this.$levelNameInput.val()
+        },
+        success: () => {
+          console.log("name updated");
+        }
+      });
     }
 
     _addLevel(e) {

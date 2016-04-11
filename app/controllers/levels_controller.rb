@@ -28,10 +28,9 @@ class LevelsController < ApplicationController
 
   def update
     @level = Level.find_by(:slug => params[:level_slug])
-    if params[:puzzle_ids]
-      @level.puzzle_ids = params[:puzzle_ids]
-      @level.save!
-    end
+    @level.puzzle_ids = params[:puzzle_ids] if params[:puzzle_ids]
+    @level.name = params[:name] if params[:name]
+    @level.save!
     render :partial    => "puzzles/mini_view",
            :collection => @level.puzzles,
            :as         => :puzzle

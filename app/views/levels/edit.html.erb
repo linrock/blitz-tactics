@@ -2,13 +2,26 @@
 
 <div class="level-editor container" data-slug="<%= @level.slug %>">
 
-  <div class="level-name">
-    <a href="/<%= @level.slug %>" target="_blank"><%= @level.name %></a>
-  </div>
+  <header class="level-info">
 
-  <form class="add-level" data-remote="true">
-    <input type="text" placeholder="Add level #" class="add-level-id">
-  </form>
+    <div class="level-name">
+      <a href="/<%= @level.slug %>" target="_blank">
+        <%= @level.number %>
+      </a>
+
+      &ndash;
+
+      <form class="update-level-name" data-remote="true">
+        <input type="text" value="<%= @level.name %>" placeholder="no name">
+      </form>
+
+    </div>
+
+    <form class="add-level" data-remote="true">
+      <input type="text" placeholder="Add puzzle #" class="add-level-id">
+    </form>
+
+  </header>
 
   <div class="boards">
     <%= render :partial    => "puzzles/mini_view",

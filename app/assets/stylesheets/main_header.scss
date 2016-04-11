@@ -7,7 +7,7 @@ $header-height: 40px;
   height: $header-height;
   background: #121212;
   width: 100%;
-  @include clearfix;
+  overflow: hidden;
   @include transition(opacity 0.2s ease, background 0.2s ease);
 
   &.hidden {
