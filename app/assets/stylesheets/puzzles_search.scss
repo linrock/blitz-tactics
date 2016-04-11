@@ -1,5 +1,16 @@
 [data-controller="puzzles"][data-action="search"] {
 
+  .search-params {
+    margin: 30px 0;
+
+    .params {
+      margin-top: 10px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+    }
+
+  }
+
   .search-results {
     color: rgba(255,255,255,0.7);
     text-align: center;
@@ -7,8 +18,9 @@
     margin: 30px auto;
   }
 
-  .prev-next {
+  .search-paginator {
     text-align: center;
+    margin: 40px 0;
 
     a {
       border-radius: 99px;

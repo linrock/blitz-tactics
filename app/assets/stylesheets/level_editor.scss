@@ -68,8 +68,8 @@ body[data-controller="puzzles"][data-action="search"] {
 }
 
 .boards {
+  margin-bottom: 40px;
   @include clearfix;
-  margin: 40px 0 100px;
 
   .board {
     float: left;

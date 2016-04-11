@@ -2,26 +2,24 @@
 
 <div class="container">
 
-  <div class="level-name">
-    Puzzle search
+  <div class="search-params">
+    <h3>Puzzle search params:</h3>
+
+    <div class="params">
+      pieces, max_rating, min_attempts, min_votes
+    </div>
   </div>
 
   <div class="search-results"><%= @n_puzzles %> puzzles found</div>
 
-  <div class="prev-next">
-    <%= link_to_previous_page @puzzles, fa_icon("chevron-left"), :params => params %>
-
-    <div class="current-page">
-      Page <%= params[:page] || 1 %>
-    </div>
-
-    <%= link_to_next_page @puzzles, fa_icon("chevron-right"), :params => params %>
-  </div>
+  <%= render :partial => "puzzles/search_paginator" %>
 
   <div class="boards">
     <%= render :partial    => "puzzles/mini_view",
                :collection => @puzzles,
                :as         => :puzzle %>
   </div>
+
+  <%= render :partial => "puzzles/search_paginator" %>
 
 </div>
