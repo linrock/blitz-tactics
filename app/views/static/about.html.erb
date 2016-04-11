@@ -1,39 +1,56 @@
+<% content_for(:title) { "About" } %>
+
 <div class="about container">
 
-  <h3 class="question">What is this?</h3>
+  <div class="thinner">
 
-  <p class="answer">
-    A chess tactics trainer that helps you develop speed and accuracy in your game
-    by drilling tactical patterns into your brain. Hopefully while you're having fun.
-  </p>
+    <h3 class="question">What is Blitz Tactics?</h3>
 
-
-  <h3 class="question">Another tactics trainer?</h3>
-
-  <p class="answer">
-    Yep, one that emphasizes learning the solutions to puzzles, rather than just
-    testing your ability to solve puzzles. Pattern recognition makes a master.
-  </p>
+    <p class="answer">
+      A chess tactics trainer that emphasizes learning tactical patterns,
+      rather than just testing your ability to solve puzzles. Hopefully
+      in a way that's fun for you.
+    </p>
 
 
-  <h3 class="question">How does it work?</h3>
+    <h3 class="question">How does it work?</h3>
 
-  <p class="answer">
-    Each level is a set of 15-20 puzzles.
+    <p class="answer">
+      Each level is a set of 15-20 puzzles. You unlock the next level when
+      you can solve each puzzle quickly and without making any mistakes. The puzzles
+      in each level cycle indefinitely, so take as long as you need to learn them.
+    </p>
 
-    Spend as long as you want on each level, but you must be able to quickly solve
-    every puzzle without mistakes to unlock the next level.
-  </p>
+
+    <h3 class="question">How will this make me better at chess?</h3>
+
+    <p class="answer">
+      Improvement at chess involves (1) learning to recognize what to do in
+      specific positions and (2) having FUN while learning. Through repetition,
+      you learn patterns. Pattern recognition makes a master. Fun keeps you motivated.
+    </p>
 
 
-  <h3 class="question">Will this make me better at chess?</h3>
+    <h3 class="question">What's with the timer on the right of the board?</h3>
 
-  <p class="answer">
-    Yes. Unless you're already a master, in which case... maybe.
-  </p>
+    <p class="answer">
+      It times how you you take to make it through every puzzle in a level. As
+      you continue playing each level, you'll naturally become faster as you
+      learn the solutions to the puzzles. You can use it to measure your progress.
 
-  <div class="cta">
-    Anyways, enough questions! Go get started &mdash; <a href="/">Level 1</a>
+
+    <h3 class="question">I've got feedback or suggestions. How do I contact you?</h3>
+
+    <p class="answer">
+      Awesome! Send me an email at <a href="mailto:admin@blitztactics.com">admin@blitztactics.com</a>
+    </p>
+
+    <% if !current_user %>
+      <div class="cta">
+        Anyways, enough questions! Go get started &mdash; <a href="/">Level 1</a>
+      </div>
+    <% end %>
+
   </div>
 
 </div>
