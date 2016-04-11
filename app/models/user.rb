@@ -51,6 +51,9 @@ class User < ActiveRecord::Base
     unless username =~ /\A[a-z][a-z0-9_]{2,}\Z/
       errors.add :username, "must be at least 3 letters, numbers, or underscores"
     end
+    if username.length > 32
+      errors.add :username, "is too long"
+    end
   end
 
 end
