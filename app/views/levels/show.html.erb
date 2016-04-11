@@ -1,10 +1,7 @@
 <% content_for(:title) { @level.name } %>
 
-<%= render :partial => "layouts/main_header" %>
-
 <%= render :partial => "interface/main",
            :locals  => {
-             :title => @level.name,
              :round_times => @round_times
            } %>
 

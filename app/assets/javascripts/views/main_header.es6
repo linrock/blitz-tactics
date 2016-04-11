@@ -1,6 +1,6 @@
 {
 
-  // Main header with intro, progress bar, instructions
+  // Main header hides for logged-in users, and fades for logged out
   //
   class MainHeader extends Backbone.View {
 
@@ -10,16 +10,11 @@
 
     initialize() {
       this.listenTo(d, "puzzles:start", () => {
-        this.$el.attr("data-state", "progress")
-
-        if (this.$(".user-area.logged-in").length) {
-          this.$(".user-area.logged-in").fadeOut(100)
+        if (blitz.loggedIn) {
+          this.$el.addClass("hidden");
         } else {
-          this.$(".user-area").addClass("slight-fade")
+          this.$el.addClass("faded");
         }
-      })
-      this.listenTo(d, "level:unlocked", () => {
-        this.$el.attr("data-state", "next-stage")
       })
     }
 

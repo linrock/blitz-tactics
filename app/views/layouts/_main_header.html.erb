@@ -1,47 +1,24 @@
-<header class="main-header" data-state="intro">
+<header class="main-header">
 
-  <div class="sub-header intro">
-    <div class="container">
+  <div class="container">
 
-      <div class="left">
-        <h1 class="title">Blitz tactics</h1>
-        <h2 class="explanation">Solve puzzles quickly and accurately to unlock the next level</h2>
-      </div>
+    <a href="/" class="logo">
+      <%= fa_icon "bolt" %>
+      <span class="large">B</span>litz <span class="large">T</span>actics
+    </a>
 
-    </div>
-  </div>
+    <% if current_user %>
+      <a href="/levels" class="link-right user-name">
+        <%= current_user.username %>
+      </a>
+    <% else %>
+      <a href="<%= https_registration_url %>" class="link-right sign-in">
+        <%= fa_icon "sign-in" %> Sign up
+      </a>
+    <% end %>
 
-  <div class="sub-header progress-bar">
-    <div class="progress"></div>
-  </div>
+    <a href="/about" class="link-right about">About</a>
 
-  <div class="sub-header next-stage">
-    <div class="container">
-      <div class="left">You've unlocked the next level!</div>
-      <div class="right">
-        <a class="blue-button" href="javascript:">Next &raquo;</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="persistent user-area <% if current_user %>logged-in<% end %>">
-    <div class="container">
-      <div class="right">
-
-        <a href="/about">About</a>
-
-        <% if current_user %>
-          <div class="user-name">
-            <%= current_user.username %>
-          </div>
-        <% else %>
-          <a href="<%= new_user_registration_path %>" class="sign-in">
-            <%= fa_icon "sign-in" %> Sign up
-          </a>
-        <% end %>
-
-      </div>
-    </div>
   </div>
 
 </header>

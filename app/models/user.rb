@@ -3,11 +3,14 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable, :validatable,
   # :recoverable, and :omniauthable
 
-  devise :database_authenticatable, :registerable, :rememberable, :trackable
+  devise :database_authenticatable, :registerable, :rememberable, :trackable,
+         :validatable
 
   has_many :level_attempts
 
   after_initialize :set_default_profile
+
+  validate :validate_username
 
   def unlock_level(level_id)
     level_ids = Set.new(self.profile["levels_unlocked"])
@@ -33,8 +36,24 @@ class User < ActiveRecord::Base
 
   private
 
+  def email_required?
+    false
+  end
+
   def set_default_profile
     self.profile ||= { "levels_unlocked": [1] }
+  end
+
+  def validate_username
+    unless username =~ /\A[a-z]/
+      errors.add :username, "must start with a letter"
+    end
+    unless username =~ /\A[a-z][a-z0-9_]{2,}\Z/
+      errors.add :username, "must be at least 3 letters, numbers, or underscores"
+    end
+    if username.length > 32
+      errors.add :username, "is too long"
+    end
   end
 
 end

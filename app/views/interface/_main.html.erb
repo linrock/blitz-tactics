@@ -1,16 +1,25 @@
 <% round_times = local_assigns[:round_times] || [] %>
 
-<div class="move-indicator">
+<%= render :partial => "interface/progress_bar" %>
+
+<div class="above-board">
+
+  <div class="instructions">White to move</div>
+
+  <div class="puzzle-hint"></div>
+
   <div class="move-status">&nbsp;</div>
+
+  <div class="combo-counter invisible">
+    <span class="counter">&nbsp;</span>
+    <span class="combo-text">combo</span>
+  </div>
+
 </div>
 
 <div class="main">
 
-  <div class="instructions">White to move</div>
-
   <a href="/levels" class="level-selector">&lt;</a>
-
-  <label class="level"><%= title %></label>
 
   <div class="board-area">
     <%= render :partial => "interface/chessboard" %>
@@ -32,4 +41,35 @@
 
 </div>
 
-<%= render :partial => "interface/under_board" %>
+<div class="under-board">
+  <label class="level-name">
+    <% if @level %>
+      <%= @level.number %>
+      <% if @level.name %>
+        &mdash; <%= @level.name %>
+      <% end %>
+    <% elsif (title = local_assigns[:title]) %>
+      <%= title %>
+    <% end %>
+  </label>
+
+  <% if local_assigns[:onboarding] %>
+    <div class="onboarding">
+      Solve puzzles quickly and accurately to unlock the next level
+    </div>
+  <% end %>
+
+  <% if @level && @level.next_level %>
+    <div class="next-stage invisible container">
+      <div class="left">You've unlocked the next level!</div>
+      <div class="right">
+        <a class="blue-button" href="javascript:"><%= @level.next_level.number %> <%= fa_icon "angle-double-right" %></a>
+      </div>
+    </div>
+  <% end %>
+
+</div>
+
+<script>
+  blitz.loggedIn = <%= current_user ? true : false %>;
+</script>

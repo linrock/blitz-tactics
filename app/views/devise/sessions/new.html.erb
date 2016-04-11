@@ -1,33 +1,49 @@
 <% content_for(:title) { "Log in" } %>
 
-<div class="registration">
+<div class="container">
 
-  <h2>Log in</h2>
+  <div class="registration">
 
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <h2>Log in</h2>
 
-    <div class="field">
-      <%= f.label :username %>
-      <%= f.text_field :username, autofocus: true %>
-    </div>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
-    <div class="field">
-      <%= f.label :password %>
-      <%= f.password_field :password, autocomplete: "off" %>
-    </div>
-
-    <% if devise_mapping.rememberable? -%>
       <div class="field">
-        <%= f.hidden_field :remember_me, value: "1" %>
+        <%= f.label :username %>
+        <%= f.text_field :username, autofocus: true %>
       </div>
-    <% end -%>
 
-    <div class="actions">
-      <%= f.submit "Log in", class: "blue-button" %>
-    </div>
+      <div class="field">
+        <%= f.label :password %>
+        <%= f.password_field :password, autocomplete: "off" %>
+      </div>
 
-  <% end %>
+      <% if devise_mapping.rememberable? -%>
+        <div class="field">
+          <%= f.hidden_field :remember_me, value: "1" %>
+        </div>
+      <% end -%>
 
-  <%= render "devise/shared/links" %>
+      <div class="actions">
+        <%= f.submit "Log in", class: "blue-button" %>
+      </div>
+
+    <% end %>
+
+    <% flash.each do |key, value| %>
+      <% if key == "alert" %>
+        <div class="alert alert-<%= key %>">
+          <ul>
+            <li>
+              <%= value %>
+            </li>
+          </ul>
+        </div>
+      <% end %>
+    <% end %>
+
+    <%= render "devise/shared/links" %>
+
+  </div>
 
 </div>

@@ -1,173 +1,92 @@
 @import "bourbon";
-@import "_variables";
+
+$header-height: 40px;
 
 
 .main-header {
-  height: 70px;
+  height: $header-height;
+  background: #121212;
+  width: 100%;
   @include clearfix;
+  @include transition(opacity 0.2s ease, background 0.2s ease);
 
-  .left {
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.faded {
+    background: none;
+
+    .logo {
+      display: none;
+    }
+
+  }
+
+  &:hover {
+    transform: translate3d(0,0,0);
+  }
+
+  .logo {
+    color: #6D6D6D;
     float: left;
-  }
+    font-size: 12px;
+    font-weight: bold;
+    font-family: "Orbitron", sans-serif;
+    text-transform: uppercase;
+    line-height: $header-height + 2px;
+    letter-spacing: 1.5px;
 
-  .right {
-    float: right;
-  }
-
-  .sub-header {
-    position: absolute;
-    top: 0;
-    @include transition(opacity 0.15s ease);
-  }
-
-  &[data-state="intro"] {
-
-    .intro {
-      opacity: 1;
+    &:hover {
+      color: #ffe800;
     }
 
-    .progress-bar, .next-stage {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-  }
-
-  &[data-state="progress"] {
-
-    .progress-bar {
-      opacity: 1;
-    }
-
-    .intro, .next-stage {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-  }
-
-  &[data-state="next-stage"] {
-
-    .next-stage {
-      opacity: 1;
-    }
-
-    .intro, .progress-bar {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-  }
-
-
-  // Intro message that shows up on initial pageload
-  //
-  .intro {
-    width: 100%;
-    height: 70px;
-    background: #090909;
-    padding: 5px 0;
-
-    .title {
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 34px;
-      margin-top: 2px;
-      opacity: 0.9;
-      text-shadow: 0 0 1px rgba(255,255,255,0.3);
-    }
-
-    .explanation {
-      font-size: 13px;
-      opacity: 0.6;
-      text-shadow: 0 0 1px rgba(255,255,255,0.3);
-    }
-
-  }
-
-
-  // Progress bar that fills up as you get closer to the next level
-  //
-  .progress-bar {
-    width: 100%;
-    height: 5px;
-
-    .progress {
-      position: fixed;
-      background: yellow;
-      width: 0;
-      height: 5px;
-      z-index: 100;
-      @include transition(width 0.5s ease-in-out);
-    }
-
-  }
-
-
-  // Prompts you to go to the next level
-  //
-  .next-stage {
-    width: 100%;
-    height: 65px;
-    background: #090909;
-    padding: 5px 0;
-    z-index: 11;
-
-    .left {
-      font-size: 22px;
-      line-height: 55px;
-    }
-
-    .blue-button {
-      padding: 8px 26px 9px;
-      margin-top: 7px;
-      box-shadow: 0 0 4px rgba(0,0,0,0.2);
-    }
-
-  }
-
-
-  // Sign up OR user name if signed in
-  //
-  .user-area {
-    position: absolute;
-    z-index: 10;
-    line-height: 70px;
-    width: 100%;
-    color: rgba(255,255,255,0.6);
-
-    a {
-      color: inherit;
+    i {
       font-size: 15px;
-      text-decoration: none;
-      margin-left: 20px;
-      @include transition(color 0.15s ease);
-
-      &:hover {
-        color: rgba(255,255,255,1);
-      }
-    }
-
-    .sign-in {
-      margin-right: 1px;
-
-      i {
-        font-size: 13px;
-        margin-right: 3px;
-      }
-    }
-
-    .user-name {
-      margin-left: 20px;
-      display: inline-block;
-      font-size: 14px;
       margin-right: 5px;
     }
 
-    &.slight-fade {
-      color: rgba(255,255,255,0.4);
+    .large {
+      font-size: 16px;
     }
 
+  }
+
+  a {
+    color: #6D6D6D;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    @include transition(color 0.15s ease);
+
+    &:hover {
+      color: #e0e0e0;
+    }
+
+  }
+
+  .link-left {
+    float: left;
+    margin-left: 25px;
+    line-height: $header-height;
+  }
+
+  .link-right {
+    float: right;
+    margin-right: 3px;
+    margin-left: 25px;
+    line-height: $header-height;
+  }
+
+  .sign-in {
+    font-weight: bold;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .user-name {
+    font-weight: bold;
   }
 
 }

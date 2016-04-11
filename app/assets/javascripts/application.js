@@ -43,20 +43,25 @@ window.config = {
 //
 $(function() {
 
+  var initInterfaceBase = function() {
+    new Views.ComboCounter;
+    new Views.Chessboard;
+    new Views.Instructions;
+    new Views.MainHeader;
+    new Views.MoveStatus;
+    new Views.PiecePromotionModal;
+    new Views.PuzzleCounter;
+    new Views.PuzzleHint;
+  };
+
   var init = {
 
     "levels#show": function() {
-      new Views.ComboCounter;
-      new Views.Chessboard;
-      new Views.Instructions;
-      new Views.MainHeader;
-      new Views.MoveStatus;
-      new Views.PiecePromotionModal;
+      initInterfaceBase();
       new Views.ProgressBar;
-      new Views.PuzzleCounter;
-      new Views.PuzzleHint;
       new Views.Timer;
-      new Views.NextStageButton;
+      new Views.LevelIndicator;
+      new Views.Background;
 
       new Services.Puzzles;
       new Services.Notifier;
@@ -64,17 +69,12 @@ $(function() {
     },
 
     "home#index": function() {
-      new Views.ComboCounter;
-      new Views.Chessboard;
-      new Views.Instructions;
-      new Views.MainHeader;
-      new Views.MoveStatus;
-      new Views.PiecePromotionModal;
+      initInterfaceBase();
       new Views.ProgressBar;
-      new Views.PuzzleCounter;
-      new Views.PuzzleHint;
       new Views.Timer;
-      new Views.NextStageButton;
+      new Views.LevelIndicator;
+      new Views.Background;
+      new Views.Onboarding;
 
       new Services.Puzzles({ source: "/level-1" });
       new Services.Notifier;
@@ -86,14 +86,7 @@ $(function() {
     },
 
     "puzzles#show": function() {
-      new Views.ComboCounter;
-      new Views.Chessboard;
-      new Views.Instructions;
-      new Views.MainHeader;
-      new Views.MoveStatus;
-      new Views.PiecePromotionModal;
-      new Views.PuzzleCounter;
-      new Views.PuzzleHint;
+      initInterfaceBase();
 
       new Services.Puzzles;
     },

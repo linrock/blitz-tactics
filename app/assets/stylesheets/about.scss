@@ -2,9 +2,7 @@
 
 
 .about.container {
-
-  width: 480px;
-  margin: 60px auto;
+  margin: 45px auto 60px;
 
   a {
     color: inherit;
@@ -20,15 +18,29 @@
     }
   }
 
+  .thinner {
+    width: 420px;
+  }
+
   .question {
     font-weight: 600;
   }
 
   .answer {
-    color: rgba(255,255,255,0.6);
+    color: #878787;
     margin: 10px 0 35px;
     font-size: 14px;
     line-height: 22px;
+    letter-spacing: 0.2px;
+
+    a {
+      @include transition(color 0.12s ease);
+
+      &:hover {
+        color: rgba(255,255,255,0.8);
+      }
+    }
+
   }
 
   .cta {
