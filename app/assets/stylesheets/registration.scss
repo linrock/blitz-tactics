@@ -52,4 +52,21 @@
     margin-top: 60px;
   }
 
+  #error_explanation {
+    width: 500px;
+
+    h2 {
+      display: none;
+    }
+
+    li {
+      font-size: 15px;
+      margin: 10px 0;
+      color: #F954AE;
+      list-style-type: circle;
+      list-style-position: inside;
+    }
+
+  }
+
 }
