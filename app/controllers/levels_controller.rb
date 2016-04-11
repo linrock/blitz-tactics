@@ -16,8 +16,13 @@ class LevelsController < ApplicationController
   end
 
   def index
+    @unlocked = current_user&.unlocked_levels || []
     @levels = Level.all.order("id ASC")
-    @unlocked = current_user&.unlocked_levels
+    if @unlocked.size < 10
+      @levels = @levels.limit(20)
+    elsif @unlocked.size < 25
+      @levels = @levels.limit(35)
+    end
     @attempts = current_user&.level_attempts&.group_by(&:level_id) || {}
   end
 
