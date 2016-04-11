@@ -2,12 +2,12 @@
 
   <%- if controller_name != 'sessions' %>
     Have an account? &mdash;
-    <%= link_to "Log in", new_session_path(resource_name) %><br />
+    <%= link_to "Log in", https_login_url %><br />
   <% end -%>
 
   <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
     Don't have an account? &mdash;
-    <%= link_to "Sign up", new_registration_path(resource_name) %><br />
+    <%= link_to "Sign up", https_registration_url %><br />
   <% end -%>
 
   <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>

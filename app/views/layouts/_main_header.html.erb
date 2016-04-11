@@ -12,7 +12,7 @@
         <%= current_user.username %>
       </a>
     <% else %>
-      <a href="<%= new_user_registration_path %>" class="link-right sign-in">
+      <a href="<%= https_registration_url %>" class="link-right sign-in">
         <%= fa_icon "sign-in" %> Sign up
       </a>
     <% end %>
