@@ -30,6 +30,16 @@
 
     <% end %>
 
+    <% flash.each do |key, value| %>
+      <div class="alert alert-<%= key %>">
+        <ul>
+          <li>
+            <%= value %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
+
     <%= render "devise/shared/links" %>
 
   </div>
