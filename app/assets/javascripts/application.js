@@ -43,9 +43,23 @@ window.config = {
 //
 (function() {
 
-  var $viewport = $('meta[name="viewport"]');
-  if (navigator.userAgent.match(/iPhone/i)) {
+  var $viewport = $('meta[name="viewport"]'),
+      $w = $(window);
+
+  var isIphone = navigator.userAgent.match(/iPhone/i);
+
+  if (isIphone) {
     $viewport.attr("content", "width=500; user-scalable=no;");
+
+    $w.on('resize', function(e) {
+      var w = $w.width();
+      var h = $w.height();
+      if (w > h) {
+        $viewport.removeAttr("content");
+      } else {
+        $viewport.attr("content", "width=500; user-scalable=no;");
+      }
+    });
   }
 
 })();
