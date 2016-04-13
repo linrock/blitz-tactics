@@ -39,6 +39,18 @@ window.config = {
 })();
 
 
+// Set meta viewport
+//
+(function() {
+
+  var $viewport = $('meta[name="viewport"]');
+  if (navigator.userAgent.match(/iPhone/i)) {
+    $viewport.attr("content", "width=500; user-scalable=no;");
+  }
+
+})();
+
+
 // Initialize views depending on the page
 //
 $(function() {

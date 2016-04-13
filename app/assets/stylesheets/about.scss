@@ -54,3 +54,27 @@
   }
 
 }
+
+
+@media screen and (max-width: 500px) {
+
+  .about.container {
+    padding: 0 20px;
+
+    .thinner {
+      width: 100%;
+    }
+
+    .question {
+      font-size: 20px;
+      line-height: 30px;
+    }
+
+    .cta {
+      font-size: 24px;
+      line-height: 36px;
+    }
+
+  }
+
+}
