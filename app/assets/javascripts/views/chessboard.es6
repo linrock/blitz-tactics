@@ -9,6 +9,15 @@
     constructor(board) {
       this.board = board
       this.$buffer = $("<div>").addClass("piece-buffer")
+      this.initializeAllPieces()
+    }
+
+    initializeAllPieces() {
+      _.each(['w','b'], (color) => {
+        _.each('rnbqkbnrpppppppp'.split(''), (type) => {
+          this.$getPiece({ color: color, type: type })
+        })
+      })
     }
 
     reset() {
