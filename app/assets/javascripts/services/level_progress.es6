@@ -5,7 +5,7 @@
   class LevelProgress extends Backbone.Model {
 
     initialize() {
-      this.pzCounter = 0
+      this.puzzleCounter = 0
       this.n = 0
       this.unlocked = false
       this.listenForEvents()
@@ -16,7 +16,7 @@
         this.n = puzzles.length
       })
       this.listenTo(d, "puzzles:next", () => {
-        this.pzCounter += 1
+        this.puzzleCounter += 1
         if (!this.unlocked && this.nextStageUnlocked()) {
           this.unlocked = true
           d.trigger("level:complete", blitz.levelId)
@@ -31,7 +31,7 @@
     }
 
     checkProgress() {
-      let progress = ~~( 100 * this.pzCounter / this.n )
+      let progress = ~~( 100 * this.puzzleCounter / this.n )
       if (progress > 100) {
         progress = 100
       }
@@ -40,7 +40,7 @@
     }
 
     resetProgress() {
-      this.pzCounter = 0
+      this.puzzleCounter = 0
       d.trigger("progress:update", 0)
     }
 

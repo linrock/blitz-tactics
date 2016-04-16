@@ -1,6 +1,6 @@
 {
 
-  const responseDelay = 100
+  const responseDelay = 0
 
 
   let uciToMove = (uci) => {
@@ -100,12 +100,18 @@
       } else if (attempt[response] === "retry") {
         d.trigger("move:almost")
       } else {
-        setTimeout(() => {
-          let responseMove = uciToMove(response)
+        let responseMove = uciToMove(response)
+        if (responseDelay > 0) {
+          setTimeout(() => {
+            d.trigger("move:make", responseMove)
+            d.trigger("move:highlight", responseMove)
+            this.current.state = attempt[response]
+          }, responseDelay)
+        } else {
           d.trigger("move:make", responseMove)
           d.trigger("move:highlight", responseMove)
           this.current.state = attempt[response]
-        }, responseDelay)
+        }
       }
     }
 

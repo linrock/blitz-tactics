@@ -32,8 +32,6 @@
 
     listenToEvents() {
       this.listenTo(d, "move:promotion", (data) => {
-        console.log("attempted promotion")
-        console.dir(data)
         this.fen = data.fen
         this.moveIntent = data.move
         this.show()
