@@ -20,6 +20,8 @@
   }
 
 
+  const responseDelay = 100
+
   class Puzzles extends Backbone.Model {
 
     initialize(options = {}) {
@@ -47,7 +49,7 @@
     listenToEvents() {
       this.listenTo(d, "puzzles:fetched", _.bind(this.nextPuzzle, this))
       this.listenTo(d, "puzzles:next", _.bind(this.nextPuzzle, this))
-      this.listenTo(d, "move:try", _.bind(this.tryMove, this))
+      this.listenTo(d, "move:try", _.bind(this.tryUserMove, this))
     }
 
     nextPuzzle() {
@@ -71,37 +73,39 @@
       }, 500)
     }
 
-    tryMove(move) {
+    tryUserMove(move) {
       if (!this.started) {
         this.started = true
         d.trigger("puzzles:start")
       }
-      this.handleMove(move)
+      this.handleUserMove(move)
     }
 
-    handleMove(move) {
+    handleUserMove(move) {
       let attempt = this.current.state[moveToUci(move)]
       if (attempt === "win") {
         d.trigger("move:success")
         d.trigger("puzzles:next")
         return
+      }
+      let response = _.keys(attempt)[0]
+      if (!response) {
+        d.trigger("move:fail")
+        return
+      }
+      d.trigger("move:make", move)
+      d.trigger("move:success")
+      if (attempt[response] === "win") {
+        d.trigger("puzzles:next")
+      } else if (attempt[response] === "retry") {
+        d.trigger("move:almost")
       } else {
-        let response = _.keys(attempt)[0]
-        if (!response) {
-          d.trigger("move:fail")
-          return
-        }
-        d.trigger("move:make", move)
-        d.trigger("move:success")
-        if (attempt[response] === "win") {
-          d.trigger("puzzles:next")
-        } else if (attempt[response] === "retry") {
-          d.trigger("move:almost")
-        } else {
-          d.trigger("move:make", uciToMove(response))
-          d.trigger("move:highlight", uciToMove(response))
+        setTimeout(() => {
+          let responseMove = uciToMove(response)
+          d.trigger("move:make", responseMove)
+          d.trigger("move:highlight", responseMove)
           this.current.state = attempt[response]
-        }
+        }, responseDelay)
       }
     }
 
