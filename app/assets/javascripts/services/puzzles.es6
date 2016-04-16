@@ -1,5 +1,8 @@
 {
 
+  const responseDelay = 100
+
+
   let uciToMove = (uci) => {
     let m = {
       from: uci.slice(0,2),
@@ -18,9 +21,6 @@
       return `${move.from}${move.to}`
     }
   }
-
-
-  const responseDelay = 100
 
   class Puzzles extends Backbone.Model {
 

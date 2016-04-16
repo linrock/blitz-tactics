@@ -22,10 +22,12 @@
 
     show() {
       this.$el.show()
+      Mousetrap.bind("esc", _.bind(this.hide, this))
     }
 
     hide() {
       this.$el.hide()
+      Mousetrap.unbind("esc")
     }
 
     listenToEvents() {
