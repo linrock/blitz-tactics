@@ -60,12 +60,33 @@
   <% end %>
 
   <% if (next_level = @level&.next_level) %>
-    <div class="next-stage invisible container">
-      <div class="left">You've unlocked the next level!</div>
-      <div class="right">
-        <a class="blue-button" href="/<%= next_level.slug %>"><%= next_level.number %> <%= fa_icon "angle-double-right" %></a>
+    <% if !current_user && @level.id == 1 %>
+      <div class="next-stage invisible container anonymous">
+        <div class="left">
+          You've unlocked the next level!
+          <div class="small">
+            Sign up to save your progress, or continue to <%= next_level.number %>
+          </div>
+        </div>
+        <div class="right">
+          <a class="blue-button" href="<%= https_registration_url %>">
+            Sign up
+          </a>
+          <a class="blue-button" href="/<%= next_level.slug %>">
+            <%= next_level.number %> <%= fa_icon "angle-double-right" %>
+          </a>
+        </div>
       </div>
-    </div>
+    <% else %>
+      <div class="next-stage invisible container">
+        <div class="left">You've unlocked the next level!</div>
+        <div class="right">
+          <a class="blue-button" href="/<%= next_level.slug %>">
+            <%= next_level.number %> <%= fa_icon "angle-double-right" %>
+          </a>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 
 </div>

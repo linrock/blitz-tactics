@@ -435,6 +435,8 @@ body {
       font-size: 17px;
       font-weight: bold;
       padding: 8px 20px 8px;
+      height: 34px;
+      margin-left: 7px;
       box-shadow: 0 0 4px rgba(0,0,0,0.2);
       @include transition(background 0.12s ease);
 
@@ -442,6 +444,28 @@ body {
         font-size: 16px;
         position: relative;
         left: 6px;
+      }
+
+    }
+
+    &.anonymous {
+
+      .left {
+        display: block;
+        float: left;
+        text-align: left;
+
+        .small {
+          font-size: 14px;
+          margin-top: 7px;
+          color: rgba(255,255,255,0.7);
+        }
+
+      }
+
+      .right {
+        display: block;
+        float: right;
       }
 
     }
