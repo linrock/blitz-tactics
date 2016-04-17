@@ -34,6 +34,13 @@ class User < ActiveRecord::Base
     rounds.map(&:formatted_time_spent)
   end
 
+  def self.find_for_database_authentication(conditions)
+    if conditions.has_key?(:username)
+      username = conditions[:username].downcase
+      where("LOWER(username) = ?", username).first
+    end
+  end
+
   private
 
   def email_required?
@@ -53,6 +60,9 @@ class User < ActiveRecord::Base
     end
     if username.length > 32
       errors.add :username, "is too long"
+    end
+    if User.where("LOWER(username) = ?", username.downcase).count > 0
+      errors.add :username, "is already registered"
     end
   end
 
