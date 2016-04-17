@@ -15,7 +15,7 @@ class Level < ActiveRecord::Base
   end
 
   def next_level
-    Level.find(id + 1)
+    Level.find_by_id(id + 1)
   end
 
   def puzzles
