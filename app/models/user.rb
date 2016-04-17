@@ -61,6 +61,7 @@ class User < ActiveRecord::Base
     if username.length > 32
       errors.add :username, "is too long"
     end
+    return unless new_record?
     if User.where("LOWER(username) = ?", username.downcase).count > 0
       errors.add :username, "is already registered"
     end
