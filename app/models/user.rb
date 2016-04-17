@@ -45,10 +45,10 @@ class User < ActiveRecord::Base
   end
 
   def validate_username
-    unless username =~ /\A[a-z]/
+    unless username =~ /\A[a-z]/i
       errors.add :username, "must start with a letter"
     end
-    unless username =~ /\A[a-z][a-z0-9_]{2,}\Z/
+    unless username =~ /\A[a-z][a-z0-9_]{2,}\Z/i
       errors.add :username, "must be at least 3 letters, numbers, or underscores"
     end
     if username.length > 32
