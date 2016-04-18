@@ -19,12 +19,7 @@ class Level < ActiveRecord::Base
   end
 
   def puzzles
-    # TODO better way of ensuring order
-    pz = []
-    puzzle_ids.each do |id|
-      pz << LichessPuzzle.find(id)
-    end
-    pz
+    LichessPuzzle.find(puzzle_ids).index_by(&:id).values_at(*puzzle_ids)
   end
 
   # TODO better import/export system
