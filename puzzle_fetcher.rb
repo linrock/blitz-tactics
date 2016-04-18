@@ -8,23 +8,25 @@ class PuzzleFetcher
     "puzzles/#{puzzle_id}.json"
   end
 
-  def build_result
-    win = rand > 0.4 ? 1 : 0
-    time = (1000 + rand * 10000 + rand * 1000).to_i
-    %({"win": #{win}, "time": #{time}})
-  end
-
   def pause_briefly
     sleep (1+rand*5).to_i
+  end
+
+  def fetch_puzzle(puzzle_id, options = {})
+    cmd = %(curl -sL "http://en.lichess.org/training/#{puzzle_id}/load" -H "X-Requested-With: XMLHttpRequest")
+    if (output_file = options[:output_file])
+      %x(#{cmd} > #{output_file})
+    else
+      %x(#{cmd})
+    end
   end
 
   def run!
     @id_range.each do |id|
       output_file = puzzle_file(id)
       next if File.exists?(output_file)
-      result = build_result
-      puts "puzzle: #{id}, result: #{result}"
-      %x(curl -sL -X POST "http://en.lichess.org/training/#{id}/attempt" -H "Content-Type: application/json" -d '#{result}' > #{output_file})
+      puts "puzzle: #{id}"
+      fetch_puzzle(id, :output_file => output_file)
       pause_briefly
     end
   end
@@ -32,4 +34,4 @@ class PuzzleFetcher
 end
 
 
-PuzzleFetcher.new.run!
+# PuzzleFetcher.new.run!
