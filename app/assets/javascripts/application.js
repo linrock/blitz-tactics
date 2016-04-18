@@ -78,6 +78,8 @@ $(function() {
     new Views.PiecePromotionModal;
     new Views.PuzzleCounter;
     new Views.PuzzleHint;
+
+    new Services.SoundPlayer;
   };
 
   var init = {
