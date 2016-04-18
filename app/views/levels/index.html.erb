@@ -17,6 +17,12 @@
 
     </div>
 
+    <div class="headers">
+      <div class="level-row"></div>
+      <div class="header">Fastest</div>
+      <div class="header">Latest</div>
+    </div>
+
     <ul>
 
       <% @levels.each do |level| %>
@@ -25,6 +31,11 @@
             <a href="/<%= level.slug %>" class="level-name"><%= level.number %></a>
 
             <% if (attempt = @attempts[level.id]&.first) %>
+
+              <span class="round-attempt">
+                <% fastest_round = attempt.completed_rounds.sort_by(&:time_elapsed).first %>
+                <%= fastest_round.formatted_time_spent if fastest_round.present? %>
+              </span>
 
               <span class="round-attempt">
                 <% last_round = attempt.completed_rounds.order("id DESC").first %>

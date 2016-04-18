@@ -1,3 +1,6 @@
+@import "bourbon";
+
+
 .level-list {
   width: 400px;
   margin: 40px 0 60px;
@@ -24,6 +27,22 @@
 
   }
 
+  .headers {
+    @include clearfix;
+
+    margin-left: 100px;
+    margin-bottom: 10px;
+
+    .header {
+      font-size: 11px;
+      text-transform: uppercase;
+      float: left;
+      width: 65px;
+      color: rgba(128,128,128,0.7);
+    }
+
+  }
+
   .level-row {
     overflow: hidden;
   }
@@ -38,7 +57,7 @@
     float: left;
     font-size: 14px;
     margin-top: 1px;
-    width: 60px;
+    width: 65px;
   }
 
   .level-attempt {
@@ -51,7 +70,7 @@
 
 .description {
   color: rgba(255,255,255,0.8);
-  margin-bottom: 30px;
+  margin-bottom: 35px;
   font-size: 14px;
   line-height: 24px;
 
