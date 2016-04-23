@@ -87,6 +87,9 @@
         d.trigger("move:success")
         d.trigger("puzzles:next")
         return
+      } else if (attempt === "retry") {
+        d.trigger("move:almost")
+        return
       }
       let response = _.keys(attempt)[0]
       if (!response) {
@@ -97,8 +100,6 @@
       d.trigger("move:success")
       if (attempt[response] === "win") {
         d.trigger("puzzles:next")
-      } else if (attempt[response] === "retry") {
-        d.trigger("move:almost")
       } else {
         let responseMove = uciToMove(response)
         if (responseDelay > 0) {
