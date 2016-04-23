@@ -11,8 +11,17 @@
       return ".puzzle-hint"
     }
 
+    get events() {
+      return {
+        "mouseenter .hint-trigger" : "_showHint",
+        "touchstart .hint-trigger" : "_showHint"
+      }
+    }
+
     initialize() {
       this.timeout = false
+      this.$move = this.$(".move")
+      this.$button = this.$(".hint-trigger")
       this.listenForEvents()
     }
 
@@ -30,7 +39,9 @@
       if (this.timeout) {
         clearTimeout(this.timeout)
       }
-      this.$el.addClass("invisible").text("")
+      this.$el.addClass("invisible")
+      this.$button.hide()
+      this.$move.text("")
       this.timeout = setTimeout(() => {
         d.trigger("move:too_slow")
         setTimeout(() => {
@@ -46,7 +57,13 @@
           hints.push(move)
         }
       })
-      this.$el.removeClass("invisible").text(`Hint - ${_.sample(hints)}`)
+      this.$el.removeClass("invisible")
+      this.$button.fadeIn(80)
+      this.$move.text(_.sample(hints))
+    }
+
+    _showHint() {
+      this.$button.fadeOut(80)
     }
 
   }

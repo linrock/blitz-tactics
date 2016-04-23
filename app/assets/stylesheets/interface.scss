@@ -84,14 +84,12 @@ body {
 
     &.smaller {
       font-size: 22px;
-      top: 24px;
+      top: 20px;
     }
 
   }
 
   .puzzle-hint {
-    font-size: 14px;
-    color: rgba(255,255,255,0.5);
     text-align: center;
     margin: 0 auto;
     position: absolute;
@@ -99,6 +97,24 @@ body {
     width: 100%;
     padding-right: $sidebar-size + $sidebar-margin;
     @include transition(opacity 0.15s ease);
+
+    .hint-trigger {
+      background: #565656;
+      padding: 6px 14px 5px;
+      color: white;
+      display: inline-block;
+      position: relative;
+      top: -4px;
+      border-radius: 2px;
+      font-size: 12px;
+    }
+
+    .move {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      height: 0;
+    }
+
   }
 
   .move-status {
