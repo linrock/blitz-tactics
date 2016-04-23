@@ -107,6 +107,12 @@ body {
       top: -4px;
       border-radius: 2px;
       font-size: 12px;
+
+      &:hover {
+        cursor: pointer;
+        background: #676767;
+      }
+
     }
 
     .move {

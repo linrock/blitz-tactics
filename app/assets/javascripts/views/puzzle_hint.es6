@@ -13,7 +13,7 @@
 
     get events() {
       return {
-        "mouseenter .hint-trigger" : "_showHint",
+        "mousedown .hint-trigger" : "_showHint",
         "touchstart .hint-trigger" : "_showHint"
       }
     }
