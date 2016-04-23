@@ -19,6 +19,8 @@ body[data-controller="puzzles"][data-action="search"] {
   font-weight: bold;
   font-size: 18px;
   float: left;
+  position: relative;
+  top: -1px;
 
   a {
     color: inherit;
@@ -36,6 +38,7 @@ body[data-controller="puzzles"][data-action="search"] {
     border: 0;
     background: none;
     outline: none;
+    width: 350px;
   }
 
 }

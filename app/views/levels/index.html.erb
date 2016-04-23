@@ -28,7 +28,14 @@
       <% @levels.each do |level| %>
         <li class="level-row">
           <% if @unlocked.nil? || @unlocked.include?(level.id) %>
-            <a href="/<%= level.slug %>" class="level-name"><%= level.number %></a>
+            <a href="/<%= level.slug %>" class="level">
+              <%= level.number %>
+              <% if level.name %>
+                <span class="level-name">
+                  &ndash; <%= level.name %>
+                </span>
+              <% end %>
+            </a>
 
             <% if (attempt = @attempts[level.id]&.first) %>
 
@@ -50,7 +57,7 @@
             <% end %>
 
           <% else %>
-            <span class="level-name"><%= level.number %></span>
+            <span class="level"><%= level.number %></span>
           <% end %>
         </li>
       <% end %>
