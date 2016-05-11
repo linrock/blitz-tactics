@@ -311,6 +311,7 @@ body {
     height: $square-size;
     float: left;
     transition: background 0.1s ease-in-out;
+    position: relative;
     @include user-select(none);
 
     &.light {
@@ -337,6 +338,30 @@ body {
 
     }
 
+  }
+
+  .square-label {
+    position: absolute;
+    font-family: $combo-indicator-font;
+    font-size: 12px;
+
+    &.col {
+      right: 4px;
+      bottom: 2px;
+    }
+
+    &.row {
+      left: 3px;
+      top: 4px;
+    }
+
+    &.light {
+      color: rgb(206, 179, 162);
+    }
+
+    &.dark {
+      color: rgb(243, 228, 207);
+    }
   }
 
   .piece-buffer {
