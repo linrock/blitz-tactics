@@ -14,9 +14,13 @@
     opacity: 0.6;
   }
 
+  .scores {
+    margin-bottom: 80px;
+  }
+
   .user {
-    font-size: 18px;
-    padding: 6px 0;
+    font-size: 19px;
+    padding: 7px 0;
     @include clearfix;
 
     .username {
