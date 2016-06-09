@@ -11,8 +11,9 @@ Rails.application.routes.draw do
   get '/puzzles/:id'      => 'puzzles#show'
 
   get '/about'            => 'static#about'
-
   get '/levels'           => 'levels#index'
+  get '/scoreboard'       => 'scoreboard#index'
+
   get '/:level_slug'      => 'levels#show'
   get '/:level_slug/edit' => 'levels#edit'
   put '/:level_slug'      => 'levels#update'
