@@ -22,6 +22,18 @@
     }
   }
 
+  function shuffle(array) {
+    let counter = array.length
+    while (counter > 0) {
+      let index = Math.floor(Math.random() * counter)
+      counter--
+      let temp = array[counter]
+      array[counter] = array[index]
+      array[index] = temp
+    }
+    return array
+  }
+
   class Puzzles extends Backbone.Model {
 
     initialize(options = {}) {
@@ -52,6 +64,10 @@
       this.listenTo(d, "move:try", _.bind(this.tryUserMove, this))
     }
 
+    shufflePuzzles() {
+      this.puzzles = shuffle(this.puzzles)
+    }
+
     nextPuzzle() {
       this.current = {
         puzzle: this.puzzles[this.i],
@@ -59,6 +75,7 @@
       }
       d.trigger("puzzle:loaded", this.current)
       if (this.i + 1 === this.puzzles.length) {
+        this.shufflePuzzles()
         d.trigger("puzzles:lap")
       }
       this.i = (this.i + 1) % this.puzzles.length
