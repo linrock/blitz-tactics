@@ -27,6 +27,10 @@ class User < ActiveRecord::Base
     self.profile["levels_unlocked"].max
   end
 
+  def unlocked_sequential_levels?
+    unlocked_levels.size == highest_level_unlocked
+  end
+
   def unlocked_all_levels?
     highest_level_unlocked == 65
   end
