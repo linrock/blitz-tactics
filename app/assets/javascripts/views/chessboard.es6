@@ -162,8 +162,8 @@
       this.listenTo(d, "move:highlight", (move) => {
         this.clearHighlights()
         setTimeout(() => {
-          this.highlightSquare(move.from, "#fffcdd")
-          this.highlightSquare(move.to, "#fff79b")
+          this.highlightSquare(move.from, { className: "move-from" })
+          this.highlightSquare(move.to, { className: "move-to" })
         }, 10)
       })
     }
@@ -210,11 +210,14 @@
     }
 
     clearHighlights() {
-      this.$(".square.highlighted").removeClass("highlighted").css({ background: "" })
+      this.$(".square.highlighted").removeClass("highlighted move-from move-to")
     }
 
-    highlightSquare(id, color) {
-      this.$getSquare(id).addClass("highlighted").css({ background: color })
+    highlightSquare(id, options) {
+      if (!options.className) {
+        return
+      }
+      this.$getSquare(id).addClass(`highlighted ${options.className}`)
     }
 
     $getSquare(id) {

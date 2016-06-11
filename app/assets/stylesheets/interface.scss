@@ -326,6 +326,19 @@ body {
       background: #eeffff;
     }
 
+    // Light yellow highlight - rgba(255, 249, 214, 0.9)
+    &.highlighted {
+
+      &.move-from {
+        background: #fffcdd;
+      }
+
+      &.move-to {
+        background: #fff79b;
+      }
+
+    }
+
     .piece {
       width: 100%;
       height: 100%;
