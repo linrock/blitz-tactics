@@ -14,8 +14,10 @@ Rails.application.routes.draw do
   get '/levels'           => 'levels#index'
   get '/scoreboard'       => 'scoreboard#index'
 
-  get '/:level_slug'      => 'levels#show'
-  get '/:level_slug/edit' => 'levels#edit'
-  put '/:level_slug'      => 'levels#update'
+  get '/level-:level_num'      => 'levels#show'
+  get '/level-:level_num/edit' => 'levels#edit'
+  put '/level-:level_num'      => 'levels#update'
+
+  get '/:username'             => 'users#show'
 
 end
