@@ -27,6 +27,10 @@ class User < ActiveRecord::Base
     self.profile["levels_unlocked"].max
   end
 
+  def unlocked_all_levels?
+    highest_level_unlocked == 65
+  end
+
   def round_times_for_level(level_id)
     attempt = level_attempts.find_by_id(level_id)
     return [] unless attempt

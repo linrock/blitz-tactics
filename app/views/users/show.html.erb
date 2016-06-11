@@ -4,7 +4,9 @@
 
   <div class="container">
 
-    <h1 class="username"><%= @user.username %></h1>
+    <h1 class="username <% if @user.unlocked_all_levels? %>max-level<% end %>">
+      <%= @user.username %>
+    </h1>
 
     <div class="highest-level">
       Level <%= @user.highest_level_unlocked %>
