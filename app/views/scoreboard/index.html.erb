@@ -9,7 +9,9 @@
     <div class="scores">
       <% @ranked_users.each do |user| %>
         <div class="user">
-          <div class="username"><%= user.username %></div>
+          <div class="username">
+            <a href="/<%= user.username %>"><%= user.username %></a>
+          </div>
           <div class="max-level"><%= user.highest_level_unlocked %></div>
         </div>
       <% end %>
