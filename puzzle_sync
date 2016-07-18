@@ -1,3 +1,0 @@
-#!/bin/bash
-
-rsync -avzP rails@multisnakes:~/puzzles/*.json data/lichess/
