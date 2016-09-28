@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 
-gem 'rails', '4.2.6'
+gem 'rails', '4.2.7.1'
 gem 'pg', '~> 0.15'
 
 gem 'unicorn'
@@ -20,9 +20,6 @@ gem 'bourbon'
 
 gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
-
-# Use Unicorn as the app server
-# gem 'unicorn'
 
 group :development, :test do
   gem 'byebug'
