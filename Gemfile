@@ -6,7 +6,7 @@ gem 'pg', '~> 0.15'
 
 gem 'unicorn'
 
-gem 'devise'
+gem 'devise', '~> 3.5'
 gem 'kaminari'
 
 gem 'sass-rails', '~> 5.0'
