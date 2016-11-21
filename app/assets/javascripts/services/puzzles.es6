@@ -22,7 +22,8 @@
     }
   }
 
-  function shuffle(array) {
+  function shuffle(original) {
+    let array = original.slice(0)
     let counter = array.length
     while (counter > 0) {
       let index = Math.floor(Math.random() * counter)
@@ -65,7 +66,11 @@
     }
 
     shufflePuzzles() {
-      this.puzzles = shuffle(this.puzzles)
+      let shuffled = shuffle(this.puzzles)
+      while (shuffled[0].fen === this.puzzles[this.puzzles.length-1].fen) {
+        shuffled = shuffle(this.puzzles)
+      }
+      this.puzzles = shuffled
     }
 
     nextPuzzle() {
