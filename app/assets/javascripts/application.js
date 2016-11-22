@@ -15,6 +15,7 @@
 window.Views = {};
 window.Models = {};
 window.Services = {};
+window.Experiments = {};
 
 window.d = _.clone(Backbone.Events);
 window.blitz = {};
@@ -118,6 +119,12 @@ $(function() {
 
       new Services.Puzzles;
     },
+
+    "experiments#position_trainer": function() {
+      initInterfaceBase();
+
+      new Experiments.PositionTrainer();
+    }
 
   };
 

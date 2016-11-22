@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   post '/api/levels/:id/attempt'  => 'api/levels#attempt'
   post '/api/levels/:id/complete' => 'api/levels#complete'
 
+  get 'position_trainer'  => 'experiments#position_trainer'
+
   get '/puzzles/search'   => 'puzzles#search'
   get '/puzzles/:id'      => 'puzzles#show'
 

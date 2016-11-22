@@ -95,6 +95,6 @@
 </div>
 
 <script>
-  blitz.levelId = <%= @level&.id %>;
+  blitz.levelId = <%= @level&.id || false %>;
   blitz.loggedIn = <%= current_user ? true : false %>;
 </script>
