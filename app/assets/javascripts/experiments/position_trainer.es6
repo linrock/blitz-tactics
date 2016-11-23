@@ -15,10 +15,14 @@
   class PositionTrainer {
 
     constructor() {
-      let initialFen = "8/8/8/p7/6p1/2N4k/5p1P/6K1 w - -"
       this.setDebugHelpers()
       this.listenForEvents()
-      setFen(initialFen)
+      setFen(this.initialFen())
+    }
+
+    initialFen() {
+      let startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      return decodeURIComponent(window.location.hash.replace("#","")) || startPosition
     }
 
     setDebugHelpers() {
@@ -40,6 +44,7 @@
 
       d.on("move:try", (move) => {
         d.trigger("move:make", move)
+        d.trigger("move:highlight", move)
       })
 
       d.on("analysis:done", (data) => {

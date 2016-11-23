@@ -121,7 +121,10 @@ $(function() {
     },
 
     "experiments#position_trainer": function() {
-      initInterfaceBase();
+      new Views.Chessboard;
+      new Views.MainHeader;
+      new Views.MoveStatus;
+      new Views.PiecePromotionModal;
 
       new Experiments.PositionTrainer();
     }
