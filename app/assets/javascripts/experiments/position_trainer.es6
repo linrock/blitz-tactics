@@ -1,13 +1,27 @@
 {
 
+  let uciToMove = (uci) => {
+    let m = {
+      from: uci.slice(0,2),
+      to: uci.slice(2,4)
+    }
+    if (uci.length === 5) {
+      m.promotion = uci[4]
+    }
+    return m
+  }
+
+
   class PositionTrainer {
 
     constructor() {
-      d.trigger("fen:set", "8/8/8/p7/6p1/2N4k/5p1P/6K1 w - -")
+      let initialFen = "8/8/8/p7/6p1/2N4k/5p1P/6K1 w - -"
+      this.setDebugHelpers()
+      this.listenForEvents()
+      setFen(initialFen)
+    }
 
-      let engine = new StockfishEngine({ multipv: 1 })
-      engine.analyze('8/8/8/p7/6p1/2N4k/5p1P/6K1 w - -')
-
+    setDebugHelpers() {
       window.setFen = (fen) => {
         d.trigger("fen:set", fen)
       }
@@ -17,6 +31,24 @@
       }
     }
 
+    listenForEvents() {
+      let engine = new StockfishEngine({ multipv: 1 })
+
+      d.on("fen:set", (fen) => {
+        engine.analyze(fen)
+      })
+
+      d.on("move:try", (move) => {
+        d.trigger("move:make", move)
+      })
+
+      d.on("analysis:done", (data) => {
+        console.dir(data)
+        if (data.fen.indexOf(" b ") > 0) {
+          d.trigger("move:try", uciToMove(data.eval.best))
+        }
+      })
+    }
   }
 
 
@@ -56,7 +88,10 @@
 
       let done = (state) => {
         console.log("time elapsed: " + (Date.now() - start))
-        console.dir(state)
+        d.trigger("analysis:done", {
+          fen: fen,
+          eval: state.eval
+        })
         this.stockfish.removeEventListener('message', processOutput)
       }
 
