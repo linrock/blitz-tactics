@@ -1,6 +1,19 @@
 <% content_for(:title) { "Position trainer" } %>
 
-<%= render :partial => "interface/main",
-           :locals  => {
-             :title => "Position trainer"
-           } %>
+<div class="position-trainer">
+
+  <div class="instructions">
+    White to move
+    <% if params[:goal] == "win" %>
+      and win
+    <% elsif params[:goal] == "draw" %>
+      and draw
+    <% end %>
+  </div>
+
+  <div class="board-area">
+    <%= render :partial => "interface/chessboard" %>
+    <%= render :partial => "interface/piece_promotion_modal" %>
+  </div>
+
+</div>

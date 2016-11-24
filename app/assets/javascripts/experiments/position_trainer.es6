@@ -12,17 +12,49 @@
   }
 
 
+  let getQueryParam = (param) => {
+    let query = window.location.search.substring(1);
+    let vars = query.split('&');
+    for (let i = 0; i < vars.length; i++) {
+      let pair = vars[i].split('=');
+      if (decodeURIComponent(pair[0]) === param) {
+        return decodeURIComponent(pair[1]);
+      }
+    }
+  }
+
+  class Instructions extends Backbone.View {
+
+    get el() {
+      return $(".instructions")
+    }
+
+    initialize() {
+      this.listenForEvents()
+    }
+
+    listenForEvents() {
+      this.listenTo(d, "move:try", () => {
+        this.$el.addClass("invisible")
+      })
+    }
+
+  }
+
+
   class PositionTrainer {
 
     constructor() {
+      this.depth = getQueryParam("depth") || 6
       this.setDebugHelpers()
       this.listenForEvents()
       setFen(this.initialFen())
+      new Instructions()
     }
 
     initialFen() {
-      let startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-      return decodeURIComponent(window.location.hash.replace("#","")) || startPosition
+      let fen = decodeURIComponent(getQueryParam("fen")) || startPosition
+      return fen.length === 4 ? `${fen} - -` : fen
     }
 
     setDebugHelpers() {
@@ -39,7 +71,7 @@
       let engine = new StockfishEngine({ multipv: 1 })
 
       d.on("fen:set", (fen) => {
-        engine.analyze(fen)
+        engine.analyze(fen, { depth: this.depth })
       })
 
       d.on("move:try", (move) => {
@@ -70,17 +102,17 @@
         this.stockfish.postMessage('setoption name MultiPV value ' + this.multipv)
       }
       this.stockfish.postMessage('uci')
-      this.initLogger()
+      this.debugMessages()
     }
 
-    initLogger() {
+    debugMessages() {
       this.stockfish.addEventListener('message', (e) => {
         console.log(e.data)
       })
     }
 
     analyze(fen, options = {}) {
-      let targetDepth = options.depth || 10
+      let targetDepth = +options.depth || 10
       this.stockfish.postMessage('position fen ' + fen)
       this.emitEvaluationWhenDone(fen, targetDepth)
       this.stockfish.postMessage('go depth ' + targetDepth)

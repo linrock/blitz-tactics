@@ -1,0 +1,32 @@
+@import "_variables";
+
+
+[data-controller="experiments"][data-action="position_trainer"] {
+  .container {
+    padding-right: 0;
+  }
+}
+
+.position-trainer {
+  margin: 0 auto;
+  width: $board-size;
+  overflow: hidden;
+
+  .instructions {
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(0,0,0,0.9);
+    text-align: center;
+    margin: 40px auto;
+    font-size: 25px;
+    transition: all 0.35s ease-out;
+  }
+
+  .board-area {
+    float: none;
+  }
+
+  .chessboard {
+    margin: 0;
+  }
+
+}
