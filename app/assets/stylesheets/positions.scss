@@ -1,12 +1,17 @@
 .positions-index {
   padding-right: 0;
-
-  .thinner {
-    margin: 50px 0;
-  }
+  margin: 50px auto;
 
   h2 {
     margin-bottom: 5px;
+  }
+
+  .description {
+    color: #B5B5B5;
+  }
+
+  .examples {
+    overflow: hidden;
   }
 
   .position-board {
@@ -27,6 +32,10 @@
 
   .mini-chessboard {
     margin: 15px;
+  }
+
+  .new-position {
+    margin-top: 50px;
   }
 
 }

@@ -2,21 +2,42 @@
 
 <div class="positions-index container">
 
-  <div class="thinner">
+  <h2>Position Trainer</h2>
 
-    <h2>Position Trainer</h2>
+  <p class="description">
+    Click one of these positions to go and train yourself at playing it correctly!
+  </p>
+
+  <div class="examples">
+    <%= linked_miniboard "Lucena position", "3K4/3P1k2/8/8/8/8/4R3/2r5 w - -" %>
+    <%= linked_miniboard "Philidor position", "6R1/4k2r/8/3KP3/8/8/8/8 b - -", "draw" %>
+    <%= linked_miniboard "Saavedra position", "8/8/1KP5/3r4/8/8/8/k7 w - -", 10 %>
+
+    <%= linked_miniboard "KBB vs K checkmate", "8/8/4k3/8/8/2K2B2/5B2/8 w - - 0 1" %>
+    <%= linked_miniboard "KBN vs K checkmate", "4k3/8/8/8/8/8/8/4KBN1 w - -" %>
+    <%= linked_miniboard "KQ vs KR checkmate", "8/3k4/4r3/8/8/1Q6/3K4/8 w - -" %>
+
+    <%= linked_miniboard "Distant opposition", "8/8/4k3/8/8/8/3KP3/8 b - -", "draw", 10 %>
+    <%= linked_miniboard "Triangulation", "8/1p1k4/1P6/2PK4/8/8/8/8 w - -" %>
+    <%= linked_miniboard "Reti's idea", "7K/8/k1P5/7p/8/8/8/8 w - -", "draw" %>
+  </div>
+
+  <div class="new-position">
 
     <p class="description">
-      Click one of these positions to go and train yourself at playing it correctly!
+      Or set up your own position from a FEN string and save the url to share it <br>
+      You can use this <a href="https://en.lichess.org/editor/8/8/8/8/8/8/8/8_w_-_-" target="_blank">board editor</a>
+      to set up a position
+
+      <form action="/position" method="GET">
+        <input type="text" name="fen" value="" placeholder="FEN">
+        <select name="goal">
+          <option name="win">Win</option>
+          <option name="draw">Draw</option>
+        </select>
+        <input type="submit" value="Set up position">
+      </form>
     </p>
-
-    <%= linked_miniboard "Lucena position", "3K4/3P1k2/8/8/8/8/4R3/2r5 w - -" %>
-    <%= linked_miniboard "Philidor position", "6R1/4k2r/8/3KP3/8/8/8/8 b - -" %>
-    <%= linked_miniboard "Saavedra position", "8/8/1KP5/3r4/8/8/8/k7 w - -" %>
-
-    <%= linked_miniboard "Reti endgame study", "7K/8/k1P5/7p/8/8/8/8 w - -" %>
-    <%= linked_miniboard "KBB vs K endgame", "8/8/4k3/8/8/2K2B2/5B2/8 w - - 0 1" %>
-    <%= linked_miniboard "Winning endgame", "8/8/1p6/p1p5/P1P5/1P4k1/2K5/8 b - -" %>
 
   </div>
 

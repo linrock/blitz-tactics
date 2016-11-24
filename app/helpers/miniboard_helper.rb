@@ -1,13 +1,15 @@
 module MiniboardHelper
 
-  def linked_miniboard(title, fen)
+  def linked_miniboard(title, fen, goal = "win", depth = nil)
     options = {
       :fen => fen,
-      :flip => fen.include?(" b ")
+      :flip => fen.include?(" b "),
     }
+    link = "/position?goal=#{goal}&fen=#{fen}"
+    link = "#{link}&depth=#{depth}" if depth
     %(
       <div class="position-board">
-        <a href="/position?goal=win&fen=#{fen}">
+        <a href="#{link}">
           #{render :partial => "static/mini_board", :locals => options}
           #{title}
         </a>
