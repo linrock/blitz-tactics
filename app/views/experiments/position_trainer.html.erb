@@ -2,18 +2,15 @@
 
 <div class="position-trainer">
 
-  <div class="instructions">
-    White to move
-    <% if params[:goal] == "win" %>
-      and win
-    <% elsif params[:goal] == "draw" %>
-      and draw
-    <% end %>
-  </div>
+  <div class="instructions invisible"></div>
 
   <div class="board-area">
     <%= render :partial => "interface/chessboard" %>
     <%= render :partial => "interface/piece_promotion_modal" %>
+  </div>
+
+  <div class="actions">
+    <button class="button restart">Reset position</button>
   </div>
 
 </div>

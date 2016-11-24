@@ -29,4 +29,28 @@
     margin: 0;
   }
 
+  .actions {
+    margin-top: 30px;
+    text-align: center;
+
+    .button {
+      font-size: 16px;
+      padding: 8px 20px;
+      border: 0;
+      border-radius: 3px;
+      background: black;
+      color: white;
+      display: inline-block;
+      font-family: "Open Sans", Helvetica, sans-serif;
+      text-decoration: none;
+      transition: opacity 0.25s ease;
+
+      &:hover {
+        background: #51B7FF;
+        cursor: pointer;
+      }
+    }
+
+  }
+
 }

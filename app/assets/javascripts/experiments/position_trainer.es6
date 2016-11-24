@@ -1,5 +1,7 @@
 {
 
+  const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
   let uciToMove = (uci) => {
     let m = {
       from: uci.slice(0,2),
@@ -23,37 +25,117 @@
     }
   }
 
+
+  document.addEventListener('paste', function(e) {
+    var text = (e.originalEvent || e).clipboardData.getData('text/plain')
+    console.log('pasted: ' + text)
+  })
+
+
   class Instructions extends Backbone.View {
 
     get el() {
-      return $(".instructions")
+      return ".instructions"
     }
 
     initialize() {
+      this.showInstructions()
       this.listenForEvents()
     }
 
+    get initialFen() {
+      let fen = getQueryParam("fen") || START_FEN
+      return fen.length === 4 ? `${fen} - -` : fen
+    }
+
+    get toMove() {
+      return this.initialFen.indexOf("w") > 0 ? "White" : "Black"
+    }
+
+    get goal() {
+      return getQueryParam("goal")
+    }
+
+    get instructions() {
+      if (this.goal === "win") {
+        return this.toMove + " to play and win"
+      } else if (this.goal === "draw") {
+        return this.toMove + " to play and draw"
+      }
+      return this.toMove + " to move"
+    }
+
+    showInstructions() {
+      this.$el.text(this.instructions)
+      setTimeout(() => this.$el.removeClass("invisible"), 700)
+    }
+
+    gameOverMan(result) {
+      let text
+      if (this.toMove === "White" && this.goal === "win") {
+        text = result === "1-0" ? "You win" : "You failed :("
+      }
+        text = "You win"
+      } else if (this.toMove === "White" && this.goal === "draw" && result === "1/2-1/2") {
+        text = "Success!"
+      } else {
+        text = "Game over"
+      }
+      this.$el.text(text)
+      this.$el.removeClass("invisible")
+    }
+
     listenForEvents() {
+      this.listenTo(d, "position:reset", () => {
+        this.showInstructions()
+      })
+      this.listenTo(d, "game:over", (result) => {
+        this.gameOverMan(result)
+      })
       this.listenTo(d, "move:try", () => {
         this.$el.addClass("invisible")
       })
+    }
+  }
+
+
+  class Actions extends Backbone.View {
+
+    get el() {
+      return ".actions"
+    }
+
+    get events() {
+      return {
+        "click .restart" : "_resetPosition"
+      }
+    }
+
+    initialize() {
+
+    }
+
+    _resetPosition() {
+      d.trigger("position:reset")
     }
 
   }
 
 
-  class PositionTrainer {
+  class PositionTrainer extends Backbone.View {
 
-    constructor() {
+    initialize() {
       this.depth = getQueryParam("depth") || 6
+      this.engine = new StockfishEngine({ multipv: 1 })
       this.setDebugHelpers()
       this.listenForEvents()
-      setFen(this.initialFen())
+      setFen(this.initialFen)
       new Instructions()
+      new Actions()
     }
 
-    initialFen() {
-      let fen = decodeURIComponent(getQueryParam("fen")) || startPosition
+    get initialFen() {
+      let fen = getQueryParam("fen") || START_FEN
       return fen.length === 4 ? `${fen} - -` : fen
     }
 
@@ -63,29 +145,50 @@
       }
 
       window.analyzeFen = (fen, depth) => {
-        engine.analyze(fen, { depth: depth })
+        this.engine.analyze(fen, { depth: depth })
       }
     }
 
     listenForEvents() {
-      let engine = new StockfishEngine({ multipv: 1 })
-
-      d.on("fen:set", (fen) => {
-        engine.analyze(fen, { depth: this.depth })
+      this.listenTo(d, "position:reset", () => {
+        d.trigger("fen:set", this.initialFen)
       })
 
-      d.on("move:try", (move) => {
+      this.listenTo(d, "fen:set", (fen) => {
+        this.engine.analyze(fen, { depth: this.depth })
+        this.notifyIfGameOver(fen)
+      })
+
+      this.listenTo(d, "move:try", (move) => {
         d.trigger("move:make", move)
         d.trigger("move:highlight", move)
       })
 
-      d.on("analysis:done", (data) => {
+      this.listenTo(d, "analysis:done", (data) => {
         console.dir(data)
         if (data.fen.indexOf(" b ") > 0) {
           d.trigger("move:try", uciToMove(data.eval.best))
         }
       })
     }
+
+    notifyIfGameOver(fen) {
+      let c = new Chess
+      c.load(fen)
+      if (!c.game_over()) {
+        return
+      }
+      let result
+      if (c.in_draw()) {
+        result = "1/2-1/2"
+      } else if (c.turn() === "b") {
+        result = "1-0"
+      } else {
+        result = "0-1"
+      }
+      setTimeout(() => { d.trigger("game:over", result) }, 500)
+    }
+
   }
 
 
