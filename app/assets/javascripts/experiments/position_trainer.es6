@@ -1,6 +1,6 @@
 {
 
-  const SEARCH_DEPTH = 6
+  const SEARCH_DEPTH = 7
   const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 
@@ -75,8 +75,8 @@
     gameOverMan(result) {
       let text
       if (this.goal === "win") {
-        if ((this.toMove === "white" && result === "1-0") ||
-            (this.toMove === "black" && result === "0-1")) {
+        if ((this.toMove === "White" && result === "1-0") ||
+            (this.toMove === "Black" && result === "0-1")) {
           text = "You win"
         } else {
           text = "You failed :("
