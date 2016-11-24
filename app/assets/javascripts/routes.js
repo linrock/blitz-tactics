@@ -2,20 +2,7 @@
 //
 $(function() {
 
-  var initInterfaceBase = function() {
-    new Views.ComboCounter;
-    new Views.Chessboard;
-    new Views.Instructions;
-    new Views.MainHeader;
-    new Views.MoveStatus;
-    new Views.PiecePromotionModal;
-    new Views.PuzzleCounter;
-    new Views.PuzzleHint;
-
-    new Services.SoundPlayer;
-  };
-
-  var init = {
+  var routes = {
 
     "levels#show": function() {
       initInterfaceBase();
@@ -63,11 +50,24 @@ $(function() {
 
   };
 
+  var initInterfaceBase = function() {
+    new Views.ComboCounter;
+    new Views.Chessboard;
+    new Views.Instructions;
+    new Views.MainHeader;
+    new Views.MoveStatus;
+    new Views.PiecePromotionModal;
+    new Views.PuzzleCounter;
+    new Views.PuzzleHint;
+
+    new Services.SoundPlayer;
+  };
+
 
   var pageKey = $("body").data("controller") + "#" + $("body").data("action");
 
-  if (typeof init[pageKey] === "function") {
-    init[pageKey]();
+  if (typeof routes[pageKey] === "function") {
+    routes[pageKey]();
   }
 
 });

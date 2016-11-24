@@ -74,9 +74,14 @@
 
     gameOverMan(result) {
       let text
-      if (this.toMove === "White" && this.goal === "win") {
-        text = (result === "1-0") ? "You win" : "You failed :("
-      } else if (this.toMove === "White" && this.goal === "draw" && result === "1/2-1/2") {
+      if (this.goal === "win") {
+        if ((this.toMove === "white" && result === "1-0") ||
+            (this.toMove === "black" && result === "0-1")) {
+          text = "You win"
+        } else {
+          text = "You failed :("
+        }
+      } else if (this.goal === "draw" && result === "1/2-1/2") {
         text = "Success!"
       } else {
         text = "Game over"
@@ -130,6 +135,9 @@
       this.setDebugHelpers()
       this.listenForEvents()
       setFen(this.initialFen)
+      if (this.computerColor === "w") {
+        d.trigger("board:flip")
+      }
       new Instructions()
       new Actions()
     }
@@ -137,6 +145,10 @@
     get initialFen() {
       let fen = getQueryParam("fen") || START_FEN
       return fen.length === 4 ? `${fen} - -` : fen
+    }
+
+    get computerColor() {
+      return this.initialFen.indexOf("w") > 0 ? "b" : "w"
     }
 
     setDebugHelpers() {
@@ -147,6 +159,10 @@
       window.analyzeFen = (fen, depth) => {
         this.engine.analyze(fen, { depth: depth })
       }
+    }
+
+    isComputersTurn(fen) {
+      return fen.indexOf(` ${this.computerColor} `) > 0
     }
 
     listenForEvents() {
@@ -166,7 +182,7 @@
 
       this.listenTo(d, "analysis:done", (data) => {
         console.dir(data)
-        if (data.fen.indexOf(" b ") > 0) {
+        if (this.isComputersTurn(data.fen)) {
           d.trigger("move:try", uciToMove(data.eval.best))
         }
       })
@@ -235,8 +251,9 @@
         this.stockfish.removeEventListener('message', processOutput)
       }
 
+      // Modified from lila/ui/analyse/src/ceval/stockfishProtocol.js
+      //
       let state
-
       let processOutput = (e) => {
         if (e.data.indexOf('bestmove ') === 0) {
           return

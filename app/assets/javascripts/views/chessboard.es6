@@ -56,7 +56,7 @@
     }
 
     initDraggable() {
-      this.board.$(".piece:not(.ui-draggable):not(.b)").draggable({
+      this.board.$(".piece:not(.ui-draggable)").draggable({
         stack: ".piece",
         distance: 10,
         revert: true,
@@ -159,6 +159,9 @@
         c.move(move)
         d.trigger("fen:set", c.fen())
       })
+      this.listenTo(d, "board:flip", () => {
+        this.flipBoard()
+      })
       this.listenTo(d, "move:highlight", (move) => {
         this.clearHighlights()
         setTimeout(() => {
@@ -207,6 +210,10 @@
 
     animating() {
       return !!this.$el.find(".piece:animated").length
+    }
+
+    flipBoard() {
+      this.$(".square").each((i,sq) => { $(sq).prependTo(this.$el) })
     }
 
     clearHighlights() {

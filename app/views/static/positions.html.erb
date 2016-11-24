@@ -4,10 +4,10 @@
 
   <div class="thinner">
 
-    <h2>Positions trainer</h2>
+    <h2>Position Trainer</h2>
 
     <p class="description">
-      Choose one of these positions to play against the computer and achieve your goal.
+      Click one of these positions to go and train yourself at it!
     </p>
 
     <div class="position-board">
@@ -22,7 +22,7 @@
     <div class="position-board">
       <a href="/position?goal=win&fen=6R1/4k2r/8/3KP3/8/8/8/8 b - -">
         <%= render :partial => "static/mini_board",
-                   :locals => { :fen => "6R1/4k2r/8/3KP3/8/8/8/8 b - -" } %>
+                   :locals => { :fen => "6R1/4k2r/8/3KP3/8/8/8/8 b - -", :flip => true } %>
 
         Philidor Position
       </a>
