@@ -1,0 +1,42 @@
+<% content_for(:title) { "Positions Trainer" } %>
+
+<div class="positions-index container">
+
+  <div class="thinner">
+
+    <h2>Positions trainer</h2>
+
+    <p class="description">
+      Choose one of these positions to play against the computer and achieve your goal.
+    </p>
+
+    <div class="position-board">
+      <a href="/position?goal=win&fen=3K4/3P1k2/8/8/8/8/4R3/2r5 w - -">
+        <%= render :partial => "static/mini_board",
+                   :locals => { :fen => "3K4/3P1k2/8/8/8/8/4R3/2r5 w - -" } %>
+
+        Lucena Position
+      </a>
+    </div>
+
+    <div class="position-board">
+      <a href="/position?goal=win&fen=6R1/4k2r/8/3KP3/8/8/8/8 b - -">
+        <%= render :partial => "static/mini_board",
+                   :locals => { :fen => "6R1/4k2r/8/3KP3/8/8/8/8 b - -" } %>
+
+        Philidor Position
+      </a>
+    </div>
+
+    <div class="position-board">
+      <a href="/position?goal=win&fen=8/8/4k3/8/8/2K2B2/5B2/8 w - - 0 1">
+        <%= render :partial => "static/mini_board",
+                   :locals => { :fen => "8/8/4k3/8/8/2K2B2/5B2/8 w - - 0 1" } %>
+
+        KBB vs K endgame
+      </a>
+    </div>
+
+  </div>
+
+</div>

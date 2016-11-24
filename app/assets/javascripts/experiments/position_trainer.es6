@@ -1,6 +1,8 @@
 {
 
+  const SEARCH_DEPTH = 6
   const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
 
   let uciToMove = (uci) => {
     let m = {
@@ -73,9 +75,7 @@
     gameOverMan(result) {
       let text
       if (this.toMove === "White" && this.goal === "win") {
-        text = result === "1-0" ? "You win" : "You failed :("
-      }
-        text = "You win"
+        text = (result === "1-0") ? "You win" : "You failed :("
       } else if (this.toMove === "White" && this.goal === "draw" && result === "1/2-1/2") {
         text = "Success!"
       } else {
@@ -125,7 +125,7 @@
   class PositionTrainer extends Backbone.View {
 
     initialize() {
-      this.depth = getQueryParam("depth") || 6
+      this.depth = getQueryParam("depth") || SEARCH_DEPTH
       this.engine = new StockfishEngine({ multipv: 1 })
       this.setDebugHelpers()
       this.listenForEvents()
@@ -215,7 +215,7 @@
     }
 
     analyze(fen, options = {}) {
-      let targetDepth = +options.depth || 10
+      let targetDepth = +options.depth || SEARCH_DEPTH
       this.stockfish.postMessage('position fen ' + fen)
       this.emitEvaluationWhenDone(fen, targetDepth)
       this.stockfish.postMessage('go depth ' + targetDepth)

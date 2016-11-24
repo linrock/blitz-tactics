@@ -1,0 +1,26 @@
+.positions-index {
+
+  .thinner {
+    margin: 50px 0;
+  }
+
+  h2 {
+    margin-bottom: 5px;
+  }
+
+  .position-board {
+    float: left;
+    text-align: center;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+    }
+  }
+
+}
