@@ -46,6 +46,10 @@ $(function() {
       new Views.PiecePromotionModal;
 
       new Experiments.PositionTrainer();
+    },
+
+    "static#positions": function() {
+      new Experiments.PositionCreator();
     }
 
   };

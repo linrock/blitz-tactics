@@ -1,10 +1,13 @@
+@import "_variables";
+
+
 .user-profile {
   margin: 50px 0 80px;
 
   .username {
     text-align: center;
     font-size: 36px;
-    font-family: "Open Sans", sans-serif;
+    font-family: $main-font;
     margin-bottom: 18px;
   }
 

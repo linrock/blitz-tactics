@@ -25,17 +25,22 @@
   <div class="new-position">
 
     <p class="description">
-      Or set up your own position from a FEN string and save the url to share it <br>
-      You can use this <a href="https://en.lichess.org/editor/8/8/8/8/8/8/8/8_w_-_-" target="_blank">board editor</a>
-      to set up a position
+      Or paste a FEN below to create your own position, and save the url to share it <br>
+      You can use this
+      <a href="https://en.lichess.org/editor/8/8/8/8/8/8/8/8_w_-_-" target="_blank">board editor</a>
+      to find the FEN of a positoin
 
       <form action="/position" method="GET">
-        <input type="text" name="fen" value="" placeholder="FEN">
-        <select name="goal">
-          <option name="win">Win</option>
-          <option name="draw">Draw</option>
+        <input type="text" name="fen" placeholder="ex. 8/8/1KP5/3r4/8/8/8/k7 w - -" class="fen-input">
+        <span class="play-to">Play to</span>
+        <select name="goal" class="position-goal">
+          <option value="win">Win</option>
+          <option value="draw">Draw</option>
         </select>
-        <input type="submit" value="Set up position">
+        <div class="submit">
+          <input type="submit" value="Create position" class="button">
+          <span class="error-message invisible"></span>
+        </div>
       </form>
     </p>
 

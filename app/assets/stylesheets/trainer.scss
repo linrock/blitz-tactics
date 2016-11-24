@@ -1,12 +1,6 @@
 @import "_variables";
 
 
-[data-controller="experiments"][data-action="position_trainer"] {
-  .container {
-    padding-right: 0;
-  }
-}
-
 .position-trainer {
   margin: 0 auto;
   width: $board-size;
@@ -41,7 +35,7 @@
       background: black;
       color: white;
       display: inline-block;
-      font-family: "Open Sans", Helvetica, sans-serif;
+      font-family: $main-font;
       text-decoration: none;
       transition: opacity 0.25s ease;
 
