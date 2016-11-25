@@ -7,10 +7,14 @@ Rails.application.routes.draw do
   post '/api/levels/:id/attempt'  => 'api/levels#attempt'
   post '/api/levels/:id/complete' => 'api/levels#complete'
 
+
   get '/puzzles/search'   => 'puzzles#search'
   get '/puzzles/:id'      => 'puzzles#show'
 
   get '/about'            => 'static#about'
+  get '/positions'        => 'static#positions'
+  get '/position'         => 'static#position'
+
   get '/levels'           => 'levels#index'
   get '/scoreboard'       => 'scoreboard#index'
 

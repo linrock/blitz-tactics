@@ -1,0 +1,49 @@
+<% content_for(:title) { "Positions Trainer" } %>
+
+<div class="positions-index container">
+
+  <h2>Position Trainer</h2>
+
+  <p class="description">
+    Click a position to go train yourself at playing it correctly!
+  </p>
+
+  <div class="examples">
+    <%= linked_miniboard "Lucena position", "3K4/3P1k2/8/8/8/8/4R3/2r5 w - -", "win" %>
+    <%= linked_miniboard "Philidor position", "6R1/4k2r/8/3KP3/8/8/8/8 b - -", "draw", 11 %>
+    <%= linked_miniboard "Vancura position", "R7/6k1/P4r2/1K6/8/8/8/8 b - -", "draw", 11 %>
+
+    <%= linked_miniboard "KBB vs K checkmate", "8/8/4k3/8/8/2K2B2/5B2/8 w - -", "win" %>
+    <%= linked_miniboard "KBN vs K checkmate", "4k3/8/8/8/8/8/8/4KBN1 w - -", "win" %>
+    <%= linked_miniboard "KQ vs KR checkmate", "8/3k4/4r3/8/8/1Q6/3K4/8 w - -", "win" %>
+
+    <%= linked_miniboard "Distant opposition", "8/8/4k3/8/8/8/3KP3/8 b - -", "draw", 11 %>
+    <%= linked_miniboard "Triangulation", "8/1p1k4/1P6/2PK4/8/8/8/8 w - -", "win", 11 %>
+    <%= linked_miniboard "Reti's idea", "7K/8/k1P5/7p/8/8/8/8 w - -", "draw" %>
+  </div>
+
+  <div class="new-position">
+
+    <p class="description">
+      OR paste a FEN below to create your own position, and save the url to share it <br>
+      You can use this
+      <a href="https://en.lichess.org/editor/8/8/8/8/8/8/8/8_w_-_-" target="_blank">board editor</a>
+      to find the FEN of a position
+
+      <form action="/position" method="GET">
+        <input type="text" name="fen" placeholder="ex. 8/8/1KP5/3r4/8/8/8/k7 w - -" class="fen-input">
+        <span class="play-to">Play to</span>
+        <select name="goal" class="position-goal">
+          <option value="win">Win</option>
+          <option value="draw">Draw</option>
+        </select>
+        <div class="submit">
+          <input type="submit" value="Create position" class="button">
+          <span class="error-message invisible"></span>
+        </div>
+      </form>
+    </p>
+
+  </div>
+
+</div>

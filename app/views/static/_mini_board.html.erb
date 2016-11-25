@@ -1,0 +1,30 @@
+<% fen = local_assigns[:fen] %>
+<% flip = local_assigns[:flip] || false %>
+<% nonce = (rand * 1000000).to_i %>
+
+<div class="mini-chessboard position-<%= nonce %>">
+  <% polarity = %w( light dark ).cycle %>
+  <% rows = (1..8).to_a.reverse %>
+  <% cols = ('a'..'h').to_a %>
+  <% if flip %>
+    <% rows = rows.reverse %>
+    <% cols = cols.reverse %>
+  <% end %>
+  <% rows.each do |row| %>
+    <% cols.each do |col| %>
+      <% square_id = "#{col}#{row}" %>
+      <div class="square <%= polarity.next %> <%= square_id %>"
+           data-square="<%= "#{col}#{row}" %>"></div>
+    <% end %>
+    <% polarity.next %>
+  <% end %>
+</div>
+
+<script>
+  $(function() {
+    new Views.MiniChessboard({
+      el: ".position-<%= nonce %>",
+      fen: "<%= fen %>",
+    });
+  });
+</script>
