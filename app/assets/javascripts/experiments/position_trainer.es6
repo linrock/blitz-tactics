@@ -134,7 +134,7 @@
       this.engine = new StockfishEngine({ multipv: 1 })
       this.setDebugHelpers()
       this.listenForEvents()
-      setFen(this.initialFen)
+      d.trigger("fen:set", this.initialFen)
       if (this.computerColor === "w") {
         d.trigger("board:flip")
       }
@@ -152,10 +152,6 @@
     }
 
     setDebugHelpers() {
-      window.setFen = (fen) => {
-        d.trigger("fen:set", fen)
-      }
-
       window.analyzeFen = (fen, depth) => {
         this.engine.analyze(fen, { depth: depth })
       }
@@ -171,6 +167,7 @@
       })
 
       this.listenTo(d, "fen:set", (fen) => {
+        this.currentFen = fen
         this.engine.analyze(fen, { depth: this.depth })
         this.notifyIfGameOver(fen)
       })
@@ -181,6 +178,9 @@
       })
 
       this.listenTo(d, "analysis:done", (data) => {
+        if (data.fen != this.currentFen) {
+          return
+        }
         console.dir(data)
         if (this.isComputersTurn(data.fen)) {
           d.trigger("move:try", uciToMove(data.eval.best))
