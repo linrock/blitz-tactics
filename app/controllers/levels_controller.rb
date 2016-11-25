@@ -2,6 +2,7 @@ class LevelsController < ApplicationController
   before_filter :authorize_admin!, :only => [:edit, :update]
 
   def show
+    is_responsive
     @level = Level.find_by(:slug => level_slug)
     @puzzles = @level.puzzles
     @round_times = current_user&.round_times_for_level(@level.id)&.take(10) || []

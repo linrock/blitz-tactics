@@ -6,25 +6,29 @@
   $board-size-sm: 8 * $square-size-sm + 2 * $border-width;
   $main-width-sm: $board-size-sm + $sidebar-size + $sidebar-margin;
 
-  .container {
-    width: $main-width-sm;
-  }
+  .responsive {
 
-  .main {
-    width: $main-width-sm;
-  }
+    .container {
+      width: $main-width-sm;
+    }
 
-  .under-board {
-    width: $main-width-sm;
-  }
+    .main {
+      width: $main-width-sm;
+    }
 
-  .chessboard {
-    width: $board-size-sm;
-    height: $board-size-sm;
+    .under-board {
+      width: $main-width-sm;
+    }
 
-    .square {
-      width: $square-size-sm;
-      height: $square-size-sm;
+    .chessboard {
+      width: $board-size-sm;
+      height: $board-size-sm;
+
+      .square {
+        width: $square-size-sm;
+        height: $square-size-sm;
+      }
+
     }
 
   }
@@ -34,65 +38,69 @@
 
 @media screen and (max-width: 500px) {
 
-  .container {
-    width: 100%;
-    padding-right: 0;
-  }
+  .responsive {
 
-  .main-header {
-    padding: 0 20px;
-  }
+    .container {
+      width: 100%;
+      padding-right: 0;
+    }
 
-  .main {
-    width: 100%;
-  }
+    .main-header {
+      padding: 0 20px;
+    }
 
-  .above-board {
-    width: 100%;
-    padding-right: 0;
-
-    .instructions {
+    .main {
       width: 100%;
     }
 
-    .puzzle-hint, .move-status, .combo-counter {
+    .above-board {
+      width: 100%;
       padding-right: 0;
+
+      .instructions {
+        width: 100%;
+      }
+
+      .puzzle-hint, .move-status, .combo-counter {
+        padding-right: 0;
+      }
+
     }
 
-  }
+    .piece-promotion-modal .pieces {
+      top: 160px;
+      left: 50px;
+    }
 
-  .piece-promotion-modal .pieces {
-    top: 160px;
-    left: 50px;
-  }
-
-  .under-board {
-    width: 100%;
-    padding-right: 0;
-
-    .onboarding {
+    .under-board {
+      width: 100%;
       padding-right: 0;
+
+      .onboarding {
+        padding-right: 0;
+      }
+
     }
 
-  }
-
-  .main-header {
-    width: 500px;
-  }
-
-  .chessboard {
-    width: 500px;
-    height: 500px;
-
-    .square {
-      width: 12.5%;
-      height: 12.5%;
+    .main-header {
+      width: 500px;
     }
 
-  }
+    .chessboard {
+      width: 500px;
+      height: 500px;
 
-  .sidebar {
-    display: none;
+      .square {
+        width: 12.5%;
+        height: 12.5%;
+      }
+
+    }
+
+    .sidebar {
+      display: none;
+    }
+
   }
 
 }
