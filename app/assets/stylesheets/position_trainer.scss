@@ -2,7 +2,7 @@
 
 
 .position-trainer {
-  margin: 0 auto;
+  margin: 0 auto 50px;
   width: $board-size;
   overflow: hidden;
 
@@ -36,6 +36,7 @@
       color: white;
       display: inline-block;
       font-family: $main-font;
+      line-height: 22px;
       text-decoration: none;
       transition: opacity 0.25s ease;
 
@@ -45,6 +46,19 @@
       }
     }
 
+    .credits {
+      font-size: 14px;
+      margin-left: 20px;
+      color: #777;
+
+      a {
+        color: inherit;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
   }
 
 }

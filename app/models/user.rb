@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
          :validatable
 
   has_many :level_attempts
+  has_many :positions
 
   after_initialize :set_default_profile
 

@@ -2,11 +2,12 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.2
--- Dumped by pg_dump version 9.5.2
+-- Dumped from database version 9.5.4
+-- Dumped by pg_dump version 9.6.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -168,6 +169,42 @@ ALTER SEQUENCE lichess_puzzles_id_seq OWNED BY lichess_puzzles.id;
 
 
 --
+-- Name: positions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE positions (
+    id integer NOT NULL,
+    user_id integer,
+    fen character varying NOT NULL,
+    goal character varying,
+    name character varying,
+    description text,
+    configuration jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: positions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE positions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: positions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE positions_id_seq OWNED BY positions.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -194,8 +231,8 @@ CREATE TABLE users (
     last_sign_in_ip inet,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    profile jsonb,
-    username character varying
+    username character varying,
+    profile jsonb
 );
 
 
@@ -219,42 +256,49 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: completed_rounds id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY completed_rounds ALTER COLUMN id SET DEFAULT nextval('completed_rounds_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: level_attempts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY level_attempts ALTER COLUMN id SET DEFAULT nextval('level_attempts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: levels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY levels ALTER COLUMN id SET DEFAULT nextval('levels_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: lichess_puzzles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY lichess_puzzles ALTER COLUMN id SET DEFAULT nextval('lichess_puzzles_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: positions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY positions ALTER COLUMN id SET DEFAULT nextval('positions_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Name: completed_rounds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: completed_rounds completed_rounds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY completed_rounds
@@ -262,7 +306,7 @@ ALTER TABLE ONLY completed_rounds
 
 
 --
--- Name: level_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: level_attempts level_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY level_attempts
@@ -270,7 +314,7 @@ ALTER TABLE ONLY level_attempts
 
 
 --
--- Name: levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: levels levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY levels
@@ -278,7 +322,7 @@ ALTER TABLE ONLY levels
 
 
 --
--- Name: lichess_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: lichess_puzzles lichess_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY lichess_puzzles
@@ -286,7 +330,15 @@ ALTER TABLE ONLY lichess_puzzles
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: positions positions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY positions
+    ADD CONSTRAINT positions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -326,6 +378,13 @@ CREATE UNIQUE INDEX index_levels_on_slug ON levels USING btree (slug);
 --
 
 CREATE UNIQUE INDEX index_lichess_puzzles_on_puzzle_id ON lichess_puzzles USING btree (puzzle_id);
+
+
+--
+-- Name: index_positions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_positions_on_user_id ON positions USING btree (user_id);
 
 
 --
@@ -378,7 +437,7 @@ INSERT INTO schema_migrations (version) VALUES ('20160313213221');
 
 INSERT INTO schema_migrations (version) VALUES ('20160411003705');
 
-INSERT INTO schema_migrations (version) VALUES ('20160417182231');
-
 INSERT INTO schema_migrations (version) VALUES ('20160417190025');
+
+INSERT INTO schema_migrations (version) VALUES ('20161125221817');
 

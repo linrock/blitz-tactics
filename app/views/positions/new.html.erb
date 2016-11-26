@@ -1,0 +1,67 @@
+<% content_for(:title) { "New position" } %>
+
+<div class="position-editor">
+
+  <div class="instructions">
+    <% if params[:action] == "edit" %>
+      Edit position
+    <% else %>
+      Create a position
+    <% end %>
+  </div>
+
+  <div class="board-area">
+    <%= render :partial => "interface/chessboard" %>
+    <%= render :partial => "interface/piece_promotion_modal" %>
+  </div>
+
+  <div class="position-editor-options">
+
+    <% if params[:action] == "edit" %>
+      <form action="/positions/<%= @position.id %>" method="POST">
+        <input type="hidden" name="_method" value="PATCH">
+    <% else %>
+      <form action="/positions" method="POST">
+    <% end %>
+
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+      <div class="position-options">
+
+        <div class="fen-instructions">
+          You can use this
+          <a href="https://en.lichess.org/editor/8/8/8/8/8/8/8/8_w_-_-" target="_blank">board editor</a>
+          to find the FEN of a position
+        </div>
+
+        <input type="text" value="<%= @position.fen %>"
+               placeholder="ex. 8/8/1KP5/3r4/8/8/8/k7 w - -" class="fen-input text-input"
+               name="position[fen]">
+        <span class="play-to">Play to</span>
+        <select name="position[goal]" class="position-goal">
+          <option value="win">Win</option>
+          <option value="draw">Draw</option>
+        </select>
+
+      </div>
+
+      <input type="text" placeholder="Name your position (optional)"
+             name="position[name]"
+             class="position-name fen-input text-input" value="<%= @position.name %>">
+      <br>
+      <% if false %>
+        <textarea name="position[description]"
+                  class="position-description"
+                  placeholder="Enter a description"><%= @position.description %></textarea>
+      <% end %>
+
+      <% if params[:action] == "edit" %>
+        <button class="button save">Update position</button>
+      <% else %>
+        <button class="button save">Create position</button>
+      <% end %>
+    </form>
+
+  </div>
+
+</div>

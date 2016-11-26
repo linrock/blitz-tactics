@@ -29,6 +29,44 @@
 
   }
 
+  .your-levels {
+
+    .blue-link {
+      color: #2C9BEA;
+      text-decoration: underline;
+      @include transition(opacity 0.25s ease);
+
+      &:hover {
+        color: white;
+        cursor: pointer;
+      }
+
+    }
+
+    .blue-button {
+      font-size: 12px;
+      padding: 2px 12px 3px;
+      border: 0;
+      border-radius: 3px;
+      background: #2C9BEA;
+      display: inline-block;
+      color: white;
+      text-decoration: none;
+      @include transition(opacity 0.25s ease);
+
+      &:hover {
+        background: #51B7FF;
+        cursor: pointer;
+      }
+
+      &.disabled {
+        opacity: 0.15;
+      }
+
+    }
+
+  }
+
   .headers {
     @include clearfix;
 

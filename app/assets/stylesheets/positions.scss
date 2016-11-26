@@ -1,3 +1,4 @@
+@import "bourbon";
 @import "_variables";
 
 
@@ -9,7 +10,7 @@
     margin-bottom: 5px;
   }
 
-  .description {
+  .description, .small-instructions {
     color: #B5B5B5;
 
     a {
@@ -21,8 +22,15 @@
     }
   }
 
-  .examples {
+  .small-instructions {
+    font-size: 12px;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+
+  .positions {
     overflow: hidden;
+    margin-bottom: 40px;
   }
 
   .position-board {
@@ -34,10 +42,18 @@
       color: inherit;
       text-decoration: none;
 
-      &:hover {
+      &:hover .position-name {
         text-decoration: underline;
       }
 
+    }
+
+    .position-name {
+      line-height: 22px;
+      font-size: 15px;
+      position: relative;
+      top: -2px;
+      @include ellipsis(185px);
     }
   }
 
@@ -46,13 +62,21 @@
   }
 
   .new-position {
-    margin-top: 50px;
+    margin: 50px 0;
 
-    .fen-input {
+    .text-input {
       font-size: 16px;
       padding: 6px 14px;
       border: 0;
       border-radius: 2px;
+    }
+
+    .fen-input {
+      width: 420px;
+    }
+
+    .name-input {
+      margin-top: 10px;
       width: 420px;
     }
 

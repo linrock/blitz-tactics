@@ -17,6 +17,7 @@
       this.$fen = this.$(".fen-input")
       this.$goal = this.$(".position-goal")
       this.$error = this.$(".error-message")
+      this.persist = this.$("form").attr("method") === "POST"
     }
 
     showError(text) {
@@ -33,10 +34,10 @@
     }
 
     _validateFEN(e) {
-      e.preventDefault()
       let fen = this.fen()
       if (fen.length === 0) {
         this.showError("FEN can't be blank")
+        e.preventDefault()
         return
       }
       if (fen.split(" ").length === 4) {
@@ -45,9 +46,13 @@
       let check = new Chess().validate_fen(fen)
       if (!check.valid) {
         this.showError(check.error)
+        e.preventDefault()
         return
       }
-      this.createPosition()
+      if (!this.persist) {
+        this.createPosition()
+        e.preventDefault()
+      }
     }
 
     createPosition() {

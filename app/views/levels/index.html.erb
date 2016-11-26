@@ -11,7 +11,13 @@
           You are logged in as <span class="username"><%= current_user.username %></span>
         </div>
         <div class="your-levels">
-          You have not created any levels yet
+          <% if current_user.positions.count > 0 %>
+            You've created <%= current_user.positions.count %> positions so far.
+            <a href="/positions" class="blue-link">Create a position</a>
+          <% else %>
+            NEW - Go create custom positions to practice and share them!
+            <a href="/positions" class="blue-link">Create a position</a>
+          <% end %>
         </div>
       <% end %>
 

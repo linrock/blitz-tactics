@@ -27,6 +27,9 @@
     }
   }
 
+  let getConfig = (param) => {
+    return blitz.position[param] || getQueryParam(param)
+  }
 
   document.addEventListener('paste', function(e) {
     var text = (e.originalEvent || e).clipboardData.getData('text/plain')
@@ -46,8 +49,8 @@
     }
 
     get initialFen() {
-      let fen = getQueryParam("fen") || START_FEN
-      return fen.length === 4 ? `${fen} - -` : fen
+      let fen = getConfig("fen") || START_FEN
+      return fen.length === 4 ? `${fen} 0 1` : fen
     }
 
     get toMove() {
@@ -55,7 +58,7 @@
     }
 
     get goal() {
-      return getQueryParam("goal")
+      return getConfig("goal")
     }
 
     get instructions() {
@@ -130,7 +133,7 @@
   class PositionTrainer extends Backbone.View {
 
     initialize() {
-      this.depth = getQueryParam("depth") || SEARCH_DEPTH
+      this.depth = getConfig("depth") || SEARCH_DEPTH
       this.engine = new StockfishEngine({ multipv: 1 })
       this.setDebugHelpers()
       this.listenForEvents()
@@ -143,7 +146,7 @@
     }
 
     get initialFen() {
-      let fen = getQueryParam("fen") || START_FEN
+      let fen = getConfig("fen") || START_FEN
       return fen.length === 4 ? `${fen} - -` : fen
     }
 

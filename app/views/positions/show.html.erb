@@ -1,0 +1,30 @@
+<% content_for(:title) { "Position trainer" } %>
+
+<div class="position-trainer">
+
+  <div class="instructions invisible"></div>
+
+  <div class="board-area">
+    <%= render :partial => "interface/chessboard" %>
+    <%= render :partial => "interface/piece_promotion_modal" %>
+  </div>
+
+  <div class="actions">
+    <button class="button restart">Reset position</button>
+    <% if @position.belongs_to?(current_user) %>
+      <a class="button" href="/positions/<%= @position.id %>/edit">Edit position</a>
+    <% elsif @position.user_id %>
+      <span class="credits">
+        Created by <a href="/<%= @position.user.username %>"><%= @position.user.username %></a>
+      </span>
+    <% end %>
+  </div>
+
+</div>
+
+<script>
+  blitz.position = {
+    fen: "<%= @position.fen %>",
+    goal: "<%= @position.goal %>"
+  };
+</script>
