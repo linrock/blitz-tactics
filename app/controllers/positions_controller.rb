@@ -15,7 +15,7 @@ class PositionsController < ApplicationController
         :fen, :goal, :name, :description, :configuration
       )
     )
-    redirect_to edit_position_url(@position.id)
+    redirect_to "/positions/#{@position.id}"
   end
 
   def edit
