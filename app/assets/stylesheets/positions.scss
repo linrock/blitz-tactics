@@ -9,7 +9,7 @@
     margin-bottom: 5px;
   }
 
-  .description {
+  .description, .small-instructions {
     color: #B5B5B5;
 
     a {
@@ -19,6 +19,12 @@
         color: white;
       }
     }
+  }
+
+  .small-instructions {
+    font-size: 12px;
+    margin-bottom: 8px;
+    opacity: 0.7;
   }
 
   .positions {
@@ -49,12 +55,20 @@
   .new-position {
     margin: 50px 0;
 
-    .fen-input {
+    .text-input {
       font-size: 16px;
       padding: 6px 14px;
       border: 0;
       border-radius: 2px;
+    }
+
+    .fen-input {
       width: 420px;
+    }
+
+    .name-input {
+      margin-top: 10px;
+      width: 360px;
     }
 
     .play-to {

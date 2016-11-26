@@ -17,6 +17,7 @@
       this.$fen = this.$(".fen-input")
       this.$goal = this.$(".position-goal")
       this.$error = this.$(".error-message")
+      this.persist = this.$("form").attr("method") === "POST"
     }
 
     showError(text) {
@@ -33,7 +34,6 @@
     }
 
     _validateFEN(e) {
-      e.preventDefault()
       let fen = this.fen()
       if (fen.length === 0) {
         this.showError("FEN can't be blank")
@@ -47,7 +47,10 @@
         this.showError(check.error)
         return
       }
-      this.createPosition()
+      if (!this.persist) {
+        this.createPosition()
+        e.preventDefault()
+      }
     }
 
     createPosition() {

@@ -16,7 +16,9 @@ class PositionsController < ApplicationController
 
   def create
     @position = current_user.positions.create!(
-      params.require(:position).permit(:fen, :goal, :name, :description, :configuration)
+      params.require(:position).permit(
+        :fen, :goal, :name, :description, :configuration
+      )
     )
     redirect_to edit_position_url(@position.id)
   end
