@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
   def require_logged_in_user!
     unless current_user
-      redirect_to registration_url
+      redirect_to new_user_registration_url
     end
   end
 

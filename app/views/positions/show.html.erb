@@ -13,6 +13,10 @@
     <button class="button restart">Reset position</button>
     <% if @position.belongs_to?(current_user) %>
       <a class="button" href="/positions/<%= @position.id %>/edit">Edit position</a>
+    <% elsif @position.user_id %>
+      <span class="credits">
+        Created by <a href="/<%= @position.user.username %>"><%= @position.user.username %></a>
+      </span>
     <% end %>
   </div>
 

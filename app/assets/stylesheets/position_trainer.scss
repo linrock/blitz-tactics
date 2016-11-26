@@ -46,6 +46,19 @@
       }
     }
 
+    .credits {
+      font-size: 14px;
+      margin-left: 20px;
+      color: #777;
+
+      a {
+        color: inherit;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
   }
 
 }

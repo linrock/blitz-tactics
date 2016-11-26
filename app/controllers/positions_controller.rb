@@ -1,5 +1,5 @@
 class PositionsController < ApplicationController
-  before_filter :require_logged_in_user!
+  before_filter :require_logged_in_user!, :except => [ :show ]
 
   def show
     @position = Position.find(params[:id])
