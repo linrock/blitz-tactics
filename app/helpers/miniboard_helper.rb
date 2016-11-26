@@ -9,7 +9,9 @@ module MiniboardHelper
       <div class="position-board">
         <a href="/positions/#{position.id}">
           #{render :partial => "static/mini_board", :locals => options}
-          #{position.name_or_id}
+          <div class="position-name">
+            <span>#{position.name_or_id}</span>
+          </div>
         </a>
       </div>
     ).html_safe
@@ -26,7 +28,9 @@ module MiniboardHelper
       <div class="position-board">
         <a href="#{link}">
           #{render :partial => "static/mini_board", :locals => options}
-          #{title}
+          <div class="position-name">
+            <span>#{title}</span>
+          </div>
         </a>
       </div>
     ).html_safe
