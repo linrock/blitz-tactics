@@ -37,6 +37,7 @@
       let fen = this.fen()
       if (fen.length === 0) {
         this.showError("FEN can't be blank")
+        e.preventDefault()
         return
       }
       if (fen.split(" ").length === 4) {
@@ -45,6 +46,7 @@
       let check = new Chess().validate_fen(fen)
       if (!check.valid) {
         this.showError(check.error)
+        e.preventDefault()
         return
       }
       if (!this.persist) {

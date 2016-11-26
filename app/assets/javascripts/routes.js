@@ -39,6 +39,10 @@ $(function() {
       new Services.Puzzles;
     },
 
+    "static#positions": function() {
+      new Experiments.PositionCreator();
+    },
+
     "static#position": function() {
       new Views.Chessboard;
       new Views.MainHeader;
@@ -48,8 +52,13 @@ $(function() {
       new Experiments.PositionTrainer();
     },
 
-    "static#positions": function() {
-      new Experiments.PositionCreator();
+    "positions#show": function() {
+      new Views.Chessboard;
+      new Views.MainHeader;
+      new Views.MoveStatus;
+      new Views.PiecePromotionModal;
+
+      new Experiments.PositionTrainer();
     },
 
     "positions#new": function() {

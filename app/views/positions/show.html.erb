@@ -1,0 +1,23 @@
+<% content_for(:title) { "Position trainer" } %>
+
+<div class="position-trainer">
+
+  <div class="instructions invisible"></div>
+
+  <div class="board-area">
+    <%= render :partial => "interface/chessboard" %>
+    <%= render :partial => "interface/piece_promotion_modal" %>
+  </div>
+
+  <div class="actions">
+    <button class="button restart">Reset position</button>
+  </div>
+
+</div>
+
+<script>
+  blitz.position = {
+    fen: "<%= @position.fen %>",
+    goal: "<%= @position.goal %>"
+  };
+</script>
