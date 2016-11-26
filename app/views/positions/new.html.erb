@@ -18,7 +18,8 @@
   <div class="position-editor-options">
 
     <% if params[:action] == "edit" %>
-      <form action="/positions/<%= @position.id %>/edit" method="PUT">
+      <form action="/positions/<%= @position.id %>" method="POST">
+        <input type="hidden" name="_method" value="PATCH">
     <% else %>
       <form action="/positions" method="POST">
     <% end %>

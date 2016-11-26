@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get '/positions'        => 'static#positions'
   get '/position'         => 'static#position'
 
-  resources :positions, :only => [:new, :create, :edit, :show]
+  resources :positions, :only => [:new, :create, :edit, :update, :show]
 
   get '/levels'           => 'levels#index'
   get '/scoreboard'       => 'scoreboard#index'

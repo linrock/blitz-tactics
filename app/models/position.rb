@@ -10,6 +10,10 @@ class Position < ActiveRecord::Base
     name || "Position #{id}"
   end
 
+  def belongs_to?(user)
+    user&.id == user_id
+  end
+
   private
 
   def sanitize_fen
