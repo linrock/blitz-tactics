@@ -28,7 +28,11 @@
   }
 
   let getConfig = (param) => {
-    return blitz.position[param] || getQueryParam(param)
+    let query = getQueryParam(param)
+    if (blitz) {
+      return blitz.position[param] || query;
+    }
+    return query;
   }
 
   document.addEventListener('paste', function(e) {
