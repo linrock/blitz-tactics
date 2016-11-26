@@ -29,7 +29,7 @@
 
   let getConfig = (param) => {
     let query = getQueryParam(param)
-    if (blitz) {
+    if (blitz.position) {
       return blitz.position[param] || query;
     }
     return query;
