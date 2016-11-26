@@ -50,6 +50,16 @@ $(function() {
 
     "static#positions": function() {
       new Experiments.PositionCreator();
+    },
+
+    "positions#new": function() {
+      new Views.Chessboard;
+      new Experiments.PositionEditor();
+    },
+
+    "positions#edit": function() {
+      new Views.Chessboard;
+      new Experiments.PositionEditor();
     }
 
   };

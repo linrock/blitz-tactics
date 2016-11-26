@@ -21,8 +21,9 @@
     }
   }
 
-  .examples {
+  .positions {
     overflow: hidden;
+    margin-bottom: 40px;
   }
 
   .position-board {
@@ -46,7 +47,7 @@
   }
 
   .new-position {
-    margin-top: 50px;
+    margin: 50px 0;
 
     .fen-input {
       font-size: 16px;

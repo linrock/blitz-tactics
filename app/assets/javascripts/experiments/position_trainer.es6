@@ -47,7 +47,7 @@
 
     get initialFen() {
       let fen = getQueryParam("fen") || START_FEN
-      return fen.length === 4 ? `${fen} - -` : fen
+      return fen.length === 4 ? `${fen} 0 1` : fen
     }
 
     get toMove() {
