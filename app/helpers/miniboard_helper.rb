@@ -10,7 +10,7 @@ module MiniboardHelper
         <a href="/positions/#{position.id}">
           #{render :partial => "static/mini_board", :locals => options}
           <div class="position-name">
-            <span>#{position.name_or_id}</span>
+            <span>#{sanitize(position.name_or_id)}</span>
           </div>
         </a>
       </div>
@@ -29,7 +29,7 @@ module MiniboardHelper
         <a href="#{link}">
           #{render :partial => "static/mini_board", :locals => options}
           <div class="position-name">
-            <span>#{title}</span>
+            <span>#{sanitize(title)}</span>
           </div>
         </a>
       </div>
