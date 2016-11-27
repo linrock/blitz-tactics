@@ -2,7 +2,7 @@
 //
 $(function() {
 
-  var routes = {
+  blitz.routes = {
 
     "levels#show": function() {
       initInterfaceBase();
@@ -89,8 +89,8 @@ $(function() {
 
   var pageKey = $("body").data("controller") + "#" + $("body").data("action");
 
-  if (typeof routes[pageKey] === "function") {
-    routes[pageKey]();
+  if (typeof blitz.routes[pageKey] === "function") {
+    blitz.routes[pageKey]();
   }
 
 });

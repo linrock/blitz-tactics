@@ -2,7 +2,7 @@
 <html>
 <head>
   <title><%= content_for?(:title) && "#{yield(:title)} | Blitz tactics" || "Blitz tactics" %></title>
-  <meta name="description" content="Fast-paced chess tactics trainer. Unlock the next level by solving puzzles quickly and accurately.">
+  <meta name="description" content="<%= content_for?(:meta_description) && yield(:meta_description) || "Fast-paced chess tactics trainer. Unlock the next level by solving puzzles quickly and accurately." %>">
   <meta name="keywords" content="chess tactics, tactics trainer, chess tactics trainer">
   <meta name="viewport" content="width=500; user-scalable=no;">
 
@@ -13,8 +13,6 @@
   <%= favicon_link_tag       'favicon.ico' %>
   <%= csrf_meta_tags %>
 
-  <script>
-  </script>
 </head>
 <body data-controller="<%= params[:controller] %>"
       data-action="<%= params[:action] %>"

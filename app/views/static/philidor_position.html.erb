@@ -1,0 +1,29 @@
+<% content_for(:title) { "Philidor position" } %>
+
+<% content_for(:meta_description) {
+  "Practice defending the philidor position. Black to play draws. Prevent the king from entering the 6th rank, and go for a draw by perpetual check if white advances the pawn."
+} %>
+
+<div class="position-trainer">
+
+  <div class="instructions invisible"></div>
+
+  <div class="board-area">
+    <%= render :partial => "interface/chessboard" %>
+    <%= render :partial => "interface/piece_promotion_modal" %>
+  </div>
+
+  <div class="actions">
+    <button class="button restart">Reset position</button>
+  </div>
+
+</div>
+
+<script>
+  blitz.position = {
+    fen: "6R1/4k2r/8/3KP3/8/8/8/8 b - -",
+    goal: "draw",
+    depth: 9
+  };
+  $(function() { new blitz.routes["positions#show"]; });
+</script>

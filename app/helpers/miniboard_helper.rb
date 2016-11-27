@@ -36,4 +36,21 @@ module MiniboardHelper
     ).html_safe
   end
 
+  def linked_miniboard_url(title, fen, url)
+    options = {
+      :fen => fen,
+      :flip => fen.include?(" b "),
+    }
+    %(
+      <div class="position-board">
+        <a href="#{url}">
+          #{render :partial => "static/mini_board", :locals => options}
+          <div class="position-name">
+            <span>#{sanitize(title)}</span>
+          </div>
+        </a>
+      </div>
+    ).html_safe
+  end
+
 end

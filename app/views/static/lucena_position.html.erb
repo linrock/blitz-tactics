@@ -1,0 +1,29 @@
+<% content_for(:title) { "Lucena position" } %>
+
+<% content_for(:meta_description) {
+  "Practice winning the lucena position. White to play wins. Your goal is to use your rook to build a bridge and support promotion of your pawn."
+} %>
+
+<div class="position-trainer">
+
+  <div class="instructions invisible"></div>
+
+  <div class="board-area">
+    <%= render :partial => "interface/chessboard" %>
+    <%= render :partial => "interface/piece_promotion_modal" %>
+  </div>
+
+  <div class="actions">
+    <button class="button restart">Reset position</button>
+  </div>
+
+</div>
+
+<script>
+  blitz.position = {
+    fen: "3K4/3P1k2/8/8/8/8/4R3/2r5 w - -",
+    goal: "win",
+    depth: 9
+  };
+  $(function() { new blitz.routes["positions#show"]; });
+</script>
