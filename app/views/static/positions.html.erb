@@ -7,7 +7,7 @@
     <h2>Create a puzzle</h2>
 
     <div class="description">
-      Paste a FEN below to create a puzzle for practicing. Save the url to share it <br>
+      Paste a FEN below to create a puzzle for practicing. Save the url to share it.<br>
     </div>
 
     <% if current_user %>
@@ -80,56 +80,56 @@
       <% end %>
     </div>
 
-  <% else %>
-
-    <h2>Position trainer</h2>
-
-    <div class="positions">
-
-      <p class="description">
-        Choose from a list of positions to go train yourself at playing it correctly!
-      </p>
-
-      <div class="examples">
-        <%= linked_miniboard_url "Lucena position", "3K4/3P1k2/8/8/8/8/4R3/2r5 w - -", "/lucena-position" %>
-        <%= linked_miniboard_url "Philidor position", "6R1/4k2r/8/3KP3/8/8/8/8 b - -", "/philidor-position" %>
-        <%= linked_miniboard_url "Vancura position", "R7/6k1/P4r2/1K6/8/8/8/8 b - -", "/vancura-position" %>
-
-        <%= linked_miniboard "KBB vs K checkmate", "8/8/4k3/8/8/2K2B2/5B2/8 w - -", "win" %>
-        <%= linked_miniboard "KBN vs K checkmate", "4k3/8/8/8/8/8/8/4KBN1 w - -", "win" %>
-        <%= linked_miniboard "KQ vs KR checkmate", "8/3k4/4r3/8/8/1Q6/3K4/8 w - -", "win" %>
-      </div>
-
-    </div>
-
-    <h2>Pawn endgames</h2>
-
-    <div class="positions">
-
-      <p class="description">
-        Practice these pawn endgames and learn the ideas behind them
-      </p>
-
-      <div class="examples">
-        <%= linked_miniboard "Opposition", "8/8/1p6/p1p5/P1P5/1P4k1/2K5/8 b - - 0 1", "win", 10 %>
-        <%= linked_miniboard "Triangulation", "8/1p1k4/1P6/2PK4/8/8/8/8 w - -", "win", 11 %>
-        <%= linked_miniboard "Reti's idea", "7K/8/k1P5/7p/8/8/8/8 w - -", "draw" %>
-
-        <%= linked_miniboard "Zig zag", "6k1/8/3K2p1/8/6P1/8/8/8 w - -", "win", 12 %>
-        <%= linked_miniboard "Bodycheck", "8/p4K2/P7/8/8/8/1k6/8 w - -", "win", 15 %>
-        <%= linked_miniboard "Distant opposition", "8/8/4k3/8/8/8/3KP3/8 b - -", "draw", 11 %>
-
-        <%= linked_miniboard "The square rule", "8/3p4/8/2P5/P3k3/8/8/7K w - -", "win", 15 %>
-        <%= linked_miniboard "Unusual king move", "6K1/8/6k1/8/8/p7/P7/8 w - -", "draw", 10 %>
-        <%= linked_miniboard "Key squares", "4k3/8/8/8/8/1P6/8/2K5 w - -", "win", 10 %>
-
-        <%= linked_miniboard "Anti-reti", "8/8/8/8/8/P4p2/k6K/8 w - -", "win", 10 %>
-        <%= linked_miniboard "Triangulation 2", "2k5/8/p1P5/P2K4/8/8/8/8 w - -", "draw", 10 %>
-        <%= linked_miniboard "Bodycheck 2", "2K5/k7/7p/8/8/8/6P1/8 w - -", "win", 15 %>
-      </div>
-
-    </div>
-
   <% end %>
+
+  <h2>Position trainer</h2>
+
+  <div class="positions">
+
+    <p class="description">
+      Choose from a list of positions to go train yourself at playing it correctly!
+    </p>
+
+    <div class="examples">
+      <%= linked_miniboard_url "Lucena position", "3K4/3P1k2/8/8/8/8/4R3/2r5 w - -", "/lucena-position" %>
+      <%= linked_miniboard_url "Philidor position", "6R1/4k2r/8/3KP3/8/8/8/8 b - -", "/philidor-position" %>
+      <%= linked_miniboard_url "Vancura position", "R7/6k1/P4r2/1K6/8/8/8/8 b - -", "/vancura-position" %>
+
+      <%= linked_miniboard "KBB vs K checkmate", "8/8/4k3/8/8/2K2B2/5B2/8 w - -", "win" %>
+      <%= linked_miniboard "KBN vs K checkmate", "4k3/8/8/8/8/8/8/4KBN1 w - -", "win" %>
+      <%= linked_miniboard "KQ vs KR checkmate", "8/3k4/4r3/8/8/1Q6/3K4/8 w - -", "win" %>
+    </div>
+
+  </div>
+
+  <h2>Pawn endgames</h2>
+
+  <div class="positions">
+
+    <p class="description">
+      Practice these pawn endgames and learn the ideas behind them
+    </p>
+
+    <div class="examples">
+      <%= linked_miniboard "Opposition", "8/8/1p6/p1p5/P1P5/1P4k1/2K5/8 b - - 0 1", "win", 10 %>
+      <%= linked_miniboard "Triangulation", "8/1p1k4/1P6/2PK4/8/8/8/8 w - -", "win", 11 %>
+      <%= linked_miniboard "Reti's idea", "7K/8/k1P5/7p/8/8/8/8 w - -", "draw" %>
+
+      <%= linked_miniboard "Zig zag", "6k1/8/3K2p1/8/6P1/8/8/8 w - -", "win", 12 %>
+      <%= linked_miniboard "Bodycheck", "8/p4K2/P7/8/8/8/1k6/8 w - -", "win", 15 %>
+      <%= linked_miniboard "Distant opposition", "8/8/4k3/8/8/8/3KP3/8 b - -", "draw", 11 %>
+
+      <%= linked_miniboard "The square rule", "8/3p4/8/2P5/P3k3/8/8/7K w - -", "win", 15 %>
+      <%= linked_miniboard "Unusual king move", "6K1/8/6k1/8/8/p7/P7/8 w - -", "draw", 10 %>
+      <%= linked_miniboard "Key squares", "4k3/8/8/8/8/1P6/8/2K5 w - -", "win", 10 %>
+
+      <%= linked_miniboard "Anti-reti", "8/8/8/8/8/P4p2/k6K/8 w - -", "win", 10 %>
+      <%= linked_miniboard "Triangulation 2", "2k5/8/p1P5/P2K4/8/8/8/8 w - -", "draw", 10 %>
+      <%= linked_miniboard "Bodycheck 2", "2K5/k7/7p/8/8/8/6P1/8 w - -", "win", 15 %>
+    </div>
+
+    <a href="/pawn-endgames" class="button more-button">More pawn endgames &raquo;</a>
+
+  </div>
 
 </div>

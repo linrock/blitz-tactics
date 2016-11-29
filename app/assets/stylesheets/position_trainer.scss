@@ -20,7 +20,24 @@
   }
 
   .chessboard {
-    margin: 0;
+    margin: 0 auto;
+  }
+
+  // TODO
+  //
+  $square-size-sm: 65px;
+  $board-size-sm: 8 * $square-size-sm + 2 * $border-width;
+  $main-width-sm: $board-size-sm + $sidebar-size + $sidebar-margin;
+
+  .chessboard {
+    width: $board-size-sm;
+    height: $board-size-sm;
+
+    .square {
+      width: $square-size-sm;
+      height: $square-size-sm;
+    }
+
   }
 
   .actions {

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   get '/philidor-position'     => 'static#philidor_position'
   get '/vancura-position'      => 'static#vancura_position'
 
-  # get '/pawn-endgames'         => 'static#pawn_endgames'
+  get '/pawn-endgames'         => 'static#pawn_endgames'
   # get '/rook-endgames'         => 'static#rook_endgames'
 
   get '/levels'                => 'levels#index'

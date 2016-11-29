@@ -10,16 +10,39 @@
     margin-bottom: 5px;
   }
 
+  a {
+    color: inherit;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  .button {
+    font-size: 15px;
+    padding: 6px 18px 7px;
+    border: 0;
+    border-radius: 3px;
+    background: #2C9BEA;
+    color: white;
+    display: inline-block;
+    font-family: $main-font;
+    line-height: 20px;
+    text-decoration: none;
+    transition: opacity 0.25s ease;
+
+    &:hover {
+      background: #51B7FF;
+      cursor: pointer;
+    }
+  }
+
   .description, .small-instructions {
     color: #B5B5B5;
+  }
 
-    a {
-      color: inherit;
-
-      &:hover {
-        color: white;
-      }
-    }
+  .description {
+    line-height: 22px;
   }
 
   .small-instructions {
@@ -31,6 +54,15 @@
   .positions {
     overflow: hidden;
     margin-bottom: 40px;
+  }
+
+  .examples {
+    overflow: hidden;
+  }
+
+  .more-button {
+    margin: 20px auto;
+    margin-left: 185px;
   }
 
   .position-board {
@@ -90,24 +122,6 @@
 
     .submit {
       margin-top: 12px;
-    }
-
-    .button {
-      font-size: 15px;
-      padding: 6px 18px 7px;
-      border: 0;
-      border-radius: 3px;
-      background: #2C9BEA;
-      color: white;
-      display: inline-block;
-      font-family: $main-font;
-      text-decoration: none;
-      transition: opacity 0.25s ease;
-
-      &:hover {
-        background: #51B7FF;
-        cursor: pointer;
-      }
     }
 
     .error-message {
