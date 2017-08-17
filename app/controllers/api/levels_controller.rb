@@ -1,6 +1,6 @@
 class Api::LevelsController < ApplicationController
-  before_filter :set_level
-  before_filter :set_user
+  before_action :set_level
+  before_action :set_user
 
   def attempt
     if @user

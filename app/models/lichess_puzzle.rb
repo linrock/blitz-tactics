@@ -7,7 +7,7 @@ class LichessPuzzle < ActiveRecord::Base
       next if LichessPuzzle.exists?(:puzzle_id => puzzle_id)
       data = open(file).read.strip
       begin
-        LichessPuzzle.create!(:puzzle_id => puzzle_id, :data => data)
+        LichessPuzzle.create!(:puzzle_id => puzzle_id, :data => JSON.parse(data))
       rescue
         `rm #{file}`
       end

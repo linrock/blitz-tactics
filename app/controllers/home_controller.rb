@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :redirect_to_highest_level
+  before_action :redirect_to_highest_level
 
   def index
     is_responsive

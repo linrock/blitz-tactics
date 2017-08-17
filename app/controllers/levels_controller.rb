@@ -1,5 +1,5 @@
 class LevelsController < ApplicationController
-  before_filter :authorize_admin!, :only => [:edit, :update]
+  before_action :authorize_admin!, :only => [:edit, :update]
 
   def show
     is_responsive
