@@ -1,4 +1,4 @@
-class CreateLevelAttempts < ActiveRecord::Migration
+class CreateLevelAttempts < ActiveRecord::Migration[4.2]
   def change
     create_table :level_attempts do |t|
       t.integer :user_id, :null => false

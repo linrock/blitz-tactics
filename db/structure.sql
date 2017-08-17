@@ -1,10 +1,3 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 9.5.4
--- Dumped by pg_dump version 9.6.1
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -33,6 +26,18 @@ SET search_path = public, pg_catalog;
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
 
 --
 -- Name: completed_rounds; Type: TABLE; Schema: public; Owner: -
@@ -179,7 +184,7 @@ CREATE TABLE positions (
     goal character varying,
     name character varying,
     description text,
-    configuration jsonb DEFAULT '{}'::jsonb NOT NULL,
+    configuration jsonb DEFAULT '"{}"'::jsonb NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -298,6 +303,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
+-- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
 -- Name: completed_rounds completed_rounds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -335,6 +348,14 @@ ALTER TABLE ONLY lichess_puzzles
 
 ALTER TABLE ONLY positions
     ADD CONSTRAINT positions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
 
 --
@@ -409,35 +430,21 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (re
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
-
-
---
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20160223082005');
+INSERT INTO "schema_migrations" (version) VALUES
+('20160223082005'),
+('20160313063315'),
+('20160313063553'),
+('20160313074604'),
+('20160313074949'),
+('20160313200604'),
+('20160313213221'),
+('20160411003705'),
+('20160417190025'),
+('20161125221817');
 
-INSERT INTO schema_migrations (version) VALUES ('20160313063315');
-
-INSERT INTO schema_migrations (version) VALUES ('20160313063553');
-
-INSERT INTO schema_migrations (version) VALUES ('20160313074604');
-
-INSERT INTO schema_migrations (version) VALUES ('20160313074949');
-
-INSERT INTO schema_migrations (version) VALUES ('20160313200604');
-
-INSERT INTO schema_migrations (version) VALUES ('20160313213221');
-
-INSERT INTO schema_migrations (version) VALUES ('20160411003705');
-
-INSERT INTO schema_migrations (version) VALUES ('20160417190025');
-
-INSERT INTO schema_migrations (version) VALUES ('20161125221817');
 

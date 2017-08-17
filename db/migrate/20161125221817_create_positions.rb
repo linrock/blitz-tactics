@@ -1,4 +1,4 @@
-class CreatePositions < ActiveRecord::Migration
+class CreatePositions < ActiveRecord::Migration[4.2]
   def change
     create_table :positions do |t|
       t.integer :user_id

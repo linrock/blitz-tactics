@@ -1,4 +1,4 @@
-class CreateLichessPuzzles < ActiveRecord::Migration
+class CreateLichessPuzzles < ActiveRecord::Migration[4.2]
   def change
     create_table :lichess_puzzles do |t|
       t.integer :puzzle_id, :null => false
