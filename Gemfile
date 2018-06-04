@@ -16,7 +16,6 @@ gem 'bourbon'
 
 gem 'webpacker'
 gem 'sprockets', '>= 3.0.0'
-gem 'sprockets-es6'
 gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
