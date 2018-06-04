@@ -2,7 +2,9 @@
 <% flip = local_assigns[:flip] || false %>
 <% nonce = (rand * 1000000).to_i %>
 
-<div class="mini-chessboard position-<%= nonce %>">
+<div class="mini-chessboard"
+     data-position="<%= nonce %>"
+     data-fen="<%= fen %>">
   <% polarity = %w( light dark ).cycle %>
   <% rows = (1..8).to_a.reverse %>
   <% cols = ('a'..'h').to_a %>
@@ -19,12 +21,3 @@
     <% polarity.next %>
   <% end %>
 </div>
-
-<script>
-  $(function() {
-    new Views.MiniChessboard({
-      el: ".position-<%= nonce %>",
-      fen: "<%= fen %>",
-    });
-  });
-</script>

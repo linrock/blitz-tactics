@@ -787,6 +787,12 @@ babylon@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
 
+backbone@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/backbone/-/backbone-1.3.3.tgz#4cc80ea7cb1631ac474889ce40f2f8bc683b2999"
+  dependencies:
+    underscore ">=1.8.3"
+
 balanced-match@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-0.1.0.tgz#b504bd05869b39259dd0c5efc35d843176dccc4a"
@@ -1135,6 +1141,10 @@ chalk@^2.0.1, chalk@^2.4.1:
     ansi-styles "^3.2.1"
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
+
+chess.js@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/chess.js/-/chess.js-0.10.2.tgz#eacefa2067155f87f046e80cc12d2019eef1b81a"
 
 chokidar@^2.0.0, chokidar@^2.0.2:
   version "2.0.3"
@@ -3013,6 +3023,14 @@ isobject@^3.0.0, isobject@^3.0.1:
 isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
+
+jquery-ui@^1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
+
+jquery@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.5"
@@ -5630,6 +5648,10 @@ uglifyjs-webpack-plugin@^1.2.5:
     uglify-es "^3.3.4"
     webpack-sources "^1.1.0"
     worker-farm "^1.5.2"
+
+underscore@>=1.8.3, underscore@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
 
 union-value@^1.0.0:
   version "1.0.0"

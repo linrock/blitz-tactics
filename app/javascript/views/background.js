@@ -1,6 +1,6 @@
-import View from 'backbone'
+import Backbone from 'backbone'
 
-export default class Background extends View {
+export default class Background extends Backbone.View {
 
   get el() {
     return "body"
@@ -15,5 +15,4 @@ export default class Background extends View {
       this.$el.addClass("unlocked")
     })
   }
-
 }

@@ -9,7 +9,8 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= stylesheet_link_tag    'https://fonts.googleapis.com/css?family=Open+Sans' %>
   <%= stylesheet_link_tag    'https://fonts.googleapis.com/css?family=Orbitron' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%# javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_pack_tag    'application' %>
   <%= favicon_link_tag       'favicon.ico' %>
   <%= csrf_meta_tags %>
 
