@@ -26,84 +26,68 @@ import SoundPlayer from './models/sound_player'
 
 const routes = {
   "levels#show": function() {
-    initInterfaceBase()
-    new ProgressBar
-    new Timer
-    new LevelIndicator
-    new Background
-
-    new Puzzles
-    new Notifier
-    new LevelProgress
+    initLevelPlayer()
   },
-
   "home#index": function() {
-    initInterfaceBase()
-    new ProgressBar
-    new Timer
-    new LevelIndicator
-    new Background
-    new Onboarding
-
-    new Puzzles({ source: "/level-1" })
-    new Notifier
-    new LevelProgress
+    initLevelPlayer({ source: "/level-1" })
   },
-
   "levels#edit": function() {
     new LevelEditor
   },
-
   "puzzles#show": function() {
-    initInterfaceBase()
-
+    initPuzzlePlayer()
     new Puzzles
   },
-
   "static#positions": function() {
-    new PositionCreator()
+    new PositionCreator
   },
-
   "static#position": function() {
-    new Chessboard
-    new MainHeader
-    new MoveStatus
-    new PiecePromotionModal
-
-    new PositionTrainer()
-  },
-
-  "positions#show": function() {
-    new Chessboard
-    new MainHeader
-    new MoveStatus
-    new PiecePromotionModal
-
+    initBoardBase()
     new PositionTrainer
   },
-
+  "positions#show": function() {
+    initBoardBase()
+    new PositionTrainer
+  },
   "positions#new": function() {
     new Chessboard
     new PositionEditor
   },
-
   "positions#edit": function() {
     new Chessboard
     new PositionEditor
   }
 }
 
-function initInterfaceBase() {
-  new ComboCounter
+function initBoardBase() {
   new Chessboard
-  new Instructions
   new MainHeader
   new MoveStatus
   new PiecePromotionModal
+}
+
+function initPuzzlePlayer() {
+  initBoardBase()
+
+  new ComboCounter
+  new Instructions
   new PuzzleCounter
   new PuzzleHint
 
   new SoundPlayer
+}
+
+function initLevelPlayer(puzzleOptions = {}) {
+  initPuzzlePlayer()
+
+  new ProgressBar
+  new Timer
+  new LevelIndicator
+  new Background
+
+  new Puzzles(puzzleOptions)
+  new Notifier
+  new LevelProgress
 }
 
 export default routes
