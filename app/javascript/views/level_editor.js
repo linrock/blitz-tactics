@@ -1,4 +1,10 @@
+import $ from 'jquery'
+import _ from 'underscore'
 import Backbone from 'backbone'
+import Mousetrap from 'mousetrap'
+
+require('jquery-ui')
+require('jquery-ui/ui/widgets/sortable')
 
 export default class LevelEditor extends Backbone.View {
 
@@ -61,8 +67,8 @@ export default class LevelEditor extends Backbone.View {
       data: {
         puzzle_ids: ids
       },
-      success: (html) => {
-        this.$(".boards").html(html)
+      success: html => {
+        console.log('updated board ids order')
       }
     })
   }

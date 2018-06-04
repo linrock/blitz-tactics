@@ -174,11 +174,14 @@ $(function() {
     new routes[blitz.route]
   }
 
-  $(".mini-chessboard").each((i, e) => {
-    const $e = $(e)
-    new MiniBoard({
-      el: $e,
-      fen: $e.data('fen')
-    })
+  $(".mini-chessboard").each((i, el) => {
+    const $el = $(el)
+    const fen = $el.data('fen')
+    const options = $el.data('options')
+    if (fen) {
+      new MiniBoard({ el: $el, fen })
+    } else if (options) {
+      new MiniBoard(Object.assign({ el: $el }, options))
+    }
   })
 })
