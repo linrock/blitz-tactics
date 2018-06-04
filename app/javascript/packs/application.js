@@ -160,6 +160,13 @@ $(function() {
   const pageKey = $("body").data("controller") + "#" + $("body").data("action")
   const route = routes[pageKey]
 
+  $.ajaxPrefilter((options, originalOptions, xhr) => {
+    if (!options.crossDomain) {
+      const token =  $('meta[name=csrf-token]').attr('content')
+      xhr.setRequestHeader('X-CSRF-Token', token)
+    }
+  })
+
   if (typeof route === "function") {
     route()
   }

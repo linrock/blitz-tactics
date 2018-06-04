@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import Backbone from 'backbone'
 
 export default class Notifier extends Backbone.Model {
