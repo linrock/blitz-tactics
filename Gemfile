@@ -4,6 +4,7 @@ gem 'rails', '5.2.0'
 gem 'pg', '~> 0.15'
 gem 'unicorn'
 gem 'dotenv-rails'
+gem 'bootsnap', require: false
 
 gem 'devise', '~> 4.3'
 gem 'kaminari'
