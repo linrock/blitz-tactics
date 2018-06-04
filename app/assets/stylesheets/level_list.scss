@@ -26,7 +26,6 @@
     &:hover {
       color: rgba(255,255,255,1);
     }
-
   }
 
   .your-levels {
@@ -34,13 +33,12 @@
     .blue-link {
       color: #2C9BEA;
       text-decoration: underline;
-      @include transition(opacity 0.25s ease);
+      transition: opacity 0.25s ease;
 
       &:hover {
         color: white;
         cursor: pointer;
       }
-
     }
 
     .blue-button {
@@ -52,7 +50,7 @@
       display: inline-block;
       color: white;
       text-decoration: none;
-      @include transition(opacity 0.25s ease);
+      transition: opacity 0.25s ease;
 
       &:hover {
         background: #51B7FF;
@@ -62,9 +60,7 @@
       &.disabled {
         opacity: 0.15;
       }
-
     }
-
   }
 
   .headers {
@@ -80,7 +76,6 @@
       width: 65px;
       color: rgba(128,128,128,0.7);
     }
-
   }
 
   .level-row {
@@ -112,7 +107,6 @@
     position: relative;
     top: 4px;
   }
-
 }
 
 .description {
@@ -126,7 +120,6 @@
       font-weight: bold;
     }
   }
-
 }
 
 
@@ -147,7 +140,5 @@
     .level-name {
       display: none;
     }
-
   }
-
 }

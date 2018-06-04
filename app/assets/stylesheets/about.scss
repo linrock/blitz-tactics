@@ -34,13 +34,12 @@
     letter-spacing: 0.2px;
 
     a {
-      @include transition(color 0.12s ease);
+      transition: color 0.12s ease;
 
       &:hover {
         color: rgba(255,255,255,0.8);
       }
     }
-
   }
 
   .cta {
@@ -52,7 +51,6 @@
       color: rgba(255,255,255,0.9);
     }
   }
-
 }
 
 
@@ -74,7 +72,5 @@
       font-size: 24px;
       line-height: 36px;
     }
-
   }
-
 }

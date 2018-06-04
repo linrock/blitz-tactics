@@ -28,11 +28,8 @@
         width: $square-size-sm;
         height: $square-size-sm;
       }
-
     }
-
   }
-
 }
 
 
@@ -64,7 +61,6 @@
       .puzzle-hint, .move-status, .combo-counter {
         padding-right: 0;
       }
-
     }
 
     .piece-promotion-modal .pieces {
@@ -79,7 +75,6 @@
       .onboarding {
         padding-right: 0;
       }
-
     }
 
     .main-header {
@@ -94,13 +89,10 @@
         width: 12.5%;
         height: 12.5%;
       }
-
     }
 
     .sidebar {
       display: none;
     }
-
   }
-
 }

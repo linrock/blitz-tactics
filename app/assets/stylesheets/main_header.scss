@@ -8,7 +8,7 @@ $header-height: 40px;
   background: #121212;
   width: 100%;
   overflow: hidden;
-  @include transition(opacity 0.2s ease, background 0.2s ease);
+  transition: opacity 0.2s ease, background 0.2s ease;
 
   &.hidden {
     opacity: 0;
@@ -21,7 +21,6 @@ $header-height: 40px;
     .logo {
       display: none;
     }
-
   }
 
   &:hover {
@@ -50,7 +49,6 @@ $header-height: 40px;
     .large {
       font-size: 16px;
     }
-
   }
 
   a {
@@ -59,12 +57,11 @@ $header-height: 40px;
     text-transform: uppercase;
     font-size: 11px;
     letter-spacing: 0.5px;
-    @include transition(color 0.15s ease);
+    transition: color 0.15s ease;
 
     &:hover {
       color: #e0e0e0;
     }
-
   }
 
   .link-left {
@@ -92,5 +89,4 @@ $header-height: 40px;
   .user-name {
     font-weight: bold;
   }
-
 }

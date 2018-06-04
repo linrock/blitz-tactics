@@ -5,12 +5,11 @@ $combo-indicator-font: Orbitron, Arial, sans-serif;
 
 
 body {
-  @include transition(background 0.6s ease);
+  transition: background 0.6s ease;
 
   &.unlocked {
     background: #313131;
   }
-
 }
 
 .container {
@@ -29,7 +28,7 @@ body {
   display: inline-block;
   color: white;
   text-decoration: none;
-  @include transition(opacity 0.25s ease);
+  transition: opacity 0.25s ease;
 
   &:hover {
     background: #51B7FF;
@@ -39,7 +38,6 @@ body {
   &.disabled {
     opacity: 0.15;
   }
-
 }
 
 .progress-bar {
@@ -54,14 +52,13 @@ body {
     background: yellow;
     width: 0;
     height: 5px;
-    @include transition(width 0.5s ease-in-out, background 0.3s ease-in-out);
+    transition: width 0.5s ease-in-out, background 0.3s ease-in-out;
 
     &.complete {
       width: 100%;
       background: #63F706;
     }
   }
-
 }
 
 .above-board {
@@ -80,13 +77,12 @@ body {
     position: absolute;
     font-size: 25px;
     top: 40px;
-    @include transition(all 0.35s ease-out);
+    transition: all 0.35s ease-out;
 
     &.smaller {
       font-size: 22px;
       top: 20px;
     }
-
   }
 
   .puzzle-hint {
@@ -96,7 +92,7 @@ body {
     top: 58px;
     width: 100%;
     padding-right: $sidebar-size + $sidebar-margin;
-    @include transition(opacity 0.15s ease);
+    transition: opacity 0.15s ease;
 
     .hint-trigger {
       background: #565656;
@@ -112,7 +108,6 @@ body {
         cursor: pointer;
         background: #676767;
       }
-
     }
 
     .move {
@@ -120,7 +115,6 @@ body {
       color: rgba(255,255,255,0.5);
       height: 0;
     }
-
   }
 
   .move-status {
@@ -129,17 +123,17 @@ body {
     font-size: 32px;
     width: 100%;
     position: absolute;
+    top: 5px;
     padding-right: $sidebar-size + $sidebar-margin;
     text-align: center;
     text-transform: uppercase;
     transform: scale3d(1,1,1);
-    top: 5px;
-    @include transition(opacity 0.02s ease);
+    transition: opacity 0.02s ease;
 
     &.fade-out {
-      @include transition(opacity 0.9s ease-out 0.2s, transform 0.05s ease-in-out);
       opacity: 0;
       transform: scale3d(0.92,0.92,1);
+      transition: opacity 0.9s ease-out 0.2s, transform 0.05s ease-in-out;
     }
 
     .perfect {
@@ -174,7 +168,6 @@ body {
       position: relative;
       top: 12px;
     }
-
   }
 
   .combo-counter {
@@ -184,7 +177,7 @@ body {
     top: 50px;
     width: 100%;
     padding-right: $sidebar-size + $sidebar-margin;
-    @include transition(opacity 0.25s ease);
+    transition: opacity 0.25s ease;
 
     .counter {
       display: inline-block;
@@ -200,9 +193,8 @@ body {
       }
 
       &.emphasis {
-        @include transform(scale3d(1.25, 1.25, 1));
+        transform: scale3d(1.25, 1.25, 1);
       }
-
     }
 
     .combo-text {
@@ -211,9 +203,7 @@ body {
       font-size: 14px;
       top: -2px;
     }
-
   }
-
 }
 
 .main {
@@ -231,18 +221,16 @@ body {
     left: -26px;
     text-decoration: none;
     padding: 0 6px;
-    @include transition(color 0.12s ease);
+    transition: color 0.12s ease;
 
     &:hover {
       color: rgba(255,255,255,0.4);
     }
-
   }
 
   .chessboard {
     margin: 0 auto;
   }
-
 }
 
 
@@ -294,9 +282,7 @@ body {
     div:nth-child(n + 5) {
       color: rgba(255,255,255,0.1);
     }
-
   }
-
 }
 
 .chessboard {
@@ -312,7 +298,7 @@ body {
     float: left;
     transition: background 0.1s ease-in-out;
     position: relative;
-    @include user-select(none);
+    user-select: none;
 
     &.light {
       background: rgb(243, 228, 207);
@@ -336,21 +322,18 @@ body {
       &.move-to {
         background: #fff79b;
       }
-
     }
 
     .piece {
       width: 100%;
       height: 100%;
       position: relative;
-      @include transition(opacity 0.3s ease, transform 0.12s ease-in-out);
+      transition: opacity 0.3s ease, transform 0.12s ease-in-out;
 
       &.w:hover {
         cursor: pointer;
       }
-
     }
-
   }
 
   .square-label {
@@ -380,7 +363,6 @@ body {
   .piece-buffer {
     display: none;
   }
-
 }
 
 .piece-promotion-modal {
@@ -420,9 +402,7 @@ body {
         width: 100%;
         height: 100%;
       }
-
     }
-
   }
 
   .background {
@@ -430,7 +410,6 @@ body {
     width: 100%;
     height: 100%;
   }
-
 }
 
 .under-board {
@@ -445,12 +424,11 @@ body {
     display: block;
     color: rgba(255,255,255,0.7);
     font-size: 16px;
-    @include transition(color 0.2s ease);
+    transition: color 0.2s ease;
 
     &.faded {
       color: rgba(255,255,255,0.4);
     }
-
   }
 
   .onboarding {
@@ -463,7 +441,7 @@ body {
     padding: 10px 0;
     padding-right: $sidebar-size + $sidebar-margin;
     text-shadow: 0 0 3px rgba(0,0,0,0.4);
-    @include transition(opacity 0.2s ease);
+    transition: opacity 0.2s ease;
   }
 
   // Prompts you to go to the next level
@@ -474,7 +452,7 @@ body {
     z-index: 11;
     position: absolute;
     top: 18px;
-    @include transition(opacity 0.2s ease);
+    transition: opacity 0.2s ease;
 
     &.invisible {
       opacity: 0;
@@ -500,14 +478,13 @@ body {
       height: 34px;
       margin-left: 7px;
       box-shadow: 0 0 4px rgba(0,0,0,0.2);
-      @include transition(background 0.12s ease);
+      transition: background 0.12s ease;
 
       i {
         font-size: 16px;
         position: relative;
         left: 6px;
       }
-
     }
 
     &.anonymous {
@@ -522,16 +499,12 @@ body {
           margin-top: 7px;
           color: rgba(255,255,255,0.7);
         }
-
       }
 
       .right {
         display: block;
         float: right;
       }
-
     }
-
   }
-
 }

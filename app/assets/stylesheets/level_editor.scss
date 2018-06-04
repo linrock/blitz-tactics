@@ -5,94 +5,87 @@
 body[data-controller="levels"][data-action="edit"],
 body[data-controller="puzzles"][data-action="search"] {
 
-.container {
-  width: 930px;
-  margin: 0 auto;
-  padding-right: 0;
-}
-
-.level-info {
-  @include clearfix;
-  margin: 50px 0;
-}
-
-.level-name {
-  font-weight: bold;
-  font-size: 18px;
-  float: left;
-  position: relative;
-  top: -1px;
-
-  a {
-    color: inherit;
-    text-decoration: none;
+  .container {
+    width: 930px;
+    margin: 0 auto;
+    padding-right: 0;
   }
 
-}
-
-.update-level-name {
-  display: inline-block;
-
-  input {
-    color: rgba(255,255,255,0.9);
-    font-size: 16px;
-    border: 0;
-    background: none;
-    outline: none;
-    width: 350px;
+  .level-info {
+    @include clearfix;
+    margin: 50px 0;
   }
 
-}
-
-.add-level {
-  float: right;
-}
-
-.add-level-id {
-  display: block;
-  font-size: 15px;
-  font-family: $main-font;
-  border: 0;
-  border-radius: 1px;
-  margin: 0 auto;
-  padding: 7px 17px;
-}
-
-.puzzle-id {
-  color: rgba(255,255,255,0.7);
-  font-size: 14px;
-  margin: 5px 0;
-  display: block;
-  text-decoration: none;
-
-  &:hover {
-    color: rgba(255,255,255,0.9);
-  }
-
-}
-
-.boards {
-  margin-bottom: 40px;
-  @include clearfix;
-
-  .board {
+  .level-name {
+    font-weight: bold;
+    font-size: 18px;
     float: left;
-    margin-bottom: 15px;
+    position: relative;
+    top: -1px;
 
-    .puzzle-id {
-      text-align: center;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
+  }
 
-    &.selected {
+  .update-level-name {
+    display: inline-block;
 
-      .mini-chessboard {
-        border: 1px solid yellow;
+    input {
+      color: rgba(255,255,255,0.9);
+      font-size: 16px;
+      border: 0;
+      background: none;
+      outline: none;
+      width: 350px;
+    }
+  }
+
+  .add-level {
+    float: right;
+  }
+
+  .add-level-id {
+    display: block;
+    font-size: 15px;
+    font-family: $main-font;
+    border: 0;
+    border-radius: 1px;
+    margin: 0 auto;
+    padding: 7px 17px;
+  }
+
+  .puzzle-id {
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    margin: 5px 0;
+    display: block;
+    text-decoration: none;
+
+    &:hover {
+      color: rgba(255,255,255,0.9);
+    }
+  }
+
+  .boards {
+    margin-bottom: 40px;
+    @include clearfix;
+
+    .board {
+      float: left;
+      margin-bottom: 15px;
+
+      .puzzle-id {
+        text-align: center;
       }
 
+      &.selected {
+
+        .mini-chessboard {
+          border: 1px solid yellow;
+        }
+      }
     }
-
   }
-
-}
-
 }
