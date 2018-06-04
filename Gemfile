@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '5.1.6'
+gem 'rails', '5.2.0'
 gem 'pg', '~> 0.15'
 gem 'unicorn'
 gem 'dotenv-rails'
@@ -25,6 +25,5 @@ end
 group :development do
   gem 'listen'
   gem 'web-console', '>= 3.3.0'
-  gem 'spring'
   gem 'pry'
 end
