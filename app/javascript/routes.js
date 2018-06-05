@@ -30,6 +30,7 @@ const routes = {
   },
   "home#index": function() {
     initLevelPlayer({ source: "/level-1" })
+    new Onboarding
   },
   "levels#edit": function() {
     new LevelEditor
