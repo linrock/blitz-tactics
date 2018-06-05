@@ -18,6 +18,10 @@
 
     .under-board {
       width: $main-width-sm;
+
+      .next-stage.anonymous .small {
+        font-size: 11px;
+      }
     }
 
     .chessboard {
