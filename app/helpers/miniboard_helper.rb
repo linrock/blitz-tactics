@@ -63,12 +63,13 @@ module MiniboardHelper
       :fen => fen,
       :flip => fen.include?(" b "),
     }
+    title = sanitize(route[:title]).split("|")[0].strip
     %(
       <div class="position-board">
         <a href="#{path}">
           #{render :partial => "static/mini_board", :locals => options}
           <div class="position-name">
-            <span>#{sanitize(route[:title])}</span>
+            <span>#{title}</span>
           </div>
         </a>
       </div>

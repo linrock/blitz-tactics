@@ -39,3 +39,23 @@ KQ vs KR checkmate
   fen: 8/3k4/4r3/8/8/1Q6/3K4/8 w - -
   goal: win
   depth: 9
+
+Opposition | Pawn endgames
+  Practice the concept of opposition in a pawn endgame. Black to play wins.
+  /pawn-endgames/opposition
+  fen: 8/8/1p6/p1p5/P1P5/1P4k1/2K5/8 b - - 0 1
+  goal: win
+  depth: 15
+
+Triangulation | Pawn endgames
+  Practice the concept of opposition in a pawn endgame. White to play wins.
+  /pawn-endgames/triangulation
+  fen: 8/1p1k4/1P6/2PK4/8/8/8/8 w - -
+  goal: win
+  depth: 15
+
+Reti's idea | Pawn endgames
+  Practice applying Reti's idea in a pawn endgame. White to play draws.
+  /pawn-endgames/retis-idea
+  fen: 7K/8/k1P5/7p/8/8/8/8 w - -
+  goal: draw

@@ -1,5 +1,5 @@
-<% content_for(:title) { @route[:title] } %>
-<% content_for(:meta_description) { @route[:description] } %>
+<% content_for(:title) { @route[:title].html_safe } %>
+<% content_for(:meta_description) { @route[:description].html_safe } %>
 
 <div class="position-trainer">
   <div class="instructions invisible"></div>
