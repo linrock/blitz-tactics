@@ -9,4 +9,8 @@ class StaticController < ApplicationController
   def position
   end
 
+  def defined_position
+    pathname = request.path.gsub(/\/\z/, '')
+    @route = StaticRoutes.new.route_map[pathname]
+  end
 end

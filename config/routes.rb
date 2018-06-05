@@ -13,9 +13,9 @@ Rails.application.routes.draw do
   get '/positions'             => 'static#positions'
   get '/position'              => 'static#position'
 
-  get '/lucena-position'       => 'static#lucena_position'
-  get '/philidor-position'     => 'static#philidor_position'
-  get '/vancura-position'      => 'static#vancura_position'
+  StaticRoutes.new.route_paths.each do |route|
+    get route => "static#defined_position"
+  end
 
   get '/pawn-endgames'         => 'static#pawn_endgames'
   # get '/rook-endgames'         => 'static#rook_endgames'
@@ -30,5 +30,4 @@ Rails.application.routes.draw do
   put '/level-:level_num'      => 'levels#update'
 
   get '/:username'             => 'users#show'
-
 end

@@ -1,0 +1,20 @@
+Lucena position
+  Practice winning the lucena position. White to play wins. Your goal is to use your rook to build a bridge and support promotion of your pawn.
+  /lucena-position
+  fen: 3K4/3P1k2/8/8/8/8/4R3/2r5 w - -
+  goal: win
+  depth: 9
+
+Philidor position
+  Practice defending the philidor position. Black to play draws. Prevent the king from entering the 6th rank, and go for a draw by perpetual check if white advances the pawn.
+  /philidor-position
+  fen: 6R1/4k2r/8/3KP3/8/8/8/8 b - -
+  goal: draw
+  depth: 9
+
+Vancura position
+  Practice defending the vancura position. Black to play draws. Move the rook behind the pawn if it advances, and keep white's king in check.
+  /vancura-position
+  fen: R7/6k1/P4r2/1K6/8/8/8/8 b - -
+  goal: draw
+  depth: 11
