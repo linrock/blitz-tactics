@@ -1,5 +1,8 @@
+import $ from 'jquery'
+import _ from 'underscore'
 import Backbone from 'backbone'
 import Mousetrap from 'mousetrap'
+import Chess from 'chess.js'
 
 // When you make a pawn move that requires pawn promotion,
 // this is what shows up
