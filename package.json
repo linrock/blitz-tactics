@@ -9,6 +9,8 @@
     "underscore": "^1.9.1"
   },
   "devDependencies": {
+    "caniuse-lite": "^1.0.30000848",
+    "webpack": "^3.0.0",
     "webpack-dev-server": "2.11.2"
   }
 }
