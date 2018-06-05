@@ -55,6 +55,7 @@ GEM
     coderay (1.1.2)
     concurrent-ruby (1.0.5)
     crass (1.0.4)
+    dalli (2.7.8)
     devise (4.4.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -206,6 +207,7 @@ DEPENDENCIES
   bootsnap
   bourbon
   byebug
+  dalli
   devise (~> 4.3)
   dotenv-rails
   font-awesome-rails
@@ -224,4 +226,4 @@ DEPENDENCIES
   webpacker
 
 BUNDLED WITH
-   1.16.0
+   1.16.1

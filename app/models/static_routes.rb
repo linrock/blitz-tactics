@@ -6,10 +6,20 @@ class StaticRoutes
   end
 
   def route_map
+    Rails.cache.fetch route_map_cache_key do
+      route_map!
+    end
+  end
+
+  def route_map!
     Hash[routes.map {|route| [route[:path], route] }]
   end
 
   private
+
+  def route_map_cache_key
+    "static_routes:route_map"
+  end
 
   def routes
     open(ROUTES_FILE, 'r').read.split(/\n\n/).map do |route_data|

@@ -82,19 +82,13 @@
     </p>
 
     <div class="examples">
-      <%= linked_miniboard_url "Lucena position",
-                               "3K4/3P1k2/8/8/8/8/4R3/2r5 w - -", "/lucena-position" %>
-      <%= linked_miniboard_url "Philidor position",
-                               "6R1/4k2r/8/3KP3/8/8/8/8 b - -", "/philidor-position" %>
-      <%= linked_miniboard_url "Vancura position",
-                               "R7/6k1/P4r2/1K6/8/8/8/8 b - -", "/vancura-position" %>
+      <%= linked_miniboard_route "/lucena-position" %>
+      <%= linked_miniboard_route "/philidor-position" %>
+      <%= linked_miniboard_route "/vancura-position" %>
 
-      <%= linked_miniboard_url "KBB vs K checkmate",
-                               "8/8/4k3/8/8/2K2B2/5B2/8 w - -", "/kbb-vs-k-checkmate" %>
-      <%= linked_miniboard_url "KBN vs K checkmate",
-                               "4k3/8/8/8/8/8/8/4KBN1 w - -", "/kbn-vs-k-checkmate" %>
-      <%= linked_miniboard_url "KQ vs KR checkmate",
-                               "8/3k4/4r3/8/8/1Q6/3K4/8 w - -", "/kq-vs-kr-checkmate" %>
+      <%= linked_miniboard_route "/kbb-vs-k-checkmate" %>
+      <%= linked_miniboard_route "/kbn-vs-k-checkmate" %>
+      <%= linked_miniboard_route "/kq-vs-kr-checkmate" %>
     </div>
   </div>
 

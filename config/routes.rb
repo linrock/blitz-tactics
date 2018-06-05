@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   get '/positions'             => 'static#positions'
   get '/position'              => 'static#position'
 
-  StaticRoutes.new.route_paths.each do |route|
+  static_routes = StaticRoutes.new
+  static_routes.route_map!
+  static_routes.route_paths.each do |route|
     get route => "static#defined_position"
   end
 

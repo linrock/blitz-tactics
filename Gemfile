@@ -5,6 +5,7 @@ gem 'pg', '~> 0.15'
 gem 'unicorn'
 gem 'dotenv-rails'
 gem 'bootsnap', require: false
+gem 'dalli'
 
 gem 'devise', '~> 4.3'
 gem 'kaminari'
