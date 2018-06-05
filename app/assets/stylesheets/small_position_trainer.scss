@@ -1,0 +1,61 @@
+.position-trainer.small {
+  $border-width: 2px;
+  $square-size: 50px;
+  $small-board-size: 8 * $square-size + 2 * $border-width;
+
+  margin: 0 auto 50px;
+  width: $small-board-size;
+  overflow: hidden;
+  display: flex;
+
+  &.left-aligned {
+    width: 719px;
+  }
+
+  &:not(.left-aligned) {
+    position: relative;
+    left: -40px;
+  }
+
+  .instructions {
+    height: 25px;
+  }
+
+  .chessboard {
+    width: $small-board-size;
+    height: $small-board-size;
+
+    .square {
+      width: $square-size;
+      height: $square-size;
+    }
+  }
+
+  .right {
+    margin: 103px 20px 0 37px;
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .description {
+      font-size: 14px;
+      line-height: 21px;
+      opacity: 0.5;
+
+      .source {
+        font-size: 12px;
+        margin-top: 15px;
+        color: rgba(255, 255, 255, 0.6);
+
+        a {
+          color: inherit;
+
+          &:hover {
+            color: rgba(255, 255, 255, 0.8);
+          }
+        }
+      }
+    }
+  }
+}

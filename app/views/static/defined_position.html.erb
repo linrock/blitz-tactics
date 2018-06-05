@@ -1,17 +1,38 @@
 <% content_for(:title) { @route[:title].html_safe } %>
 <% content_for(:meta_description) { @route[:description].html_safe } %>
 
-<div class="position-trainer">
-  <div class="instructions invisible"></div>
+<% has_description = %w(
+     /lucena-position
+     /philidor-position
+   ).include?(@route[:path]) %>
 
-  <div class="board-area">
-    <%= render :partial => "interface/chessboard" %>
-    <%= render :partial => "interface/piece_promotion_modal" %>
+<% if has_description %>
+  <div class="position-trainer small left-aligned">
+<% else %>
+  <div class="position-trainer small">
+<% end %>
+  <div class="left">
+    <div class="instructions invisible"></div>
+
+    <div class="board-area">
+      <%= render :partial => "interface/chessboard" %>
+      <%= render :partial => "interface/piece_promotion_modal" %>
+    </div>
+
+    <div class="actions">
+      <button class="button restart">Reset position</button>
+    </div>
   </div>
 
-  <div class="actions">
-    <button class="button restart">Reset position</button>
-  </div>
+  <% if has_description %>
+    <div class="right">
+      <% if @route[:path] == "/lucena-position" %>
+        <%= render :partial => "static/descriptions/lucena_position" %>
+      <% elsif @route[:path] == "/philidor-position" %>
+        <%= render :partial => "static/descriptions/philidor_position" %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
 <script>
