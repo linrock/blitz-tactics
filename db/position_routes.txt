@@ -48,14 +48,36 @@ Opposition | Pawn endgames
   depth: 15
 
 Triangulation | Pawn endgames
-  Practice the concept of opposition in a pawn endgame. White to play wins.
+  Practice the concept of opposition to win a pawn endgame. White to play wins.
   /pawn-endgames/triangulation
   fen: 8/1p1k4/1P6/2PK4/8/8/8/8 w - -
   goal: win
   depth: 15
 
 Reti's idea | Pawn endgames
-  Practice applying Reti's idea in a pawn endgame. White to play draws.
+  Practice applying Reti's idea to defend a pawn endgame. White to play draws.
   /pawn-endgames/retis-idea
   fen: 7K/8/k1P5/7p/8/8/8/8 w - -
   goal: draw
+  depth: 15
+
+Zig zag | Pawn endgames
+  Practice applying zig zag movements to win a pawn endgame. White to play wins.
+  /pawn-endgames/zig-zag
+  fen: 6k1/8/3K2p1/8/6P1/8/8/8 w - -
+  goal: win
+  depth: 15
+
+Bodycheck | Pawn endgames
+  Practice applying bodycheck movements to win a pawn endgame. White to play wins.
+  /pawn-endgames/bodycheck
+  fen: 8/p4K2/P7/8/8/8/1k6/8 w - -
+  goal: win
+  depth: 15
+
+Distant opposition | Pawn endgames
+  Practice applying the concept of distant opposition to draw a pawn endgame. White to play draws.
+  /pawn-endgames/distant-opposition
+  fen: 8/8/4k3/8/8/8/3KP3/8 b - -
+  goal: draw
+  depth: 15

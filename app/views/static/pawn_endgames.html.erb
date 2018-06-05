@@ -1,7 +1,6 @@
 <% content_for(:title) { "Pawn endgames" } %>
 
 <div class="positions-index container">
-
   <h2>Pawn endgames</h2>
 
   <div class="positions">
@@ -12,13 +11,13 @@
     </div>
 
     <div class="examples">
-      <%= linked_miniboard "Opposition", "8/8/1p6/p1p5/P1P5/1P4k1/2K5/8 b - - 0 1", "win", 10 %>
-      <%= linked_miniboard "Triangulation", "8/1p1k4/1P6/2PK4/8/8/8/8 w - -", "win", 11 %>
-      <%= linked_miniboard "Reti's idea", "7K/8/k1P5/7p/8/8/8/8 w - -", "draw" %>
+      <%= linked_miniboard_route "/pawn-endgames/opposition" %>
+      <%= linked_miniboard_route "/pawn-endgames/triangulation" %>
+      <%= linked_miniboard_route "/pawn-endgames/retis-idea" %>
 
-      <%= linked_miniboard "Zig zag", "6k1/8/3K2p1/8/6P1/8/8/8 w - -", "win", 12 %>
-      <%= linked_miniboard "Bodycheck", "8/p4K2/P7/8/8/8/1k6/8 w - -", "win", 15 %>
-      <%= linked_miniboard "Distant opposition", "8/8/4k3/8/8/8/3KP3/8 b - -", "draw", 11 %>
+      <%= linked_miniboard_route "/pawn-endgames/zig-zag" %>
+      <%= linked_miniboard_route "/pawn-endgames/bodycheck" %>
+      <%= linked_miniboard_route "/pawn-endgames/distant-opposition" %>
 
       <%= linked_miniboard "The square rule", "8/3p4/8/2P5/P3k3/8/8/7K w - -", "win", 15 %>
       <%= linked_miniboard "Unusual king move", "6K1/8/6k1/8/8/p7/P7/8 w - -", "draw", 10 %>
@@ -40,7 +39,5 @@
       <%= linked_miniboard "Reti's idea 3", "8/8/8/8/k7/P1P2p1K/1P6/8 b - - 0 1", "draw" %>
       <%= linked_miniboard "Unusual king move 2", "8/8/7k/8/1p6/7K/2P5/8 w - -", "win" %>
     </div>
-
   </div>
-
 </div>
