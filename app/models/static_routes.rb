@@ -6,13 +6,15 @@ class StaticRoutes
   end
 
   def route_map
-    Rails.cache.fetch route_map_cache_key do
-      route_map!
-    end
+    results = Rails.cache.read route_map_cache_key
+    return results unless results.nil?
+    route_map!
   end
 
   def route_map!
-    Hash[routes.map {|route| [route[:path], route] }]
+    results = Hash[routes.map {|route| [route[:path], route] }]
+    Rails.cache.write route_map_cache_key, results
+    results
   end
 
   private
