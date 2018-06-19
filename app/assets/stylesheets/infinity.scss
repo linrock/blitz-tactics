@@ -1,0 +1,14 @@
+// home#infinity
+
+.infinity-mode {
+  .board-container {
+    display: flex;
+    margin-top: 50px;
+  }
+
+  .chessboard {
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+  }
+}

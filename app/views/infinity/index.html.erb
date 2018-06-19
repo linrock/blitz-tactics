@@ -1,4 +1,29 @@
 <% content_for(:title) { "Infinity mode" } %>
 
-<%= render partial: "interface/main",
-           locals: { title: "Infinity mode" } %>
+<section class="infinity-mode container">
+
+  <div class="board-container">
+    <div class="board-area">
+      <%= render partial: "interface/combo_counter" %>
+      <%= render partial: "interface/chessboard" %>
+      <%= render partial: "interface/piece_promotion_modal" %>
+    </div>
+    <div class="difficulty">
+      <div class="choose">Difficulty</div>
+      <div class="difficulties">
+        <div>Easy</div>
+        <div>Medium</div>
+        <div>Hard</div>
+        <div>Insane</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="under-board">
+    You have solved 1,512 puzzles
+  </div>
+</section>
+
+<script>
+  blitz.loggedIn = <%= current_user ? true : false %>;
+</script>

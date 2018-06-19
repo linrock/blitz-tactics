@@ -9,6 +9,11 @@ export default class MainHeader extends Backbone.View {
   }
 
   initialize() {
+    // TODO disable this for now
+    // this.listenToEvents()
+  }
+
+  listenToEvents() {
     this.listenTo(d, "puzzles:start", () => {
       if (blitz.loggedIn) {
         this.$el.addClass("hidden");

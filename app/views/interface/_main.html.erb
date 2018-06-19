@@ -1,6 +1,6 @@
 <% round_times = local_assigns[:round_times] || [] %>
 
-<%= render :partial => "interface/progress_bar" %>
+<%= render partial: "interface/progress_bar" %>
 
 <div class="above-board">
   <div class="instructions">White to move</div>
@@ -12,18 +12,15 @@
 
   <div class="move-status">&nbsp;</div>
 
-  <div class="combo-counter invisible">
-    <span class="counter">&nbsp;</span>
-    <span class="combo-text">combo</span>
-  </div>
+  <%= render partial: "interface/combo_counter" %>
 </div>
 
 <div class="main">
   <a href="/levels" class="level-selector">&lt;</a>
 
   <div class="board-area">
-    <%= render :partial => "interface/chessboard" %>
-    <%= render :partial => "interface/piece_promotion_modal" %>
+    <%= render partial: "interface/chessboard" %>
+    <%= render partial: "interface/piece_promotion_modal" %>
   </div>
 
   <aside class="sidebar">
