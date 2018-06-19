@@ -1,0 +1,52 @@
+.choose {
+  margin-bottom: 100px;
+
+  .container {
+    padding-right: 0;
+  }
+
+  h2 {
+    font-size: 20px;
+    opacity: 0.5;
+    text-align: center;
+    margin: 35px 0;
+  }
+
+  .game-modes {
+    display: flex;
+  }
+
+  .mode {
+    text-align: center;
+    padding: 0 10px;
+
+    h3 {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    h4 {
+      opacity: 0.5;
+      font-size: 14px;
+      line-height: 20px;
+      margin-bottom: 20px;
+      width: 300px;
+    }
+  }
+
+  .position-board {
+    display: block;
+    opacity: 0.9;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .mini-chessboard {
+    display: block;
+    width: 240px;
+    height: 240px;
+    margin: 0 auto;
+  }
+}

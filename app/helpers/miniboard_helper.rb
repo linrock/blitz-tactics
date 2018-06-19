@@ -28,7 +28,7 @@ module MiniboardHelper
         <a href="#{link}">
           #{render :partial => "static/mini_board", :locals => options}
           <div class="position-name">
-            <span>#{sanitize(title)}</span>
+            #{"<span>#{sanitize(title)}</span>" if title.present?}
           </div>
         </a>
       </div>
