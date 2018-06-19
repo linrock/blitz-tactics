@@ -1,6 +1,6 @@
 <% content_for(:title) { @level.name } %>
 
-<%= render :partial => "interface/main",
-           :locals  => {
-             :round_times => @round_times
-           } %>
+<section class="precision-mode">
+  <%= render partial: "interface/main",
+             locals: { round_times: @round_times } %>
+</section>
