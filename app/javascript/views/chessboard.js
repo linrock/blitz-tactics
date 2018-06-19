@@ -5,6 +5,8 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
+import d from '../dispatcher'
+
 require('jquery-ui');
 require('jquery-ui/ui/widgets/draggable');
 require('jquery-ui/ui/widgets/droppable');

@@ -4,6 +4,7 @@ import Chess from 'chess.js'
 
 import StockfishEngine from '../workers/stockfish_engine'
 import { uciToMove } from '../utils'
+import d from '../dispatcher'
 
 const SEARCH_DEPTH = 15
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"

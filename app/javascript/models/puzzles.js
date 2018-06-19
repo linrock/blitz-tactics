@@ -3,6 +3,7 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 
 import { uciToMove, moveToUci, shuffle } from '../utils'
+import d from '../dispatcher'
 
 const responseDelay = 0
 

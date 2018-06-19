@@ -1,6 +1,8 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
+import d from '../dispatcher'
+
 // Tracks progress within the level and whether the next level is unlocked
 //
 export default class LevelProgress extends Backbone.Model {

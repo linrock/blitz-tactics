@@ -1,6 +1,8 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
+import d from '../dispatcher'
+
 const comboDroppedIn = 7000
 const hintDelay = 750
 

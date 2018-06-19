@@ -1,5 +1,7 @@
 import Backbone from 'backbone'
 
+import d from '../dispatcher'
+
 // Main header hides for logged-in users, and fades for logged out
 //
 export default class MainHeader extends Backbone.View {

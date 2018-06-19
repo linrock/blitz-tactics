@@ -1,5 +1,7 @@
 import Backbone from 'backbone'
 
+import d from '../dispatcher'
+
 // How close you are to the next round
 //
 export default class ProgressBar extends Backbone.View {

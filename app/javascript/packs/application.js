@@ -1,13 +1,9 @@
-/* eslint no-console:0 */
-
 import $ from 'jquery'
-import _ from 'underscore'
 
 import MiniBoard from '../views/mini_board'
 import routes from '../routes'
 
 
-window.d = _.clone(Backbone.Events);
 window.blitz = {};
 window.config = {
   comboSizeForNextLevel: 100

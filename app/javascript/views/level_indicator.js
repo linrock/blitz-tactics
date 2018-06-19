@@ -1,5 +1,7 @@
 import Backbone from 'backbone'
 
+import d from '../dispatcher'
+
 // Level name, next level, etc.
 //
 export default class LevelIndicator extends Backbone.View {

@@ -1,6 +1,8 @@
 import $ from 'jquery'
 import Backbone from 'backbone'
 
+import d from '../dispatcher'
+
 export default class PositionEditor extends Backbone.View {
 
   get el() {

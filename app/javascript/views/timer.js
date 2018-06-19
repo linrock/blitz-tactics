@@ -1,6 +1,8 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
+import d from '../dispatcher'
+
 const updateInterval = 50
 
 // Amount of time spent on this round so far

@@ -1,6 +1,8 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
+import d from '../dispatcher'
+
 const perfectTiming = 2500
 const greatTiming = 5000
 

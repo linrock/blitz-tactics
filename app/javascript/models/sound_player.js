@@ -1,5 +1,7 @@
 import Backbone from 'backbone'
 
+import d from '../dispatcher'
+
 const soundEnabled = false
 
 export default class SoundPlayer extends Backbone.Model {

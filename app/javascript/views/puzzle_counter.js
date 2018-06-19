@@ -1,5 +1,7 @@
 import Backbone from 'backbone'
 
+import d from '../dispatcher'
+
 // Number of puzzles solved in this round
 //
 export default class PuzzleCounter extends Backbone.View {

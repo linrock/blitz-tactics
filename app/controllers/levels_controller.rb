@@ -2,15 +2,14 @@ class LevelsController < ApplicationController
   before_action :authorize_admin!, :only => [:edit, :update]
 
   def show
-    is_responsive
     @level = Level.find_by(:slug => level_slug)
     @puzzles = @level.puzzles
     @round_times = current_user&.round_times_for_level(@level.id)&.take(10) || []
     respond_to do |format|
       format.html {}
       format.json {
-        render :json => {
-          :puzzles => @puzzles.map(&:simplified_data)
+        render json: {
+          puzzles: @puzzles.map(&:simplified_data)
         }
       }
     end
@@ -37,9 +36,9 @@ class LevelsController < ApplicationController
     @level.puzzle_ids = params[:puzzle_ids] if params[:puzzle_ids]
     @level.name = params[:name] if params[:name]
     @level.save!
-    render :partial    => "puzzles/mini_view",
-           :collection => @level.puzzles,
-           :as         => :puzzle
+    render partial:    "puzzles/mini_view",
+           collection: @level.puzzles,
+           as:         :puzzle
   end
 
   private
@@ -47,5 +46,4 @@ class LevelsController < ApplicationController
   def level_slug
     "level-#{params[:level_num]}"
   end
-
 end
