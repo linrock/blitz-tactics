@@ -9,9 +9,7 @@
           Blaze through endless chess puzzles.
           Change the difficulty to challenge yourself.
         </h4>
-        <%= linked_miniboard_url "",
-              "4k3/8/8/8/8/1P6/8/2K5 w - -",
-              "/infinity" %>
+        <%= linked_miniboard_url "", @infinity_puzzle.fen, "/infinity" %>
         <div class="under-mini-board">
           <% if current_user.present? %>
             You have solved <%= 3 %> puzzles
