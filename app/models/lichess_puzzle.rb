@@ -21,26 +21,6 @@ class LichessPuzzle < ActiveRecord::Base
     puzzles
   end
 
-  def self.rating_gt(min_rating)
-    where("CAST(data->'puzzle'->>'rating' AS INT) > ?", min_rating)
-  end
-
-  def self.rating_lt(max_rating)
-    where("CAST(data->'puzzle'->>'rating' AS INT) < ?", max_rating)
-  end
-
-  def self.attempts_gt(n_attempts)
-    where("CAST(data->'puzzle'->>'attempts' AS INT) > ?", n_attempts)
-  end
-
-  def self.vote_gt(votes)
-    where("CAST(data->'puzzle'->>'vote' AS INT) > ?", votes)
-  end
-
-  def self.white_to_move
-    where("data->'puzzle'->>'color' = 'white'")
-  end
-
   def self.n_pieces_query
     "char_length(
        regexp_replace(
@@ -49,16 +29,40 @@ class LichessPuzzle < ActiveRecord::Base
      )"
   end
 
-  def self.n_pieces_eq(n)
+  scope :rating_gt, -> (min_rating) do
+    where("CAST(data->'puzzle'->>'rating' AS INT) > ?", min_rating)
+  end
+
+  scope :rating_lt, -> (max_rating) do
+    where("CAST(data->'puzzle'->>'rating' AS INT) < ?", max_rating)
+  end
+
+  scope :attempts_gt, -> (n_attempts) do
+    where("CAST(data->'puzzle'->>'attempts' AS INT) > ?", n_attempts)
+  end
+
+  scope :vote_gt, -> (votes) do
+    where("CAST(data->'puzzle'->>'vote' AS INT) > ?", votes)
+  end
+
+  scope :white_to_move, -> do
+    where("data->'puzzle'->>'color' = 'white'")
+  end
+
+  scope :n_pieces_eq, -> (n) do
     where("#{n_pieces_query} = ?", n)
   end
 
-  def self.n_pieces_lt(n)
+  scope :n_pieces_lt, -> (n) do
     where("#{n_pieces_query} < ?", n)
   end
 
-  def self.n_pieces_gt(n)
+  scope :n_pieces_gt, -> (n) do
     where("#{n_pieces_query} > ?", n)
+  end
+
+  def fen
+    data.dig("puzzle", "fen")
   end
 
   def rating

@@ -22,6 +22,10 @@ class Level < ActiveRecord::Base
     LichessPuzzle.find(puzzle_ids).index_by(&:id).values_at(*puzzle_ids)
   end
 
+  def first_puzzle_fen
+    puzzles.first.fen
+  end
+
   # TODO better import/export system
   def export_puzzle_ids
     puzzles.map(&:id)
@@ -53,5 +57,4 @@ class Level < ActiveRecord::Base
       errors.add :puzzle_ids, "must all exist!"
     end
   end
-
 end

@@ -27,9 +27,7 @@
           Use repetition to learn. Quickly solve puzzles
           without mistakes to unlock the next level.
         </h4>
-        <%= linked_miniboard_url "",
-              "4k3/8/8/8/8/1P6/8/2K5 w - -",
-              "/level-1" %>
+        <%= linked_miniboard_url "", @level.first_puzzle_fen, "/#{@level.slug}" %>
         <div class="under-mini-board"><%= @level.name %></div>
       </div>
     </div>

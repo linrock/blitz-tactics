@@ -15,10 +15,7 @@
 
 </head>
 <body data-controller="<%= params[:controller] %>"
-      data-action="<%= params[:action] %>"
-      <% if @responsive %>
-        class="responsive"
-      <% end %>>
+      data-action="<%= params[:action] %>">
 
 <%= render :partial => "layouts/main_header" %>
 <%= yield %>
