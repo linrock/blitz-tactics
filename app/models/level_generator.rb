@@ -53,5 +53,4 @@ class LevelGenerator
   def random_seed
     Random.new(1)
   end
-
 end

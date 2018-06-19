@@ -4,7 +4,7 @@
 
     <div class="game-modes">
       <div class="mode infinity">
-        <h3>Infinity</h3>
+        <h3><a href="/infinity">Infinity</a></h3>
         <h4>
           Blaze through endless chess puzzles.
           Change the difficulty to challenge yourself.
@@ -12,10 +12,17 @@
         <%= linked_miniboard_url "",
               "4k3/8/8/8/8/1P6/8/2K5 w - -",
               "/infinity" %>
+        <div class="under-mini-board">
+          <% if current_user.present? %>
+            You have solved <%= 3 %> puzzles
+          <% else %>
+            Sign in to track your progress
+          <% end %>
+        </div>
       </div>
 
       <div class="mode accuracy">
-        <h3>Repetition</h3>
+        <h3><a href="/<%= @level.slug %>">Repetition</a></h3>
         <h4>
           Use repetition to learn. Quickly solve puzzles
           without mistakes to unlock the next level.
@@ -23,6 +30,7 @@
         <%= linked_miniboard_url "",
               "4k3/8/8/8/8/1P6/8/2K5 w - -",
               "/level-1" %>
+        <div class="under-mini-board"><%= @level.name %></div>
       </div>
     </div>
   </div>

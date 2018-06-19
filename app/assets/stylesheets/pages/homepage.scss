@@ -23,6 +23,16 @@
     h3 {
       font-size: 30px;
       margin-bottom: 20px;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.15s ease;
+
+        &:hover {
+          color: #ffe800;
+        }
+      }
     }
 
     h4 {
@@ -31,6 +41,11 @@
       line-height: 20px;
       margin-bottom: 30px;
       width: 300px;
+    }
+
+    .under-mini-board {
+      margin-top: 30px;
+      opacity: 0.5;
     }
   }
 

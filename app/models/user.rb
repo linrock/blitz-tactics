@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   end
 
   def highest_level_unlocked
-    self.profile["levels_unlocked"].max
+    Level.find_by(id: self.profile["levels_unlocked"].max)
   end
 
   def unlocked_sequential_levels?
@@ -57,7 +57,9 @@ class User < ActiveRecord::Base
   end
 
   def set_default_profile
-    self.profile ||= { "levels_unlocked": [1] }
+    self.profile ||= {
+      "levels_unlocked": [1]
+    }
   end
 
   def validate_username
@@ -75,5 +77,4 @@ class User < ActiveRecord::Base
       errors.add :username, "is already registered"
     end
   end
-
 end
