@@ -1,3 +1,5 @@
+// the main puzzle interface
+
 @import "bourbon";
 @import "_variables";
 
@@ -15,7 +17,6 @@ body {
 .container {
   margin: 0 auto;
   width: $main-width;
-  padding-right: $sidebar-size + $sidebar-margin;
   @include clearfix;
 }
 
@@ -66,12 +67,11 @@ body {
   position: relative;
   width: $main-width;
   margin: 0 auto;
-  padding-right: $sidebar-size + $sidebar-margin;
 
   .instructions {
     font-weight: bold;
     text-shadow: 0 0 8px rgba(0,0,0,0.9);
-    width: $board-size;
+    width: 100%;
     text-align: center;
     margin: 0 auto;
     position: absolute;
@@ -91,7 +91,6 @@ body {
     position: absolute;
     top: 58px;
     width: 100%;
-    padding-right: $sidebar-size + $sidebar-margin;
     transition: opacity 0.15s ease;
 
     .hint-trigger {
@@ -124,7 +123,6 @@ body {
     width: 100%;
     position: absolute;
     top: 5px;
-    padding-right: $sidebar-size + $sidebar-margin;
     text-align: center;
     text-transform: uppercase;
     transform: scale3d(1,1,1);
@@ -176,7 +174,6 @@ body {
     position: absolute;
     top: 50px;
     width: 100%;
-    padding-right: $sidebar-size + $sidebar-margin;
     transition: opacity 0.25s ease;
 
     .counter {
@@ -238,7 +235,6 @@ body {
 //
 .board-area {
   position: relative;
-  float: left;
 }
 
 
@@ -254,6 +250,8 @@ body {
 
   .times {
     margin-top: -7px;
+    display: none;
+    // TODO
   }
 
   .timer {
@@ -415,7 +413,6 @@ body {
 .under-board {
   margin: 0 auto;
   padding: 25px 0;
-  padding-right: $sidebar-size + $sidebar-margin;
   width: $main-width;
   text-align: center;
   position: relative;
@@ -439,7 +436,6 @@ body {
     text-align: center;
     width: 100%;
     padding: 10px 0;
-    padding-right: $sidebar-size + $sidebar-margin;
     text-shadow: 0 0 3px rgba(0,0,0,0.4);
     transition: opacity 0.2s ease;
   }
