@@ -39,6 +39,10 @@ const routes = {
     initPuzzlePlayer()
     new Puzzles
   },
+  "infinity#index": function() {
+    initPuzzlePlayer()
+    new Puzzles
+  },
   "static#positions": function() {
     new PositionCreator
   },

@@ -5,5 +5,4 @@ class ScoreboardController < ApplicationController
       -user.highest_level_unlocked
     end.take(30)
   end
-
 end

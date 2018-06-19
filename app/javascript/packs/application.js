@@ -48,8 +48,7 @@ window.config = {
   }
 })();
 
-// document.addEventListener('DOMContentLoaded', () => {
-$(function() {
+document.addEventListener('DOMContentLoaded', () => {
   const $body = $('body')
   const pageKey = `${$body.data('controller')}#${$body.data('action')}`
   const route = routes[pageKey]

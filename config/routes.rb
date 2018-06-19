@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
   get '/levels'                => 'levels#index'
   get '/scoreboard'            => 'scoreboard#index'
+  get '/infinity'              => 'infinity#index'
 
   resources :positions, :only => [:new, :create, :edit, :update, :show]
 
