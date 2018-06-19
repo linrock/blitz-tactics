@@ -1,27 +1,30 @@
 <% content_for(:title) { "Infinity mode" } %>
 
-<section class="infinity-mode container">
-  <%= render partial: "interface/above_board" %>
+<section class="infinity-mode">
+  <div class="container">
+    <%= render partial: "interface/above_board" %>
 
-  <div class="board-container">
-    <div class="board-area">
-      <%= render partial: "interface/chessboard" %>
-      <%= render partial: "interface/piece_promotion_modal" %>
-    </div>
-
-    <div class="difficulty">
-      <div class="choose">Difficulty</div>
-      <div class="difficulties">
-        <div>Easy</div>
-        <div>Medium</div>
-        <div>Hard</div>
-        <div>Insane</div>
+    <div class="board-container">
+      <div class="board-area">
+        <%= render partial: "interface/chessboard" %>
+        <%= render partial: "interface/piece_promotion_modal" %>
       </div>
-    </div>
-  </div>
 
-  <div class="under-board">
-    You have solved 1,512 puzzles
+      <aside class="infinity-sidebar">
+        <div class="sidebar-label">Set difficulty</div>
+        <div class="difficulties">
+          <div class="easy selected">Easy</div>
+          <div class="medium">Medium</div>
+          <div class="hard">Hard</div>
+          <div class="insane">Insane</div>
+        </div>
+
+        <div class="stats">
+          <div class="sidebar-label">You have solved</div>
+          <div class="n-puzzles"><span>1,512</span> puzzles</div>
+        </div>
+      </aside>
+    </div>
   </div>
 </section>
 

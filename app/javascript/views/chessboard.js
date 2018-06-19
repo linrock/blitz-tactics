@@ -43,7 +43,6 @@ class Pieces {
       attr("src", `/assets/pieces/${className}.png`).
       addClass(`piece ${className} ${piece.color}`)
   }
-
 }
 
 
@@ -89,7 +88,6 @@ class DragAndDrop {
       }
     })
   }
-
 }
 
 
@@ -137,7 +135,6 @@ class PointAndClick {
     this.selectedSquare = false
     this.board.$(".square.selected").removeClass("selected")
   }
-
 }
 
 
@@ -239,5 +236,4 @@ export default class Chessboard extends Backbone.View {
   $getSquare(id) {
     return $(`#${id}`)
   }
-
 }
