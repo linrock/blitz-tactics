@@ -32,5 +32,4 @@ class PositionsController < ApplicationController
     )
     redirect_to "/positions/#{@position.id}"
   end
-
 end
