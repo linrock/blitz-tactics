@@ -2,18 +2,7 @@ import $ from 'jquery'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
-// TODO copy/paste from models/puzzles
-//
-let uciToMove = (uci) => {
-  let m = {
-    from: uci.slice(0,2),
-    to: uci.slice(2,4)
-  }
-  if (uci.length === 5) {
-    m.promotion = uci[4]
-  }
-  return m
-}
+import { uciToMove } from '../utils'
 
 // For handling the DOM elements of the pieces on the board
 //

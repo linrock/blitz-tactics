@@ -2,40 +2,9 @@ import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
 
+import { uciToMove, moveToUci, shuffle } from '../utils'
+
 const responseDelay = 0
-
-
-let uciToMove = (uci) => {
-  let m = {
-    from: uci.slice(0,2),
-    to: uci.slice(2,4)
-  }
-  if (uci.length === 5) {
-    m.promotion = uci[4]
-  }
-  return m
-}
-
-let moveToUci = (move) => {
-  if (move.promotion) {
-    return `${move.from}${move.to}${move.promotion}`
-  } else {
-    return `${move.from}${move.to}`
-  }
-}
-
-function shuffle(original) {
-  let array = original.slice(0)
-  let counter = array.length
-  while (counter > 0) {
-    let index = Math.floor(Math.random() * counter)
-    counter--
-    let temp = array[counter]
-    array[counter] = array[index]
-    array[index] = temp
-  }
-  return array
-}
 
 export default class Puzzles extends Backbone.Model {
 
