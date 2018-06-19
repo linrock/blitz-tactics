@@ -1,23 +1,9 @@
 <% round_times = local_assigns[:round_times] || [] %>
 
 <%= render partial: "interface/progress_bar" %>
-
-<div class="above-board">
-  <div class="instructions">White to move</div>
-
-  <div class="puzzle-hint invisible">
-    <div class="move"></div>
-    <div class="hint-trigger">Show hint</div>
-  </div>
-
-  <div class="move-status">&nbsp;</div>
-
-  <%= render partial: "interface/combo_counter" %>
-</div>
+<%= render partial: "interface/above_board" %>
 
 <div class="main">
-  <a href="/levels" class="level-selector">&lt;</a>
-
   <div class="board-area">
     <%= render partial: "interface/chessboard" %>
     <%= render partial: "interface/piece_promotion_modal" %>

@@ -1,13 +1,14 @@
 <% content_for(:title) { "Infinity mode" } %>
 
 <section class="infinity-mode container">
+  <%= render partial: "interface/above_board" %>
 
   <div class="board-container">
     <div class="board-area">
-      <%= render partial: "interface/combo_counter" %>
       <%= render partial: "interface/chessboard" %>
       <%= render partial: "interface/piece_promotion_modal" %>
     </div>
+
     <div class="difficulty">
       <div class="choose">Difficulty</div>
       <div class="difficulties">

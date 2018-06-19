@@ -1,3 +1,5 @@
+import d from '../dispatcher'
+
 export default class StockfishEngine {
 
   constructor(options = {}) {
