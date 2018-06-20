@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   # infinity mode methods
 
   def latest_difficulty
-    completed_infinity_puzzles.order('updated_at DESC').first&.difficulty
+    completed_infinity_puzzles.order('updated_at DESC').first&.difficulty || 'easy'
   end
 
   def latest_infinity_level
@@ -25,22 +25,16 @@ class User < ActiveRecord::Base
   end
 
   # this gets shown on the homepage and on the /infinity interface
-  # returns InfinityPuzzle
-  def next_infinity_puzzle
-    latest_infinity_puzzle_solved(latest_difficulty).next_puzzle
+  # returns NewLichessPuzzle
+  def next_infinity_puzzle(difficulty = nil)
+    latest_infinity_puzzle_solved(difficulty || latest_difficulty).next&.puzzle
   end
 
-  # returns InfinityPuzzle
-  def latest_infinity_puzzle_solved(difficulty)
-    completed_puzzle = completed_infinity_puzzles
-      .with_difficulty(difficulty).order('updated_at DESC').first
-    return unless completed_puzzle.present?
-    InfinityLevel.find_by(difficulty: difficulty).puzzle_at(
-      completed_puzzle.puzzle_id
-    )
+  def latest_infinity_puzzle_solved(difficulty) # CompletedInfinityPuzzle or nil
+    completed_infinity_puzzles.with_difficulty(difficulty).latest.presence
   end
 
-  def infinity_puzzles_solved
+  def num_infinity_puzzles_solved
     completed_infinity_puzzles.count
   end
 

@@ -1,4 +1,4 @@
-class InfinityPuzzle
+class InfinityIterator
 
   attr_reader :difficulty, :puzzle_id
 
@@ -11,16 +11,16 @@ class InfinityPuzzle
     NewLichessPuzzle.find_by(id: @puzzle_id)
   end
 
-  def prev_puzzle
+  def prev
     prev_puzzle_id = infinity_level.prev_puzzle_id(@puzzle_id)
     return if prev_puzzle_id.nil?
-    InfinityPuzzle.new(@difficulty, prev_puzzle_id)
+    InfinityIterator.new(@difficulty, prev_puzzle_id)
   end
 
-  def next_puzzle
+  def next
     next_puzzle_id = infinity_level.next_puzzle_id(@puzzle_id)
     return if next_puzzle_id.nil?
-    InfinityPuzzle.new(@difficulty, next_puzzle_id)
+    InfinityIterator.new(@difficulty, next_puzzle_id)
   end
 
   private

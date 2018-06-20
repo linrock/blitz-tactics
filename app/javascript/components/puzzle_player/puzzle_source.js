@@ -74,11 +74,14 @@ export default class PuzzleSource extends Backbone.Model {
       d.trigger("puzzles:lap")
     }
     this.i = (this.i + 1) % this.puzzles.length
-    let puzzle = this.current.puzzle
+    this.renderPuzzle(this.current.puzzle)
+  }
+
+  renderPuzzle(puzzle) {
     this.current.state = _.clone(puzzle.lines)
     d.trigger("fen:set", puzzle.fen)
     setTimeout(() => {
-      let move = uciToMove(puzzle.initialMove)
+      const move = uciToMove(puzzle.initialMove)
       d.trigger("move:make", move)
       d.trigger("move:highlight", move)
     }, 500)

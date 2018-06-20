@@ -6,4 +6,8 @@ class CompletedInfinityPuzzle < ActiveRecord::Base
   scope :with_difficulty, -> (difficulty) do
     where(difficulty: difficulty)
   end
+
+  scope :latest, -> do
+    order('updated_at DESC').first
+  end
 end

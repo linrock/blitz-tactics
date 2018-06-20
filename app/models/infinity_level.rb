@@ -16,26 +16,29 @@ class InfinityLevel < ActiveRecord::Base
   end
 
   def next_n_puzzles_from(puzzle_id, n)
-    inf_puzzle = puzzle_id ? puzzle_at(puzzle_id) : first_puzzle
+    inf_iterator = iterator_at(puzzle_id || first_puzzle_id)
     n.times.map do
-      if inf_puzzle.nil?
-        nil
-      else
-        puzzle = inf_puzzle.puzzle
-        inf_puzzle = inf_puzzle.next_puzzle
+      unless inf_iterator.nil?
+        puzzle = inf_iterator.puzzle
+        inf_iterator = inf_iterator.next
         puzzle
       end
     end.compact
   end
 
-  # returns infinity puzzle
-  def puzzle_at(puzzle_id)
-    InfinityPuzzle.new(difficulty, puzzle_id)
+  # InfinityIterator
+  def iterator_at_beginning
+    InfinityIterator.new(difficulty, first_puzzle_id)
   end
 
-  # returns infinity puzzle
+  # InfinityIterator
+  def iterator_at(puzzle_id)
+    InfinityIterator.new(difficulty, puzzle_id)
+  end
+
+  # NewLichessPuzzle
   def first_puzzle
-    puzzle_at(first_puzzle_id)
+    NewLichessPuzzle.find_by(id: first_puzzle_id)
   end
 
   # puzzle_id helpers
