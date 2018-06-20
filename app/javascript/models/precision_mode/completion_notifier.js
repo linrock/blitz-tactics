@@ -1,10 +1,12 @@
+// notifies the server about completed rounds and levels
+
 import $ from 'jquery'
 import Backbone from 'backbone'
 
 import api from '../../api'
 import d from '../../dispatcher'
 
-export default class Notifier extends Backbone.Model {
+export default class CompletionNotifier extends Backbone.Model {
 
   initialize() {
     this.listenToEvents()

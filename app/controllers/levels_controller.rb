@@ -1,5 +1,5 @@
 class LevelsController < ApplicationController
-  before_action :authorize_admin!, :only => [:edit, :update]
+  before_action :authorize_admin!, only: [:edit, :update]
 
   def show
     @level = Level.find_by(:slug => level_slug)
@@ -27,7 +27,7 @@ class LevelsController < ApplicationController
   end
 
   def edit
-    @level = Level.find_by(:slug => level_slug)
+    @level = Level.find_by(slug: level_slug)
     @puzzles = @level.puzzles
   end
 

@@ -1,9 +1,8 @@
 # generates precision levels
 
 class LevelGenerator
-
-  LEVEL_SIZE = 20
-  N_LEVELS   = 3
+  LEVEL_SIZE = 10
+  N_LEVELS   = 10
 
   def puzzle_source
     LichessPuzzle.rating_lt(1600).vote_gt(35).white_to_move

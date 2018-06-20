@@ -1,13 +1,12 @@
-class PuzzlesController < ApplicationController
+class PuzzlesController < ActionController::API
 
   def show
     @puzzle = LichessPuzzle.find(params[:id])
     respond_to do |format|
       format.html {}
       format.json {
-        render :json => {
-          :format  => 'lichess',
-          :puzzles => [@puzzle.simplified_data]
+        render :json {
+          puzzles: [@puzzle.simplified_data]
         }
       }
     end
@@ -25,9 +24,8 @@ class PuzzlesController < ApplicationController
     respond_to do |format|
       format.html {}
       format.json {
-        render :json => {
-          :format  => 'lichess',
-          :puzzles => @puzzles.map(&:data)
+        render json: {
+          puzzles: @puzzles.map(&:data)
         }
       }
     end
