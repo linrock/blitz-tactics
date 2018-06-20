@@ -36,9 +36,15 @@
   }
 
   .difficulties {
-    div {
+    [data-difficulty] {
       opacity: 0.3;
       padding: 5px 0;
+      user-select: none;
+      transition: all 0.2s ease;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     .selected {
