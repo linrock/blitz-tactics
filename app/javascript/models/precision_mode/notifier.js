@@ -19,7 +19,7 @@ export default class Notifier extends Backbone.Model {
     if (!levelId) {
       return
     }
-    $.post(`/api/levels/${levelId}/attempt`, { round: payload })
+    api.post(`/api/levels/${levelId}/attempt`, { round: payload })
   }
 
   levelComplete(levelId) {

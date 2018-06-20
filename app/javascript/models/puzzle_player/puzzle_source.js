@@ -1,9 +1,9 @@
-import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
 
 import { uciToMove, moveToUci, shuffle } from '../../utils'
 import d from '../../dispatcher'
+import api from '../../api'
 
 // list of events
 
@@ -39,10 +39,12 @@ export default class PuzzleSource extends Backbone.Model {
     if (!source) {
       source = this.getPuzzleSource()
     }
-    $.getJSON(source, (data) => {
-      this.puzzles = data.puzzles
-      d.trigger("puzzles:fetched", this.puzzles)
-    })
+    api.get(source)
+      .then(response => response.data)
+      .then(data => {
+        this.puzzles = data.puzzles
+        d.trigger("puzzles:fetched", this.puzzles)
+      })
   }
 
   listenToEvents() {

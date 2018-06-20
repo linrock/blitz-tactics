@@ -3,18 +3,26 @@ import axios from 'axios'
 class APIClient {
 
   post(path, data) {
-    const token = document
-      .querySelector('meta[name="csrf-token"]')
-      .getAttribute('content')
-    return axios.post(path, data, {
-      headers: {
-        'X-CSRF-Token': token
-      }
-    })
+    return axios.post(path, data, this.headersWithCsrfToken())
   }
 
   get(path) {
     return axios.get(...arguments)
+  }
+
+  put(path, data) {
+    return axios.put(path, data, this.headersWithCsrfToken())
+  }
+
+  headersWithCsrfToken() {
+    const token = document
+      .querySelector('meta[name="csrf-token"]')
+      .getAttribute('content')
+    return {
+      headers: {
+        'X-CSRF-Token': token
+      }
+    }
   }
 }
 

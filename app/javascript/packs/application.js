@@ -49,13 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const pageKey = `${$body.data('controller')}#${$body.data('action')}`
   const route = routes[pageKey]
 
-  $.ajaxPrefilter((options, originalOptions, xhr) => {
-    if (!options.crossDomain) {
-      const token =  $('meta[name=csrf-token]').attr('content')
-      xhr.setRequestHeader('X-CSRF-Token', token)
-    }
-  })
-
+  // initialize route components/views
   if (typeof route !== 'undefined') {
     new route
   }
