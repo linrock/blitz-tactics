@@ -12,10 +12,6 @@ class Api::InfinityController < ApplicationController
     render json: {}
   end
 
-  def set_difficulty
-    params[:difficulty]
-  end
-
   private
 
   def puzzle_params

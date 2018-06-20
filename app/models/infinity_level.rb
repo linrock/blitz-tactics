@@ -11,6 +11,15 @@ class InfinityLevel < ActiveRecord::Base
   validate :puzzle_ids_are_unique
   validate :check_structure_of_puzzle_id_map
 
+  def next_n_puzzles_from(puzzle_id, n)
+    inf_puzzle = puzzle_id ? puzzle_at(puzzle_id) : first_puzzle
+    n.times.map do
+      puzzle = inf_puzzle.puzzle
+      inf_puzzle = inf_puzzle.next_puzzle
+      puzzle
+    end
+  end
+
   # returns infinity puzzle
   def puzzle_at(puzzle_id)
     InfinityPuzzle.new(difficulty, puzzle_id)

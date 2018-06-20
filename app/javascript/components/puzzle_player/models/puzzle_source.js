@@ -48,9 +48,10 @@ export default class PuzzleSource extends Backbone.Model {
   }
 
   listenToEvents() {
-    this.listenTo(d, "puzzles:fetched", _.bind(this.nextPuzzle, this))
-    this.listenTo(d, "puzzles:next", _.bind(this.nextPuzzle, this))
-    this.listenTo(d, "move:try", _.bind(this.tryUserMove, this))
+    this.listenTo(d, "source:changed", path => this.fetchPuzzles(path))
+    this.listenTo(d, "puzzles:fetched", () => this.nextPuzzle())
+    this.listenTo(d, "puzzles:next", () => this.nextPuzzle())
+    this.listenTo(d, "move:try", move => this.tryUserMove(move))
   }
 
   shufflePuzzles() {

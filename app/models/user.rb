@@ -7,11 +7,28 @@ class User < ActiveRecord::Base
          :trackable, :validatable
 
   has_many :level_attempts
+  has_many :completed_infinity_puzzles
   has_many :positions
 
   after_initialize :set_default_profile
 
   validate :validate_username
+
+  # infinity mode methods
+
+  def latest_difficulty
+    completed_infinity_puzzles.order('updated_at DESC').first&.difficulty
+  end
+
+  def infinity_puzzles_solved
+    completed_infinity_puzzles.count
+  end
+
+  def latest_infinity_puzzle_solved(difficulty)
+    completed_infinity_puzzles.with_difficulty(difficulty)
+  end
+
+  # precision mode methods
 
   def unlock_level(level_id)
     level_ids = Set.new(self.profile["levels_unlocked"])

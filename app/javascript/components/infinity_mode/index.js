@@ -9,13 +9,19 @@ import api from '../../api'
 
 export default class InfinityMode {
   constructor() {
-    const listener = _.clone(Backbone.Events)
-    listener.listenTo(d, "difficulty:selected", difficulty => {
-      console.log(`difficulty was selected: ${difficulty}`)
-    })
-
+    this.listenToEvents()
     new PuzzlePlayer
     new PuzzlesSolved
     new SetDifficulty
+  }
+
+  listenToEvents() {
+    const listener = _.clone(Backbone.Events)
+    listener.listenTo(d, `difficulty:selected`, difficulty => {
+      d.trigger(
+        `source:changed`,
+        `/infinity.json?difficulty=${difficulty}`
+      )
+    })
   }
 }
