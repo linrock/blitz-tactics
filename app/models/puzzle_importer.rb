@@ -1,3 +1,5 @@
+# imports NewLichessPuzzles
+
 module PuzzleImporter
 
   def import_from_json_files

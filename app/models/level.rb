@@ -1,3 +1,5 @@
+# levels in precision mode
+
 class Level < ActiveRecord::Base
   has_many :level_attempts
 
@@ -9,6 +11,10 @@ class Level < ActiveRecord::Base
   before_validation :set_secret_key
   before_validation :set_default_options
 
+
+  def first_level?
+    slug == "level-1"
+  end
 
   def number
     slug.gsub('-', ' ').capitalize

@@ -1,5 +1,3 @@
-import $ from 'jquery'
-import _ from 'underscore'
 import Backbone from 'backbone'
 import Mousetrap from 'mousetrap'
 import Chess from 'chess.js'
@@ -28,7 +26,7 @@ export default class PiecePromotionModal extends Backbone.View {
 
   show() {
     this.$el.show()
-    Mousetrap.bind("esc", _.bind(this.hide, this))
+    Mousetrap.bind("esc", () => this.hide())
   }
 
   hide() {
@@ -45,8 +43,8 @@ export default class PiecePromotionModal extends Backbone.View {
   }
 
   _selectPiece(e) {
-    let chosenPiece = $(e.currentTarget).data("piece")
-    let move = _.extend({}, this.moveIntent, { promotion: chosenPiece })
+    let chosenPiece = e.currentTarget.dataset.piece
+    let move = Object.assign({}, this.moveIntent, { promotion: chosenPiece })
     let c = new Chess(this.fen)
     let m = c.move(move)
     if (m) {

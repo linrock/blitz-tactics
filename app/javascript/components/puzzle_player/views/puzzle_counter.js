@@ -16,9 +16,7 @@ export default class PuzzleCounter extends Backbone.View {
   }
 
   listenForEvents() {
-    this.listenTo(d, "puzzles:next", () => {
-      this.incCounter()
-    })
+    this.listenTo(d, "puzzles:next", () => this.incCounter())
   }
 
   incCounter() {

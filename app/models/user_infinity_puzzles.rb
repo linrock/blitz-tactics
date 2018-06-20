@@ -23,14 +23,17 @@ class UserInfinityPuzzles
     })
   end
 
+  # an infinity iterator at the user's current puzzle
+  #
   def current_iterator(difficulty, puzzle_id) # InfinityIterator
     if @user.present?
       difficulty ||= @user.latest_difficulty
       latest = latest_infinity_iterator(difficulty)
       latest ? latest : infinity_level(difficulty).iterator_at_beginning
     else
+      difficulty ||= 'easy'
       level = infinity_level(difficulty)
-      puzzle_id ? level.puzzle_at(puzzle_id) : level.first_puzzle
+      puzzle_id ? level.puzzle_at(puzzle_id) : level.iterator_at_beginning
     end
   end
 

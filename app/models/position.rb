@@ -1,3 +1,5 @@
+# deprecated custom positions for training
+
 class Position < ActiveRecord::Base
   belongs_to :user
 

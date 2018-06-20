@@ -1,4 +1,3 @@
-import _ from 'underscore'
 import Backbone from 'backbone'
 
 import d from '../../dispatcher'
@@ -21,9 +20,9 @@ export default class MoveStatus extends Backbone.View {
   }
 
   listenForEvents() {
-    this.listenTo(d, "move:success", _.bind(this.renderSuccess, this))
-    this.listenTo(d, "move:fail", _.bind(this.renderFailure, this))
-    this.listenTo(d, "move:almost", _.bind(this.renderAlmost, this))
+    this.listenTo(d, "move:success", () => this.renderSuccess())
+    this.listenTo(d, "move:fail", () => this.renderFailure())
+    this.listenTo(d, "move:almost", () => this.renderAlmost())
   }
 
   renderSuccess() {
@@ -62,6 +61,6 @@ export default class MoveStatus extends Backbone.View {
   renderFadingMessage(html) {
     this.$el.removeClass("fade-out")
     this.$el.html(html)
-    setTimeout(() => { this.$el.addClass("fade-out") }, 50)
+    setTimeout(() => this.$el.addClass("fade-out"), 50)
   }
 }
