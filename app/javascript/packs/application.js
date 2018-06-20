@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  if (typeof route === 'function') {
-    route()
+  if (typeof route !== 'undefined') {
+    new route
   }
   if (blitz.route) {
     new routes[blitz.route]
