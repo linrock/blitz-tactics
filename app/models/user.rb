@@ -20,12 +20,28 @@ class User < ActiveRecord::Base
     completed_infinity_puzzles.order('updated_at DESC').first&.difficulty
   end
 
-  def infinity_puzzles_solved
-    completed_infinity_puzzles.count
+  def latest_infinity_level
+    InfinityLevel.find_by(difficulty: latest_difficulty)
   end
 
+  # this gets shown on the homepage and on the /infinity interface
+  # returns InfinityPuzzle
+  def next_infinity_puzzle
+    latest_infinity_puzzle_solved(latest_difficulty).next_puzzle
+  end
+
+  # returns InfinityPuzzle
   def latest_infinity_puzzle_solved(difficulty)
-    completed_infinity_puzzles.with_difficulty(difficulty)
+    completed_puzzle = completed_infinity_puzzles
+      .with_difficulty(difficulty).order('updated_at DESC').first
+    return unless completed_puzzle.present?
+    InfinityLevel.find_by(difficulty: difficulty).puzzle_at(
+      completed_puzzle.puzzle_id
+    )
+  end
+
+  def infinity_puzzles_solved
+    completed_infinity_puzzles.count
   end
 
   # precision mode methods

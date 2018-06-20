@@ -1,5 +1,7 @@
 class InfinityPuzzle
 
+  attr_reader :difficulty, :puzzle_id
+
   def initialize(difficulty, puzzle_id)
     @difficulty = difficulty
     @puzzle_id = puzzle_id
