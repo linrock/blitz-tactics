@@ -1,7 +1,6 @@
 <% content_for(:title) { @user.username } %>
 
 <div class="user-profile">
-
   <div class="container">
 
     <h1 class="username <% if @user.unlocked_all_levels? %>max-level<% end %>">
@@ -25,7 +24,5 @@
         </li>
       <% end %>
     </ul>
-
   </div>
-
 </div>

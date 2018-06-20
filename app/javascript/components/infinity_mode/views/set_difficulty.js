@@ -30,6 +30,5 @@ export default class SetDifficulty extends Backbone.View {
       return
     }
     d.trigger("difficulty:selected", el.dataset.difficulty)
-    d.trigger("difficulty:set", el.dataset.difficulty)
   }
 }
