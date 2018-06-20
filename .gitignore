@@ -8,6 +8,7 @@
 /.bundle
 
 /data/lichess
+/data/
 *.swp
 
 /public/assets
