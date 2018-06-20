@@ -8,6 +8,7 @@ export default class PrecisionMode {
   constructor() {
     new Background
     new LevelIndicator
+    new Onboarding
     new ProgressBar
     new Timer
   }

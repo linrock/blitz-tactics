@@ -4,17 +4,22 @@ class Api::LevelsController < ApplicationController
 
   def attempt
     if @user
-      attempt = @user.level_attempts.find_or_create_by(:level_id => params[:id])
+      attempt = @user.level_attempts.find_or_create_by(level_id: params[:id])
       attempt.update_attribute :last_attempt_at, Time.now
       attempt.completed_rounds.create(round_params)
     end
-    render :json => {}
+    render json: {}
   end
 
   def complete
     next_level = @level.next_level
+    # TODO handle the last level
     @user&.unlock_level(next_level.id)
-    render :json => { :next => { :href => "/#{next_level.slug}" } }
+    render json: {
+      next: {
+        href: "/#{next_level.slug}"
+      }
+    }
   end
 
   private

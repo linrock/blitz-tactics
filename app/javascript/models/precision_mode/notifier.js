@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import Backbone from 'backbone'
 
+import api from '../../api'
 import d from '../../dispatcher'
 
 export default class Notifier extends Backbone.Model {
@@ -25,8 +26,8 @@ export default class Notifier extends Backbone.Model {
     if (!levelId) {
       return
     }
-    $.post(`/api/levels/${levelId}/complete`, (data) => {
-      d.trigger("level:unlocked", data.next.href)
-    })
+    api.post(`/api/levels/${levelId}/complete`)
+      .then(response => response.data)
+      .then(() => d.trigger("level:unlocked", data.next.href))
   }
 }
