@@ -11,14 +11,17 @@ class InfinityLevel < ActiveRecord::Base
   validate :puzzle_ids_are_unique
   validate :check_structure_of_puzzle_id_map
 
+  # returns infinity puzzle
   def puzzle_at(puzzle_id)
     InfinityPuzzle.new(difficulty, puzzle_id)
   end
 
+  # returns infinity puzzle
   def first_puzzle
     puzzle_at(first_puzzle_id)
   end
 
+  # puzzle_id helpers
   def first_puzzle_id
     puzzle_id_array.first
   end
@@ -52,6 +55,7 @@ class InfinityLevel < ActiveRecord::Base
   end
 
   def check_structure_of_puzzle_id_map
+    return if puzzle_id_array.length == 0
     first = puzzle_id_map[first_puzzle_id.to_s]
     last = puzzle_id_map[last_puzzle_id.to_s]
     unless first["p"].nil?

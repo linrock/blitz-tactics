@@ -1,6 +1,6 @@
 # For defining the criteria for puzzles to add to levels and building them
 
-module InfinityLevelBuilder
+module InfinityLevelCreator
 
   def easy_puzzles
     NewLichessPuzzle.rating_lte(1000)
@@ -25,7 +25,18 @@ module InfinityLevelBuilder
   def build_easy_level!
     level = InfinityLevel.find_or_create_by(difficulty: 'easy')
     easy_puzzles.each do |puzzle|
-      level.add_puzzle puzzle.id
+      level.add_puzzle_id puzzle.id
     end
+    true
   end
+
+  def build_medium_level!
+    level = InfinityLevel.find_or_create_by(difficulty: 'medium')
+    medium_puzzles.each do |puzzle|
+      level.add_puzzle_id puzzle.id
+    end
+    true
+  end
+
+  extend self
 end

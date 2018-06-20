@@ -1,3 +1,5 @@
+# levels in repetition mode
+
 class Api::LevelsController < ApplicationController
   before_action :set_level
   before_action :set_user
