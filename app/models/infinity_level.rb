@@ -6,8 +6,9 @@ class InfinityLevel < ActiveRecord::Base
 
   validates :difficulty,
     presence: true,
+    uniqueness: true,
     inclusion: %w( easy medium hard insane )
-  validate :puzzles_are_unique
+  validate :puzzle_ids_are_unique
   validate :check_structure_of_puzzle_id_map
 
   def puzzle_at(puzzle_id)
@@ -46,7 +47,7 @@ class InfinityLevel < ActiveRecord::Base
 
   private
 
-  def puzzles_are_unique
+  def puzzle_ids_are_unique
     Set.new(puzzle_id_array).count == puzzle_id_array.length
   end
 
