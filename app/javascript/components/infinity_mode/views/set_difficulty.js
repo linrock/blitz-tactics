@@ -11,12 +11,17 @@ export default class SetDifficulty extends Backbone.View {
 
   get events() {
     return {
-      "click div": "_selectDifficulty"
+      "click [data-difficulty]": "_selectDifficulty"
     }
   }
 
   initialize() {
-    this.$el.find("div")[0].classList.add("selected")
+    this.listenTo(d, "difficulty:set", difficulty => this.highlight(difficulty))
+  }
+
+  highlight(difficulty) {
+    this.$el.find(".selected").removeClass("selected")
+    this.$el.find(`[data-difficulty="${difficulty}"]`).addClass("selected")
   }
 
   _selectDifficulty(e) {
@@ -24,8 +29,7 @@ export default class SetDifficulty extends Backbone.View {
     if (el.classList.toString().includes("selected")) {
       return
     }
-    this.$el.find(".selected").removeClass("selected")
-    el.classList.add("selected")
     d.trigger("difficulty:selected", el.dataset.difficulty)
+    d.trigger("difficulty:set", el.dataset.difficulty)
   }
 }

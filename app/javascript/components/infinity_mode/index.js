@@ -9,14 +9,14 @@ import api from '../../api'
 
 export default class InfinityMode {
   constructor() {
+    new PuzzleStats
+    new SetDifficulty
     this.listenToEvents()
     new PuzzlePlayer({
       shuffle: false,
       loopPuzzles: false,
       source: `/infinity.json`,
     })
-    new PuzzleStats
-    new SetDifficulty
   }
 
   listenToEvents() {
@@ -27,10 +27,12 @@ export default class InfinityMode {
         `source:changed`,
         `/infinity.json?difficulty=${difficulty}`
       )
+      d.trigger("difficulty:set", difficulty)
     })
     listener.listenTo(d, `config:init`, data => {
       config.difficulty = data.difficulty
       config.numSolved = data.num_solved
+      d.trigger(`difficulty:set`, config.difficulty)
       d.trigger(`puzzles_solved:changed`, config.numSolved)
     })
     listener.listenTo(d, `puzzle:solved`, puzzle => {
