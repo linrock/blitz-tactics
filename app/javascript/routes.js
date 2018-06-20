@@ -4,7 +4,6 @@ import ComboCounter from './views/combo_counter'
 import Instructions from './views/instructions'
 import LevelEditor from './views/level_editor'
 import LevelIndicator from './views/level_indicator'
-import MainHeader from './views/main_header'
 import MiniBoard from './views/mini_board'
 import MoveStatus from './views/move_status'
 import Onboarding from './views/onboarding'
@@ -67,7 +66,6 @@ const routes = {
 
 function initBoardBase() {
   new Chessboard
-  new MainHeader
   new MoveStatus
   new PiecePromotionModal
 }

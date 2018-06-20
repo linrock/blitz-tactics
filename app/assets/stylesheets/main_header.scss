@@ -1,31 +1,10 @@
-@import "bourbon";
-
-$header-height: 40px;
-
+$main-header-height: 40px;
 
 .main-header {
-  height: $header-height;
+  height: $main-header-height;
   background: #121212;
   width: 100%;
   overflow: hidden;
-  transition: opacity 0.2s ease, background 0.2s ease;
-
-  &.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  &.faded {
-    background: none;
-
-    .logo {
-      display: none;
-    }
-  }
-
-  &:hover {
-    transform: translate3d(0,0,0);
-  }
 
   .logo {
     color: #6D6D6D;
@@ -34,7 +13,7 @@ $header-height: 40px;
     font-weight: bold;
     font-family: "Orbitron", sans-serif;
     text-transform: uppercase;
-    line-height: $header-height + 2px;
+    line-height: $main-header-height + 2px;
     letter-spacing: 1.5px;
 
     &:hover {
@@ -67,14 +46,14 @@ $header-height: 40px;
   .link-left {
     float: left;
     margin-left: 25px;
-    line-height: $header-height;
+    line-height: $main-header-height;
   }
 
   .link-right {
     float: right;
     margin-right: 3px;
     margin-left: 25px;
-    line-height: $header-height;
+    line-height: $main-header-height;
   }
 
   .icon {
