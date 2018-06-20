@@ -1,9 +1,9 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import { uciToMove, moveToUci, shuffle } from '../../../utils'
-import d from '../../../dispatcher'
-import api from '../../../api'
+import { uciToMove, moveToUci, shuffle } from '../../utils'
+import d from '../../dispatcher'
+import api from '../../api'
 
 // list of events
 
@@ -70,7 +70,7 @@ export default class PuzzleSource extends Backbone.Model {
     }
     d.trigger("puzzle:loaded", this.current)
     if (this.i + 1 === this.puzzles.length) {
-      this.shufflePuzzles()
+      // this.shufflePuzzles()
       d.trigger("puzzles:lap")
     }
     this.i = (this.i + 1) % this.puzzles.length

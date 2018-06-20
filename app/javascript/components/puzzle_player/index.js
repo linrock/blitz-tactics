@@ -4,20 +4,19 @@ import Instructions from './views/instructions'
 import PuzzleCounter from './views/puzzle_counter'
 import PuzzleHint from './views/puzzle_hint'
 
-import PuzzleSource from './models/puzzle_source'
-import SoundPlayer from './models/sound_player'
+import PuzzleSource from './puzzle_source'
+import SoundPlayer from './sound_player'
 
 export default class PuzzlePlayer {
   constructor() {
+    new PuzzleSource
+    new SoundPlayer
+
     // views
     new InteractiveBoard
     new ComboCounter
     new Instructions
     new PuzzleCounter
     new PuzzleHint
-
-    // models
-    new PuzzleSource
-    new SoundPlayer
   }
 }
