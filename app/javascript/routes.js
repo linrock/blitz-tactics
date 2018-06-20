@@ -18,7 +18,7 @@ import PositionEditor from './experiments/position_editor'
 import PositionTrainer from './experiments/position_trainer'
 import PositionCreator from './experiments/position_creator'
 
-import Puzzles from './models/puzzles'
+import PuzzleSource from './models/puzzle_source'
 import Notifier from './models/notifier'
 import LevelProgress from './models/level_progress'
 import SoundPlayer from './models/sound_player'
@@ -26,22 +26,23 @@ import SoundPlayer from './models/sound_player'
 
 const routes = {
   "levels#show": function() {
-    initLevelPlayer()
-  },
-  "home#index": function() {
-    initLevelPlayer({ source: "/level-1" })
-    new Onboarding
+    initPuzzlePlayer()
+    new ProgressBar
+    new Timer
+    new LevelIndicator
+    new Background
+
+    new Notifier
+    new LevelProgress
   },
   "levels#edit": function() {
     new LevelEditor
   },
   "puzzles#show": function() {
     initPuzzlePlayer()
-    new Puzzles
   },
   "infinity#index": function() {
-    initPuzzlePlayer()
-    new Puzzles
+    initPuzzlePlayer({ source: '/infinity' })
   },
   "static#positions": function() {
     new PositionCreator
@@ -80,19 +81,7 @@ function initPuzzlePlayer() {
   new PuzzleHint
 
   new SoundPlayer
-}
-
-function initLevelPlayer(puzzleOptions = {}) {
-  initPuzzlePlayer()
-
-  new ProgressBar
-  new Timer
-  new LevelIndicator
-  new Background
-
-  new Puzzles(puzzleOptions)
-  new Notifier
-  new LevelProgress
+  new PuzzleSource
 }
 
 export default routes

@@ -5,9 +5,23 @@ import Backbone from 'backbone'
 import { uciToMove, moveToUci, shuffle } from '../utils'
 import d from '../dispatcher'
 
+// list of events
+
+// puzzles:fetched
+// puzzles:start
+// puzzles:lap
+// puzzle:loaded
+// fen:set
+// move:highlight
+// move:make
+// move:almost
+// move:success
+// move:fail
+
+
 const responseDelay = 0
 
-export default class Puzzles extends Backbone.Model {
+export default class PuzzleSource extends Backbone.Model {
 
   initialize(options = {}) {
     this.i = 0
@@ -57,7 +71,6 @@ export default class Puzzles extends Backbone.Model {
     }
     this.i = (this.i + 1) % this.puzzles.length
     let puzzle = this.current.puzzle
-    console.dir(puzzle)
     this.current.state = _.clone(puzzle.lines)
     d.trigger("fen:set", puzzle.fen)
     setTimeout(() => {

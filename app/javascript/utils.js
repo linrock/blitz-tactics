@@ -30,8 +30,20 @@ const shuffle = original => {
   return array
 }
 
+const getQueryParam = param => {
+  let query = window.location.search.substring(1);
+  let vars = query.split('&');
+  for (let i = 0; i < vars.length; i++) {
+    let pair = vars[i].split('=');
+    if (decodeURIComponent(pair[0]) === param) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
+}
+
 export {
   uciToMove,
   moveToUci,
   shuffle,
+  getQueryParam,
 }

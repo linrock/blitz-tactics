@@ -3,23 +3,12 @@ import Backbone from 'backbone'
 import Chess from 'chess.js'
 
 import StockfishEngine from '../workers/stockfish_engine'
-import { uciToMove } from '../utils'
+import { uciToMove, getQueryParam } from '../utils'
 import d from '../dispatcher'
 
 const SEARCH_DEPTH = 15
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
-
-let getQueryParam = (param) => {
-  let query = window.location.search.substring(1);
-  let vars = query.split('&');
-  for (let i = 0; i < vars.length; i++) {
-    let pair = vars[i].split('=');
-    if (decodeURIComponent(pair[0]) === param) {
-      return decodeURIComponent(pair[1]);
-    }
-  }
-}
 
 let getConfig = (param) => {
   let query = getQueryParam(param)

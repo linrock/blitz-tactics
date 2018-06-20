@@ -7,11 +7,19 @@ module PuzzleQuery
 
   included do
     scope :rating_gt, -> (min_rating) do
+      where("(data -> 'puzzle' ->> 'rating')::int > ?", min_rating)
+    end
+
+    scope :rating_gte, -> (min_rating) do
       where("(data -> 'puzzle' ->> 'rating')::int >= ?", min_rating)
     end
 
     scope :rating_lt, -> (max_rating) do
-      where("(data -> 'puzzle' ->> 'rating')::int <= ?", max_rating)
+      where("(data -> 'puzzle' ->> 'rating')::int < ?", max_rating)
+    end
+
+    scope :rating_lte, -> (min_rating) do
+      where("(data -> 'puzzle' ->> 'rating')::int <= ?", min_rating)
     end
 
     scope :attempts_gt, -> (n_attempts) do
