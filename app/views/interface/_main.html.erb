@@ -24,10 +24,7 @@
 <div class="under-board">
   <label class="level-name">
     <% if @level %>
-      <%= @level.number %>
-      <% if @level.name %>
-        &mdash; <%= @level.name %>
-      <% end %>
+      <%= LevelDisplay.new(@level).display_name %>
     <% elsif (title = local_assigns[:title]) %>
       <%= title %>
     <% end %>

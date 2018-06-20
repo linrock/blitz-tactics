@@ -12,7 +12,7 @@
         <%= linked_miniboard_path @infinity_puzzle.fen, "/infinity" %>
         <div class="under-mini-board">
           <% if current_user.present? %>
-            You have solved <%= 3 %> puzzles
+            You have solved <%= current_user.num_infinity_puzzles_solved %> puzzles
           <% else %>
             Sign in to track your progress
           <% end %>
@@ -26,7 +26,9 @@
           without mistakes to unlock the next level.
         </h4>
         <%= linked_miniboard_path @level.first_puzzle_fen, "/#{@level.slug}" %>
-        <div class="under-mini-board"><%= @level.name %></div>
+        <div class="under-mini-board">
+          <%= LevelDisplay.new(@level).display_name %>
+        </div>
       </div>
     </div>
   </div>

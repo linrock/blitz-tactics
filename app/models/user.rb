@@ -27,7 +27,9 @@ class User < ActiveRecord::Base
   # this gets shown on the homepage and on the /infinity interface
   # returns NewLichessPuzzle
   def next_infinity_puzzle(difficulty = nil)
-    latest_infinity_puzzle_solved(difficulty || latest_difficulty).next&.puzzle
+    UserInfinityPuzzles.new(self).latest_infinity_iterator(
+      difficulty || latest_difficulty
+    ).puzzle
   end
 
   def latest_infinity_puzzle_solved(difficulty) # CompletedInfinityPuzzle or nil

@@ -30,6 +30,6 @@ export default class CompletionNotifier extends Backbone.Model {
     }
     api.post(`/api/levels/${levelId}/complete`)
       .then(response => response.data)
-      .then(() => d.trigger("level:unlocked", data.next.href))
+      .then(data => d.trigger("level:unlocked", data.next.href))
   }
 }

@@ -1,5 +1,6 @@
 // Point and click pieces to select and move them
 
+import $ from 'jquery'
 import d from '../../dispatcher'
 
 export default class PointAndClick {
@@ -29,12 +30,12 @@ export default class PointAndClick {
       this.clearSelected()
       this.selectedSquare = square
       this.board.$(`#${this.selectedSquare}`).addClass("selected")
-    } else if (this.selectedSquare && square != this.selectedSquare) {
-      let move = {
+    } else if (this.selectedSquare && square !== this.selectedSquare) {
+      const move = {
         from: this.selectedSquare,
         to: square
       }
-      let $piece = this.board.$(`#${this.selectedSquare} .piece`)
+      const $piece = this.board.$(`#${this.selectedSquare} .piece`)
       this.board.movePiece($piece, move)
       this.clearSelected()
     }

@@ -24,7 +24,10 @@ class LevelGenerator
     puzzles.each_slice(LEVEL_SIZE).each_with_index do |level_puzzles, id|
       puzzle_ids = level_puzzles.sort_by(&:rating).map(&:id)
       slug = level_slug(id + 1)
-      Level.create!({ :slug => slug, :puzzle_ids => puzzle_ids })
+      Level.create!({
+        slug: slug,
+        puzzle_ids: puzzle_ids
+      })
       puts "Created #{slug}"
     end
     levels = Level.all
@@ -44,8 +47,10 @@ class LevelGenerator
 
   def add_new_level(puzzle_ids)
     last_level = Level.last
-    new_level = Level.create!({ :slug => level_slug(last_level.id + 1),
-                                :puzzle_ids => puzzle_ids })
+    new_level = Level.create!({
+      slug: level_slug(last_level.id + 1),
+      puzzle_ids: puzzle_ids
+    })
     last_level.update_attribute :next_level_id, new_level.id
   end
 
