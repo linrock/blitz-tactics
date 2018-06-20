@@ -1,11 +1,10 @@
 import PositionTrainer from './components/position_trainer'
-import PuzzlePlayer from './components/puzzle_player'
 import PrecisionMode from './components/precision_mode'
+import PuzzlePlayer from './components/puzzle_player'
 
 import Chessboard from './views/chessboard'
 import LevelEditor from './views/level_editor'
 
-import PositionEditor from './experiments/position_editor'
 import PositionCreator from './experiments/position_creator'
 
 
@@ -31,14 +30,6 @@ const routes = {
   "positions#show": function() {
     new PositionTrainer
   },
-  "positions#new": function() {
-    new Chessboard
-    new PositionEditor
-  },
-  "positions#edit": function() {
-    new Chessboard
-    new PositionEditor
-  }
 }
 
 export default routes

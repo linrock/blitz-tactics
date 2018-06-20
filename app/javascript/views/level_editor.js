@@ -100,5 +100,4 @@ export default class LevelEditor extends Backbone.View {
     this.addBoardId(newId)
     this.$addLevelInput.val('').blur()
   }
-
 }
