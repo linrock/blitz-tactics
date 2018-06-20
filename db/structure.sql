@@ -72,6 +72,39 @@ ALTER SEQUENCE public.completed_rounds_id_seq OWNED BY public.completed_rounds.i
 
 
 --
+-- Name: infinity_levels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.infinity_levels (
+    id bigint NOT NULL,
+    difficulty character varying NOT NULL,
+    puzzle_id_array jsonb DEFAULT '[]'::jsonb NOT NULL,
+    puzzle_id_map jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: infinity_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.infinity_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: infinity_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.infinity_levels_id_seq OWNED BY public.infinity_levels.id;
+
+
+--
 -- Name: level_attempts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -299,6 +332,13 @@ ALTER TABLE ONLY public.completed_rounds ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: infinity_levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.infinity_levels ALTER COLUMN id SET DEFAULT nextval('public.infinity_levels_id_seq'::regclass);
+
+
+--
 -- Name: level_attempts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -357,6 +397,14 @@ ALTER TABLE ONLY public.completed_rounds
 
 
 --
+-- Name: infinity_levels infinity_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.infinity_levels
+    ADD CONSTRAINT infinity_levels_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: level_attempts level_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -410,6 +458,13 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_infinity_levels_on_difficulty; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_infinity_levels_on_difficulty ON public.infinity_levels USING btree (difficulty);
 
 
 --
@@ -499,6 +554,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20160411003705'),
 ('20160417190025'),
 ('20161125221817'),
-('20180619172700');
+('20180619172700'),
+('20180620032206');
 
 
