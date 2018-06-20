@@ -15,6 +15,7 @@ module PuzzleImporter
         end
       end
     end
+    puts "Imported #{new_puzzle_files.length} puzzles"
     true
   end
 

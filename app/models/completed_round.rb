@@ -1,3 +1,6 @@
+# Tracks the time it takes for a user to complete a single round of
+# a precision level
+
 class CompletedRound < ActiveRecord::Base
   belongs_to :level_attempt
 
@@ -6,5 +9,4 @@ class CompletedRound < ActiveRecord::Base
   def formatted_time_spent
     Time.at(time_elapsed).strftime("%M:%S").gsub(/^0/, '')
   end
-
 end

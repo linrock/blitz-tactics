@@ -1,6 +1,8 @@
 # creates a puzzle from the new lichess puzzle data format
 
 class NewLichessPuzzle < ActiveRecord::Base
+  include PuzzleQuery
+
   before_validation :set_puzzle_id_from_data
   validates :puzzle_id, presence: true, uniqueness: true
   validate :check_simplified_data_format

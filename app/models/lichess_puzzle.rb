@@ -1,4 +1,5 @@
 class LichessPuzzle < ActiveRecord::Base
+  include PuzzleQuery
 
   def self.load_from_json_files!
     files = Dir.glob(Rails.root.join("data/lichess/*.json"))
@@ -19,46 +20,6 @@ class LichessPuzzle < ActiveRecord::Base
     puzzles = []
     puzzle_ids.each {|id| puzzles << find_by(puzzle_id: id) }
     puzzles
-  end
-
-  def self.n_pieces_query
-    "char_length(
-       regexp_replace(
-       split_part(data->'puzzle'->>'fen', ' ', 1),
-                  '[^a-zA-Z]', '', 'g')
-     )"
-  end
-
-  scope :rating_gt, -> (min_rating) do
-    where("CAST(data->'puzzle'->>'rating' AS INT) > ?", min_rating)
-  end
-
-  scope :rating_lt, -> (max_rating) do
-    where("CAST(data->'puzzle'->>'rating' AS INT) < ?", max_rating)
-  end
-
-  scope :attempts_gt, -> (n_attempts) do
-    where("CAST(data->'puzzle'->>'attempts' AS INT) > ?", n_attempts)
-  end
-
-  scope :vote_gt, -> (votes) do
-    where("CAST(data->'puzzle'->>'vote' AS INT) > ?", votes)
-  end
-
-  scope :white_to_move, -> do
-    where("data->'puzzle'->>'color' = 'white'")
-  end
-
-  scope :n_pieces_eq, -> (n) do
-    where("#{n_pieces_query} = ?", n)
-  end
-
-  scope :n_pieces_lt, -> (n) do
-    where("#{n_pieces_query} < ?", n)
-  end
-
-  scope :n_pieces_gt, -> (n) do
-    where("#{n_pieces_query} > ?", n)
   end
 
   def fen
