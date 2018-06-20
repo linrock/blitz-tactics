@@ -1,3 +1,5 @@
+# generates precision levels
+
 class LevelGenerator
 
   LEVEL_SIZE = 20
