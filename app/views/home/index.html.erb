@@ -9,7 +9,7 @@
           Blaze through endless chess puzzles.
           Change the difficulty to challenge yourself.
         </h4>
-        <%= linked_miniboard_url "", @infinity_puzzle.fen, "/infinity" %>
+        <%= linked_miniboard_path @infinity_puzzle.fen, "/infinity" %>
         <div class="under-mini-board">
           <% if current_user.present? %>
             You have solved <%= 3 %> puzzles
@@ -25,7 +25,7 @@
           Use repetition to learn. Quickly solve puzzles
           without mistakes to unlock the next level.
         </h4>
-        <%= linked_miniboard_url "", @level.first_puzzle_fen, "/#{@level.slug}" %>
+        <%= linked_miniboard_path @level.first_puzzle_fen, "/#{@level.slug}" %>
         <div class="under-mini-board"><%= @level.name %></div>
       </div>
     </div>

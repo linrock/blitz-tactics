@@ -7,6 +7,9 @@ import { uciToMove } from '../utils'
 
 export default class MiniChessboard extends Backbone.View {
 
+  // options.fen         - fen string
+  // options.initialMove - uci string
+
   initialize(options = {}) {
     this.pieces = new Pieces(this)
     if (options.fen) {

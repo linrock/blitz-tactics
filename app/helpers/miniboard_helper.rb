@@ -2,12 +2,13 @@ module MiniboardHelper
 
   def linked_position_miniboard(position)
     options = {
-      :fen => position.fen,
-      :flip => position.fen.include?(" b "),
+      fen: position.fen,
+      flip: position.fen.include?(" b "),
     }
     %(
       <div class="position-board">
-        <a href="/positions/#{position.id}"> #{render :partial => "static/mini_board", :locals => options}
+        <a href="/positions/#{position.id}">
+          #{render partial: "static/mini_board", locals: options}
           <div class="position-name">
             <span>#{sanitize(position.name_or_id)}</span>
           </div>
@@ -22,11 +23,11 @@ module MiniboardHelper
       :flip => fen.include?(" b "),
     }
     link = "/position?goal=#{goal}&fen=#{fen}"
-    link = "#{link}&depth=#{depth}" if depth
+    link = "#{link}&depth=#{depth}" if depth.present?
     %(
       <div class="position-board">
         <a href="#{link}">
-          #{render :partial => "static/mini_board", :locals => options}
+          #{render partial: "static/mini_board", locals: options}
           <div class="position-name">
             #{"<span>#{sanitize(title)}</span>" if title.present?}
           </div>
@@ -35,39 +36,34 @@ module MiniboardHelper
     ).html_safe
   end
 
-  def linked_miniboard_url(title, fen, url)
+  def linked_miniboard_path(fen, path)
     options = {
-      :fen => fen,
-      :flip => fen.include?(" b "),
+      fen: fen,
+      flip: fen.include?(" b "),
     }
     %(
       <div class="position-board">
-        <a href="#{url}">
-          #{render :partial => "static/mini_board", :locals => options}
-          <div class="position-name">
-            <span>#{sanitize(title)}</span>
-          </div>
+        <a href="#{path}">
+          #{render partial: "static/mini_board", locals: options}
         </a>
       </div>
     ).html_safe
   end
 
+  # for static routes defined in position_routes.txt
   def linked_miniboard_route(path)
     route = StaticRoutes.new.route_map[path]
     return unless route.present?
     fen = route[:options]["fen"]
-    unless fen
-      debugger
-    end
     options = {
-      :fen => fen,
-      :flip => fen.include?(" b "),
+      fen: fen,
+      flip: fen.include?(" b "),
     }
     title = sanitize(route[:title]).split("|")[0].strip
     %(
       <div class="position-board">
         <a href="#{path}">
-          #{render :partial => "static/mini_board", :locals => options}
+          #{render partial: "static/mini_board", locals: options}
           <div class="position-name">
             <span>#{title}</span>
           </div>
