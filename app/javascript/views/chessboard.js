@@ -1,148 +1,13 @@
 // Basic chessboard that just renders positions
 
 import $ from 'jquery'
-import _ from 'underscore'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
+import Pieces from './chessboard/pieces'
+import DragAndDrop from './chessboard/drag_and_drop'
+import PointAndClick from './chessboard/point_and_click'
 import d from '../dispatcher'
-
-require('jquery-ui');
-require('jquery-ui/ui/widgets/draggable');
-require('jquery-ui/ui/widgets/droppable');
-
-// For handling the DOM elements of the pieces on the board
-//
-class Pieces {
-
-  constructor(board) {
-    this.board = board
-    this.$buffer = $("<div>").addClass("piece-buffer")
-    this.initializeAllPieces()
-  }
-
-  initializeAllPieces() {
-    _.each(['w','b'], (color) => {
-      _.each('rnbqkbnrpppppppp'.split(''), (type) => {
-        this.$getPiece({ color: color, type: type })
-      })
-    })
-  }
-
-  reset() {
-    this.board.$(".piece").appendTo(this.$buffer)
-  }
-  
-  $getPiece(piece) {
-    let className = piece.color + piece.type
-    let $piece = this.$buffer.find(`.${className}`).first()
-    if ($piece.length) {
-      return $piece
-    }
-    return $(`
-      <svg class="piece ${className} ${piece.color}" viewBox="0 0 45 45">
-        <use xlink:href="#${className}" width="100%" height="100%"/>
-      </svg>
-    `)
-    /*
-    return $("<img>").
-      attr("src", `/assets/pieces/${className}.png`).
-      addClass(`piece ${className} ${piece.color}`)
-    */
-  }
-}
-
-
-// Drag and drop pieces to move them
-//
-class DragAndDrop {
-
-  constructor(board) {
-    this.board = board
-    this.initialized = false
-  }
-
-  init() {
-    if (this.initialized) {
-      return
-    }
-    this.initDroppable()
-    this.initialized = true
-  }
-
-  initDraggable() {
-    this.board.$(".piece:not(.ui-draggable)").draggable({
-      stack: ".piece",
-      distance: 10,
-      revert: true,
-      revertDuration: 0,
-      containment: "body",
-      scroll: false
-    })
-  }
-
-  initDroppable() {
-    this.board.$(".square").droppable({
-      accept: ".piece",
-      tolerance: "pointer",
-      drop: (event, ui) => {
-        let $piece = $(ui.draggable)
-        let move = {
-          from: $piece.parents(".square").data("square"),
-          to: $(event.target).data("square")
-        }
-        this.board.movePiece($piece, move)
-      }
-    })
-  }
-}
-
-
-// Point and click pieces to select and move them
-//
-class PointAndClick {
-
-  constructor(board) {
-    this.board = board
-    this.moveablePieces = ".piece.w"
-    this.selectedSquare = false
-    this.listenForEvents()
-  }
-
-  listenForEvents() {
-    this.board.$el.on("click", ".square", (event) => {
-      let square = $(event.currentTarget).data("square")
-      this.selectSquare(square)
-    })
-    this.board.listenTo(d, "move:try", () => {
-      this.clearSelected()
-    })
-    this.board.listenTo(d, "move:make", () => {
-      this.clearSelected()
-    })
-  }
-
-  selectSquare(square) {
-    if (this.board.$(`#${square} ${this.moveablePieces}`).length) {
-      this.clearSelected()
-      this.selectedSquare = square
-      this.board.$(`#${this.selectedSquare}`).addClass("selected")
-    } else if (this.selectedSquare && square != this.selectedSquare) {
-      let move = {
-        from: this.selectedSquare,
-        to: square
-      }
-      let $piece = this.board.$(`#${this.selectedSquare} .piece`)
-      this.board.movePiece($piece, move)
-      this.clearSelected()
-    }
-  }
-
-  clearSelected() {
-    this.selectedSquare = false
-    this.board.$(".square.selected").removeClass("selected")
-  }
-}
 
 
 export default class Chessboard extends Backbone.View {
@@ -161,11 +26,11 @@ export default class Chessboard extends Backbone.View {
   }
 
   listenToEvents() {
-    this.listenTo(d, "fen:set", (fen) => {
+    this.listenTo(d, "fen:set", fen => {
       this.clearHighlights()
       this.render(fen)
     })
-    this.listenTo(d, "move:make", (move) => {
+    this.listenTo(d, "move:make", move => {
       this.clearHighlights()
       let c = new Chess
       c.load(this.fen)
@@ -175,7 +40,7 @@ export default class Chessboard extends Backbone.View {
     this.listenTo(d, "board:flip", () => {
       this.flipBoard()
     })
-    this.listenTo(d, "move:highlight", (move) => {
+    this.listenTo(d, "move:highlight", move => {
       this.clearHighlights()
       setTimeout(() => {
         this.highlightSquare(move.from, { className: "move-from" })

@@ -2,33 +2,8 @@ import $ from 'jquery'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
+import Pieces from './chessboard/pieces'
 import { uciToMove } from '../utils'
-
-// For handling the DOM elements of the pieces on the board
-//
-class Pieces {
-
-  constructor(board) {
-    this.board = board
-    this.$buffer = $("<div>").addClass("piece-buffer")
-  }
-
-  reset() {
-    this.board.$(".piece").appendTo(this.$buffer)
-  }
-  
-  $getPiece(piece) {
-    let className = piece.color + piece.type
-    let $piece = this.$buffer.find("." + className).first()
-    if ($piece.length) {
-      return $piece
-    }
-    return $("<img>").
-      attr("src", `/assets/pieces/${className}.png`).
-      addClass(`piece ${className} ${piece.color}`)
-  }
-
-}
 
 export default class MiniChessboard extends Backbone.View {
 

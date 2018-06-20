@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-import MiniBoard from '../views/mini_board'
+import MiniChessboard from '../views/mini_chessboard'
 import routes from '../routes'
 
 
@@ -63,9 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const fen = $el.data('fen')
     const options = $el.data('options')
     if (fen) {
-      new MiniBoard({ el: $el, fen })
+      new MiniChessboard({ el: $el, fen })
     } else if (options) {
-      new MiniBoard(Object.assign({ el: $el }, options))
+      new MiniChessboard(Object.assign({ el: $el }, options))
     }
   })
 })
