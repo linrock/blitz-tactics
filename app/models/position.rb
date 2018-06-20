@@ -2,8 +2,7 @@ class Position < ActiveRecord::Base
   belongs_to :user
 
   before_validation :sanitize_fen
-
-  validates_presence_of :fen
+  validates :fen, presence: true
   validate :validate_fen_format
 
   def name_or_id
@@ -30,5 +29,4 @@ class Position < ActiveRecord::Base
       errors.add(:fen, "is invalid")
     end
   end
-
 end

@@ -1,53 +1,37 @@
 module MiniboardHelper
 
+  # user-created positions on positions page
   def linked_position_miniboard(position)
     options = {
       fen: position.fen,
       flip: position.fen.include?(" b "),
+      path: "/positions/#{position.id}",
+      title: position.name_or_id,
     }
-    %(
-      <div class="position-board">
-        <a href="/positions/#{position.id}">
-          #{render partial: "static/mini_board", locals: options}
-          <div class="position-name">
-            <span>#{sanitize(position.name_or_id)}</span>
-          </div>
-        </a>
-      </div>
-    ).html_safe
+    render partial: "snippets/miniboard_link", locals: options
   end
 
+  # positions and endgames pages
   def linked_miniboard(title, fen, goal = "win", depth = nil)
-    options = {
-      :fen => fen,
-      :flip => fen.include?(" b "),
-    }
     link = "/position?goal=#{goal}&fen=#{fen}"
     link = "#{link}&depth=#{depth}" if depth.present?
-    %(
-      <div class="position-board">
-        <a href="#{link}">
-          #{render partial: "static/mini_board", locals: options}
-          <div class="position-name">
-            #{"<span>#{sanitize(title)}</span>" if title.present?}
-          </div>
-        </a>
-      </div>
-    ).html_safe
+    options = {
+      fen: fen,
+      flip: fen.include?(" b "),
+      path: link,
+      title: title
+    }
+    render partial: "snippets/miniboard_link", locals: options
   end
 
+  # homepage miniboards
   def linked_miniboard_path(fen, path)
     options = {
       fen: fen,
       flip: fen.include?(" b "),
+      path: path,
     }
-    %(
-      <div class="position-board">
-        <a href="#{path}">
-          #{render partial: "static/mini_board", locals: options}
-        </a>
-      </div>
-    ).html_safe
+    render partial: "snippets/miniboard_link", locals: options
   end
 
   # for static routes defined in position_routes.txt
@@ -58,17 +42,9 @@ module MiniboardHelper
     options = {
       fen: fen,
       flip: fen.include?(" b "),
+      path: path,
+      title: sanitize(route[:title]).split("|")[0].strip
     }
-    title = sanitize(route[:title]).split("|")[0].strip
-    %(
-      <div class="position-board">
-        <a href="#{path}">
-          #{render partial: "static/mini_board", locals: options}
-          <div class="position-name">
-            <span>#{title}</span>
-          </div>
-        </a>
-      </div>
-    ).html_safe
+    render partial: "snippets/miniboard_link", locals: options
   end
 end

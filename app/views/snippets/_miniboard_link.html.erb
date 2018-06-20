@@ -1,0 +1,14 @@
+<% path = local_assigns[:path] %>
+<% title = local_assigns[:title] %>
+
+<div class="position-board">
+  <a href="<%= path %>">
+    <%= render partial: "snippets/miniboard", locals: local_assigns %>
+
+    <div class="position-name">
+      <% if title.present? %>
+        <span><%= sanitize(title) %></span>
+      <% end %>
+    </div>
+  </a>
+</div>
