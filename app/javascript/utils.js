@@ -41,9 +41,18 @@ const getQueryParam = param => {
   }
 }
 
+const getConfig = param => {
+  let query = getQueryParam(param)
+  if (blitz.position) {
+    return blitz.position[param] || query;
+  }
+  return query;
+}
+
 export {
   uciToMove,
   moveToUci,
   shuffle,
   getQueryParam,
+  getConfig,
 }

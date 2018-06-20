@@ -1,12 +1,11 @@
+import PositionTrainer from './components/position_trainer'
 import PuzzlePlayer from './components/puzzle_player'
 import PrecisionMode from './components/precision_mode'
-import InteractiveBoard from './views/interactive_board'
 
 import Chessboard from './views/chessboard'
 import LevelEditor from './views/level_editor'
 
 import PositionEditor from './experiments/position_editor'
-import PositionTrainer from './experiments/position_trainer'
 import PositionCreator from './experiments/position_creator'
 
 
@@ -27,11 +26,9 @@ const routes = {
     new PositionCreator
   },
   "static#position": function() {
-    new InteractiveBoard
     new PositionTrainer
   },
   "positions#show": function() {
-    new InteractiveBoard
     new PositionTrainer
   },
   "positions#new": function() {

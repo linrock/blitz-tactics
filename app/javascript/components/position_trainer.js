@@ -3,20 +3,15 @@ import Backbone from 'backbone'
 import Chess from 'chess.js'
 
 import StockfishEngine from '../workers/stockfish_engine'
-import { uciToMove, getQueryParam } from '../utils'
+import InteractiveBoard from '../views/interactive_board'
+import Instructions from '../views/position_trainer/instructions'
+import Actions from '../views/position_trainer/actions'
+import { uciToMove, getConfig } from '../utils'
 import d from '../dispatcher'
+
 
 const SEARCH_DEPTH = 15
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-
-
-let getConfig = (param) => {
-  let query = getQueryParam(param)
-  if (blitz.position) {
-    return blitz.position[param] || query;
-  }
-  return query;
-}
 
 document.addEventListener('paste', function(e) {
   var text = (e.originalEvent || e).clipboardData.getData('text/plain')
@@ -24,98 +19,10 @@ document.addEventListener('paste', function(e) {
 })
 
 
-class Instructions extends Backbone.View {
-
-  get el() {
-    return ".instructions"
-  }
-
-  initialize() {
-    this.showInstructions()
-    this.listenForEvents()
-  }
-
-  get initialFen() {
-    let fen = getConfig("fen") || START_FEN
-    console.log(`initial fen is: ${fen}`)
-    return fen.length === 4 ? `${fen} 0 1` : fen
-  }
-
-  get toMove() {
-    return this.initialFen.indexOf("w") > 0 ? "White" : "Black"
-  }
-
-  get goal() {
-    return getConfig("goal")
-  }
-
-  get instructions() {
-    if (this.goal === "win") {
-      return this.toMove + " to play and win"
-    } else if (this.goal === "draw") {
-      return this.toMove + " to play and draw"
-    }
-    return this.toMove + " to move"
-  }
-
-  showInstructions() {
-    this.$el.text(this.instructions)
-    setTimeout(() => this.$el.removeClass("invisible"), 700)
-  }
-
-  gameOverMan(result) {
-    let text
-    if (this.goal === "win") {
-      if ((this.toMove === "White" && result === "1-0") ||
-          (this.toMove === "Black" && result === "0-1")) {
-        text = "You win"
-      } else {
-        text = "You failed :("
-      }
-    } else if (this.goal === "draw" && result === "1/2-1/2") {
-      text = "Success!"
-    } else {
-      text = "Game over"
-    }
-    this.$el.text(text)
-    this.$el.removeClass("invisible")
-  }
-
-  listenForEvents() {
-    this.listenTo(d, "position:reset", () => {
-      this.showInstructions()
-    })
-    this.listenTo(d, "game:over", (result) => {
-      this.gameOverMan(result)
-    })
-    this.listenTo(d, "move:try", () => {
-      this.$el.addClass("invisible")
-    })
-  }
-}
-
-
-class Actions extends Backbone.View {
-
-  get el() {
-    return ".actions"
-  }
-
-  get events() {
-    return {
-      "click .restart" : "_resetPosition"
-    }
-  }
-
-  _resetPosition() {
-    d.trigger("position:reset")
-  }
-}
-
-
 export default class PositionTrainer extends Backbone.View {
 
   initialize() {
+    new InteractiveBoard
     this.depth = getConfig("depth") || SEARCH_DEPTH
     this.engine = new StockfishEngine({ multipv: 1 })
     this.setDebugHelpers()
@@ -124,7 +31,7 @@ export default class PositionTrainer extends Backbone.View {
     if (this.computerColor === "w") {
       d.trigger("board:flip")
     }
-    new Instructions()
+    new Instructions({ fen: this.initialFen })
     new Actions()
   }
 
