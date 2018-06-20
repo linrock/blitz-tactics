@@ -3,8 +3,10 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  post '/api/levels/:id/attempt'  => 'api/levels#attempt'
-  post '/api/levels/:id/complete' => 'api/levels#complete'
+  # api routes - for players to track progress
+  post '/api/levels/:id/attempt'   => 'api/levels#attempt'
+  post '/api/levels/:id/complete'  => 'api/levels#complete'
+  post '/api/infinity'             => 'api/infinity#solved_puzzle'
 
   get '/puzzles/search'        => 'puzzles#search'
   get '/puzzles/:id'           => 'puzzles#show'

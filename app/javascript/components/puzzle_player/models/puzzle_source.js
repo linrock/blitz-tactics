@@ -44,6 +44,7 @@ export default class PuzzleSource extends Backbone.Model {
       .then(data => {
         this.puzzles = data.puzzles
         d.trigger("puzzles:fetched", this.puzzles)
+        d.trigger("config:init", data)
       })
   }
 
@@ -96,6 +97,7 @@ export default class PuzzleSource extends Backbone.Model {
     if (attempt === "win") {
       d.trigger("move:success")
       d.trigger("puzzles:next")
+      d.trigger("puzzle:solved", this.current.puzzle)
       return
     } else if (attempt === "retry") {
       d.trigger("move:almost")
@@ -110,6 +112,7 @@ export default class PuzzleSource extends Backbone.Model {
     d.trigger("move:success")
     if (attempt[response] === "win") {
       d.trigger("puzzles:next")
+      d.trigger("puzzle:solved", this.current.puzzle)
     } else {
       let responseMove = uciToMove(response)
       if (responseDelay > 0) {

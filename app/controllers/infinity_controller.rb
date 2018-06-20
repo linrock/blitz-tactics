@@ -7,7 +7,9 @@ class InfinityController < ApplicationController
     respond_to do |format|
       format.html {}
       format.json {
-        render json: PuzzlesJson.new(puzzles).to_json
+        render json: PuzzlesJson.new(puzzles).to_json.merge({
+          difficulty: difficulty
+        })
       }
     end
   end

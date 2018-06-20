@@ -16,12 +16,24 @@ export default class InfinityMode {
   }
 
   listenToEvents() {
+    const config = {}
     const listener = _.clone(Backbone.Events)
     listener.listenTo(d, `difficulty:selected`, difficulty => {
       d.trigger(
         `source:changed`,
         `/infinity.json?difficulty=${difficulty}`
       )
+    })
+    listener.listenTo(d, `config:init`, data => {
+      config.difficulty = data.difficulty
+    })
+    listener.listenTo(d, `puzzle:solved`, puzzle => {
+      api.post(`/api/infinity`, {
+        puzzle: {
+          puzzle_id: puzzle.id,
+          difficulty: config.difficulty
+        }
+      })
     })
   }
 }

@@ -3,8 +3,9 @@
 class Api::InfinityController < ApplicationController
   before_action :set_user
 
-  def complete_puzzle
+  def solved_puzzle
     if @user
+      @user.completed_infinity_puzzles.find_or_create_by(puzzle_params)
       # attempt = @user.level_attempts.find_or_create_by(level_id: params[:id])
       # attempt.update_attribute :last_attempt_at, Time.now
       # attempt.completed_rounds.create(round_params)

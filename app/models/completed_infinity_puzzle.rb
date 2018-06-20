@@ -3,7 +3,7 @@ class CompletedInfinityPuzzle < ActiveRecord::Base
 
   validates :difficulty, inclusion: %w( easy medium hard insane )
 
-  scope :with_difficulty, (difficulty) -> do
+  scope :with_difficulty, -> (difficulty) do
     where(difficulty: difficulty)
   end
 end
