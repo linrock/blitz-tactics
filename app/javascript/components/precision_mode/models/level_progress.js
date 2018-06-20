@@ -3,7 +3,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from '../../dispatcher'
+import d from '../../../dispatcher'
 
 export default class LevelProgress extends Backbone.Model {
 

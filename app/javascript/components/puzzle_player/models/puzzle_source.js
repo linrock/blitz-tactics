@@ -1,9 +1,9 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import { uciToMove, moveToUci, shuffle } from '../../utils'
-import d from '../../dispatcher'
-import api from '../../api'
+import { uciToMove, moveToUci, shuffle } from '../../../utils'
+import d from '../../../dispatcher'
+import api from '../../../api'
 
 // list of events
 

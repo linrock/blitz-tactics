@@ -2,12 +2,12 @@ import axios from 'axios'
 
 class APIClient {
 
-  post(path, data) {
-    return axios.post(path, data, this.headersWithCsrfToken())
-  }
-
   get(path) {
     return axios.get(...arguments)
+  }
+
+  post(path, data) {
+    return axios.post(path, data, this.headersWithCsrfToken())
   }
 
   put(path, data) {

@@ -1,7 +1,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from '../../dispatcher'
+import d from '../../../dispatcher'
 
 const updateInterval = 50
 

@@ -3,8 +3,8 @@
 import $ from 'jquery'
 import Backbone from 'backbone'
 
-import api from '../../api'
-import d from '../../dispatcher'
+import api from '../../../api'
+import d from '../../../dispatcher'
 
 export default class CompletionNotifier extends Backbone.Model {
 
