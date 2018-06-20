@@ -10,7 +10,11 @@ import api from '../../api'
 export default class InfinityMode {
   constructor() {
     this.listenToEvents()
-    new PuzzlePlayer
+    new PuzzlePlayer({
+      shuffle: false,
+      loopPuzzles: false,
+      source: `/infinity.json`,
+    })
     new PuzzleStats
     new SetDifficulty
   }

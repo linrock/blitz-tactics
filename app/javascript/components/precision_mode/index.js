@@ -11,7 +11,10 @@ import CompletionNotifier from './models/completion_notifier'
 export default class PrecisionMode {
   constructor() {
     // views
-    new PuzzlePlayer
+    new PuzzlePlayer({
+      shuffle: true,
+      loopPuzzles: true
+    })
     new Background
     new LevelIndicator
     new Onboarding

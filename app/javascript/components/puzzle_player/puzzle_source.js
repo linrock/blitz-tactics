@@ -27,6 +27,8 @@ export default class PuzzleSource extends Backbone.Model {
     this.i = 0
     this.current = {}
     this.started = false
+    this.shuffle = options.shuffle || true
+    this.loopPuzzles = options.loopPuzzles || true
     this.fetchPuzzles(options.source)
     this.listenToEvents()
   }
@@ -36,10 +38,7 @@ export default class PuzzleSource extends Backbone.Model {
   }
 
   fetchPuzzles(source) {
-    if (!source) {
-      source = this.getPuzzleSource()
-    }
-    api.get(source)
+    api.get(source || this.getPuzzleSource())
       .then(response => response.data)
       .then(data => {
         this.puzzles = data.puzzles
@@ -50,7 +49,7 @@ export default class PuzzleSource extends Backbone.Model {
 
   listenToEvents() {
     this.listenTo(d, "source:changed", path => this.fetchPuzzles(path))
-    this.listenTo(d, "puzzles:fetched", () => this.nextPuzzle())
+    this.listenTo(d, "puzzles:fetched", () => this.firstPuzzle())
     this.listenTo(d, "puzzles:next", () => this.nextPuzzle())
     this.listenTo(d, "move:try", move => this.tryUserMove(move))
   }
@@ -63,21 +62,32 @@ export default class PuzzleSource extends Backbone.Model {
     this.puzzles = shuffled
   }
 
-  nextPuzzle() {
-    this.current = {
-      puzzle: this.puzzles[this.i],
-      i: 0
-    }
-    d.trigger("puzzle:loaded", this.current)
-    if (this.i + 1 === this.puzzles.length) {
-      // this.shufflePuzzles()
-      d.trigger("puzzles:lap")
-    }
-    this.i = (this.i + 1) % this.puzzles.length
-    this.renderPuzzle(this.current.puzzle)
+  firstPuzzle() {
+    this.i = 0
+    this.loadPuzzleAtIndex(this.i)
   }
 
-  renderPuzzle(puzzle) {
+  nextPuzzle() {
+    this.i++
+    if (this.i + 1 === this.puzzles.length) {
+      if (this.shuffle) {
+        this.shufflePuzzles()
+      }
+      if (this.loopPuzzles) {
+        this.i = 0
+        d.trigger("puzzles:lap")
+      } else {
+        console.log("oh shit there's no more left")
+        d.trigger("puzzles:complete")
+      }
+    }
+    this.loadPuzzleAtIndex(this.i)
+  }
+
+  loadPuzzleAtIndex(i) {
+    const puzzle = this.puzzles[i]
+    this.current = { puzzle }
+    d.trigger("puzzle:loaded", this.current)
     this.current.state = _.clone(puzzle.lines)
     d.trigger("fen:set", puzzle.fen)
     setTimeout(() => {

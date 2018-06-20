@@ -8,8 +8,8 @@ import PuzzleSource from './puzzle_source'
 import SoundPlayer from './sound_player'
 
 export default class PuzzlePlayer {
-  constructor() {
-    new PuzzleSource
+  constructor(options = {}) {
+    new PuzzleSource(options)
     new SoundPlayer
 
     // views
