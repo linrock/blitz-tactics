@@ -24,11 +24,11 @@ module MiniboardHelper
     render partial: "snippets/miniboard_link", locals: options
   end
 
-  # homepage miniboards
+  # homepage miniboards are never rotated
   def linked_miniboard_path(fen, path)
     options = {
       fen: fen,
-      flip: fen.include?(" b "),
+      flip: false,
       path: path,
     }
     render partial: "snippets/miniboard_link", locals: options
