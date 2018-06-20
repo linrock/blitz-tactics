@@ -1,7 +1,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from '../dispatcher'
+import d from '../../dispatcher'
 
 // Tracks progress within the level and whether the next level is unlocked
 //

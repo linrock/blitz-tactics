@@ -2,8 +2,8 @@ import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import { uciToMove, moveToUci, shuffle } from '../utils'
-import d from '../dispatcher'
+import { uciToMove, moveToUci, shuffle } from '../../utils'
+import d from '../../dispatcher'
 
 // list of events
 

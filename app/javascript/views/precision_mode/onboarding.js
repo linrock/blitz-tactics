@@ -1,3 +1,5 @@
+// onboarding message on first level of precision mode
+
 import Backbone from 'backbone'
 
 import d from '../dispatcher'

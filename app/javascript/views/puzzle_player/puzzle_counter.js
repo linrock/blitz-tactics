@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../dispatcher'
+import d from '../../dispatcher'
 
 // Number of puzzles solved in this round
 //
