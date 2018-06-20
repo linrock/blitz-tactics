@@ -39,6 +39,39 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: completed_infinity_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_infinity_puzzles (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    puzzle_id integer NOT NULL,
+    difficulty character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_infinity_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_infinity_puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_infinity_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_infinity_puzzles_id_seq OWNED BY public.completed_infinity_puzzles.id;
+
+
+--
 -- Name: completed_rounds; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -325,6 +358,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: completed_infinity_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_infinity_puzzles ALTER COLUMN id SET DEFAULT nextval('public.completed_infinity_puzzles_id_seq'::regclass);
+
+
+--
 -- Name: completed_rounds id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -386,6 +426,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: completed_infinity_puzzles completed_infinity_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_infinity_puzzles
+    ADD CONSTRAINT completed_infinity_puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -458,6 +506,20 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_completed_infinity_puzzles_on_user_id_and_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_completed_infinity_puzzles_on_user_id_and_puzzle_id ON public.completed_infinity_puzzles USING btree (user_id, puzzle_id);
+
+
+--
+-- Name: index_completed_infinity_puzzles_on_user_id_and_updated_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_infinity_puzzles_on_user_id_and_updated_at ON public.completed_infinity_puzzles USING btree (user_id, updated_at);
 
 
 --
@@ -555,6 +617,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20160417190025'),
 ('20161125221817'),
 ('20180619172700'),
-('20180620032206');
+('20180620032206'),
+('20180620084825');
 
 
