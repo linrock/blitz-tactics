@@ -5,9 +5,7 @@ class PuzzlesController < ActionController::API
     respond_to do |format|
       format.html {}
       format.json {
-        render :json {
-          puzzles: [@puzzle.simplified_data]
-        }
+        render json: PuzzlesJson.new([@puzzle]).to_json
       }
     end
   end
@@ -30,5 +28,4 @@ class PuzzlesController < ActionController::API
       }
     end
   end
-
 end

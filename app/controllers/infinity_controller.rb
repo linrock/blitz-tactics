@@ -11,10 +11,7 @@ class InfinityController < ApplicationController
     respond_to do |format|
       format.html {}
       format.json {
-        render json: {
-          format: 'lichess',
-          puzzles: puzzles.map(&:simplified_data)
-        }
+        render json: PuzzlesJson.new(puzzles).to_json
       }
     end
   end

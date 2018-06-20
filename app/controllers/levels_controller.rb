@@ -8,9 +8,7 @@ class LevelsController < ApplicationController
     respond_to do |format|
       format.html {}
       format.json {
-        render json: {
-          puzzles: @puzzles.map(&:simplified_data)
-        }
+        render json: PuzzlesJson.new(@puzzles).to_json
       }
     end
   end
