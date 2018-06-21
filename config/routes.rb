@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   get '/scoreboard'            => 'scoreboard#index'
   get '/infinity'              => 'infinity#index'
 
-  resources :positions, :only => [:create, :show]
+  resources :positions, :only => [:show]
 
   get '/level-:level_num'      => 'levels#show'
   get '/level-:level_num/edit' => 'levels#edit'
