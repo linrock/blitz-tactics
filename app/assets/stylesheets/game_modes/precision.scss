@@ -1,5 +1,73 @@
+@import "_variables";
+
 .precision-mode {
+
+  // indicates progress within the current level
+  .progress-bar {
+    background: black;
+    width: 100%;
+    height: 3px;
+
+    .progress {
+      background: yellow;
+      width: 0;
+      height: 100%;
+      transition: width 0.5s ease-in-out, background 0.3s ease-in-out;
+
+      &.complete {
+        width: 100%;
+        background: #63F706;
+      }
+    }
+  }
+
   .above-board {
     margin-top: 20px;
+  }
+
+  // The sidebar that contains the time of the current lap
+  // plus times from previous laps
+  // TODO deprecated
+
+  .sidebar {
+    float: left;
+    font-size: 24px;
+    line-height: 32px;
+    width: $sidebar-size;
+    margin-left: $sidebar-margin;
+
+    .times {
+      margin-top: -7px;
+      display: none;
+      // TODO
+    }
+
+    .timer {
+      color: rgba(255,255,255,1);
+    }
+
+    .laps {
+      color: rgba(255,255,255,0.5);
+
+      div:nth-child(2) {
+        color: rgba(255,255,255,0.4);
+      }
+
+      div:nth-child(3) {
+        color: rgba(255,255,255,0.3);
+      }
+
+      div:nth-child(4) {
+        color: rgba(255,255,255,0.2);
+      }
+
+      div:nth-child(5) {
+        color: rgba(255,255,255,0.1);
+      }
+
+      div:nth-child(n + 5) {
+        color: rgba(255,255,255,0.1);
+      }
+    }
   }
 }

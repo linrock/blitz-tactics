@@ -1,6 +1,4 @@
-@import "bourbon";
 @import "_variables";
-
 
 body[data-controller="levels"][data-action="edit"],
 body[data-controller="puzzles"][data-action="search"] {
@@ -12,14 +10,13 @@ body[data-controller="puzzles"][data-action="search"] {
   }
 
   .level-info {
-    @include clearfix;
     margin: 50px 0;
+    display: flex;
   }
 
   .level-name {
     font-weight: bold;
     font-size: 18px;
-    float: left;
     position: relative;
     top: -1px;
 
@@ -43,7 +40,7 @@ body[data-controller="puzzles"][data-action="search"] {
   }
 
   .add-level {
-    float: right;
+    margin-left: auto;
   }
 
   .add-level-id {
@@ -70,21 +67,17 @@ body[data-controller="puzzles"][data-action="search"] {
 
   .boards {
     margin-bottom: 40px;
-    @include clearfix;
 
     .board {
-      float: left;
-      margin-bottom: 15px;
+      margin: 15px;
+      display: inline-block;
 
       .puzzle-id {
         text-align: center;
       }
 
-      &.selected {
-
-        .mini-chessboard {
-          border: 1px solid yellow;
-        }
+      &.selected .mini-chessboard {
+        border: 1px solid yellow;
       }
     }
   }
