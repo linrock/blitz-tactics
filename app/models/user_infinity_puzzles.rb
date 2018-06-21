@@ -35,8 +35,11 @@ class UserInfinityPuzzles
   # 
   def latest_infinity_iterator(difficulty) # InfinityIterator
     completed_puzzle = @user.latest_infinity_puzzle_solved(difficulty) or nil
-    return unless completed_puzzle.present?
-    infinity_level(difficulty).iterator_at(completed_puzzle.puzzle_id)
+    if completed_puzzle.present?
+      infinity_level(difficulty).iterator_at(completed_puzzle.puzzle_id)
+    else
+      infinity_level(difficulty).iterator_at_beginning
+    end
   end
 
   private
