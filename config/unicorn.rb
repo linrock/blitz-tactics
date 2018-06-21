@@ -9,16 +9,16 @@ if RAILS_ENV == 'production'
   stdout_path "#{RAILS_ROOT}/log/unicorn.stdout.log"
   stderr_path "#{RAILS_ROOT}/log/unicorn.stderr.log"
   worker_processes 2
+  timeout 15
 else
   listen 3000
   worker_processes 1
+  timeout 3000
 end
 
 preload_app true
 
 pid "tmp/pids/unicorn.pid"
-
-timeout 15
 
 
 before_fork do |server, worker|
