@@ -11,7 +11,7 @@ export default class PuzzleStats extends Backbone.View {
   initialize() {
     this.$n = this.$el.find("span")
     this.listenTo(d, "puzzles_solved:changed", n => {
-      this.$n.text(n)
+      this.$n.text(n || 0)
       this.$el.removeClass("invisible")
     })
   }

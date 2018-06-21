@@ -360,13 +360,27 @@ body {
   }
 }
 
-.piece-promotion-modal {
+.piece-promotion-modal-container {
   width: 100%;
   height: 100%;
   position: absolute;
   left: 0;
   top: 0;
   z-index: 100;
+
+  .piece-promotion-modal {
+    background: white;
+    box-shadow: 0 0 7px rgba(0,0,0,0.5);
+    position: absolute;
+    z-index: 3;
+    width: 400px;
+    height: 150px;
+    left: 50%;
+    margin-left: -200px;
+    top: 50%;
+    margin-top: -75px;
+    border-radius: 2px;
+  }
 
   .prompt {
     color: rgba(0,0,0,0.9);
@@ -376,26 +390,27 @@ body {
   }
 
   .pieces {
-    background: white;
     position: absolute;
-    z-index: 3;
-    width: 400px;
-    height: 150px;
-    left: 82px;
-    top: 202px;
-    text-align: center;
-    box-shadow: 0 0 7px rgba(0,0,0,0.5);
-    border-radius: 2px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0 20px;
 
     .piece {
       width: 80px;
       height: 80px;
-      display: inline-block;
-      margin: 0 3px;
+      display: block;
+      transition: background 0.1s ease;
+      border-radius: 2px;
+
+      &:hover {
+        background: rgba(0,0,0,0.03);
+      }
 
       img {
         width: 100%;
         height: 100%;
+        display: block;
       }
     }
   }

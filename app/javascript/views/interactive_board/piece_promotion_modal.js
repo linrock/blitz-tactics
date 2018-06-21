@@ -10,7 +10,7 @@ import d from '../../dispatcher'
 export default class PiecePromotionModal extends Backbone.View {
 
   get el() {
-    return ".piece-promotion-modal"
+    return ".piece-promotion-modal-container"
   }
 
   get events() {
