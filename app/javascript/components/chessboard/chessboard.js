@@ -4,10 +4,10 @@ import $ from 'jquery'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
-import Pieces from './chessboard/pieces'
-import DragAndDrop from './chessboard/drag_and_drop'
-import PointAndClick from './chessboard/point_and_click'
-import d from '../dispatcher'
+import Pieces from './concerns/pieces'
+import DragAndDrop from './concerns/drag_and_drop'
+import PointAndClick from './concerns/point_and_click'
+import d from '../../dispatcher'
 
 
 export default class Chessboard extends Backbone.View {

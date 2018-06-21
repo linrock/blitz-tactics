@@ -4,7 +4,7 @@ import Mousetrap from 'mousetrap'
 require('jquery-ui')
 require('jquery-ui/ui/widgets/sortable')
 
-import { updateLevel } from '../api/requests'
+import { updateLevel } from '../../api/requests'
 
 export default class LevelEditor extends Backbone.View {
 

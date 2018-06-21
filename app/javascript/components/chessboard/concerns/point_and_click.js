@@ -1,7 +1,7 @@
 // Point and click pieces to select and move them
 
 import $ from 'jquery'
-import d from '../../dispatcher'
+import d from '../../../dispatcher'
 
 export default class PointAndClick {
 

@@ -2,8 +2,8 @@ import $ from 'jquery'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
-import Pieces from './chessboard/pieces'
-import { uciToMove } from '../utils'
+import Pieces from './concerns/pieces'
+import { uciToMove } from '../../utils'
 
 export default class MiniChessboard extends Backbone.View {
 

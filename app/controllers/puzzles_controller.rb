@@ -1,4 +1,4 @@
-class PuzzlesController < ActionController::API
+class PuzzlesController < ApplicationController
 
   def show
     @puzzle = LichessPuzzle.find(params[:id])

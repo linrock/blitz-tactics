@@ -1,4 +1,4 @@
-import MiniChessboard from '../views/mini_chessboard'
+import MiniChessboard from '../components/chessboard/mini_chessboard'
 import routes from '../routes'
 
 
@@ -43,7 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // initialize all mini chessboards
   document.querySelectorAll('.mini-chessboard').forEach(el => {
-    const { fen, options } = el.dataset
-    new MiniChessboard({ el, fen, options })
+    let { fen, options } = el.dataset
+    if (options) {
+      options = JSON.parse(options)
+    }
+    new MiniChessboard({ el, fen, ...options })
   })
 })
