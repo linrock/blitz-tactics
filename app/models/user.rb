@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
 
   def last_solved_infinity_puzzle_id(difficulty)
     solved_infinity_puzzles
-      .with_difficulty(difficulty).last.new_lichess_puzzle_id
+      .with_difficulty(difficulty).last&.new_lichess_puzzle_id
   end
 
   def next_infinity_puzzle

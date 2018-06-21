@@ -18,6 +18,8 @@ class UserInfinityPuzzles
     })
   end
 
+  private
+
   def current_difficulty
     @user.present? ? @user.latest_difficulty : 'easy'
   end
