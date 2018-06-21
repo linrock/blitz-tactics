@@ -39,39 +39,6 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
--- Name: completed_infinity_puzzles; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.completed_infinity_puzzles (
-    id bigint NOT NULL,
-    user_id integer NOT NULL,
-    puzzle_id integer NOT NULL,
-    difficulty character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: completed_infinity_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.completed_infinity_puzzles_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: completed_infinity_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.completed_infinity_puzzles_id_seq OWNED BY public.completed_infinity_puzzles.id;
-
-
---
 -- Name: completed_rounds; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -135,6 +102,39 @@ CREATE SEQUENCE public.infinity_levels_id_seq
 --
 
 ALTER SEQUENCE public.infinity_levels_id_seq OWNED BY public.infinity_levels.id;
+
+
+--
+-- Name: infinity_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.infinity_puzzles (
+    id bigint NOT NULL,
+    infinity_level_id integer NOT NULL,
+    new_lichess_puzzle_id integer NOT NULL,
+    index integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: infinity_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.infinity_puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: infinity_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.infinity_puzzles_id_seq OWNED BY public.infinity_puzzles.id;
 
 
 --
@@ -316,6 +316,39 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: solved_infinity_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solved_infinity_puzzles (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    new_lichess_puzzle_id integer NOT NULL,
+    difficulty character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: solved_infinity_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solved_infinity_puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solved_infinity_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solved_infinity_puzzles_id_seq OWNED BY public.solved_infinity_puzzles.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -358,13 +391,6 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: completed_infinity_puzzles id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.completed_infinity_puzzles ALTER COLUMN id SET DEFAULT nextval('public.completed_infinity_puzzles_id_seq'::regclass);
-
-
---
 -- Name: completed_rounds id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -376,6 +402,13 @@ ALTER TABLE ONLY public.completed_rounds ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.infinity_levels ALTER COLUMN id SET DEFAULT nextval('public.infinity_levels_id_seq'::regclass);
+
+
+--
+-- Name: infinity_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.infinity_puzzles ALTER COLUMN id SET DEFAULT nextval('public.infinity_puzzles_id_seq'::regclass);
 
 
 --
@@ -414,6 +447,13 @@ ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.po
 
 
 --
+-- Name: solved_infinity_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solved_infinity_puzzles ALTER COLUMN id SET DEFAULT nextval('public.solved_infinity_puzzles_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -426,14 +466,6 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: completed_infinity_puzzles completed_infinity_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.completed_infinity_puzzles
-    ADD CONSTRAINT completed_infinity_puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -450,6 +482,14 @@ ALTER TABLE ONLY public.completed_rounds
 
 ALTER TABLE ONLY public.infinity_levels
     ADD CONSTRAINT infinity_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: infinity_puzzles infinity_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.infinity_puzzles
+    ADD CONSTRAINT infinity_puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -501,6 +541,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: solved_infinity_puzzles solved_infinity_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solved_infinity_puzzles
+    ADD CONSTRAINT solved_infinity_puzzles_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -509,24 +557,24 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: index_completed_infinity_puzzles_on_user_id_and_puzzle_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_completed_infinity_puzzles_on_user_id_and_puzzle_id ON public.completed_infinity_puzzles USING btree (user_id, puzzle_id);
-
-
---
--- Name: index_completed_infinity_puzzles_on_user_id_and_updated_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_completed_infinity_puzzles_on_user_id_and_updated_at ON public.completed_infinity_puzzles USING btree (user_id, updated_at);
-
-
---
 -- Name: index_infinity_levels_on_difficulty; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_infinity_levels_on_difficulty ON public.infinity_levels USING btree (difficulty);
+
+
+--
+-- Name: index_infinity_puzzles_on_infinity_level_id_and_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_infinity_puzzles_on_infinity_level_id_and_index ON public.infinity_puzzles USING btree (infinity_level_id, index);
+
+
+--
+-- Name: index_infinity_puzzles_on_level_and_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_infinity_puzzles_on_level_and_puzzle_id ON public.infinity_puzzles USING btree (infinity_level_id, new_lichess_puzzle_id);
 
 
 --
@@ -579,6 +627,20 @@ CREATE INDEX index_positions_on_user_id ON public.positions USING btree (user_id
 
 
 --
+-- Name: index_solved_infinity_puzzles_on_user_and_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_solved_infinity_puzzles_on_user_and_puzzle_id ON public.solved_infinity_puzzles USING btree (user_id, new_lichess_puzzle_id);
+
+
+--
+-- Name: index_solved_infinity_puzzles_on_user_id_and_updated_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_solved_infinity_puzzles_on_user_id_and_updated_at ON public.solved_infinity_puzzles USING btree (user_id, updated_at);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -618,6 +680,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20161125221817'),
 ('20180619172700'),
 ('20180620032206'),
-('20180620084825');
+('20180620084825'),
+('20180621081826');
 
 
