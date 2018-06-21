@@ -1,3 +1,5 @@
+# DSL for custom-routes defined in a text file
+
 class StaticRoutes
   ROUTES_FILE = Rails.root.join('db/position_routes.txt')
 

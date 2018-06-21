@@ -1,3 +1,5 @@
+# infinity mode puzzles
+
 class InfinityController < ApplicationController
 
   def index

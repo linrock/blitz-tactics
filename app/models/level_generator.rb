@@ -1,4 +1,4 @@
-# generates precision levels
+# generates repetition mode levels
 
 class LevelGenerator
   LEVEL_SIZE = 10

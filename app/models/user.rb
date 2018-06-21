@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
     solved_infinity_puzzles.count
   end
 
-  # precision mode methods
+  # repetition mode methods
 
   def unlock_level(level_id)
     level_ids = Set.new(self.profile["levels_unlocked"])

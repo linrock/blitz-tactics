@@ -25,8 +25,4 @@ class Api::InfinityController < ApplicationController
     p_params.delete("puzzle_id")
     p_params
   end
-
-  def set_user
-    @user = current_user
-  end
 end

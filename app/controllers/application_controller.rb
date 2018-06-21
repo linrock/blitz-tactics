@@ -18,6 +18,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_user
+    @user = current_user
+  end
+
   def require_logged_in_user!
     unless current_user
       redirect_to new_user_registration_url

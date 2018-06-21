@@ -3,19 +3,21 @@
 class Level < ActiveRecord::Base
   has_many :level_attempts
 
+  before_validation :set_secret_key
+  before_validation :set_default_options
+
   validates_presence_of :slug
   validates_presence_of :secret_key
   validate :require_unique_puzzle_ids
   validate :require_puzzles_to_exist
 
-  before_validation :set_secret_key
-  before_validation :set_default_options
-
+  scope :by_number, -> (number) { find_by(slug: "level-#{number}") }
 
   def first_level?
     slug == "level-1"
   end
 
+  # ex. Level 2
   def number
     slug.gsub('-', ' ').capitalize
   end

@@ -1,7 +1,6 @@
 # levels in repetition mode
 
 class Api::LevelsController < ApplicationController
-  before_action :set_level
   before_action :set_user
 
   def attempt
@@ -14,8 +13,8 @@ class Api::LevelsController < ApplicationController
   end
 
   def complete
-    next_level = @level.next_level
-    # TODO handle the last level
+    next_level = Level.find(params[:id]).next_level
+    # TODO handle the very last level
     @user&.unlock_level(next_level.id)
     render json: {
       next: {
@@ -28,13 +27,5 @@ class Api::LevelsController < ApplicationController
 
   def round_params
     params.require(:round).permit(:time_elapsed, :errors_count)
-  end
-
-  def set_level
-    @level = Level.find(params[:id])
-  end
-
-  def set_user
-    @user = current_user
   end
 end
