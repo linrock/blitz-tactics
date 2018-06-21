@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
 import Mousetrap from 'mousetrap'
@@ -70,8 +69,12 @@ export default class LevelEditor extends Backbone.View {
   }
 
   _toggleSelection(e) {
-    const $board = $(e.currentTarget)
-    $board.toggleClass("selected")
+    const boardEl = e.currentTarget
+    if (boardEl.classList.contains('selected')) {
+      boardEl.classList.remove('selected')
+    } else {
+      boardEl.classList.add('selected')
+    }
   }
 
   _updateLevelName(e) {
