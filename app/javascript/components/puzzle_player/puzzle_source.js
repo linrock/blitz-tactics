@@ -110,8 +110,7 @@ export default class PuzzleSource extends Backbone.Model {
     const attempt = this.current.state[moveToUci(move)]
     if (attempt === "win") {
       d.trigger("move:success")
-      d.trigger("puzzles:next")
-      d.trigger("puzzle:solved", this.current.puzzle)
+      this.puzzleSolved()
       return
     } else if (attempt === "retry") {
       d.trigger("move:almost")
@@ -125,19 +124,18 @@ export default class PuzzleSource extends Backbone.Model {
     d.trigger("move:make", move, false)
     d.trigger("move:success")
     if (attempt[response] === "win") {
-      d.trigger("puzzles:next")
-      d.trigger("puzzle:solved", this.current.puzzle)
+      this.puzzleSolved()
     } else {
       const responseMove = uciToMove(response)
-      if (responseDelay > 0) {
-        setTimeout(() => {
-          d.trigger("move:make", responseMove)
-          this.current.state = attempt[response]
-        }, responseDelay)
-      } else {
+      setTimeout(() => {
         d.trigger("move:make", responseMove)
         this.current.state = attempt[response]
-      }
+      }, responseDelay)
     }
+  }
+
+  puzzleSolved() {
+    d.trigger("puzzle:solved", this.current.puzzle)
+    d.trigger("puzzles:next")
   }
 }
