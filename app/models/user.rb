@@ -14,26 +14,30 @@ class User < ActiveRecord::Base
 
   validate :validate_username
 
-  # infinity mode methods
+  # infinity puzzle methods
 
   def latest_difficulty
-    solved_infinity_puzzles.order('updated_at DESC').first&.difficulty || 'easy'
+    solved_infinity_puzzles.last&.difficulty || 'easy'
   end
 
-  def latest_infinity_level
-    InfinityLevel.find_by(difficulty: latest_difficulty)
+  def new_lichess_puzzles_after(difficulty, new_lichess_puzzle_id)
+    InfinityLevel
+      .find_by(difficulty: difficulty)
+      .new_lichess_puzzles_after(
+        new_lichess_puzzle_id || last_solved_infinity_puzzle_id(difficulty)
+      )
   end
 
-  # this gets shown on the homepage and on the /infinity interface
-  # returns NewLichessPuzzle
-  def next_infinity_puzzle(difficulty = nil)
-    UserInfinityPuzzles.new(self).latest_infinity_iterator(
-      difficulty || latest_difficulty
-    ).puzzle
+  def last_solved_infinity_puzzle_id(difficulty)
+    solved_infinity_puzzles
+      .with_difficulty(difficulty).last.new_lichess_puzzle_id
   end
 
-  def latest_infinity_puzzle_solved(difficulty) # SolvedInfinityPuzzle or nil
-    solved_infinity_puzzles.with_difficulty(difficulty).latest_solved.presence
+  def next_infinity_puzzle
+    new_lichess_puzzles_after(
+      latest_difficulty,
+      last_solved_infinity_puzzle_id(latest_difficulty)
+    ).first
   end
 
   def num_infinity_puzzles_solved

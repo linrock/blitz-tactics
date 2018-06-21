@@ -2,113 +2,39 @@
 # puzzle_id_map = map of new lichess puzzle ids (puzzle.id) => { p: prev_id, n: next_id }
 
 class InfinityLevel < ActiveRecord::Base
-  before_validation :generate_puzzle_id_map!, if: :puzzle_id_array_changed?
+  has_many :infinity_puzzles
 
   validates :difficulty,
     presence: true,
     uniqueness: true,
     inclusion: %w( easy medium hard insane )
-  validate :puzzle_ids_are_unique
-  validate :check_structure_of_puzzle_id_map
 
-  def n_puzzles
-    puzzle_id_array.length
-  end
-
-  def next_n_puzzles_from(puzzle_id, n)
-    inf_iterator = iterator_at(puzzle_id || first_puzzle_id)
-    n.times.map do
-      unless inf_iterator.nil?
-        puzzle = inf_iterator.puzzle
-        inf_iterator = inf_iterator.next
-        puzzle
-      end
-    end.compact
-  end
-
-  # InfinityIterator
-  def iterator_at_beginning
-    InfinityIterator.new(difficulty, first_puzzle_id)
-  end
-
-  # InfinityIterator
-  def iterator_at(puzzle_id)
-    InfinityIterator.new(difficulty, puzzle_id)
-  end
-
-  # NewLichessPuzzle
   def first_puzzle
-    NewLichessPuzzle.find_by(id: first_puzzle_id)
+    infinity_puzzles.first
   end
 
-  # puzzle_id helpers
-  def first_puzzle_id
-    puzzle_id_array.first
+  def new_lichess_puzzles_after(new_lichess_puzzle_id) # Array<NewLichessPuzzle>
+    if new_lichess_puzzle_id.nil?
+      infinity_puzzles.limit(10)
+    else
+      puzzle = infinity_puzzles.find_by(
+        new_lichess_puzzle_id: new_lichess_puzzle_id
+      )
+      infinity_puzzles.where('index > ?', puzzle.index).limit(10)
+    end.includes(:new_lichess_puzzle).map(&:puzzle)
   end
 
-  def last_puzzle_id
-    puzzle_id_array.last
+  def add_puzzle(new_lichess_puzzle)
+    return false if infinity_puzzles.exists?(
+      new_lichess_puzzle_id: new_lichess_puzzle.id
+    )
+    infinity_puzzles.create!({
+      index: last_puzzle_index + 1,
+      new_lichess_puzzle_id: new_lichess_puzzle.id
+    })
   end
 
-  def prev_puzzle_id(puzzle_id)
-    puzzle_id_map[puzzle_id.to_s]["p"]
-  end
-
-  def next_puzzle_id(puzzle_id)
-    puzzle_id_map[puzzle_id.to_s]["n"]
-  end
-
-  def includes_puzzle_id?(puzzle_id)
-    puzzle_id_map[puzzle_id.to_s].present?
-  end
-
-  def add_puzzle_id(puzzle_id)
-    return if includes_puzzle_id?(puzzle_id)
-    self.puzzle_id_array << puzzle_id
-    self.save!
-  end
-
-  private
-
-  def puzzle_ids_are_unique
-    Set.new(puzzle_id_array).count == puzzle_id_array.length
-  end
-
-  def check_structure_of_puzzle_id_map
-    return if puzzle_id_array.length == 0
-    first = puzzle_id_map[first_puzzle_id.to_s]
-    last = puzzle_id_map[last_puzzle_id.to_s]
-    unless first["p"].nil?
-      errors.add :puzzle_id_map, "has invalid start node"
-    end
-    unless last["n"].nil?
-      errors.add :puzzle_id_map, "has invalid end node"
-    end
-    node = first
-    traversed_puzzle_ids = [first_puzzle_id]
-    while node.present?
-      next_node = node["n"]
-      traversed_puzzle_ids << next_node if next_node.present?
-      node = puzzle_id_map[node["n"].to_s]
-    end
-    unless traversed_puzzle_ids == puzzle_id_array
-      errors.add :puzzle_id_map, "didn't match puzzle_id_array when traversed"
-    end
-  end
-
-  # p = previous puzzle.id
-  # n = next puzzle.id
-  def generate_puzzle_id_map!
-    map = {}
-    current_puzzle_id = nil
-    puzzle_id_array.each do |puzzle_id|
-      map[puzzle_id] = {}
-      if current_puzzle_id 
-        map[current_puzzle_id][:n] = puzzle_id
-        map[puzzle_id][:p] = current_puzzle_id
-      end
-      current_puzzle_id = puzzle_id
-    end
-    self.puzzle_id_map = map
+  def last_puzzle_index
+    infinity_puzzles.last&.index || -1
   end
 end

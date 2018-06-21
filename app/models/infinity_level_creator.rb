@@ -25,7 +25,7 @@ module InfinityLevelCreator
   def build_easy_level!
     level = InfinityLevel.find_or_create_by(difficulty: 'easy')
     easy_puzzles.each do |puzzle|
-      level.add_puzzle_id puzzle.id
+      level.add_puzzle puzzle
     end
     true
   end
@@ -33,7 +33,7 @@ module InfinityLevelCreator
   def build_medium_level!
     level = InfinityLevel.find_or_create_by(difficulty: 'medium')
     medium_puzzles.each do |puzzle|
-      level.add_puzzle_id puzzle.id
+      level.add_puzzle puzzle
     end
     true
   end

@@ -11,9 +11,7 @@ class Api::InfinityController < ApplicationController
       else
         @user.solved_infinity_puzzles.create!(puzzle_params)
       end
-      render json: {
-        n: @user.solved_infinity_puzzles.count
-      }
+      render json: { n: @user.solved_infinity_puzzles.count }
     else
       render json: {}
     end
@@ -22,7 +20,10 @@ class Api::InfinityController < ApplicationController
   private
 
   def puzzle_params
-    params.require(:puzzle).permit(:difficulty, :puzzle_id)
+    p_params = params.require(:puzzle).permit(:difficulty, :puzzle_id).to_h
+    p_params["new_lichess_puzzle_id"] = p_params["puzzle_id"]
+    p_params.delete("puzzle_id")
+    p_params
   end
 
   def set_user

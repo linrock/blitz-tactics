@@ -3,6 +3,9 @@
 class NewLichessPuzzle < ActiveRecord::Base
   include PuzzleQuery
 
+  has_many :infinity_puzzles
+  has_many :solved_infinity_puzzles
+
   before_validation :set_puzzle_id_from_data
   validates :puzzle_id, presence: true, uniqueness: true
   validate :check_simplified_data_format

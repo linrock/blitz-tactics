@@ -2,14 +2,15 @@
 
 class SolvedInfinityPuzzle < ActiveRecord::Base
   belongs_to :user
+  belongs_to :new_lichess_puzzle
+
+  validates :new_lichess_puzzle, presence: true
 
   validates :difficulty, inclusion: %w( easy medium hard insane )
 
+  default_scope { order('updated_at ASC') }
+
   scope :with_difficulty, -> (difficulty) do
     where(difficulty: difficulty)
-  end
-
-  scope :latest_solved, -> do
-    order('updated_at DESC').first
   end
 end
