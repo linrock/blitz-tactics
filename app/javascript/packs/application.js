@@ -9,19 +9,6 @@ window.config = {
   comboSizeForNextLevel: 100
 };
 
-// Preload piece images
-//
-(function() {
-  const colors = [ 'w', 'b' ];
-  const pieces = [ 'k', 'q', 'r', 'b', 'n' ];
-  for (let i in pieces) {
-    for (let j in colors) {
-      const img = new Image();
-      img.src = `/assets/pieces/${colors[j] + pieces[i]}.png`;
-    }
-  }
-})();
-
 // Set meta viewport
 //
 (function() {
