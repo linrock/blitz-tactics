@@ -27,8 +27,8 @@ export default class PuzzleSource extends Backbone.Model {
     this.i = 0
     this.current = {}
     this.started = false
-    this.shuffle = options.shuffle || true
-    this.loopPuzzles = options.loopPuzzles || true
+    this.shuffle = options.shuffle
+    this.loopPuzzles = options.loopPuzzles
     this.fetchPuzzles(options.source)
     this.listenToEvents()
   }
@@ -62,20 +62,21 @@ export default class PuzzleSource extends Backbone.Model {
   }
 
   nextPuzzle() {
-    this.i++
-    if (this.i + 1 === this.puzzles.length) {
+    this.i = this.i + 1
+    if (this.i === this.puzzles.length) {
       if (this.shuffle) {
         this.shufflePuzzles()
       }
       if (this.loopPuzzles) {
         this.i = 0
         d.trigger("puzzles:lap")
+        this.loadPuzzleAtIndex(this.i)
       } else {
-        console.log("oh shit there's no more left")
         d.trigger("puzzles:complete")
       }
+    } else {
+      this.loadPuzzleAtIndex(this.i)
     }
-    this.loadPuzzleAtIndex(this.i)
   }
 
   loadPuzzleAtIndex(i) {

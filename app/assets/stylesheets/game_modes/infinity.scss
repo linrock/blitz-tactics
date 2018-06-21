@@ -76,4 +76,12 @@
   .n-puzzles {
     opacity: 0.7;
   }
+
+  .no-more-left {
+    line-height: 21px;
+    margin-top: 80px;
+    width: 150px;
+    font-size: 14px;
+    transition: opacity 0.2s ease;
+  }
 }
