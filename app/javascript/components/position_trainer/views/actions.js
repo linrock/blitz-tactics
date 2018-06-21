@@ -1,6 +1,6 @@
 // action buttons under the board - reset position
 
-import d from '../../dispatcher'
+import d from '../../../dispatcher'
 
 export default class Actions extends Backbone.View {
 

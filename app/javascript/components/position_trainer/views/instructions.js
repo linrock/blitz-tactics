@@ -1,7 +1,7 @@
 // instructions above the board for what to do in this position
 
-import { getConfig } from '../../utils'
-import d from '../../dispatcher'
+import { getConfig } from '../../../utils'
+import d from '../../../dispatcher'
 
 export default class Instructions extends Backbone.View {
 
