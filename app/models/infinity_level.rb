@@ -43,4 +43,8 @@ class InfinityLevel < ActiveRecord::Base
   def last_puzzle_index
     infinity_puzzles.last&.index || -1
   end
+
+  def num_puzzles
+    @num_puzzles ||= infinity_puzzles.count
+  end
 end

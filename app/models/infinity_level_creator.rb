@@ -24,11 +24,18 @@ module InfinityLevelCreator
 
   InfinityLevel::DIFFICULTIES.each do |difficulty|
     define_method "build_#{difficulty}_level!" do
+      num_levels_added = 0
       level = InfinityLevel.send difficulty
-      send("#{difficulty}_puzzles").each do |puzzle|
-        level.add_puzzle puzzle
+      ActiveRecord::Base.logger.silence do
+        send("#{difficulty}_puzzles").each do |puzzle|
+          if level.add_puzzle(puzzle)
+            num_levels_added += 1
+          end
+        end
+        true
       end
-      true
+      puts "#{level.num_puzzles} total levels in #{difficulty} difficulty"
+      puts "#{num_levels_added} levels added just now"
     end
   end
 
