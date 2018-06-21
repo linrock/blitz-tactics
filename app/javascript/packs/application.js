@@ -1,5 +1,3 @@
-import $ from 'jquery'
-
 import MiniChessboard from '../views/mini_chessboard'
 import routes from '../routes'
 
@@ -11,30 +9,29 @@ window.config = {
 
 // Set meta viewport
 //
-(function() {
-  var $viewport = $('meta[name="viewport"]'),
-      $w = $(window);
+(() => {
+  const viewport = document.querySelector('meta[name="viewport"]'),
+        isIphone = navigator.userAgent.match(/iPhone/i),
+        setViewport = () => viewport.setAttribute('content', 'width=500, user-scalable=no')
 
-  var isIphone = navigator.userAgent.match(/iPhone/i);
-
-  if (isIphone) {
-    $viewport.attr('content', 'width=500, user-scalable=no');
-    $w.on('resize', function(e) {
-      var w = $w.width();
-      var h = $w.height();
-      if (w > h) {
-        $viewport.removeAttr('content');
-      } else {
-        $viewport.attr('content', 'width=500, user-scalable=no');
-      }
-    });
+  if (!isIphone) {
+    return
   }
-})();
+  setViewport()
+  window.addEventListener('resize', () => {
+    var w = window.innerWidth
+    var h = window.innerHeight
+    if (w > h) {
+      viewport.removeAttribute('content')
+    } else {
+      setViewport()
+    }
+  }, true)
+})()
 
 document.addEventListener('DOMContentLoaded', () => {
-  const $body = $('body')
-  const pageKey = `${$body.data('controller')}#${$body.data('action')}`
-  const route = routes[pageKey]
+  const { controller, action } = document.querySelector('body').dataset
+  const route = routes[`${controller}#${action}`]
 
   // initialize route components/views
   if (typeof route !== 'undefined') {
@@ -45,14 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // initialize all mini chessboards
-  $('.mini-chessboard').each((i, el) => {
-    const $el = $(el)
-    const fen = $el.data('fen')
-    const options = $el.data('options')
-    if (fen) {
-      new MiniChessboard({ el: $el, fen })
-    } else if (options) {
-      new MiniChessboard(Object.assign({ el: $el }, options))
-    }
+  document.querySelectorAll('.mini-chessboard').forEach(el => {
+    const { fen, options } = el.dataset
+    new MiniChessboard({ el, fen, options })
   })
 })
