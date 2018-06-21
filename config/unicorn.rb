@@ -11,7 +11,7 @@ if RAILS_ENV == 'production'
   worker_processes 2
 else
   listen 3000
-  worker_processes 2
+  worker_processes 1
 end
 
 preload_app true

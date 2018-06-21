@@ -9,16 +9,10 @@ class UserInfinityPuzzles
   # the next set of puzzles to show the user + config for the front-end
   #
   def next_puzzle_set(difficulty = nil, puzzle_id = nil)
-    pointer = current_iterator(difficulty, puzzle_id)
-    puzzles = 10.times.map do # Array<NewLichessPuzzle>
-      puzzle = pointer.puzzle
-      if puzzle
-        pointer = pointer.next
-        puzzle
-      end
-    end.compact
-    PuzzlesJson.new(puzzles).to_json.merge({
-      difficulty: pointer.difficulty,
+    iterator = current_iterator(difficulty, puzzle_id)
+    current_difficulty = iterator.difficulty
+    PuzzlesJson.new(iterator.n_puzzles(10)).to_json.merge({
+      difficulty: current_difficulty,
       num_solved: @user ? @user.num_infinity_puzzles_solved : nil
     })
   end
