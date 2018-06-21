@@ -78,8 +78,6 @@ ALTER SEQUENCE public.completed_rounds_id_seq OWNED BY public.completed_rounds.i
 CREATE TABLE public.infinity_levels (
     id bigint NOT NULL,
     difficulty character varying NOT NULL,
-    puzzle_id_array jsonb DEFAULT '[]'::jsonb NOT NULL,
-    puzzle_id_map jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
