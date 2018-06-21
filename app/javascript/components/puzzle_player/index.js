@@ -1,4 +1,4 @@
-import InteractiveBoard from '../../views/interactive_board'
+import InteractiveBoard from '../interactive_board'
 import ComboCounter from './views/combo_counter'
 import Instructions from './views/instructions'
 import PuzzleCounter from './views/puzzle_counter'

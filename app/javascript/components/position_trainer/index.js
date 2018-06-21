@@ -3,7 +3,7 @@ import Backbone from 'backbone'
 import Chess from 'chess.js'
 
 import StockfishEngine from '../../workers/stockfish_engine'
-import InteractiveBoard from '../../views/interactive_board'
+import InteractiveBoard from '../interactive_board'
 import Instructions from './views/instructions'
 import Actions from './views/actions'
 import { uciToMove, getConfig } from '../../utils'
