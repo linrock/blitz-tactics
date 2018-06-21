@@ -22,20 +22,14 @@ module InfinityLevelCreator
       .vote_gt(50).attempts_gt(5000).white_to_move
   end
 
-  def build_easy_level!
-    level = InfinityLevel.find_or_create_by(difficulty: 'easy')
-    easy_puzzles.each do |puzzle|
-      level.add_puzzle puzzle
+  InfinityLevel::DIFFICULTIES.each do |difficulty|
+    define_method "build_#{difficulty}_level!" do
+      level = InfinityLevel.send difficulty
+      send("#{difficulty}_puzzles").each do |puzzle|
+        level.add_puzzle puzzle
+      end
+      true
     end
-    true
-  end
-
-  def build_medium_level!
-    level = InfinityLevel.find_or_create_by(difficulty: 'medium')
-    medium_puzzles.each do |puzzle|
-      level.add_puzzle puzzle
-    end
-    true
   end
 
   extend self

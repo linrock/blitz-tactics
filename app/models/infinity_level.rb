@@ -4,17 +4,16 @@
 class InfinityLevel < ActiveRecord::Base
   DIFFICULTIES = %w( easy medium hard insane )
 
-  has_many :infinity_puzzles
+  has_many :infinity_puzzles, dependent: :destroy
 
   validates :difficulty,
     presence: true,
     uniqueness: true,
     inclusion: DIFFICULTIES
 
-  scope :easy,   -> { find_by(difficulty: 'easy')   }
-  scope :medium, -> { find_by(difficulty: 'medium') }
-  scope :hard,   -> { find_by(difficulty: 'hard')   }
-  scope :insane, -> { find_by(difficulty: 'insane') }
+  DIFFICULTIES.each do |difficulty|
+    scope difficulty, -> { find_or_create_by(difficulty: difficulty) }
+  end
 
   def first_puzzle
     infinity_puzzles.first
