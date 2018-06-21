@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
          :trackable, :validatable
 
   has_many :level_attempts
-  has_many :completed_infinity_puzzles
+  has_many :solved_infinity_puzzles
   has_many :positions
 
   after_initialize :set_default_profile
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   # infinity mode methods
 
   def latest_difficulty
-    completed_infinity_puzzles.order('updated_at DESC').first&.difficulty || 'easy'
+    solved_infinity_puzzles.order('updated_at DESC').first&.difficulty || 'easy'
   end
 
   def latest_infinity_level
@@ -32,12 +32,12 @@ class User < ActiveRecord::Base
     ).puzzle
   end
 
-  def latest_infinity_puzzle_solved(difficulty) # CompletedInfinityPuzzle or nil
-    completed_infinity_puzzles.with_difficulty(difficulty).latest.presence
+  def latest_infinity_puzzle_solved(difficulty) # SolvedInfinityPuzzle or nil
+    solved_infinity_puzzles.with_difficulty(difficulty).latest_solved.presence
   end
 
   def num_infinity_puzzles_solved
-    completed_infinity_puzzles.count
+    solved_infinity_puzzles.count
   end
 
   # precision mode methods

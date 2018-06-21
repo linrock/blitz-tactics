@@ -1,4 +1,6 @@
-class CompletedInfinityPuzzle < ActiveRecord::Base
+# tracks the puzzles that a user has solved
+
+class SolvedInfinityPuzzle < ActiveRecord::Base
   belongs_to :user
 
   validates :difficulty, inclusion: %w( easy medium hard insane )
@@ -7,7 +9,7 @@ class CompletedInfinityPuzzle < ActiveRecord::Base
     where(difficulty: difficulty)
   end
 
-  scope :latest, -> do
+  scope :latest_solved, -> do
     order('updated_at DESC').first
   end
 end

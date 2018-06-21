@@ -5,14 +5,14 @@ class Api::InfinityController < ApplicationController
 
   def solved_puzzle
     if @user
-      puzzle = @user.completed_infinity_puzzles.find_by(puzzle_params)
+      puzzle = @user.solved_infinity_puzzles.find_by(puzzle_params)
       if puzzle.present?
         puzzle.touch
       else
-        @user.completed_infinity_puzzles.create!(puzzle_params)
+        @user.solved_infinity_puzzles.create!(puzzle_params)
       end
       render json: {
-        n: @user.completed_infinity_puzzles.count
+        n: @user.solved_infinity_puzzles.count
       }
     else
       render json: {}
