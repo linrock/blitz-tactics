@@ -5,19 +5,16 @@ import { uciToMove, moveToUci, shuffle } from '../../utils'
 import { fetchPuzzles } from '../../api/requests'
 import d from '../../dispatcher'
 
-// list of events
-
+// source:changed
 // puzzles:fetched
 // puzzles:start
 // puzzles:lap
 // puzzle:loaded
 // fen:set
-// move:highlight
 // move:make
 // move:almost
 // move:success
 // move:fail
-
 
 const responseDelay = 0
 
@@ -50,7 +47,7 @@ export default class PuzzleSource extends Backbone.Model {
 
   shufflePuzzles() {
     let shuffled = shuffle(this.puzzles)
-    while (shuffled[0].fen === this.puzzles[this.puzzles.length-1].fen) {
+    while (shuffled[0].fen === this.puzzles[this.puzzles.length - 1].fen) {
       shuffled = shuffle(this.puzzles)
     }
     this.puzzles = shuffled
@@ -89,9 +86,11 @@ export default class PuzzleSource extends Backbone.Model {
 
   loadPuzzleAtIndex(i) {
     const puzzle = this.puzzles[i]
-    this.current = { puzzle }
+    this.current = {
+      state: _.clone(puzzle.lines),
+      puzzle,
+    }
     d.trigger("puzzle:loaded", this.current)
-    this.current.state = _.clone(puzzle.lines)
     d.trigger("fen:set", puzzle.fen)
     setTimeout(() => {
       const move = this.getInitialMoveSan(puzzle.initialMove)
@@ -108,7 +107,7 @@ export default class PuzzleSource extends Backbone.Model {
   }
 
   handleUserMove(move) {
-    let attempt = this.current.state[moveToUci(move)]
+    const attempt = this.current.state[moveToUci(move)]
     if (attempt === "win") {
       d.trigger("move:success")
       d.trigger("puzzles:next")
@@ -118,7 +117,7 @@ export default class PuzzleSource extends Backbone.Model {
       d.trigger("move:almost")
       return
     }
-    let response = _.keys(attempt)[0]
+    const response = _.keys(attempt)[0]
     if (!response) {
       d.trigger("move:fail")
       return
@@ -129,7 +128,7 @@ export default class PuzzleSource extends Backbone.Model {
       d.trigger("puzzles:next")
       d.trigger("puzzle:solved", this.current.puzzle)
     } else {
-      let responseMove = uciToMove(response)
+      const responseMove = uciToMove(response)
       if (responseDelay > 0) {
         setTimeout(() => {
           d.trigger("move:make", responseMove)
