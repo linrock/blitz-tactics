@@ -5,8 +5,7 @@ class SolvedInfinityPuzzle < ActiveRecord::Base
   belongs_to :new_lichess_puzzle
 
   validates :new_lichess_puzzle, presence: true
-
-  validates :difficulty, inclusion: %w( easy medium hard insane )
+  validates :difficulty, inclusion: InfinityLevel::DIFFICULTIES
 
   default_scope { order('updated_at ASC') }
 

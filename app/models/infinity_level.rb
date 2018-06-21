@@ -2,12 +2,19 @@
 # puzzle_id_map = map of new lichess puzzle ids (puzzle.id) => { p: prev_id, n: next_id }
 
 class InfinityLevel < ActiveRecord::Base
+  DIFFICULTIES = %w( easy medium hard insane )
+
   has_many :infinity_puzzles
 
   validates :difficulty,
     presence: true,
     uniqueness: true,
-    inclusion: %w( easy medium hard insane )
+    inclusion: DIFFICULTIES
+
+  scope :easy,   -> { find_by(difficulty: 'easy')   }
+  scope :medium, -> { find_by(difficulty: 'medium') }
+  scope :hard,   -> { find_by(difficulty: 'hard')   }
+  scope :insane, -> { find_by(difficulty: 'insane') }
 
   def first_puzzle
     infinity_puzzles.first
