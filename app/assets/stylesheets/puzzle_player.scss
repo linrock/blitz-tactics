@@ -1,6 +1,5 @@
 // the main puzzle interface
 
-@import "bourbon";
 @import "_variables";
 
 body {
@@ -9,12 +8,6 @@ body {
   &.unlocked {
     background: #313131;
   }
-}
-
-.container {
-  margin: 0 auto;
-  width: $main-width;
-  @include clearfix;
 }
 
 .blue-button {
@@ -183,7 +176,6 @@ body {
   position: relative;
   width: $main-width;
   margin: 0 auto;
-  @include clearfix;
 
   .level-selector {
     font-size: 24px;

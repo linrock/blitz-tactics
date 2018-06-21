@@ -1,11 +1,12 @@
+$main-width: 700px;
+
+$main-font: "Open Sans", Helvetica, sans-serif;
+$combo-indicator-font: Orbitron, Arial, sans-serif;
+
+// main chessboard variables
 $border-width: 2px;
 $square-size: 60px;
 $board-size: 8 * $square-size + 2 * $border-width;
 
 $sidebar-size: 75px;
 $sidebar-margin: 40px;
-
-$main-width: 700px;
-
-$main-font: "Open Sans", Helvetica, sans-serif;
-$combo-indicator-font: Orbitron, Arial, sans-serif;

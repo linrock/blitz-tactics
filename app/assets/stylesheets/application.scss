@@ -5,6 +5,7 @@
  *= require_tree .
 */
 
+@import "_variables";
 
 html {
   box-sizing: border-box;
@@ -15,7 +16,7 @@ html {
 }
 
 body {
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: $main-font;
   background: #1f1f1f;
   color: #fafafa;
   -webkit-font-smoothing: antialiased;
@@ -32,7 +33,11 @@ button {
   &:hover {
     cursor: pointer;
   }
+}
 
+.container {
+  margin: 0 auto;
+  width: $main-width;
 }
 
 .invisible {

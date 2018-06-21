@@ -1,6 +1,8 @@
-$main-header-height: 40px;
+@import "_variables";
 
 .main-header {
+  $main-header-height: 40px;
+
   height: $main-header-height;
   background: #121212;
   width: 100%;
@@ -11,7 +13,7 @@ $main-header-height: 40px;
     float: left;
     font-size: 12px;
     font-weight: bold;
-    font-family: "Orbitron", sans-serif;
+    font-family: $combo-indicator-font;
     text-transform: uppercase;
     line-height: $main-header-height + 2px;
     letter-spacing: 1.5px;
