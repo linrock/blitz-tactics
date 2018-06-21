@@ -5,7 +5,7 @@ import PuzzlePlayer from '../puzzle_player'
 import PuzzleStats from './views/puzzle_stats'
 import SetDifficulty from './views/set_difficulty'
 import d from '../../dispatcher'
-import api from '../../api'
+import { infinityPuzzleSolved } from '../../api/requests'
 
 export default class InfinityMode {
   constructor() {
@@ -36,12 +36,11 @@ export default class InfinityMode {
       d.trigger(`puzzles_solved:changed`, config.numSolved)
     })
     listener.listenTo(d, `puzzle:solved`, puzzle => {
-      api.post(`/api/infinity`, {
-        puzzle: {
-          puzzle_id: puzzle.id,
-          difficulty: config.difficulty
-        }
-      }).then(response => response.data).then(data => {
+      const puzzleData = {
+        puzzle_id: puzzle.id,
+        difficulty: config.difficulty
+      }
+      infinityPuzzleSolved(puzzleData).then(data => {
         if (data.n) {
           d.trigger(`puzzles_solved:changed`, data.n)
         } else {

@@ -3,8 +3,11 @@
 import $ from 'jquery'
 import Backbone from 'backbone'
 
-import api from '../../../api'
 import d from '../../../dispatcher'
+import {
+  precisionLevelAttempted,
+  precisionLevelCompleted
+} from '../../../api/requests'
 
 export default class CompletionNotifier extends Backbone.Model {
 
@@ -21,15 +24,14 @@ export default class CompletionNotifier extends Backbone.Model {
     if (!levelId) {
       return
     }
-    api.post(`/api/levels/${levelId}/attempt`, { round: payload })
+    precisionLevelAttempted(levelId, payload)
   }
 
   levelComplete(levelId) {
     if (!levelId) {
       return
     }
-    api.post(`/api/levels/${levelId}/complete`)
-      .then(response => response.data)
+    precisionLevelCompleted(levelId)
       .then(data => d.trigger("level:unlocked", data.next.href))
   }
 }

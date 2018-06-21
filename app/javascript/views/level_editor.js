@@ -5,7 +5,7 @@ import Mousetrap from 'mousetrap'
 require('jquery-ui')
 require('jquery-ui/ui/widgets/sortable')
 
-import api from '../api'
+import { updateLevel } from '../api/requests'
 
 export default class LevelEditor extends Backbone.View {
 
@@ -61,11 +61,8 @@ export default class LevelEditor extends Backbone.View {
     const data = {
       puzzle_ids: ids
     }
-    api.put(`/${this.$el.data("slug")}`, data)
-      .then(response => response.data)
-      .then(html => {
-        console.log('updated board ids order')
-      })
+    updateLevel(this.$el.data('slug'), data)
+      .then(html => console.log('updated board ids order'))
   }
 
   addBoardId(id) {
@@ -81,11 +78,8 @@ export default class LevelEditor extends Backbone.View {
     const data = {
       name: this.$levelNameInput.val()
     }
-    api.put(`/${this.$el.data("slug")}`, data)
-      .then(response => response.data)
-      .then(() => {
-        console.log("name updated")
-      })
+    updateLevel(this.$el.data('slug'), data)
+      .then(() => console.log("name updated"))
   }
 
   _addLevel(e) {

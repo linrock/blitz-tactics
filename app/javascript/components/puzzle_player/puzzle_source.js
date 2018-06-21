@@ -2,8 +2,8 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 
 import { uciToMove, moveToUci, shuffle } from '../../utils'
+import { fetchPuzzles } from '../../api/requests'
 import d from '../../dispatcher'
-import api from '../../api'
 
 // list of events
 
@@ -33,18 +33,12 @@ export default class PuzzleSource extends Backbone.Model {
     this.listenToEvents()
   }
 
-  getPuzzleSource() {
-    return window.location.pathname + ".json"
-  }
-
   fetchPuzzles(source) {
-    api.get(source || this.getPuzzleSource())
-      .then(response => response.data)
-      .then(data => {
-        this.puzzles = data.puzzles
-        d.trigger("puzzles:fetched", this.puzzles)
-        d.trigger("config:init", data)
-      })
+    fetchPuzzles(source).then(data => {
+      this.puzzles = data.puzzles
+      d.trigger("puzzles:fetched", this.puzzles)
+      d.trigger("config:init", data)
+    })
   }
 
   listenToEvents() {
