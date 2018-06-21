@@ -34,20 +34,16 @@ export default class LevelEditor extends Backbone.View {
   makeBoardsSortable() {
     this.$(".boards").sortable({
       distance: 15,
-      update: (event, ui) => {
-        this.updateBoardIds(this.sortedBoardIds())
-      }
+      update: (event, ui) => this.updateBoardIds(this.sortedBoardIds())
     })
   }
 
   bindKeyboardEvents() {
-    Mousetrap.bind('backspace', _.bind(this.deleteSelectedBoardIds, this))
+    Mousetrap.bind('backspace', () => this.deleteSelectedBoardIds())
   }
 
   getBoardIds($boards) {
-    return _.map($boards, (board) => {
-      return $(board).data("id")
-    })
+    return $boards.toArray().map(board => board.dataset.id)
   }
 
   sortedBoardIds() {
@@ -77,7 +73,7 @@ export default class LevelEditor extends Backbone.View {
   }
 
   _toggleSelection(e) {
-    let $board = $(e.currentTarget)
+    const $board = $(e.currentTarget)
     $board.toggleClass("selected")
   }
 

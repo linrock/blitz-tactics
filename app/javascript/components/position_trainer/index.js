@@ -9,14 +9,8 @@ import Actions from './views/actions'
 import { uciToMove, getConfig } from '../../utils'
 import d from '../../dispatcher'
 
-
 const SEARCH_DEPTH = 15
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-
-document.addEventListener('paste', function(e) {
-  var text = (e.originalEvent || e).clipboardData.getData('text/plain')
-  console.log('pasted: ' + text)
-})
 
 
 export default class PositionTrainer extends Backbone.View {
@@ -59,19 +53,19 @@ export default class PositionTrainer extends Backbone.View {
       d.trigger("fen:set", this.initialFen)
     })
 
-    this.listenTo(d, "fen:set", (fen) => {
+    this.listenTo(d, "fen:set", fen => {
       this.currentFen = fen
       this.engine.analyze(fen, { depth: this.depth })
       this.notifyIfGameOver(fen)
     })
 
-    this.listenTo(d, "move:try", (move) => {
+    this.listenTo(d, "move:try", move => {
       d.trigger("move:make", move)
       d.trigger("move:highlight", move)
     })
 
-    this.listenTo(d, "analysis:done", (data) => {
-      if (data.fen != this.currentFen) {
+    this.listenTo(d, "analysis:done", data => {
+      if (data.fen !== this.currentFen) {
         return
       }
       console.dir(data)
@@ -95,6 +89,6 @@ export default class PositionTrainer extends Backbone.View {
     } else {
       result = "0-1"
     }
-    setTimeout(() => { d.trigger("game:over", result) }, 500)
+    setTimeout(() => d.trigger("game:over", result), 500)
   }
 }
