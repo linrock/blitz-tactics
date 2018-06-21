@@ -34,6 +34,8 @@ module BlitzTactics
 
     config.autoload_paths << Rails.root.join("app/view-models")
 
+    config.assets.paths << Rails.root.join("app/javascript/components")
+
     config.active_record.schema_format = :sql
   end
 end
