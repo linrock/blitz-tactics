@@ -59,10 +59,7 @@ export default class PositionTrainer extends Backbone.View {
       this.notifyIfGameOver(fen)
     })
 
-    this.listenTo(d, "move:try", move => {
-      d.trigger("move:make", move)
-      d.trigger("move:highlight", move)
-    })
+    this.listenTo(d, "move:try", move => d.trigger("move:make", move))
 
     this.listenTo(d, "analysis:done", data => {
       if (data.fen !== this.currentFen) {

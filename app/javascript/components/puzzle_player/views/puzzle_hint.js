@@ -29,13 +29,11 @@ export default class PuzzleHint extends Backbone.View {
   }
 
   listenForEvents() {
-    this.listenTo(d, "puzzle:loaded", (current) => {
+    this.listenTo(d, "puzzle:loaded", current => {
       this.current = current
       this.delayedShowHint()
     })
-    this.listenTo(d, "move:make", () => {
-      this.delayedShowHint()
-    })
+    this.listenTo(d, "move:make", () => this.delayedShowHint())
   }
 
   delayedShowHint() {
@@ -47,9 +45,7 @@ export default class PuzzleHint extends Backbone.View {
     this.$move.text("")
     this.timeout = setTimeout(() => {
       d.trigger("move:too_slow")
-      setTimeout(() => {
-        this.showHint()
-      }, hintDelay)
+      setTimeout(() => this.showHint(), hintDelay)
     }, comboDroppedIn)
   }
 

@@ -13,16 +13,12 @@ export default class PointAndClick {
   }
 
   listenForEvents() {
-    this.board.$el.on("click", ".square", (event) => {
-      let square = $(event.currentTarget).data("square")
+    this.board.$el.on("click", ".square", event => {
+      const square = event.currentTarget.dataset.square
       this.selectSquare(square)
     })
-    this.board.listenTo(d, "move:try", () => {
-      this.clearSelected()
-    })
-    this.board.listenTo(d, "move:make", () => {
-      this.clearSelected()
-    })
+    this.board.listenTo(d, "move:try", () => this.clearSelected())
+    this.board.listenTo(d, "move:make", () => this.clearSelected())
   }
 
   selectSquare(square) {

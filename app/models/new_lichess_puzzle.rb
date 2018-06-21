@@ -23,8 +23,9 @@ class NewLichessPuzzle < ActiveRecord::Base
   end
 
   def simplified_data
+    initial_move = data["game"]["treeParts"][-1]
     data["puzzle"].slice("fen", "lines").merge({
-      "initialMove": data["game"]["treeParts"][-1]["uci"],
+      "initialMove": initial_move.slice("san", "uci"),
       "id": id
     })
   end

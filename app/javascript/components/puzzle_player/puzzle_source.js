@@ -79,6 +79,14 @@ export default class PuzzleSource extends Backbone.Model {
     }
   }
 
+  getInitialMoveSan(move) {
+    if (move.san) {
+      return move.san
+    } else {
+      return move.uci ? uciToMove(move.uci) : uciToMove(move)
+    }
+  }
+
   loadPuzzleAtIndex(i) {
     const puzzle = this.puzzles[i]
     this.current = { puzzle }
@@ -86,9 +94,8 @@ export default class PuzzleSource extends Backbone.Model {
     this.current.state = _.clone(puzzle.lines)
     d.trigger("fen:set", puzzle.fen)
     setTimeout(() => {
-      const move = uciToMove(puzzle.initialMove)
+      const move = this.getInitialMoveSan(puzzle.initialMove)
       d.trigger("move:make", move)
-      d.trigger("move:highlight", move)
     }, 500)
   }
 
@@ -116,7 +123,7 @@ export default class PuzzleSource extends Backbone.Model {
       d.trigger("move:fail")
       return
     }
-    d.trigger("move:make", move)
+    d.trigger("move:make", move, false)
     d.trigger("move:success")
     if (attempt[response] === "win") {
       d.trigger("puzzles:next")
@@ -126,12 +133,10 @@ export default class PuzzleSource extends Backbone.Model {
       if (responseDelay > 0) {
         setTimeout(() => {
           d.trigger("move:make", responseMove)
-          d.trigger("move:highlight", responseMove)
           this.current.state = attempt[response]
         }, responseDelay)
       } else {
         d.trigger("move:make", responseMove)
-        d.trigger("move:highlight", responseMove)
         this.current.state = attempt[response]
       }
     }

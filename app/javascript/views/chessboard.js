@@ -30,12 +30,15 @@ export default class Chessboard extends Backbone.View {
       this.clearHighlights()
       this.render(fen)
     })
-    this.listenTo(d, "move:make", move => {
+    this.listenTo(d, "move:make", (move, highlight = true) => {
       this.clearHighlights()
-      let c = new Chess
+      const c = new Chess
       c.load(this.fen)
-      c.move(move)
+      const moveObj = c.move(move)
       d.trigger("fen:set", c.fen())
+      if (moveObj && highlight) {
+        d.trigger("move:highlight", moveObj)
+      }
     })
     this.listenTo(d, "board:flip", () => {
       this.flipBoard()
@@ -74,7 +77,7 @@ export default class Chessboard extends Backbone.View {
   }
 
   movePiece($piece, move) {
-    let c = new Chess(this.fen)
+    const c = new Chess(this.fen)
     if (($piece.hasClass("wp") || $piece.hasClass("bp")) &&
         (move.to[1] == "8" || move.to[1] == "1")) {
       d.trigger("move:promotion", { fen: this.fen, move: move })
@@ -91,7 +94,7 @@ export default class Chessboard extends Backbone.View {
   }
 
   flipBoard() {
-    this.$(".square").each((i,sq) => { $(sq).prependTo(this.$el) })
+    this.$(".square").each((i, sq) => $(sq).prependTo(this.$el))
   }
 
   clearHighlights() {
