@@ -33,6 +33,10 @@ class NewLichessPuzzle < ActiveRecord::Base
     initial_move["uci"]
   end
 
+  def rating
+    data["puzzle"]["rating"]
+  end
+
   def simplified_data
     data["puzzle"].slice("fen", "lines").merge({
       "initialMove": initial_move,

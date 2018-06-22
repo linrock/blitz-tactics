@@ -34,7 +34,7 @@ module InfinityLevelCreator
       num_levels_added = 0
       level = InfinityLevel.send difficulty
       ActiveRecord::Base.logger.silence do
-        send("#{difficulty}_puzzles").each do |puzzle|
+        send("#{difficulty}_puzzles").ascending_rating.each do |puzzle|
           if level.add_puzzle(puzzle)
             num_levels_added += 1
           end

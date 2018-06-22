@@ -38,6 +38,10 @@ module PuzzleQuery
       where("data -> 'puzzle' ->> 'color' = 'white'")
     end
 
+    scope :ascending_rating, -> do
+      order("(data -> 'puzzle' ->> 'rating')::int asc")
+    end
+
     def self.n_pieces_query
       "char_length(
          regexp_replace(
