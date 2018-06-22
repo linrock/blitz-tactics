@@ -15,6 +15,7 @@ gem 'devise', '~> 4.3'
 gem 'kaminari'
 
 # assets
+gem 'sass-rails', '~> 5.0'
 gem 'font-awesome-rails'
 gem 'sprockets', '>= 3.0.0'
 gem 'uglifier', '>= 1.3.0'
