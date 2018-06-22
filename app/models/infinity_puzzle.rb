@@ -6,5 +6,8 @@ class InfinityPuzzle < ActiveRecord::Base
 
   default_scope { order('index ASC') }
 
+  delegate :fen, :initial_move, :initial_move_uci,
+           to: :new_lichess_puzzle
+
   alias puzzle new_lichess_puzzle
 end

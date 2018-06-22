@@ -5,15 +5,15 @@ export function updateLevel(levelSlug, data) {
 }
 
 export function infinityPuzzleSolved(puzzle) {
-  return client.post(`/api/infinity`, { puzzle }).then(resp => resp.data)
+  return client.post(`/infinity/puzzles`, { puzzle }).then(resp => resp.data)
 }
 
 export function repetitionLevelAttempted(levelId, round) {
-  return client.post(`/api/levels/${levelId}/attempt`, { round })
+  return client.post(`/levels/${levelId}/attempt`, { round })
 }
 
 export function repetitionLevelCompleted(levelId) {
-  return client.post(`/api/levels/${levelId}/complete`).then(resp => resp.data)
+  return client.post(`/levels/${levelId}/complete`).then(resp => resp.data)
 }
 
 export function speedrunCompleted(time) {

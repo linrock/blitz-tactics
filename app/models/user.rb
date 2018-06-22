@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
     new_lichess_puzzles_after(
       latest_difficulty,
       last_solved_infinity_puzzle_id(latest_difficulty)
-    ).first
+    ).first || InfinityLevel.find_by(difficulty: latest_difficulty).last_puzzle
   end
 
   def num_infinity_puzzles_solved
