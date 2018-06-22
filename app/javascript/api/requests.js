@@ -8,11 +8,11 @@ export function infinityPuzzleSolved(puzzle) {
   return client.post(`/api/infinity`, { puzzle }).then(resp => resp.data)
 }
 
-export function precisionLevelAttempted(levelId, round) {
+export function repetitionLevelAttempted(levelId, round) {
   return client.post(`/api/levels/${levelId}/attempt`, { round })
 }
 
-export function precisionLevelCompleted(levelId) {
+export function repetitionLevelCompleted(levelId) {
   return client.post(`/api/levels/${levelId}/complete`).then(resp => resp.data)
 }
 

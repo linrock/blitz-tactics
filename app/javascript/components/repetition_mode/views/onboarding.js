@@ -1,4 +1,4 @@
-// onboarding message on first level of precision mode
+// onboarding message on first level of repetition mode
 
 import Backbone from 'backbone'
 

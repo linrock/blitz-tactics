@@ -1,4 +1,4 @@
-# levels in precision mode
+# levels in repetition mode
 
 class Level < ActiveRecord::Base
   has_many :level_attempts

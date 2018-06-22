@@ -5,8 +5,8 @@ import Backbone from 'backbone'
 
 import d from '../../../dispatcher'
 import {
-  precisionLevelAttempted,
-  precisionLevelCompleted
+  repetitionLevelAttempted,
+  repetitionLevelCompleted
 } from '../../../api/requests'
 
 export default class CompletionNotifier extends Backbone.Model {
@@ -24,14 +24,14 @@ export default class CompletionNotifier extends Backbone.Model {
     if (!levelId) {
       return
     }
-    precisionLevelAttempted(levelId, payload)
+    repetitionLevelAttempted(levelId, payload)
   }
 
   levelComplete(levelId) {
     if (!levelId) {
       return
     }
-    precisionLevelCompleted(levelId)
+    repetitionLevelCompleted(levelId)
       .then(data => d.trigger("level:unlocked", data.next.href))
   }
 }

@@ -1,5 +1,5 @@
 # Tracks the time it takes for a user to complete a single round of
-# a precision level
+# a repetition level
 
 class CompletedRound < ActiveRecord::Base
   belongs_to :level_attempt
