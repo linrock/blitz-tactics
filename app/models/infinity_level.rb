@@ -40,8 +40,12 @@ class InfinityLevel < ActiveRecord::Base
     })
   end
 
+  def last_puzzle
+    infinity_puzzles.last
+  end
+
   def last_puzzle_index
-    infinity_puzzles.last&.index || -1
+    last_puzzle&.index || -1
   end
 
   def num_puzzles

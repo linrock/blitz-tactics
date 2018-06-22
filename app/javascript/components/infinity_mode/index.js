@@ -16,6 +16,7 @@ export default class InfinityMode {
     new PuzzleStats
     new SetDifficulty
     new NoMoreLeft
+    this.listener = _.clone(Backbone.Events)
     this.listenToEvents()
     new PuzzlePlayer({
       shuffle: false,
@@ -26,21 +27,20 @@ export default class InfinityMode {
 
   listenToEvents() {
     const config = {}
-    const listener = _.clone(Backbone.Events)
-    listener.listenTo(d, `difficulty:selected`, difficulty => {
+    this.listener.listenTo(d, `difficulty:selected`, difficulty => {
       d.trigger(
         `source:changed`,
         `${apiPath}?difficulty=${difficulty}`
       )
       d.trigger("difficulty:set", difficulty)
     })
-    listener.listenTo(d, `config:init`, data => {
+    this.listener.listenTo(d, `config:init`, data => {
       config.difficulty = data.difficulty
       config.numSolved = data.num_solved
       d.trigger(`difficulty:set`, config.difficulty)
       d.trigger(`puzzles_solved:changed`, config.numSolved)
     })
-    listener.listenTo(d, `puzzle:solved`, puzzle => {
+    this.listener.listenTo(d, `puzzle:solved`, puzzle => {
       const puzzleData = {
         puzzle_id: puzzle.id,
         difficulty: config.difficulty
@@ -54,13 +54,12 @@ export default class InfinityMode {
         }
       })
     })
-    listener.listenTo(d, `puzzles:status`, status => {
+    this.listener.listenTo(d, `puzzles:status`, status => {
       const { i, n, lastPuzzleId } = status
       if (i + fetchThreshold > n) {
         d.trigger(
           `source:changed:add`,
           `${apiPath}?difficulty=${config.difficulty}&after_puzzle_id=${lastPuzzleId}`,
-          { append: true }
         )
       }
     })

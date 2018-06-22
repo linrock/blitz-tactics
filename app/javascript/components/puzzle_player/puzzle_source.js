@@ -46,7 +46,6 @@ export default class PuzzleSource extends Backbone.Model {
     this.listenTo(d, "source:changed", path => this.fetchPuzzles(path))
     this.listenTo(d, "source:changed:add", path => this.fetchAndAddPuzzles(path))
     this.listenTo(d, "puzzles:fetched", puzzles => {
-      console.log('puzzles were fetched')
       this.puzzles = []
       this.addPuzzles(puzzles)
       this.firstPuzzle()

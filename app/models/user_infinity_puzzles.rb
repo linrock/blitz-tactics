@@ -10,9 +10,13 @@ class UserInfinityPuzzles
   #
   def next_puzzle_set(difficulty = nil, new_lichess_puzzle_id = nil)
     target_difficulty = difficulty || current_difficulty
-    PuzzlesJson.new(
-      new_lichess_puzzles_after(target_difficulty, new_lichess_puzzle_id)
-    ).to_json.merge({
+    puzzles = new_lichess_puzzles_after(target_difficulty, new_lichess_puzzle_id)
+    if puzzles.length == 0
+      puzzles = [
+        InfinityLevel.find_by(difficulty: target_difficulty).last_puzzle.puzzle
+      ]
+    end
+    PuzzlesJson.new(puzzles).to_json.merge({
       difficulty: target_difficulty,
       num_solved: @user ? @user.num_infinity_puzzles_solved : nil
     })
@@ -26,10 +30,7 @@ class UserInfinityPuzzles
 
   def new_lichess_puzzles_after(difficulty, new_lichess_puzzle_id)
     if @user.present?
-      @user.new_lichess_puzzles_after(
-        difficulty,
-        new_lichess_puzzle_id
-      )
+      @user.new_lichess_puzzles_after(difficulty, new_lichess_puzzle_id)
     else
       InfinityLevel.find_by(difficulty: difficulty).new_lichess_puzzles_after(nil)
     end
