@@ -1,6 +1,7 @@
 // tells user of their progress in the current level
 
 import Backbone from 'backbone'
+
 import d from '../../../dispatcher'
 
 export default class Progress extends Backbone.View {
