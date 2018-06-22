@@ -1,4 +1,4 @@
-import PuzzlePlayer from '../puzzle_player'
+import PuzzlePlayer from '../../components/puzzle_player'
 import Background from './views/background'
 import LevelIndicator from './views/level_indicator'
 import Onboarding from './views/onboarding'

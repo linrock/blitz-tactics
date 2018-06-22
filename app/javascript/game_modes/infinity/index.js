@@ -1,7 +1,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import PuzzlePlayer from '../puzzle_player'
+import PuzzlePlayer from '../../components/puzzle_player'
 import NoMoreLeft from './views/no_more_left'
 import PuzzleStats from './views/puzzle_stats'
 import SetDifficulty from './views/set_difficulty'
