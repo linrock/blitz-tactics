@@ -84,7 +84,12 @@
       font-size: 15px;
       position: relative;
       top: -2px;
-      @include ellipsis(185px);
+      display: inline-block;
+      max-width: 185px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      word-wrap: normal;
     }
   }
 
