@@ -57,6 +57,10 @@ class User < ActiveRecord::Base
     Set.new(self.profile["levels_unlocked"]).count
   end
 
+  def highest_level_unlocked
+    Level.find_by(id: self.profile["levels_unlocked"].max)
+  end
+
   def unlocked_all_levels?
     num_repetition_levels_unlocked == Level.count
   end
