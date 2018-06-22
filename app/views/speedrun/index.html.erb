@@ -1,0 +1,26 @@
+<% content_for(:title) { "Speedrun mode" } %>
+
+<section class="speedrun-mode">
+  <div class="container">
+    <%= render partial: "interface/above_board" %>
+
+    <div class="board-container">
+      <div class="board-area">
+        <%= render partial: "interface/chessboard" %>
+        <%= render partial: "interface/piece_promotion_modal" %>
+      </div>
+
+      <aside class="speedrun-sidebar">
+        <div class="timer stopped">0:00.0</div>
+        <div class="speedrun-instructions">
+          Make the first move to start the timer
+        </div>
+        <div class="progress"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+  blitz.loggedIn = <%= current_user ? true : false %>;
+</script>

@@ -33,6 +33,10 @@ Rails.application.routes.draw do
   get '/infinity'              => 'infinity#index'
   get '/infinity/puzzles'      => 'infinity#puzzles'
 
+  # speedrun mode
+  get '/speedrun'              => 'speedrun#index'
+  get '/speedrun/puzzles'      => 'speedrun#puzzles'
+
   # repetition mode
   get '/level-:level_num'      => 'levels#show'
   get '/level-:level_num/edit' => 'levels#edit'

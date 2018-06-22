@@ -22,6 +22,22 @@
         </div>
       </div>
 
+      <div class="mode speedrun">
+        <h3><a href="/speedrun">Speedrun</a></h3>
+        <h4>
+          Solve a fixed sequence of puzzles as quickly as possible.
+        </h4>
+        <%= homepage_miniboard_link("/speedrun", {
+              fen: @level.first_puzzle.fen,
+              initial_move: @level.first_puzzle.initial_move_uci
+            }) %>
+        <div class="under-mini-board">
+          Best time: none
+        </div>
+      </div>
+    </div>
+
+    <div class="game-modes">
       <div class="mode accuracy">
         <h3><a href="<%= @level.path %>">Repetition</a></h3>
         <h4>
