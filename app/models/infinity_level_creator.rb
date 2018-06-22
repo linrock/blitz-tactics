@@ -22,6 +22,13 @@ module InfinityLevelCreator
       .vote_gt(50).attempts_gt(5000).white_to_move
   end
 
+  def count_puzzle_pools
+    puts "#{easy_puzzles.count} in easy pool"
+    puts "#{medium_puzzles.count} in medium pool"
+    puts "#{hard_puzzles.count} in hard pool"
+    puts "#{insane_puzzles.count} in insane pool"
+  end
+
   InfinityLevel::DIFFICULTIES.each do |difficulty|
     define_method "build_#{difficulty}_level!" do
       num_levels_added = 0

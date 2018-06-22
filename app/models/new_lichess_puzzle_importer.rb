@@ -1,8 +1,8 @@
 # imports NewLichessPuzzles
 
-module PuzzleImporter
+module NewLichessPuzzleImporter
 
-  def import_from_json_files
+  def import!
     existing_puzzle_ids = Set.new NewLichessPuzzle.pluck(:puzzle_id)
     new_puzzle_files = Dir.glob("data/new-lichess/*.json").select do |filename|
       !existing_puzzle_ids.include?(filename[/(\d+)/, 1].to_i)
