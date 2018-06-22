@@ -1,6 +1,5 @@
 // notifies the server about completed rounds and levels
 
-import $ from 'jquery'
 import Backbone from 'backbone'
 
 import d from '../../../dispatcher'
@@ -11,8 +10,10 @@ import {
 export default class CompletionNotifier extends Backbone.Model {
 
   initialize() {
-    this.listenTo(d, "speedrun:complete", () => {
-      speedrunCompleted().then(() => d.trigger("final:show"))
+    this.listenTo(d, "timer:stopped", elapsedTime => {
+      speedrunCompleted(elapsedTime).then(data => {
+        d.trigger("speedrun:complete", data)
+      })
     })
   }
 }

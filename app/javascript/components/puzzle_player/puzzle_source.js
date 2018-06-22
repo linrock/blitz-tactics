@@ -1,3 +1,5 @@
+// fetches puzzles from the server
+
 import _ from 'underscore'
 import Backbone from 'backbone'
 
