@@ -1,10 +1,12 @@
 import d from '../dispatcher'
 
+const wasmSupported = typeof WebAssembly === 'object' && WebAssembly.validate(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00))
+
 export default class StockfishEngine {
 
   constructor(options = {}) {
     this.multipv = options.multipv || 1
-    this.stockfish = new Worker('/assets/stockfish.js')
+    this.stockfish = new Worker(`/assets/stockfish${wasmSupported ? '.wasm' : ''}.js`)
     this.initStockfish()
   }
 
@@ -17,9 +19,7 @@ export default class StockfishEngine {
   }
 
   debugMessages() {
-    this.stockfish.addEventListener('message', (e) => {
-      console.log(e.data)
-    })
+    this.stockfish.addEventListener('message', e => console.log(e.data))
   }
 
   analyze(fen, options = {}) {
