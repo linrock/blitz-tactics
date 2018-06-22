@@ -3,7 +3,7 @@ import Backbone from 'backbone'
 
 import d from '../../../dispatcher'
 
-const comboDroppedIn = 7000
+const comboDroppedAfter = 7000
 const hintDelay = 750
 
 // Solution/hint that shows up after some time
@@ -46,13 +46,13 @@ export default class PuzzleHint extends Backbone.View {
     this.timeout = setTimeout(() => {
       d.trigger("move:too_slow")
       setTimeout(() => this.showHint(), hintDelay)
-    }, comboDroppedIn)
+    }, comboDroppedAfter)
   }
 
   showHint() {
-    let hints = []
-    _.each(_.keys(this.current.state), (move) => {
-      if (this.current.state[move] !== "retry") {
+    const hints = []
+    _.each(_.keys(this.current.boardState), move => {
+      if (this.current.boardState[move] !== "retry") {
         hints.push(move)
       }
     })

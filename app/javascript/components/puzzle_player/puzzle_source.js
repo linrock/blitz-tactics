@@ -87,7 +87,7 @@ export default class PuzzleSource extends Backbone.Model {
   loadPuzzleAtIndex(i) {
     const puzzle = this.puzzles[i]
     this.current = {
-      state: _.clone(puzzle.lines),
+      boardState: _.clone(puzzle.lines),
       puzzle,
     }
     d.trigger("puzzle:loaded", this.current)
@@ -107,7 +107,7 @@ export default class PuzzleSource extends Backbone.Model {
   }
 
   handleUserMove(move) {
-    const attempt = this.current.state[moveToUci(move)]
+    const attempt = this.current.boardState[moveToUci(move)]
     if (attempt === "win") {
       d.trigger("move:success")
       this.puzzleSolved()
@@ -129,7 +129,7 @@ export default class PuzzleSource extends Backbone.Model {
       const responseMove = uciToMove(response)
       setTimeout(() => {
         d.trigger("move:make", responseMove)
-        this.current.state = attempt[response]
+        this.current.boardState = attempt[response]
       }, responseDelay)
     }
   }
