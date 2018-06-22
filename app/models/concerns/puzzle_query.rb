@@ -6,6 +6,10 @@ module PuzzleQuery
   extend ActiveSupport::Concern
 
   included do
+    scope :rating_range, -> (min, max) do
+      rating_gt(min).rating_lte(max)
+    end
+
     scope :rating_gt, -> (min_rating) do
       where("(data -> 'puzzle' ->> 'rating')::int > ?", min_rating)
     end
