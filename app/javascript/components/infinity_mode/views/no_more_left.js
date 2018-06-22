@@ -8,20 +8,13 @@ export default class NoMoreLeft extends Backbone.View {
   }
 
   initialize() {
-    this.listenForDifficulty()
     this.listenTo(d, "puzzles:complete", () => {
       this.$el.removeClass("invisible")
-      this.stopListening(d, "difficulty:set")
-      this.listenToOnce(d, "difficulty:set", () => {
-        this.$el.addClass("invisible")
-        setTimeout(() => this.listenForDifficulty(), 1000)
-      })
-    })
-  }
-
-  listenForDifficulty() {
-    this.listenTo(d, "difficulty:set", difficulty => {
-      this.$el.find(".difficulty").text(difficulty)
+      setTimeout(() => {
+        this.listenToOnce(d, "difficulty:set", difficulty => {
+          this.$el.addClass("invisible")
+        })
+      }, 1000)
     })
   }
 }

@@ -1,4 +1,4 @@
-# levels in infinity mode
+# notifying server of status updates in infinity mode
 
 class Api::InfinityController < ApplicationController
   before_action :set_user

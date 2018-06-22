@@ -38,13 +38,20 @@ export default class PuzzleSource extends Backbone.Model {
     })
   }
 
+  fetchAndAddPuzzles(source) {
+    fetchPuzzles(source).then(data => d.trigger("puzzles:added", data.puzzles))
+  }
+
   listenToEvents() {
     this.listenTo(d, "source:changed", path => this.fetchPuzzles(path))
-    this.listenToOnce(d, "puzzles:fetched", puzzles => {
+    this.listenTo(d, "source:changed:add", path => this.fetchAndAddPuzzles(path))
+    this.listenTo(d, "puzzles:fetched", puzzles => {
+      console.log('puzzles were fetched')
+      this.puzzles = []
       this.addPuzzles(puzzles)
       this.firstPuzzle()
-      this.listenTo(d, "puzzles:fetched", puzzles => this.addPuzzles(puzzles))
     })
+    this.listenTo(d, "puzzles:added", puzzles => this.addPuzzles(puzzles))
     this.listenTo(d, "puzzles:next", () => this.nextPuzzle())
     this.listenTo(d, "move:try", move => this.tryUserMove(move))
   }
@@ -94,6 +101,10 @@ export default class PuzzleSource extends Backbone.Model {
 
   loadPuzzleAtIndex(i) {
     const puzzle = this.puzzles[i]
+    if (i === 0 && !puzzle) {
+      d.trigger("puzzles:complete")
+      return
+    }
     this.current = {
       boardState: _.clone(puzzle.lines),
       puzzle,

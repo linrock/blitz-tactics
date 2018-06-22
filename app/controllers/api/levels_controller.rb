@@ -1,4 +1,4 @@
-# levels in repetition mode
+# notifying server of status updates in infinity mode
 
 class Api::LevelsController < ApplicationController
   before_action :set_user

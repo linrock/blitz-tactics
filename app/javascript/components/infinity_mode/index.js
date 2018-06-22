@@ -58,8 +58,9 @@ export default class InfinityMode {
       const { i, n, lastPuzzleId } = status
       if (i + fetchThreshold > n) {
         d.trigger(
-          `source:changed`,
-          `${apiPath}?difficulty=${config.difficulty}&last_puzzle_id=${lastPuzzleId}`
+          `source:changed:add`,
+          `${apiPath}?difficulty=${config.difficulty}&after_puzzle_id=${lastPuzzleId}`,
+          { append: true }
         )
       }
     })
