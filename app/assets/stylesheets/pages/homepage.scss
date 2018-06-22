@@ -45,7 +45,16 @@
 
     .under-mini-board {
       margin-top: 30px;
-      opacity: 0.5;
+      color: rgba(250,250,250,0.5);
+
+      a {
+        color: rgba(250,250,250,0.7);
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 
