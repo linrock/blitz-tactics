@@ -29,7 +29,8 @@
           without mistakes to unlock the next level.
         </h4>
         <%= homepage_miniboard_link("/#{@level.slug}", {
-              fen: @level.first_puzzle_fen
+              fen: @level.first_puzzle.fen,
+              initial_move: @level.first_puzzle.initial_move_uci
             }) %>
         <div class="under-mini-board">
           <%= LevelDisplay.new(@level).display_name %>

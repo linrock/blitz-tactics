@@ -30,8 +30,8 @@ class Level < ActiveRecord::Base
     LichessPuzzle.find(puzzle_ids).index_by(&:id).values_at(*puzzle_ids)
   end
 
-  def first_puzzle_fen
-    puzzles.first.fen
+  def first_puzzle
+    puzzles.first
   end
 
   # TODO better import/export system

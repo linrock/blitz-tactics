@@ -26,6 +26,10 @@ class LichessPuzzle < ActiveRecord::Base
     data.dig("puzzle", "fen")
   end
 
+  def initial_move_uci
+    data.dig("puzzle", "initialMove")
+  end
+
   def rating
     data.dig("puzzle", "rating")
   end
