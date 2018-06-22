@@ -1,0 +1,34 @@
+//= require reset
+//= require_self
+//= require font-awesome
+//= require_tree .
+//= require_tree ../../javascript/components
+
+@import "_variables"
+
+html 
+  box-sizing border-box
+
+*, *:before, *:after 
+  box-sizing inherit
+
+body 
+  font-family $main-font
+  background #1f1f1f
+  color #fafafa
+  -webkit-font-smoothing antialiased
+
+button 
+  border none
+  outline none
+
+  &:hover 
+    cursor pointer
+
+.container 
+  margin 0 auto
+  width $main-width
+
+.invisible 
+  opacity 0
+  pointer-events none

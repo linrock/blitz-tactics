@@ -1,0 +1,61 @@
+@import "_variables"
+
+.main-header 
+  $main-header-height = 40px
+
+  height $main-header-height
+  background #121212
+  width 100%
+  overflow hidden
+
+  .logo 
+    color #6D6D6D
+    float left
+    font-size 12px
+    font-weight bold
+    font-family $combo-indicator-font
+    text-transform uppercase
+    line-height $main-header-height + 2px
+    letter-spacing 1.5px
+
+    &:hover 
+      color #ffe800
+    
+    i 
+      font-size 15px
+      margin-right 5px
+    
+    .large 
+      font-size 16px
+
+  a 
+    color #6D6D6D
+    text-decoration none
+    text-transform uppercase
+    font-size 11px
+    letter-spacing 0.5px
+    transition color 0.15s ease
+
+    &:hover 
+      color #e0e0e0
+
+  .link-left 
+    float left
+    margin-left 25px
+    line-height $main-header-height
+
+  .link-right 
+    float right
+    margin-right 3px
+    margin-left 25px
+    line-height $main-header-height
+
+  .icon 
+    font-size 15px
+
+  .sign-in 
+    font-weight bold
+    color rgba(255,255,255,0.75)
+
+  .user-name 
+    font-weight bold
