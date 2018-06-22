@@ -47,9 +47,6 @@ GEM
     bindex (0.5.0)
     bootsnap (1.3.0)
       msgpack (~> 1.0)
-    bourbon (5.0.0)
-      sass (~> 3.4)
-      thor (~> 0.19)
     builder (3.2.3)
     coderay (1.1.2)
     concurrent-ruby (1.0.5)
@@ -74,12 +71,6 @@ GEM
       activesupport (>= 4.2.0)
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
-    jquery-rails (4.3.3)
-      rails-dom-testing (>= 1, < 3)
-      railties (>= 4.2.0)
-      thor (>= 0.14, < 2.0)
-    jquery-ui-rails (6.0.1)
-      railties (>= 3.2.16)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -200,13 +191,10 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
-  bourbon
   dalli
   devise (~> 4.3)
   dotenv-rails
   font-awesome-rails
-  jquery-rails
-  jquery-ui-rails
   kaminari
   listen
   pg (~> 1.0)
