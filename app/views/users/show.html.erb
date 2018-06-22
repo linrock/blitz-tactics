@@ -2,16 +2,8 @@
 
 <div class="user-profile">
   <div class="container">
-    <h1 class="username <% if @user.unlocked_all_levels? %>max-level<% end %>">
-      <%= @user.username %>
-    </h1>
+    <h2 class="username"><%= @user.username %></h2>
 
-    <div class="highest-level">
-      <%= @user.num_repetition_levels_unlocked %> repetition levels completed
-    </div>
-
-    <div>
-      <%= @user.num_infinity_puzzles_solved %> Infinity puzzles solved
-    </div>
+    <%= render partial: "users/puzzle_stats" %>
   </div>
 </div>

@@ -2,19 +2,6 @@
 
 <div class="user-profile me">
   <div class="container">
-    <div class="description">
-      <% if current_user %>
-        <div class="current-user">
-          You are logged in as
-          <span class="username"><%= current_user.username %></span>
-        </div>
-      <% end %>
-    </div>
-
-    <div>
-      You have solved
-      <%= current_user.num_infinity_puzzles_solved %>
-      puzzles in Infinity Mode
-    </div>
+    <%= render partial: "users/puzzle_stats" %>
   </div>
 </div>

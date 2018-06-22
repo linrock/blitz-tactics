@@ -3,11 +3,11 @@
 .user-profile 
   margin 50px 0 80px
 
-  .username 
+  h2.username
     text-align center
     font-size 36px
     font-family $main-font
-    margin-bottom 18px
+    margin-bottom 60px
 
   .highest-level 
     text-align center
@@ -15,31 +15,31 @@
 
   .max-level 
     color #ffe800
-  
-  .level-list 
-    width 150px
-    margin 50px auto 0
 
-    .level-row 
-      width 150px
+  .stats
+    display flex
+    justify-content space-between
+    margin 0 auto
+    width 540px
 
-    .level 
-      width 100px
+    .game-mode-name
+      font-size 30px
+      text-align center
 
-    .round-attempt 
-      width 50px
+  .stats-row
+    display flex
+    padding 5px 0
 
-.user-profile.me 
-  h3 
-    font-size 24px
-    margin-bottom 48px
+    &.total
+      margin 30px 0
 
-  .description 
-    color rgba(255,255,255,0.8)
-    margin-bottom 35px
-    font-size 14px
-    line-height 24px
+    .label
+      opacity 0.6
+      width 160px
 
-    .current-user 
-      .username 
-        font-weight bold
+    .count
+      width 70px
+      text-align right
+
+  .repetition-stats
+    margin-left 105px

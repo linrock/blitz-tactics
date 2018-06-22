@@ -1,0 +1,25 @@
+<div class="stats">
+  <div class="infinity-stats">
+    <h3 class="game-mode-name">Infinity</h3>
+
+    <div class="stats-row total">
+      <div class="label">Puzzles solved</div>
+      <div class="count"><%= @user.num_infinity_puzzles_solved %></div>
+    </div>
+
+    <% @user.infinity_puzzles_solved_by_difficulty.each do |row| %>
+      <div class="stats-row">
+        <div class="label"><%= row[0].capitalize %></div>
+        <div class="count"><%= row[1] %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="repetition-stats">
+    <h3 class="game-mode-name">Repetition</h3>
+    <div class="stats-row total">
+      <div class="label">Levels unlocked</div>
+      <div class="count"><%= @user.num_repetition_levels_unlocked %></div>
+    </div>
+  </div>
+</div>

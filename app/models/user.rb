@@ -44,6 +44,14 @@ class User < ActiveRecord::Base
     solved_infinity_puzzles.count
   end
 
+  def infinity_puzzles_solved_by_difficulty
+    InfinityLevel::DIFFICULTIES.map do |difficulty|
+      [
+        difficulty,
+        solved_infinity_puzzles.where(difficulty: difficulty).count
+      ]
+    end
+  end
   # repetition mode methods
 
   def unlock_level(level_id)

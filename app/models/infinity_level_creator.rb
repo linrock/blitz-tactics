@@ -23,10 +23,9 @@ module InfinityLevelCreator
   end
 
   def count_puzzle_pools
-    puts "#{easy_puzzles.count} in easy pool"
-    puts "#{medium_puzzles.count} in medium pool"
-    puts "#{hard_puzzles.count} in hard pool"
-    puts "#{insane_puzzles.count} in insane pool"
+    InfinityLevel::DIFFICULTIES.each do |difficulty|
+      puts "#{send("#{difficulty}_puzzles").count} in #{difficulty} pool"
+    end
   end
 
   InfinityLevel::DIFFICULTIES.each do |difficulty|
