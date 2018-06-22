@@ -24,7 +24,7 @@
       <% @levels.each do |level| %>
         <li class="level-row">
           <% if @unlocked.nil? || @unlocked.include?(level.id) %>
-            <a href="/<%= level.slug %>" class="level">
+            <a href="<%= level.path %>" class="level">
               <%= level.number %>
               <% if level.name %>
                 <span class="level-name">

@@ -24,7 +24,7 @@
 <div class="under-board">
   <label class="level-name">
     <% if @level %>
-      <%= LevelDisplay.new(@level).display_name %>
+      <%= @level.display_name %>
     <% elsif (title = local_assigns[:title]) %>
       <%= title %>
     <% end %>
@@ -49,7 +49,7 @@
           <a class="blue-button" href="<%= https_registration_url %>">
             Sign up
           </a>
-          <a class="blue-button" href="/<%= next_level.slug %>">
+          <a class="blue-button" href="<%= next_level.path %>">
             <%= next_level.number %> <%= fa_icon "angle-double-right" %>
           </a>
         </div>
@@ -58,7 +58,7 @@
       <div class="next-stage invisible container">
         <div class="left">You've unlocked the next level!</div>
         <div class="right">
-          <a class="blue-button" href="/<%= next_level.slug %>">
+          <a class="blue-button" href="<%= next_level.path %>">
             <%= next_level.number %> <%= fa_icon "angle-double-right" %>
           </a>
         </div>

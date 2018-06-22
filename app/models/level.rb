@@ -13,6 +13,8 @@ class Level < ActiveRecord::Base
 
   scope :by_number, -> (number) { find_by(slug: "level-#{number}") }
 
+  delegate :path, :display_name, to: :level_display
+
   def first_level?
     slug == "level-1"
   end
@@ -45,6 +47,10 @@ class Level < ActiveRecord::Base
   end
 
   private
+
+  def level_display
+    LevelDisplay.new(self)
+  end
 
   def set_secret_key
     self.secret_key ||= SecureRandom.hex(8)

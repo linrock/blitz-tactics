@@ -23,17 +23,17 @@
       </div>
 
       <div class="mode accuracy">
-        <h3><a href="/<%= @level.slug %>">Repetition</a></h3>
+        <h3><a href="<%= @level.path %>">Repetition</a></h3>
         <h4>
           Use repetition to learn. Quickly solve puzzles
           without mistakes to unlock the next level.
         </h4>
-        <%= homepage_miniboard_link("/#{@level.slug}", {
+        <%= homepage_miniboard_link(@level.path, {
               fen: @level.first_puzzle.fen,
               initial_move: @level.first_puzzle.initial_move_uci
             }) %>
         <div class="under-mini-board">
-          <%= LevelDisplay.new(@level).display_name %>
+          <%= @level.display_name %>
         </div>
       </div>
     </div>

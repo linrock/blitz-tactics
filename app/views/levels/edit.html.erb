@@ -1,11 +1,9 @@
 <% content_for(:title) { "#{@level.name} editor" } %>
 
 <div class="level-editor container" data-slug="<%= @level.slug %>">
-
   <header class="level-info">
-
     <div class="level-name">
-      <a href="/<%= @level.slug %>" target="_blank">
+      <a href="<%= @level.path %>" target="_blank">
         <%= @level.number %>
       </a>
 
@@ -14,19 +12,14 @@
       <form class="update-level-name" data-remote="true">
         <input type="text" value="<%= @level.name %>" placeholder="no name">
       </form>
-
     </div>
 
     <form class="add-level" data-remote="true">
       <input type="text" placeholder="Add puzzle #" class="add-level-id">
     </form>
-
   </header>
 
   <div class="boards">
-    <%= render :partial    => "puzzles/mini_view",
-               :collection => @level.puzzles,
-               :as         => :puzzle %>
+    <%= render partial: "puzzles/mini_view", collection: @level.puzzles, as: :puzzle %>
   </div>
-
 </div>
