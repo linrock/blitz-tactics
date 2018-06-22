@@ -13,15 +13,17 @@ export default class MiniChessboard extends Backbone.View {
   initialize(options = {}) {
     this.pieces = new Pieces(this)
     if (options.fen) {
-      let fen = options.fen
+      const fen = options.fen
+      this.render(fen)
       if (options.initialMove) {
         const c = new Chess(fen)
         const { from, to } = c.move(uciToMove(options.initialMove))
-        this.highlightSquare(from, "#fffcdd")
-        this.highlightSquare(to, "#fff79b")
-        fen = c.fen()
+        setTimeout(() => {
+          this.highlightSquare(from, "#fffcdd")
+          this.highlightSquare(to, "#fff79b")
+          this.render(c.fen())
+        }, 1000)
       }
-      this.render(fen)
     }
   }
 
