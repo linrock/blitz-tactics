@@ -43,10 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // initialize all mini chessboards
   document.querySelectorAll('.mini-chessboard').forEach(el => {
-    let { fen, options } = el.dataset
+    let { fen, initialMove, options } = el.dataset
     if (options) {
       options = JSON.parse(options)
     }
-    new MiniChessboard({ el, fen, ...options })
+    new MiniChessboard({ el, fen, initialMove, ...options })
   })
 })

@@ -25,13 +25,12 @@ module MiniboardHelper
   end
 
   # homepage miniboards are never rotated
-  def linked_miniboard_path(fen, path)
-    options = {
-      fen: fen,
+  def homepage_miniboard_link(path, options)
+    locals = options.merge({
       flip: false,
       path: path,
-    }
-    render partial: "snippets/miniboard_link", locals: options
+    })
+    render partial: "snippets/miniboard_link", locals: locals
   end
 
   # for static routes defined in position_routes.txt

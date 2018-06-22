@@ -1,10 +1,10 @@
 <% fen = local_assigns[:fen] %>
+<% initial_move = local_assigns[:initial_move] %>
 <% flip = local_assigns[:flip] || false %>
-<% nonce = (rand * 1000000).to_i %>
 
 <div class="mini-chessboard"
-     data-position="<%= nonce %>"
-     data-fen="<%= fen %>">
+     data-fen="<%= fen %>"
+     data-initial-move="<%= initial_move %>">
   <% polarity = %w( light dark ).cycle %>
   <% rows = (1..8).to_a.reverse %>
   <% cols = ('a'..'h').to_a %>

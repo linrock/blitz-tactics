@@ -15,10 +15,10 @@ export default class MiniChessboard extends Backbone.View {
     if (options.fen) {
       let fen = options.fen
       if (options.initialMove) {
-        let c = new Chess(fen)
-        let move = c.move(uciToMove(options.initialMove))
-        this.highlightSquare(move.from, "#fffcdd")
-        this.highlightSquare(move.to, "#fff79b")
+        const c = new Chess(fen)
+        const { from, to } = c.move(uciToMove(options.initialMove))
+        this.highlightSquare(from, "#fffcdd")
+        this.highlightSquare(to, "#fff79b")
         fen = c.fen()
       }
       this.render(fen)
@@ -33,8 +33,8 @@ export default class MiniChessboard extends Backbone.View {
   }
 
   renderFen(fen) {
-    let columns = ['a','b','c','d','e','f','g','h']
-    let position = new Chess(fen)
+    const columns = ['a','b','c','d','e','f','g','h']
+    const position = new Chess(fen)
     this.pieces.reset()
     for (let row = 8; row > 0; row--) {
       for (let j = 0; j < 8; j++) {
