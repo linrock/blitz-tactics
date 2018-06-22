@@ -1,9 +1,7 @@
 <% content_for(:title) { "Scoreboard" } %>
 
 <div class="container">
-
   <div class="scoreboard">
-
     <h2>Scoreboard</h2>
 
     <div class="scores">
@@ -12,11 +10,9 @@
           <div class="username">
             <a href="/<%= user.username %>"><%= user.username %></a>
           </div>
-          <div class="max-level"><%= user.highest_level_unlocked %></div>
+          <div class="max-level"><%= user.num_repetition_levels_unlocked %></div>
         </div>
       <% end %>
     </div>
-
   </div>
-
 </div>

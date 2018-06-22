@@ -1,3 +1,5 @@
+# methods only used when rendering level information
+
 class LevelDisplay
 
   def initialize(level)

@@ -2,27 +2,16 @@
 
 <div class="user-profile">
   <div class="container">
-
     <h1 class="username <% if @user.unlocked_all_levels? %>max-level<% end %>">
       <%= @user.username %>
     </h1>
 
     <div class="highest-level">
-      Level <%= @user.highest_level_unlocked %>
+      <%= @user.num_repetition_levels_unlocked %> repetition levels completed
     </div>
 
-    <ul class="level-list">
-      <% @level_numbers.each do |level_number| %>
-        <li class="level-row">
-          <span class="level">Level <%= level_number %></span>
-          <span class="round-attempt">
-            <% if (attempt = @attempts[level_number]&.first) %>
-              <% fastest_round = attempt.completed_rounds.sort_by(&:time_elapsed).first %>
-              <%= fastest_round.formatted_time_spent if fastest_round.present? %>
-            <% end %>
-          </span>
-        </li>
-      <% end %>
-    </ul>
+    <div>
+      <%= @user.num_infinity_puzzles_solved %> Infinity puzzles solved
+    </div>
   </div>
 </div>

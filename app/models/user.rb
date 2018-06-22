@@ -53,20 +53,12 @@ class User < ActiveRecord::Base
     self.save!
   end
 
-  def unlocked_levels
-    Set.new(self.profile["levels_unlocked"])
-  end
-
-  def highest_level_unlocked
-    Level.find_by(id: self.profile["levels_unlocked"].max)
-  end
-
-  def unlocked_sequential_levels?
-    unlocked_levels.size == highest_level_unlocked
+  def num_repetition_levels_unlocked
+    Set.new(self.profile["levels_unlocked"]).count
   end
 
   def unlocked_all_levels?
-    highest_level_unlocked == 65
+    num_repetition_levels_unlocked == Level.count
   end
 
   def round_times_for_level(level_id)
