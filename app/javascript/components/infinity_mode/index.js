@@ -8,6 +8,9 @@ import SetDifficulty from './views/set_difficulty'
 import d from '../../dispatcher'
 import { infinityPuzzleSolved } from '../../api/requests'
 
+const apiPath = `/infinity/puzzles`
+const fetchThreshold = 5             // fetch more when this many puzzles remain
+
 export default class InfinityMode {
   constructor() {
     new PuzzleStats
@@ -17,7 +20,7 @@ export default class InfinityMode {
     new PuzzlePlayer({
       shuffle: false,
       loopPuzzles: false,
-      source: `/infinity.json`,
+      source: apiPath,
     })
   }
 
@@ -27,7 +30,7 @@ export default class InfinityMode {
     listener.listenTo(d, `difficulty:selected`, difficulty => {
       d.trigger(
         `source:changed`,
-        `/infinity.json?difficulty=${difficulty}`
+        `${apiPath}?difficulty=${difficulty}`
       )
       d.trigger("difficulty:set", difficulty)
     })
@@ -50,6 +53,15 @@ export default class InfinityMode {
           d.trigger(`puzzles_solved:changed`, config.numSolved)
         }
       })
+    })
+    listener.listenTo(d, `puzzles:status`, status => {
+      const { i, n, lastPuzzleId } = status
+      if (i + fetchThreshold > n) {
+        d.trigger(
+          `source:changed`,
+          `${apiPath}?difficulty=${config.difficulty}&last_puzzle_id=${lastPuzzleId}`
+        )
+      }
     })
   }
 }

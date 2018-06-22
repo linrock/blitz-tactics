@@ -23,6 +23,7 @@ export default class PuzzleSource extends Backbone.Model {
   initialize(options = {}) {
     this.i = 0
     this.current = {}
+    this.puzzles = []
     this.started = false
     this.shuffle = options.shuffle
     this.loopPuzzles = options.loopPuzzles
@@ -32,15 +33,18 @@ export default class PuzzleSource extends Backbone.Model {
 
   fetchPuzzles(source) {
     fetchPuzzles(source).then(data => {
-      this.puzzles = data.puzzles
-      d.trigger("puzzles:fetched", this.puzzles)
+      d.trigger("puzzles:fetched", data.puzzles)
       d.trigger("config:init", data)
     })
   }
 
   listenToEvents() {
     this.listenTo(d, "source:changed", path => this.fetchPuzzles(path))
-    this.listenTo(d, "puzzles:fetched", () => this.firstPuzzle())
+    this.listenToOnce(d, "puzzles:fetched", puzzles => {
+      this.addPuzzles(puzzles)
+      this.firstPuzzle()
+      this.listenTo(d, "puzzles:fetched", puzzles => this.addPuzzles(puzzles))
+    })
     this.listenTo(d, "puzzles:next", () => this.nextPuzzle())
     this.listenTo(d, "move:try", move => this.tryUserMove(move))
   }
@@ -51,6 +55,10 @@ export default class PuzzleSource extends Backbone.Model {
       shuffled = shuffle(this.puzzles)
     }
     this.puzzles = shuffled
+  }
+
+  addPuzzles(puzzles) {
+    this.puzzles = this.puzzles.concat(puzzles)
   }
 
   firstPuzzle() {
@@ -135,7 +143,13 @@ export default class PuzzleSource extends Backbone.Model {
   }
 
   puzzleSolved() {
+    const n = this.puzzles.length
     d.trigger("puzzle:solved", this.current.puzzle)
+    d.trigger("puzzles:status", {
+      i: this.i,
+      lastPuzzleId: this.puzzles[n - 1].id,
+      n,
+    })
     d.trigger("puzzles:next")
   }
 }

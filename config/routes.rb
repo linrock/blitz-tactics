@@ -26,10 +26,14 @@ Rails.application.routes.draw do
 
   get '/levels'                => 'levels#index'
   get '/scoreboard'            => 'scoreboard#index'
-  get '/infinity'              => 'infinity#index'
 
   resources :positions, :only => [:show]
 
+  # infinity mode
+  get '/infinity'              => 'infinity#index'
+  get '/infinity/puzzles'      => 'infinity#puzzles'
+
+  # repetition mode
   get '/level-:level_num'      => 'levels#show'
   get '/level-:level_num/edit' => 'levels#edit'
   put '/level-:level_num'      => 'levels#update'

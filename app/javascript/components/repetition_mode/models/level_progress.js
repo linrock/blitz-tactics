@@ -1,6 +1,5 @@
 // Tracks progress within the level and whether the next level is unlocked
 //
-import _ from 'underscore'
 import Backbone from 'backbone'
 
 import d from '../../../dispatcher'
@@ -15,9 +14,7 @@ export default class LevelProgress extends Backbone.Model {
   }
 
   listenForEvents() {
-    this.listenTo(d, "puzzles:fetched", (puzzles) => {
-      this.n = puzzles.length
-    })
+    this.listenTo(d, "puzzles:fetched", puzzles => this.n = puzzles.length)
     this.listenTo(d, "puzzles:next", () => {
       this.puzzleCounter += 1
       if (!this.unlocked && this.nextStageUnlocked()) {
@@ -25,8 +22,8 @@ export default class LevelProgress extends Backbone.Model {
         d.trigger("level:complete", blitz.levelId)
       }
     })
-    this.listenTo(d, "move:fail", _.bind(this.resetProgress, this))
-    this.listenTo(d, "move:too_slow", _.bind(this.resetProgress, this))
+    this.listenTo(d, "move:fail", () => this.resetProgress())
+    this.listenTo(d, "move:too_slow", () => this.resetProgress())
   }
 
   nextStageUnlocked() {
