@@ -20,6 +20,7 @@ gem 'font-awesome-rails'
 gem 'webpacker'
 gem 'sprockets', '>= 3.0.0'
 gem 'uglifier', '>= 1.3.0'
+gem 'stylus', '~> 1.0.2'
 
 group :development do
   gem 'listen'
