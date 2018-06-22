@@ -1,6 +1,5 @@
 @import "_variables";
 
-
 .user-profile {
   margin: 50px 0 80px;
 
@@ -14,7 +13,6 @@
   .highest-level {
     text-align: center;
     color: rgba(255,255,255,0.7);
-
   }
 
   .max-level {
@@ -35,6 +33,26 @@
 
     .round-attempt {
       width: 50px;
+    }
+  }
+}
+
+.user-profile.me {
+  h3 {
+    font-size: 24px;
+    margin-bottom: 48px;
+  }
+
+  .description {
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 35px;
+    font-size: 14px;
+    line-height: 24px;
+
+    .current-user {
+      .username {
+        font-weight: bold;
+      }
     }
   }
 }

@@ -6,5 +6,9 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:username])
     @attempts = @user&.level_attempts&.group_by(&:level_id) || {}
     @level_numbers = @user.unlocked_levels
+    if @user == current_user
+      render "users/me"
+      return
+    end
   end
 end

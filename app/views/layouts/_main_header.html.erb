@@ -6,7 +6,7 @@
     </a>
 
     <% if current_user %>
-      <a href="/levels" class="link-right user-name">
+      <a href="/<%= current_user.username %>" class="link-right user-name">
         <%= current_user.username %>
       </a>
     <% else %>
