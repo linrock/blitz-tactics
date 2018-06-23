@@ -1,0 +1,73 @@
+@media (max-aspect-ratio: 11/16)
+  .low-priority
+    display none
+
+  .container
+    width 100vw
+    padding 0
+
+  .above-board, .under-board
+    width 100vw !important
+
+  .board-container
+    display block !important
+
+  .board-area
+    width 100vw !important
+    height 100vw !important
+
+    .chessboard
+      width 100% !important
+      height 100% !important
+
+  .infinity-mode
+    .infinity-sidebar
+      width 100vw
+      margin 0 !important
+      padding 20px
+
+      .sidebar-label
+        margin-right 10px
+        margin-bottom 0
+        width 180px
+
+      .difficulties
+        display flex
+        align-items center
+
+        [data-difficulty]
+          padding 5px 20px 5px 0
+
+          &:last-child
+            padding-right 0
+
+      .stats
+        display flex
+        align-items center
+        margin-top 0
+        margin-left auto
+
+      .no-more-left
+        position absolute
+
+  .speedrun-mode
+    .container
+      display block !important
+
+    .speedrun-complete
+      width 100% !important
+
+    .speedrun-sidebar
+      margin-top 0 !important
+      margin-left 0 !important
+      display flex !important
+      justify-content space-evenly
+      padding 20px 0
+
+      .progress
+        margin-top 0
+        text-align rigiht
+
+      .personal-best
+        margin-top 0 !important
+
