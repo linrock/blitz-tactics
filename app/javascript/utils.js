@@ -49,10 +49,18 @@ const getConfig = param => {
   return query;
 }
 
+const formattedTime = milliseconds => {
+  const centisecondsStr = ("" + milliseconds % 1000)[0]
+  const seconds = ~~( milliseconds / 1000 )
+  const minutes = ~~( seconds / 60 )
+  return `${minutes}:${("0" + seconds).slice(-2)}.${centisecondsStr}`
+}
+
 export {
   uciToMove,
   moveToUci,
   shuffle,
   getQueryParam,
   getConfig,
+  formattedTime,
 }

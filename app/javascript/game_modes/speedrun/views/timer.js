@@ -2,6 +2,7 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 
 import d from '../../../dispatcher'
+import { formattedTime } from '../../../utils'
 
 const updateInterval = 33
 
@@ -27,17 +28,6 @@ export default class Timer extends Backbone.View {
     return Date.now() - this.startTime
   }
 
-  formattedTime(milliseconds) {
-    const centisecondsStr = ("" + milliseconds % 1000)[0]
-    const seconds = ~~( milliseconds / 1000 )
-    const minutes = ~~( seconds / 60 )
-    return `${minutes}:${("0" + seconds).slice(-2)}.${centisecondsStr}`
-  }
-
-  formattedElapsedTime() {
-    return this.formattedTime(this.elapsedTimeMilliseconds())
-  }
-
   startTimer() {
     this.$el.removeClass("stopped")
     this.startTime = Date.now()
@@ -51,7 +41,7 @@ export default class Timer extends Backbone.View {
   }
 
   displayElapsedTime() {
-    this.$el.text(this.formattedElapsedTime())
+    this.$el.text(formattedTime(this.elapsedTimeMilliseconds()))
   }
 
   notifyCompletion() {

@@ -2,7 +2,7 @@ import PuzzlePlayer from '../../components/puzzle_player'
 import Instructions from './views/instructions'
 import Timer from './views/timer'
 import Progress from './views/progress'
-import AboveBoard from './views/above_board'
+import SpeedrunComplete from './views/speedrun_complete'
 import { speedrunCompleted } from '../../api/requests'
 import Listener from '../../listener'
 import d from '../../dispatcher'
@@ -10,9 +10,9 @@ import d from '../../dispatcher'
 export default class Speedrun {
   constructor() {
     new Instructions
-    new AboveBoard
     new Timer
     new Progress
+    new SpeedrunComplete
 
     new Listener({
       "timer:stopped": elapsedTimeMs => {
