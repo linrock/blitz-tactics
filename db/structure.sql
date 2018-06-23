@@ -411,6 +411,38 @@ ALTER SEQUENCE public.speedrun_levels_id_seq OWNED BY public.speedrun_levels.id;
 
 
 --
+-- Name: speedrun_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.speedrun_puzzles (
+    id bigint NOT NULL,
+    speedrun_level_id integer NOT NULL,
+    new_lichess_puzzle_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: speedrun_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.speedrun_puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: speedrun_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.speedrun_puzzles_id_seq OWNED BY public.speedrun_puzzles.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -530,6 +562,13 @@ ALTER TABLE ONLY public.speedrun_levels ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
+-- Name: speedrun_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.speedrun_puzzles ALTER COLUMN id SET DEFAULT nextval('public.speedrun_puzzles_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -641,6 +680,14 @@ ALTER TABLE ONLY public.speedrun_levels
 
 
 --
+-- Name: speedrun_puzzles speedrun_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.speedrun_puzzles
+    ADD CONSTRAINT speedrun_puzzles_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -740,6 +787,13 @@ CREATE INDEX index_solved_infinity_puzzles_on_user_id_and_updated_at ON public.s
 
 
 --
+-- Name: index_speedrun_puzzles_on_speedrun_level_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_speedrun_puzzles_on_speedrun_level_id ON public.speedrun_puzzles USING btree (speedrun_level_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -782,6 +836,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180620084825'),
 ('20180621081826'),
 ('20180623113358'),
-('20180623114045');
+('20180623114045'),
+('20180623125613');
 
 
