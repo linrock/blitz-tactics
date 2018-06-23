@@ -4,25 +4,67 @@ import LevelIndicator from './views/level_indicator'
 import Onboarding from './views/onboarding'
 import ProgressBar from './views/progress_bar'
 import Timer from './views/timer'
-
-import LevelProgress from './models/level_progress'
-import CompletionNotifier from './models/completion_notifier'
+import LevelStatus from './models/level_status'
+import {
+  repetitionLevelAttempted,
+  repetitionLevelCompleted
+} from '../../api/requests'
+import Listener from '../../listener'
+import d from '../../dispatcher'
 
 export default class PrecisionMode {
   constructor() {
-    // views
-    new PuzzlePlayer({
-      shuffle: true,
-      loopPuzzles: true
-    })
     new Background
     new LevelIndicator
     new Onboarding
     new ProgressBar
     new Timer
 
-    // models
-    new LevelProgress
-    new CompletionNotifier
+    this.level = new LevelStatus()
+    this.listenForEvents()
+
+    new PuzzlePlayer({
+      shuffle: true,
+      loopPuzzles: true
+    })
+  }
+
+  listenForEvents() {
+    new Listener({
+      // level and round completion events
+      'round:complete': (levelId, payload) => {
+        if (levelId) {
+          repetitionLevelAttempted(levelId, payload)
+        }
+      },
+
+      'level:complete': levelId => {
+        repetitionLevelCompleted(levelId)
+          .then(data => d.trigger("level:unlocked", data.next.href))
+      },
+
+      // level progress events
+      'puzzles:fetched': puzzles => {
+        this.level.setNumPuzzles(puzzles.length)
+      },
+
+      'puzzles:next': () => {
+        this.level.nextPuzzle()
+        d.trigger("progress:update", this.level.getProgress())
+        if (this.level.nextLevelUnlocked()) {
+          d.trigger('level:complete', blitz.levelId)
+        }
+      },
+
+      'move:fail': () => {
+        this.level.resetProgress()
+        d.trigger('progress:update', 0)
+      },
+
+      'move:too_slow': () => {
+        this.level.resetProgress()
+        d.trigger('progress:update', 0)
+      },
+    })
   }
 }

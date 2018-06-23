@@ -36,7 +36,6 @@ export default class InfinityMode {
       },
 
       'config:init': data => {
-        console.dir(data)
         this.config.difficulty = data.difficulty
         this.config.numSolved = data.num_solved
         d.trigger(`difficulty:set`, this.config.difficulty)
