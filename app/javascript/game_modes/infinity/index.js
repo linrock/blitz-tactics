@@ -16,8 +16,10 @@ export default class InfinityMode {
     new PuzzleStats
     new SetDifficulty
     new NoMoreLeft
+
     this.listener = _.clone(Backbone.Events)
     this.listenToEvents()
+
     new PuzzlePlayer({
       shuffle: false,
       loopPuzzles: false,

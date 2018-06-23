@@ -1,26 +1,36 @@
+import _ from 'underscore'
+import Backbone from 'backbone'
+
 import PuzzlePlayer from '../../components/puzzle_player'
 import Instructions from './views/instructions'
 import Timer from './views/timer'
 import Progress from './views/progress'
-import SpeerunComplete from './views/speedrun_complete'
-// import Background from './views/background'
-
-import CompletionNotifier from './models/completion_notifier'
+import AboveBoard from './views/above_board'
+import { speedrunCompleted } from '../../api/requests'
+import d from '../../dispatcher'
 
 export default class Speedrun {
   constructor() {
+    new Instructions
+    new AboveBoard
+    new Timer
+    new Progress
+
+    this.listener = _.clone(Backbone.Events)
+    this.listenToEvents()
+
     new PuzzlePlayer({
       shuffle: false,
       loopPuzzles: false,
       source: `/speedrun/puzzles`
     })
-    new Instructions
-    // new Background
-    new Timer
-    new Progress
-    new SpeedrunComplete
+  }
 
-    // models
-    new CompletionNotifier
+  listenToEvents() {
+    this.listener.listenTo(d, "timer:stopped", elapsedTimeMs => {
+      speedrunCompleted(elapsedTimeMs).then(data => {
+        d.trigger("speedrun:complete", data)
+      })
+    })
   }
 }

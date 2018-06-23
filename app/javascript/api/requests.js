@@ -17,7 +17,7 @@ export function repetitionLevelCompleted(levelId) {
 }
 
 export function speedrunCompleted(time) {
-  return client.post(`/api/speedrun`, time).then(resp => resp.data)
+  return client.post(`/speedrun`, time).then(resp => resp.data)
 }
 
 export function fetchPuzzles(source) {

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   # speedrun mode
   get '/speedrun'              => 'speedrun#index'
   get '/speedrun/puzzles'      => 'speedrun#puzzles'
+  post '/speedrun'             => 'speedrun#complete'
 
   # repetition mode
   get '/level-:level_num'      => 'levels#show'
@@ -22,13 +23,13 @@ Rails.application.routes.draw do
   get '/positions'             => 'static#positions'
   get '/position'              => 'static#position'
 
-  get '/about'                 => 'static#about'
+  # misc routes
   get '/scoreboard'            => 'scoreboard#index'
   get '/levels'                => 'levels#index'
 
   # static routes
+  get '/about'                 => 'static#about'
   get '/pawn-endgames'         => 'static#pawn_endgames'
-  # get '/rook-endgames'         => 'static#rook_endgames'
 
   static_routes = StaticRoutes.new
   static_routes.route_map!

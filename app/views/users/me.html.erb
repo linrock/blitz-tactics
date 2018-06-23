@@ -2,6 +2,10 @@
 
 <div class="user-profile me">
   <div class="container">
+    <h2 class="username"><%= @user.username %></h2>
+    <input type="text" value="<%= @user.tagline %>"
+           placeholder="Write something about yourself"/>
+
     <%= render partial: "users/puzzle_stats" %>
   </div>
 </div>

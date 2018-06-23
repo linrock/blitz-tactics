@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
 
   validate :validate_username
 
+  def tagline
+    nil
+  end
+
   # infinity puzzle methods
 
   def latest_difficulty

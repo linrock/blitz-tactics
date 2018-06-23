@@ -1,3 +1,5 @@
+@import "_variables"
+
 .speedrun-mode
   $board-size = 500px
 
@@ -6,6 +8,13 @@
   .above-board
     width $board-size
     margin 0
+
+    .speedrun-complete
+      padding-top 40px
+      font-size 30px
+      font-family $combo-indicator-font
+      letter-spacing 2.5px
+      text-align center
 
   .board-container
     display flex
@@ -23,9 +32,13 @@
 
     .timer
       font-size 40px
+      transition all 0.1s ease
 
       &.stopped
         opacity 0.3
+
+      &.complete
+        color #ffff00
 
     .speedrun-instructions
       font-size 17px

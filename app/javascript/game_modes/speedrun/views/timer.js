@@ -40,25 +40,22 @@ export default class Timer extends Backbone.View {
 
   startTimer() {
     this.$el.removeClass("stopped")
-    let lastElapsed
     this.startTime = Date.now()
-    this.timerInterval = setInterval(() => {
-      let elapsed = this.formattedElapsedTime()
-      if (elapsed !== lastElapsed) {
-        lastElapsed = elapsed
-        this.$el.text(elapsed)
-      }
-    }, updateInterval)
+    this.timerInterval = setInterval(() => this.displayElapsedTime(), updateInterval)
   }
 
   stopTimer() {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval)
-      this.timerInterval = false
-    }
+    this.$el.addClass("complete")
+    clearInterval(this.timerInterval)
+    this.displayElapsedTime()
+  }
+
+  displayElapsedTime() {
+    this.$el.text(this.formattedElapsedTime())
   }
 
   notifyCompletion() {
-    d.trigger("timer:stopped", this.elapsedTime())
+    this.stopTimer()
+    d.trigger("timer:stopped", this.elapsedTimeMilliseconds())
   }
 }
