@@ -16,8 +16,14 @@ export function repetitionLevelCompleted(levelId) {
   return client.post(`/levels/${levelId}/complete`).then(resp => resp.data)
 }
 
-export function speedrunCompleted(time) {
-  return client.post(`/speedrun`, time).then(resp => resp.data)
+export function speedrunCompleted(levelName, elapsedTimeMs) {
+  const params = {
+    speedrun: {
+      level_name: levelName,
+      elapsed_time_ms: elapsedTimeMs
+    }
+  }
+  return client.post(`/speedrun`, params).then(resp => resp.data)
 }
 
 export function fetchPuzzles(source) {

@@ -16,7 +16,7 @@ export default class Speedrun {
 
     new Listener({
       "timer:stopped": elapsedTimeMs => {
-        speedrunCompleted(elapsedTimeMs).then(data => {
+        speedrunCompleted('quick', elapsedTimeMs).then(data => {
           d.trigger("speedrun:complete", data)
         })
       }

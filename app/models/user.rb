@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 
   has_many :level_attempts
   has_many :solved_infinity_puzzles
+  has_many :completed_speedruns
   has_many :positions
 
   after_initialize :set_default_profile
