@@ -68,24 +68,13 @@
   $small-board-size = 8 * $square-size + 2 * $border-width
 
   margin 0 auto 50px
-  width $small-board-size
-  overflow hidden
-  display flex
 
-  &.left-aligned 
-    width 719px
-
-  &:not(.left-aligned) 
-    position relative
-    left -40px
+  &.left-aligned
+    display flex
 
   .chessboard 
     width $small-board-size
     height $small-board-size
-
-    .square 
-      width $square-size
-      height $square-size
 
   .right 
     margin 103px 20px 0 37px
