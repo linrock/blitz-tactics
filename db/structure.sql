@@ -72,6 +72,39 @@ ALTER SEQUENCE public.completed_rounds_id_seq OWNED BY public.completed_rounds.i
 
 
 --
+-- Name: completed_speedruns; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_speedruns (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    speedrun_level_id integer NOT NULL,
+    elapsed_time_ms integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_speedruns_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_speedruns_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_speedruns_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_speedruns_id_seq OWNED BY public.completed_speedruns.id;
+
+
+--
 -- Name: infinity_levels; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -347,6 +380,37 @@ ALTER SEQUENCE public.solved_infinity_puzzles_id_seq OWNED BY public.solved_infi
 
 
 --
+-- Name: speedrun_levels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.speedrun_levels (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: speedrun_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.speedrun_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: speedrun_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.speedrun_levels_id_seq OWNED BY public.speedrun_levels.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -393,6 +457,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 --
 
 ALTER TABLE ONLY public.completed_rounds ALTER COLUMN id SET DEFAULT nextval('public.completed_rounds_id_seq'::regclass);
+
+
+--
+-- Name: completed_speedruns id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_speedruns ALTER COLUMN id SET DEFAULT nextval('public.completed_speedruns_id_seq'::regclass);
 
 
 --
@@ -452,6 +523,13 @@ ALTER TABLE ONLY public.solved_infinity_puzzles ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: speedrun_levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.speedrun_levels ALTER COLUMN id SET DEFAULT nextval('public.speedrun_levels_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -472,6 +550,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.completed_rounds
     ADD CONSTRAINT completed_rounds_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: completed_speedruns completed_speedruns_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_speedruns
+    ADD CONSTRAINT completed_speedruns_pkey PRIMARY KEY (id);
 
 
 --
@@ -547,11 +633,26 @@ ALTER TABLE ONLY public.solved_infinity_puzzles
 
 
 --
+-- Name: speedrun_levels speedrun_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.speedrun_levels
+    ADD CONSTRAINT speedrun_levels_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_completed_speedruns_on_user_id_and_speedrun_level_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_speedruns_on_user_id_and_speedrun_level_id ON public.completed_speedruns USING btree (user_id, speedrun_level_id);
 
 
 --
@@ -679,6 +780,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180619172700'),
 ('20180620032206'),
 ('20180620084825'),
-('20180621081826');
+('20180621081826'),
+('20180623113358'),
+('20180623114045');
 
 
