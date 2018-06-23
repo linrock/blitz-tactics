@@ -1,10 +1,8 @@
+import FastClick from 'fastclick'
 import MiniChessboard from '../components/chessboard/mini_chessboard'
 import routes from '../routes'
 
 window.blitz = {};
-window.config = {
-  comboSizeForNextLevel: 100
-};
 
 document.addEventListener('DOMContentLoaded', () => {
   const { controller, action } = document.querySelector('body').dataset
@@ -23,4 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     new MiniChessboard({ el, fen, initialMove, ...options })
   })
+
+  FastClick.attach(document.body)
 })
