@@ -1,3 +1,5 @@
+# admin routes for editing levels
+
 class LevelsController < ApplicationController
   before_action :authorize_admin!, only: [:edit, :update]
   before_action :set_level, except: :index
@@ -11,40 +13,6 @@ class LevelsController < ApplicationController
       @levels = @levels.limit(35)
     end
     @attempts = current_user&.level_attempts&.group_by(&:level_id) || {}
-  end
-
-  # show a level in repetition mode
-  def show
-    @puzzles = @level.puzzles
-    @round_times = current_user&.round_times_for_level(@level.id)&.take(10) || []
-    respond_to do |format|
-      format.html {}
-      format.json {
-        render json: PuzzlesJson.new(@puzzles).to_json
-      }
-    end
-  end
-
-  # complete a round of puzzles in a level
-  def attempt
-    if @user
-      attempt = @user.level_attempts.find_or_create_by(level_id: params[:id])
-      attempt.update_attribute :last_attempt_at, Time.now
-      attempt.completed_rounds.create(round_params)
-    end
-    render json: {}
-  end
-
-  # successfully complete a level
-  def complete
-    next_level = Level.find(params[:id]).next_level
-    # TODO handle the very last level
-    @user&.unlock_level(next_level.id)
-    render json: {
-      next: {
-        href: next_level.path
-      }
-    }
   end
 
   # level editor view

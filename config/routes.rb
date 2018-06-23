@@ -4,19 +4,20 @@ Rails.application.routes.draw do
   root 'home#index'
 
   # infinity mode
-  get '/infinity'              => 'infinity#index'
-  get '/infinity/puzzles'      => 'infinity#puzzles'
-  post '/infinity/puzzles'     => 'infinity#puzzle_solved'
+  get '/infinity'                 => 'game_modes/infinity#index'
+  get '/infinity/puzzles'         => 'game_modes/infinity#puzzles'
+  post '/infinity/puzzles'        => 'game_modes/infinity#puzzle_solved'
 
   # speedrun mode
-  get '/speedrun'              => 'speedrun#index'
-  get '/speedrun/puzzles'      => 'speedrun#puzzles'
-  post '/speedrun'             => 'speedrun#complete'
+  get '/speedrun'                 => 'game_modes/speedrun#index'
+  get '/speedrun/puzzles'         => 'game_modes/speedrun#puzzles'
+  post '/speedrun'                => 'game_modes/speedrun#complete'
 
   # repetition mode
-  get '/level-:level_num'      => 'levels#show'
-  post '/levels/:id/attempt'   => 'levels#attempt'
-  post '/levels/:id/complete'  => 'levels#complete'
+  get '/level-:level_num'         => 'game_modes/repetition#index'
+  get '/level-:level_num/puzzles' => 'game_modes/repetition#puzzles'
+  post '/levels/:id/attempt'      => 'game_modes/repetition#attempt'
+  post '/levels/:id/complete'     => 'game_modes/repetition#complete'
 
   # position trainer
   get '/positions/:id'         => 'positions#show'

@@ -13,9 +13,9 @@ const routes = {
   "positions#show": PositionTrainer,
 
   // game modes
-  "levels#show": RepetitionMode,
-  "infinity#index": InfinityMode,
-  "speedrun#index": SpeedrunMode,
+  "game_modes/speedrun#index": SpeedrunMode,
+  "game_modes/infinity#index": InfinityMode,
+  "game_modes/repetition#index": RepetitionMode,
 }
 
 export default routes

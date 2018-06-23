@@ -1,8 +1,9 @@
 # speedrun mode puzzles
 
-class SpeedrunController < ApplicationController
+class GameModes::SpeedrunController < ApplicationController
 
   def index
+    render "game_modes/speedrun"
   end
 
   # json endpoint for fetching puzzles

@@ -21,6 +21,6 @@ export function speedrunCompleted(time) {
 }
 
 export function fetchPuzzles(source) {
-  const defaultSource = window.location.pathname + ".json"
+  const defaultSource = `${window.location.pathname}/puzzles.json`
   return client.get(source || defaultSource).then(resp => resp.data)
 }

@@ -1,9 +1,10 @@
 # infinity mode puzzles
 
-class InfinityController < ApplicationController
-  before_action :set_user, only: :solved_puzzle
+class GameModes::InfinityController < ApplicationController
+  before_action :set_user, only: :puzzle_solved
 
   def index
+    render "game_modes/infinity"
   end
 
   # json endpoint for fetching puzzles
