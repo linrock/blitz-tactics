@@ -6,7 +6,8 @@
   height $main-header-height
   background #121212
   width 100%
-  overflow hidden
+  padding 0 15px
+  text-transform uppercase
 
   .container
     display flex
@@ -16,7 +17,6 @@
     font-size 12px
     font-weight bold
     font-family $combo-indicator-font
-    text-transform uppercase
     line-height $main-header-height + 2px
     letter-spacing 1.5px
     margin-right auto
@@ -34,7 +34,6 @@
   a 
     color #6D6D6D
     text-decoration none
-    text-transform uppercase
     font-size 11px
     letter-spacing 0.5px
     transition color 0.15s ease
@@ -47,12 +46,8 @@
     margin-left 25px
     line-height $main-header-height
 
-  .icon 
-    font-size 15px
+  .user-link
+    font-weight bold
 
   .sign-in 
-    font-weight bold
     color rgba(255,255,255,0.75)
-
-  .user-name 
-    font-weight bold
