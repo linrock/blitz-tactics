@@ -5,6 +5,10 @@
       <span class="large">B</span>litz <span class="large">T</span>actics
     </a>
 
+    <a href="/positions" class="link-right">Positions</a>
+    <a href="/scoreboard" class="link-right">Scoreboard</a>
+    <a href="/about" class="link-right">About</a>
+
     <% if current_user %>
       <a href="/<%= current_user.username %>" class="link-right user-name">
         <%= current_user.username %>
@@ -14,10 +18,6 @@
         <%= fa_icon "sign-in" %> Sign up
       </a>
     <% end %>
-
-    <a href="/about" class="link-right">About</a>
-    <a href="/scoreboard" class="link-right">Scoreboard</a>
-    <a href="/positions" class="link-right">Positions</a>
 
     <% if false %>
       <a href="javascript:" class="link-right icon"><%= fa_icon "clock-o" %></a>

@@ -8,15 +8,18 @@
   width 100%
   overflow hidden
 
+  .container
+    display flex
+
   .logo 
     color #6D6D6D
-    float left
     font-size 12px
     font-weight bold
     font-family $combo-indicator-font
     text-transform uppercase
     line-height $main-header-height + 2px
     letter-spacing 1.5px
+    margin-right auto
 
     &:hover 
       color #ffe800
@@ -39,13 +42,7 @@
     &:hover 
       color #e0e0e0
 
-  .link-left 
-    float left
-    margin-left 25px
-    line-height $main-header-height
-
   .link-right 
-    float right
     margin-right 3px
     margin-left 25px
     line-height $main-header-height
