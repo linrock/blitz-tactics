@@ -5,8 +5,8 @@
     <div class="game-modes">
       <div class="mode infinity">
         <h3><a href="/infinity">Infinity</a></h3>
-        <h4>
-          Blaze through endless chess puzzles.
+        <h4 class="game-mode-description">
+          Blaze through endless puzzles.
           Change the difficulty to challenge yourself.
         </h4>
         <%= homepage_miniboard_link("/infinity", {
@@ -24,7 +24,7 @@
 
       <div class="mode speedrun">
         <h3><a href="/speedrun">Speedrun</a></h3>
-        <h4>
+        <h4 class="game-mode-description">
           Solve a sequence of puzzles as fast as you can.
           Set your personal best, then beat it.
         </h4>
@@ -41,7 +41,7 @@
     <div class="game-modes">
       <div class="mode accuracy">
         <h3><a href="<%= @level.path %>">Repetition</a></h3>
-        <h4>
+        <h4 class="game-mode-description">
           Use repetition to learn. Quickly solve puzzles
           without mistakes to unlock the next level.
         </h4>
