@@ -2,8 +2,6 @@
 
 .position-trainer 
   margin 0 auto 50px
-  width $board-size
-  overflow hidden
 
   .instructions 
     font-weight bold
@@ -28,10 +26,6 @@
   .chessboard 
     width $board-size-sm
     height $board-size-sm
-
-    .square 
-      width $square-size-sm
-      height $square-size-sm
 
   .actions 
     margin-top 30px
@@ -68,9 +62,9 @@
 // position trainers with text on the right side
 
 .position-trainer.small 
-  $border-width 2px
-  $square-size 50px
-  $small-board-size 8 * $square-size + 2 * $border-width
+  $border-width = 2px
+  $square-size = 50px
+  $small-board-size = 8 * $square-size + 2 * $border-width
 
   margin 0 auto 50px
   width $small-board-size

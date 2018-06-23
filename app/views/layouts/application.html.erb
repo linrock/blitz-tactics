@@ -12,15 +12,12 @@
   <%= javascript_pack_tag 'application' %>
   <%= favicon_link_tag    'favicon.ico' %>
   <%= csrf_meta_tags %>
-
 </head>
-<body data-controller="<%= params[:controller] %>"
-      data-action="<%= params[:action] %>">
 
-<%= render :partial => "layouts/main_header" %>
-<%= yield %>
-<%= render :partial => "snippets/chess_pieces" %>
-<%= render :partial => "snippets/google_analytics" %>
-
+<body data-controller="<%= params[:controller] %>" data-action="<%= params[:action] %>">
+  <%= render partial: "layouts/main_header" %>
+  <%= yield %>
+  <%= render partial: "static/snippets/chess_pieces" %>
+  <%= render partial: "static/snippets/google_analytics" %>
 </body>
 </html>

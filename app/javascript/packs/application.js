@@ -1,7 +1,6 @@
 import MiniChessboard from '../components/chessboard/mini_chessboard'
 import routes from '../routes'
 
-
 window.blitz = {};
 window.config = {
   comboSizeForNextLevel: 100

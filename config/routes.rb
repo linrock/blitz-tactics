@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  root 'home#index'
+  root 'pages#home'
 
   # infinity mode
   get '/infinity'                 => 'game_modes/infinity#index'
@@ -19,24 +19,21 @@ Rails.application.routes.draw do
   post '/levels/:id/attempt'      => 'game_modes/repetition#attempt'
   post '/levels/:id/complete'     => 'game_modes/repetition#complete'
 
-  # position trainer
-  get '/positions/:id'         => 'positions#show'
-  get '/positions'             => 'static#positions'
-  get '/position'              => 'static#position'
-
-  # misc routes
-  get '/scoreboard'            => 'scoreboard#index'
-  get '/levels'                => 'levels#index'
-
-  # static routes
-  get '/about'                 => 'static#about'
-  get '/pawn-endgames'         => 'static#pawn_endgames'
+  # pages
+  get '/positions'             => 'pages#positions'
+  get '/positions/:id'         => 'pages#position'
+  get '/position'              => 'pages#position'
+  get '/pawn-endgames'         => 'pages#pawn_endgames'
+  get '/scoreboard'            => 'pages#scoreboard'
+  get '/about'                 => 'pages#about'
 
   static_routes = StaticRoutes.new
   static_routes.route_map!
   static_routes.route_paths.each do |route|
-    get route => "static#defined_position"
+    get route => "pages#defined_position"
   end
+
+  get '/levels'                => 'levels#index'
 
   # admin routes
   get '/level-:level_num/edit' => 'levels#edit'

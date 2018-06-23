@@ -8,7 +8,7 @@ module MiniboardHelper
       path: "/positions/#{position.id}",
       title: position.name_or_id,
     }
-    render partial: "snippets/miniboard_link", locals: options
+    render partial: "static/snippets/miniboard_link", locals: options
   end
 
   # positions and endgames pages
@@ -21,7 +21,7 @@ module MiniboardHelper
       path: link,
       title: title
     }
-    render partial: "snippets/miniboard_link", locals: options
+    render partial: "static/snippets/miniboard_link", locals: options
   end
 
   # homepage miniboards are never rotated
@@ -30,7 +30,7 @@ module MiniboardHelper
       flip: false,
       path: path,
     })
-    render partial: "snippets/miniboard_link", locals: locals
+    render partial: "static/snippets/miniboard_link", locals: locals
   end
 
   # for static routes defined in position_routes.txt
@@ -44,6 +44,6 @@ module MiniboardHelper
       path: path,
       title: sanitize(route[:title]).split("|")[0].strip
     }
-    render partial: "snippets/miniboard_link", locals: options
+    render partial: "static/snippets/miniboard_link", locals: options
   end
 end

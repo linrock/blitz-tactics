@@ -9,8 +9,8 @@ import SpeedrunMode from './game_modes/speedrun'
 const routes = {
   "levels#edit": LevelEditor,
   "puzzles#show": PuzzlePlayer,
-  "static#position": PositionTrainer,
-  "positions#show": PositionTrainer,
+  "pages#position": PositionTrainer,
+  "pages#defined_position": PositionTrainer,
 
   // game modes
   "game_modes/speedrun#index": SpeedrunMode,
