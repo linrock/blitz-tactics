@@ -13,7 +13,7 @@ export default class Progress extends Backbone.View {
   initialize() {
     this.listenTo(d, "puzzles:status", status => {
       const { i, n } = status
-      this.$el.text(`${i + 1} of ${n} puzzles solved`)
+      this.$el.text(`${i + 1} of ${n} solved`)
     })
   }
 }

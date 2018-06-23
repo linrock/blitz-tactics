@@ -27,10 +27,10 @@ body
     opacity 0.15
 
 .above-board 
-  height 90px
+  height $above-board-height
   position relative
   width $main-width
-  margin 0 auto
+  margin 15px auto 0
 
   // white to move
   .instructions 
@@ -48,11 +48,12 @@ body
       font-size 22px
       top 20px
 
+  // shows up if player takes too long
   .puzzle-hint 
     text-align center
     margin 0 auto
     position absolute
-    top 58px
+    top 65px
     width 100%
     transition opacity 0.15s ease
 
@@ -61,8 +62,6 @@ body
       padding 6px 14px 5px
       color white
       display inline-block
-      position relative
-      top -4px
       border-radius 2px
       font-size 12px
 
@@ -75,13 +74,14 @@ body
       color rgba(255,255,255,0.5)
       height 0
 
+  // perfect, great, good, etc.
   .move-status 
     opacity 1
     font-family $combo-indicator-font
     font-size 32px
     width 100%
     position absolute
-    top 5px
+    top 20px
     text-align center
     text-transform uppercase
     transform scale3d(1,1,1)
@@ -124,7 +124,7 @@ body
     text-align center
     font-family $combo-indicator-font
     position absolute
-    top 50px
+    top 65px
     width 100%
     transition opacity 0.25s ease
 

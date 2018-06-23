@@ -2,29 +2,29 @@
 
 <section class="speedrun-mode">
   <div class="container">
-    <%= render partial: "interface/above_board" %>
-    <div class="speedrun-complete invisible">
-      Speedrun complete!
-    </div>
+    <div class="board-area-container">
+      <%= render partial: "interface/above_board" %>
+      <div class="speedrun-complete invisible">
+        Speedrun complete!
+      </div>
 
-    <div class="board-container">
       <div class="board-area">
         <%= render partial: "interface/chessboard" %>
         <%= render partial: "interface/piece_promotion_modal" %>
       </div>
-
-      <aside class="speedrun-sidebar">
-        <div class="timer stopped">0:00.0</div>
-        <div class="speedrun-instructions">
-          Make the first move to start the timer
-        </div>
-        <div class="progress"></div>
-        <div class="personal-best invisible">
-          Personal best
-          <div class="personal-best-time"></div>
-        </div>
-      </aside>
     </div>
+
+    <aside class="speedrun-sidebar">
+      <div class="timer stopped">0:00.0</div>
+      <div class="speedrun-instructions">
+        Make a move to start the timer
+      </div>
+      <div class="progress"></div>
+      <div class="personal-best invisible">
+        <div class="personal-best-time"></div>
+        Personal best
+      </div>
+    </aside>
   </div>
 </section>
 
