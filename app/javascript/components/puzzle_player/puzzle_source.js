@@ -102,10 +102,6 @@ export default class PuzzleSource extends Backbone.Model {
 
   loadPuzzleAtIndex(i) {
     const puzzle = this.puzzles[i]
-    if (i === 0 && !puzzle) {
-      d.trigger("puzzles:complete")
-      return
-    }
     this.current = {
       boardState: _.clone(puzzle.lines),
       puzzle,
@@ -130,6 +126,9 @@ export default class PuzzleSource extends Backbone.Model {
     const attempt = this.current.boardState[moveToUci(move)]
     if (attempt === "win") {
       d.trigger("move:success")
+      if (this.i === this.puzzles.length - 1) {
+        d.trigger("move:make", move)
+      }
       this.puzzleSolved()
       return
     } else if (attempt === "retry") {
