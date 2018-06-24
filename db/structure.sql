@@ -461,7 +461,8 @@ CREATE TABLE public.users (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     username character varying,
-    profile jsonb
+    profile jsonb,
+    tagline character varying
 );
 
 
@@ -837,6 +838,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180621081826'),
 ('20180623113358'),
 ('20180623114045'),
-('20180623125613');
+('20180623125613'),
+('20180624063512');
 
 
