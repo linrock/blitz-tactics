@@ -8,16 +8,16 @@ class NewLichessPuzzle < ActiveRecord::Base
 
   before_validation :set_puzzle_id_from_data
   validates :puzzle_id, presence: true, uniqueness: true
+  validate :check_data_fields
   validate :check_simplified_data_format
 
   def self.find_or_create_from_raw_data(json_data)
-    data = json_data["data"]
-    puzzle_id = data["puzzle"]["id"]
+    puzzle_id = json_data["puzzle"]["id"]
     existing_puzzle = NewLichessPuzzle.find_by(puzzle_id: puzzle_id)
     if existing_puzzle.present?
       existing_puzzle
     else
-      NewLichessPuzzle.create!(data: data)
+      NewLichessPuzzle.create!(data: json_data)
     end
   end
 
@@ -40,7 +40,7 @@ class NewLichessPuzzle < ActiveRecord::Base
   def simplified_data
     data["puzzle"].slice("fen", "lines").merge({
       "initialMove": initial_move,
-      "id": id
+      "id": puzzle_id
     })
   end
  
@@ -50,7 +50,16 @@ class NewLichessPuzzle < ActiveRecord::Base
     self.puzzle_id = data["puzzle"]["id"]
   end
 
+  def check_data_fields
+    errors.add(:data, "is missing fen") unless fen.present?
+    errors.add(:data, "is missing initial move") unless initial_move.present?
+    errors.add(:data, "is missing initial move uci") unless initial_move_uci.present?
+    errors.add(:data, "is missing rating") unless rating.present?
+  end
+
   def check_simplified_data_format
-    simplified_data.all? {|_, v| v.present? }
+    unless simplified_data.all? {|_, v| v.present? }
+      errors.add(:data, "is invalid")
+    end
   end
 end
