@@ -6,35 +6,27 @@
      /philidor-position
    ).include?(@route[:path]) %>
 
+<% content_for(:position_trainer) do %>
+  <div class="instructions invisible"></div>
+  <%= render partial: "puzzle_player/board_area" %>
+  <div class="actions">
+    <button class="button restart">Reset position</button>
+  </div>
+<% end %>
+
 <% if has_description %>
   <div class="position-trainer small left-aligned container">
     <div class="left">
-      <div class="instructions invisible"></div>
-
-      <%= render partial: "puzzle_player/board" %>
-
-      <div class="actions">
-        <button class="button restart">Reset position</button>
-      </div>
+      <%= yield(:position_trainer) %>
     </div>
 
     <div class="right">
-      <% if @route[:path] == "/lucena-position" %>
-        <%= render partial: "static/descriptions/lucena_position" %>
-      <% elsif @route[:path] == "/philidor-position" %>
-        <%= render partial: "static/descriptions/philidor_position" %>
-      <% end %>
+      <%= render partial: "static/descriptions#{@route[:path].gsub(/-/, '_')}" %>
     </div>
   </div>
 <% else %>
   <div class="position-trainer small container">
-    <div class="instructions invisible"></div>
-
-    <%= render partial: "puzzle_player/board" %>
-
-    <div class="actions">
-      <button class="button restart">Reset position</button>
-    </div>
+    <%= yield(:position_trainer) %>
   </div>
 <% end %>
 

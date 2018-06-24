@@ -1,6 +1,6 @@
 <% content_for(:title) { "Puzzle #{@puzzle.id}" } %>
 
-<%= render :partial => "interface/main",
-           :locals  => {
-             :title => "Puzzle #{@puzzle.id}"
+<%= render partial: "interface/main",
+           locals: {
+             title: "Puzzle #{@puzzle.id}"
            } %>
