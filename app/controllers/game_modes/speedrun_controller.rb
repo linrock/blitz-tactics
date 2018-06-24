@@ -9,7 +9,7 @@ class GameModes::SpeedrunController < ApplicationController
   # json endpoint for fetching puzzles
   def puzzles
     render json: {
-      puzzles: SpeedrunLevel.first_level.speedrun_puzzles
+      puzzles: speedrun_level.speedrun_puzzles
     }
   end
 
@@ -17,11 +17,13 @@ class GameModes::SpeedrunController < ApplicationController
   def complete
     if current_user
       current_user.completed_speedruns.create!({
-        speedrun_level_id: speedrun_level.id,
+        speedrun_level_id: completed_speedrun_level.id,
         elapsed_time_ms: completed_speedrun_params[:elapsed_time_ms].to_i
       })
       render json: {
-        best: current_user.completed_speedruns.personal_best(speedrun_level.id)
+        best: current_user.completed_speedruns.personal_best(
+          completed_speedrun_level.id
+        )
       }
     else
       render json: {}
@@ -31,7 +33,15 @@ class GameModes::SpeedrunController < ApplicationController
   private
 
   def speedrun_level
-    @speedrun_level ||= SpeedrunLevel.find_by(
+    if params[:name]
+      SpeedrunLevel.find_by(name: params[:name])
+    else
+      SpeedrunLevel.first_level
+    end
+  end
+
+  def completed_speedrun_level
+    @completed_speedrun_level ||= SpeedrunLevel.find_by(
       name: completed_speedrun_params[:level_name]
     )
   end

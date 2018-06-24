@@ -11,14 +11,10 @@ export default class Progress extends Backbone.View {
   }
 
   initialize() {
-    this.listenToOnce(d, `puzzles:fetched`, puzzles => {
-      this.n = puzzles.length
+    this.listenTo(d, `puzzles:fetched`, puzzles => {
+      this.updateProgress(0, puzzles.length)
     })
-    this.listenToOnce(d, `move:try`, () => {
-      this.updateProgress(0, this.n)
-    })
-    this.listenTo(d, `puzzles:status`, status => {
-      const { i, n } = status
+    this.listenTo(d, `puzzles:status`, ({ i , n }) => {
       this.updateProgress(i + 1, n)
     })
   }

@@ -4,6 +4,7 @@
   <div class="container">
     <div class="board-area-container">
       <%= render partial: "puzzle_player/above_board" %>
+
       <div class="speedrun-complete invisible">
         Speedrun complete!
       </div>
@@ -12,17 +13,29 @@
     </div>
 
     <aside class="speedrun-sidebar">
-      <div class="speedrun-stats current-run">
-        <div class="timer stopped">0:00.0</div>
-        <div class="description"></div>
-      </div>
+      <div class="timers" style="display: none">
+        <div class="current-run">
+          <div class="timer stopped">0:00.0</div>
+          <div class="description"></div>
+        </div>
 
-      <div class="speedrun-stats personal-best invisible">
-        <div class="timer"></div>
-        <div class="description">Personal best</div>
+        <div class="personal-best invisible" style="display: none">
+          <div class="timer"></div>
+          <div class="description">Personal best</div>
+        </div>
       </div>
 
       <div class="speedrun-instructions">
+        <div class="choose-level">
+          <div class="sidebar-label">Choose a level</div>
+          <div class="quick selected" data-name="quick">Quick</div>
+          <div class="endurance" data-name="endurance">Endurance</div>
+          <div class="marathon" data-name="marathon">Marathon</div>
+          <div class="n-puzzles invisible">&nbsp;</div>
+        </div>
+      </div>
+
+      <div class="make-a-move">
         Make a move to start the timer
       </div>
     </aside>

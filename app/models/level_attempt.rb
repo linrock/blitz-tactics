@@ -1,4 +1,4 @@
-# Data associated with an attempt a player makes on a level
+# Data associated with an attempt a player makes on a repetition level
 #
 class LevelAttempt < ActiveRecord::Base
   belongs_to :user
