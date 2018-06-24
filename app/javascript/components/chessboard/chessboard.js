@@ -77,11 +77,12 @@ export default class Chessboard extends Backbone.View {
   }
 
   movePiece($piece, move) {
-    const c = new Chess(this.fen)
-    if (($piece.hasClass(`wp`) && move.to[1] == `8`) ||
-        ($piece.hasClass(`bp`) && move.to[1] == `1`)) {
+    const { from, to } = move
+    if (($piece.hasClass(`wp`) && from[1] === `7` && to[1] === `8`) ||
+        ($piece.hasClass(`bp`) && from[1] === `2` && to[1] === `1`)) {
       d.trigger(`move:promotion`, { fen: this.fen, move })
     } else {
+      const c = new Chess(this.fen)
       const m = c.move(move)
       if (m) {
         d.trigger(`move:try`, m)

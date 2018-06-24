@@ -22,25 +22,25 @@ export default class DragAndDrop {
   }
 
   initDraggable() {
-    this.board.$(".piece:not(.ui-draggable)").draggable({
-      stack: ".piece",
+    this.board.$(`.piece:not(.ui-draggable)`).draggable({
+      stack: `.piece`,
       distance: 10,
       revert: true,
       revertDuration: 0,
-      containment: "body",
+      containment: `body`,
       scroll: false
     })
   }
 
   initDroppable() {
-    this.board.$(".square").droppable({
-      accept: ".piece",
-      tolerance: "pointer",
+    this.board.$(`.square`).droppable({
+      accept: `.piece`,
+      tolerance: `pointer`,
       drop: (event, ui) => {
-        let $piece = $(ui.draggable)
-        let move = {
-          from: $piece.parents(".square").data("square"),
-          to: $(event.target).data("square")
+        const $piece = $(ui.draggable)
+        const move = {
+          from: $piece.parents(`.square`).data(`square`),
+          to: $(event.target).data(`square`)
         }
         this.board.movePiece($piece, move)
       }
