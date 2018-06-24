@@ -29,11 +29,11 @@
           Set your personal best, then beat it.
         </h4>
         <%= homepage_miniboard_link("/speedrun", {
-              fen: @level.first_puzzle.fen,
-              initial_move: @level.first_puzzle.initial_move_uci
+              fen: @speedrun_puzzle.fen,
+              initial_move: @speedrun_puzzle.initial_move_uci
             }) %>
         <div class="under-mini-board">
-          Best time: none
+          Best time: <%= @best_speedrun_time %>
         </div>
       </div>
     </div>

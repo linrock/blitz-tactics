@@ -59,6 +59,10 @@ class User < ActiveRecord::Base
     @num_speedruns_completed ||= completed_speedruns.count
   end
 
+  def best_speedrun_time
+    completed_speedruns.formatted_fastest_time
+  end
+
   def speedrun_stats
     SpeedrunLevel.all.map do |level|
       [

@@ -9,7 +9,7 @@ class GameModes::SpeedrunController < ApplicationController
   # json endpoint for fetching puzzles
   def puzzles
     render json: PuzzlesJson.new(
-      NewLichessPuzzle.white_to_move.limit(2)
+      SpeedrunLevel.first_level.speedrun_puzzles
     ).to_json
   end
 

@@ -17,6 +17,12 @@ class CompletedSpeedrun < ActiveRecord::Base
     where(speedrun_level_id: speedrun_level_id).first.elapsed_time_ms
   end
 
+  def self.formatted_fastest_time
+    best_time_ms = first.elapsed_time_ms
+    return 'None' unless best_time_ms.present?
+    sprintf("%0.1fs" % (best_time_ms.to_f / 1000))
+  end
+
   def self.formatted_personal_best(speedrun_level_id)
     best_time_ms = where(speedrun_level_id: speedrun_level_id).first.elapsed_time_ms
     return 'None' unless best_time_ms.present?

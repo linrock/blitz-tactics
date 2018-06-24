@@ -1,7 +1,15 @@
 class SpeedrunLevel < ActiveRecord::Base
   NAMES = %w( quick endurance marathon )
 
-  has_many :speedrun_puzzles
+  has_many :speedrun_puzzles, dependent: :destroy
+
+  def self.first_level
+    find_by(name: 'quick')
+  end
+
+  def self.first_puzzle
+    first_level.first_puzzle
+  end
 
   def add_puzzle(new_lichess_puzzle)
     return false if speedrun_puzzles.exists?(
