@@ -353,7 +353,7 @@ CREATE TABLE public.schema_migrations (
 CREATE TABLE public.solved_infinity_puzzles (
     id bigint NOT NULL,
     user_id integer NOT NULL,
-    new_lichess_puzzle_id integer NOT NULL,
+    infinity_puzzle_id integer NOT NULL,
     difficulty character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -775,10 +775,10 @@ CREATE INDEX index_positions_on_user_id ON public.positions USING btree (user_id
 
 
 --
--- Name: index_solved_infinity_puzzles_on_user_and_puzzle_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_solved_infinity_puzzles_on_user_id_and_infinity_puzzle_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solved_infinity_puzzles_on_user_and_puzzle_id ON public.solved_infinity_puzzles USING btree (user_id, new_lichess_puzzle_id);
+CREATE UNIQUE INDEX index_solved_infinity_puzzles_on_user_id_and_infinity_puzzle_id ON public.solved_infinity_puzzles USING btree (user_id, infinity_puzzle_id);
 
 
 --
