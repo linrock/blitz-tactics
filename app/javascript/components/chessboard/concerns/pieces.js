@@ -33,10 +33,5 @@ export default class Pieces {
         <use xlink:href="#${className}" width="100%" height="100%"/>
       </svg>
     `)
-    /*
-    return $("<img>").
-      attr("src", `/assets/pieces/${className}.png`).
-      addClass(`piece ${className} ${piece.color}`)
-    */
   }
 }
