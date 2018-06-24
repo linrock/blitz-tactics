@@ -1,6 +1,5 @@
 // Basic chessboard that just renders positions
 
-import $ from 'jquery'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
@@ -95,7 +94,7 @@ export default class Chessboard extends Backbone.View {
   }
 
   flipBoard() {
-    this.$(`.square`).each((i, sq) => $(sq).prependTo(this.$el))
+    this.$(`.square`).each((i, sq) => this.$(sq).prependTo(this.$el))
   }
 
   clearHighlights() {
@@ -110,6 +109,6 @@ export default class Chessboard extends Backbone.View {
   }
 
   $getSquare(id) {
-    return $(`#${id}`)
+    return this.$(`#${id}`)
   }
 }
