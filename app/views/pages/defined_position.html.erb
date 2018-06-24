@@ -11,10 +11,7 @@
     <div class="left">
       <div class="instructions invisible"></div>
 
-      <div class="board-area">
-        <%= render :partial => "interface/chessboard" %>
-        <%= render :partial => "interface/piece_promotion_modal" %>
-      </div>
+      <%= render partial: "puzzle_player/board" %>
 
       <div class="actions">
         <button class="button restart">Reset position</button>
@@ -23,9 +20,9 @@
 
     <div class="right">
       <% if @route[:path] == "/lucena-position" %>
-        <%= render :partial => "static/descriptions/lucena_position" %>
+        <%= render partial: "static/descriptions/lucena_position" %>
       <% elsif @route[:path] == "/philidor-position" %>
-        <%= render :partial => "static/descriptions/philidor_position" %>
+        <%= render partial: "static/descriptions/philidor_position" %>
       <% end %>
     </div>
   </div>
@@ -33,10 +30,7 @@
   <div class="position-trainer small container">
     <div class="instructions invisible"></div>
 
-    <div class="board-area">
-      <%= render :partial => "interface/chessboard" %>
-      <%= render :partial => "interface/piece_promotion_modal" %>
-    </div>
+    <%= render partial: "puzzle_player/board" %>
 
     <div class="actions">
       <button class="button restart">Reset position</button>

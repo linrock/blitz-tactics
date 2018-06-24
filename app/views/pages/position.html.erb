@@ -3,10 +3,7 @@
 <div class="position-trainer container">
   <div class="instructions invisible"></div>
 
-  <div class="board-area">
-    <%= render partial: "interface/chessboard" %>
-    <%= render partial: "interface/piece_promotion_modal" %>
-  </div>
+  <%= render partial: "puzzle_player/board" %>
 
   <div class="actions">
     <button class="button restart">Reset position</button>
