@@ -28,17 +28,12 @@ Rails.application.routes.draw do
   get '/scoreboard'            => 'pages#scoreboard'
   get '/about'                 => 'pages#about'
 
+  # pre-defined position trainer routes
   static_routes = StaticRoutes.new
   static_routes.route_map!
   static_routes.route_paths.each do |route|
     get route => "pages#defined_position"
   end
-
-  get '/levels'                => 'levels#index'
-
-  # admin routes
-  get '/level-:level_num/edit' => 'levels#edit'
-  put '/level-:level_num'      => 'levels#update'
 
   # user routes
   put '/users/me'              => 'users#update'
