@@ -7,7 +7,7 @@ class CompletedSpeedrun < ActiveRecord::Base
 
   validates :elapsed_time_ms, numericality: { greater_than: 1_000 }
 
-  default_scope { order(elapsed_time_ms: :asc) }
+  default_scope { order(elapsed_time_ms: :asc) } # first = personal best
 
   def formatted_time_spent
     Time.at(time_elapsed).strftime("%M:%S").gsub(/^0/, '')
@@ -18,7 +18,7 @@ class CompletedSpeedrun < ActiveRecord::Base
   end
 
   def self.formatted_fastest_time
-    best_time_ms = first.elapsed_time_ms
+    best_time_ms = first&.elapsed_time_ms
     return 'None' unless best_time_ms.present?
     sprintf("%0.1fs" % (best_time_ms.to_f / 1000))
   end

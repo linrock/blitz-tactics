@@ -8,9 +8,9 @@ class GameModes::SpeedrunController < ApplicationController
 
   # json endpoint for fetching puzzles
   def puzzles
-    render json: PuzzlesJson.new(
-      SpeedrunLevel.first_level.speedrun_puzzles
-    ).to_json
+    render json: {
+      puzzles: SpeedrunLevel.first_level.speedrun_puzzles
+    }
   end
 
   # user has completed a speedrun

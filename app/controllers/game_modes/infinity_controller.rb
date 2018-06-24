@@ -37,7 +37,7 @@ class GameModes::InfinityController < ApplicationController
 
   def solved_puzzle_params
     p_params = params.require(:puzzle).permit(:difficulty, :puzzle_id).to_h
-    p_params["new_lichess_puzzle_id"] = p_params["puzzle_id"]
+    p_params["infinity_puzzle_id"] = p_params["puzzle_id"]
     p_params.delete("puzzle_id")
     p_params
   end

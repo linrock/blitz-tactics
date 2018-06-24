@@ -16,8 +16,9 @@ class GameModes::RepetitionController < ApplicationController
 
   # json endpoint for fetching puzzles
   def puzzles
-    @puzzles = @level.puzzles
-    render json: PuzzlesJson.new(@puzzles).to_json
+    render json: {
+      puzzles: @level.puzzles.map(&:simplified_data)
+    }
   end
 
   # complete a round of puzzles in a level

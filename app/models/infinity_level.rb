@@ -1,6 +1,3 @@
-# puzzle_id_array = ordered list of puzzle ids
-# puzzle_id_map = map of new lichess puzzle ids (puzzle.id) => { p: prev_id, n: next_id }
-
 class InfinityLevel < ActiveRecord::Base
   DIFFICULTIES = %w( easy medium hard insane )
 
@@ -15,42 +12,26 @@ class InfinityLevel < ActiveRecord::Base
     scope difficulty, -> { find_or_create_by(difficulty: difficulty) }
   end
 
+  def add_puzzle(new_lichess_puzzle)
+    puzzle = infinity_puzzles.create(data: new_lichess_puzzle.simplified_data)
+    puzzle.id ? true : false
+  end
+
+  def puzzles_after_id(puzzle_id)
+    if puzzle_id.nil?
+      puzzles = infinity_puzzles
+    else
+      puzzles = infinity_puzzles.where('id > ?', puzzle_id)
+    end
+    puzzles.limit(10)
+  end
+
   def first_puzzle
     infinity_puzzles.first
   end
 
-  def new_lichess_puzzles_after(new_lichess_puzzle_id) # Array<NewLichessPuzzle>
-    if new_lichess_puzzle_id.nil?
-      puzzles = infinity_puzzles
-    else
-      puzzle = infinity_puzzles.find_by(
-        new_lichess_puzzle_id: new_lichess_puzzle_id
-      )
-      if puzzle
-        puzzles = infinity_puzzles.where('index > ?', puzzle.index)
-      else
-        return []
-      end
-    end
-    puzzles.limit(10).includes(:new_lichess_puzzle).map(&:puzzle)
-  end
-
-  def add_puzzle(new_lichess_puzzle)
-    return false if infinity_puzzles.exists?(
-      new_lichess_puzzle_id: new_lichess_puzzle.id
-    )
-    infinity_puzzles.create!({
-      index: last_puzzle_index + 1,
-      new_lichess_puzzle_id: new_lichess_puzzle.id
-    })
-  end
-
   def last_puzzle
     infinity_puzzles.last
-  end
-
-  def last_puzzle_index
-    last_puzzle&.index || -1
   end
 
   def num_puzzles

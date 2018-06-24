@@ -21,21 +21,19 @@ class User < ActiveRecord::Base
     solved_infinity_puzzles.last&.difficulty || 'easy'
   end
 
-  def new_lichess_puzzles_after(difficulty, new_lichess_puzzle_id)
+  def infinity_puzzles_after(difficulty, puzzle_id)
     InfinityLevel
       .find_by(difficulty: difficulty)
-      .new_lichess_puzzles_after(
-        new_lichess_puzzle_id || last_solved_infinity_puzzle_id(difficulty)
-      )
+      .puzzles_after_id(puzzle_id || last_solved_infinity_puzzle_id(difficulty))
   end
 
   def last_solved_infinity_puzzle_id(difficulty)
-    solved_infinity_puzzles
-      .with_difficulty(difficulty).last&.new_lichess_puzzle_id
+    solved_infinity_puzzles.with_difficulty(difficulty)
+      .order('updated_at DESC').first&.id
   end
 
   def next_infinity_puzzle
-    new_lichess_puzzles_after(
+    infinity_puzzles_after(
       latest_difficulty,
       last_solved_infinity_puzzle_id(latest_difficulty)
     ).first || InfinityLevel.find_by(difficulty: latest_difficulty).last_puzzle

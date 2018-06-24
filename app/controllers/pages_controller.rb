@@ -4,7 +4,7 @@ class PagesController < ApplicationController
       @infinity_puzzle = current_user.next_infinity_puzzle
       @best_speedrun_time = current_user.best_speedrun_time
     else
-      @infinity_puzzle = InfinityLevel.easy.first_puzzle.puzzle
+      @infinity_puzzle = InfinityLevel.easy.first_puzzle
       @best_speedrun_time = 'None'
     end
     @speedrun_puzzle = SpeedrunLevel.first_puzzle
