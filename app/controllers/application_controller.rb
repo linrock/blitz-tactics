@@ -10,14 +10,6 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
   end
 
-  def authorize_admin!
-    return Rails.env.development?
-    unless current_user && current_user.id == 1
-      raise ActionController::RoutingError.new('Not Found')
-      return
-    end
-  end
-
   def set_user
     @user = current_user
   end
