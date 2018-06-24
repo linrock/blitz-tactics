@@ -142,8 +142,8 @@ ALTER SEQUENCE public.infinity_levels_id_seq OWNED BY public.infinity_levels.id;
 CREATE TABLE public.infinity_puzzles (
     id bigint NOT NULL,
     infinity_level_id integer NOT NULL,
-    new_lichess_puzzle_id integer NOT NULL,
-    index integer NOT NULL,
+    data jsonb NOT NULL,
+    puzzle_hash character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -417,7 +417,8 @@ ALTER SEQUENCE public.speedrun_levels_id_seq OWNED BY public.speedrun_levels.id;
 CREATE TABLE public.speedrun_puzzles (
     id bigint NOT NULL,
     speedrun_level_id integer NOT NULL,
-    new_lichess_puzzle_id integer NOT NULL,
+    data jsonb NOT NULL,
+    puzzle_hash character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -711,17 +712,17 @@ CREATE UNIQUE INDEX index_infinity_levels_on_difficulty ON public.infinity_level
 
 
 --
--- Name: index_infinity_puzzles_on_infinity_level_id_and_index; Type: INDEX; Schema: public; Owner: -
+-- Name: index_infinity_puzzles_on_infinity_level_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_infinity_puzzles_on_infinity_level_id_and_index ON public.infinity_puzzles USING btree (infinity_level_id, index);
+CREATE INDEX index_infinity_puzzles_on_infinity_level_id ON public.infinity_puzzles USING btree (infinity_level_id);
 
 
 --
--- Name: index_infinity_puzzles_on_level_and_puzzle_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_infinity_puzzles_on_puzzle_hash; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_infinity_puzzles_on_level_and_puzzle_id ON public.infinity_puzzles USING btree (infinity_level_id, new_lichess_puzzle_id);
+CREATE UNIQUE INDEX index_infinity_puzzles_on_puzzle_hash ON public.infinity_puzzles USING btree (puzzle_hash);
 
 
 --
@@ -785,6 +786,13 @@ CREATE UNIQUE INDEX index_solved_infinity_puzzles_on_user_and_puzzle_id ON publi
 --
 
 CREATE INDEX index_solved_infinity_puzzles_on_user_id_and_updated_at ON public.solved_infinity_puzzles USING btree (user_id, updated_at);
+
+
+--
+-- Name: index_speedrun_puzzles_on_puzzle_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_speedrun_puzzles_on_puzzle_hash ON public.speedrun_puzzles USING btree (puzzle_hash);
 
 
 --
