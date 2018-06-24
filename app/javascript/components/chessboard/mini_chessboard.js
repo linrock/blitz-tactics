@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
@@ -11,17 +10,18 @@ export default class MiniChessboard extends Backbone.View {
   // options.initialMove - uci string
 
   initialize(options = {}) {
+    this.cjs = new Chess()
     this.pieces = new Pieces(this)
     if (options.fen) {
       const fen = options.fen
       this.render(fen)
       if (options.initialMove) {
-        const c = new Chess(fen)
-        const { from, to } = c.move(uciToMove(options.initialMove))
+        this.cjs.load(fen)
+        const { from, to } = this.cjs.move(uciToMove(options.initialMove))
         setTimeout(() => {
           this.highlightSquare(from, "#fffcdd")
           this.highlightSquare(to, "#fff79b")
-          this.render(c.fen())
+          this.render(this.cjs.fen())
         }, 1000)
       }
     }
@@ -36,12 +36,12 @@ export default class MiniChessboard extends Backbone.View {
 
   renderFen(fen) {
     const columns = ['a','b','c','d','e','f','g','h']
-    const position = new Chess(fen)
+    this.cjs.load(fen)
     this.pieces.reset()
     for (let row = 8; row > 0; row--) {
       for (let j = 0; j < 8; j++) {
         let id = columns[j] + row
-        let piece = position.get(id)
+        let piece = this.cjs.get(id)
         if (piece) {
           this.pieces.$getPiece(piece).appendTo(this.$getSquare(id))
         }

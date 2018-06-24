@@ -20,6 +20,7 @@ export default class PiecePromotionModal extends Backbone.View {
   }
 
   initialize() {
+    this.cjs = new Chess()
     this.moveIntent = false
     this.listenToEvents()
   }
@@ -43,10 +44,10 @@ export default class PiecePromotionModal extends Backbone.View {
   }
 
   _selectPiece(e) {
-    let chosenPiece = e.currentTarget.dataset.piece
-    let move = Object.assign({}, this.moveIntent, { promotion: chosenPiece })
-    let c = new Chess(this.fen)
-    let m = c.move(move)
+    const chosenPiece = e.currentTarget.dataset.piece
+    const move = Object.assign({}, this.moveIntent, { promotion: chosenPiece })
+    this.cjs.load(this.fen)
+    const m = this.cjs.move(move)
     if (m) {
       d.trigger("move:try", m)
     }

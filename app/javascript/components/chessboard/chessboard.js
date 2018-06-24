@@ -9,6 +9,7 @@ import DragAndDrop from './concerns/drag_and_drop'
 import PointAndClick from './concerns/point_and_click'
 import d from '../../dispatcher'
 
+const columns = ['a','b','c','d','e','f','g','h']
 
 export default class Chessboard extends Backbone.View {
 
@@ -17,6 +18,7 @@ export default class Chessboard extends Backbone.View {
   }
 
   initialize() {
+    this.cjs = new Chess()
     this.pieces = new Pieces(this)
     this.dragAndDrop = new DragAndDrop(this)
     this.pointAndClick = new PointAndClick(this)
@@ -32,10 +34,9 @@ export default class Chessboard extends Backbone.View {
     })
     this.listenTo(d, `move:make`, (move, highlight = true) => {
       this.clearHighlights()
-      const c = new Chess
-      c.load(this.fen)
-      const moveObj = c.move(move)
-      d.trigger(`fen:set`, c.fen())
+      this.cjs.load(this.fen)
+      const moveObj = this.cjs.move(move)
+      d.trigger(`fen:set`, this.cjs.fen())
       if (moveObj && highlight) {
         d.trigger(`move:highlight`, moveObj)
       }
@@ -61,15 +62,14 @@ export default class Chessboard extends Backbone.View {
   }
 
   renderFen(fen) {
-    let columns = ['a','b','c','d','e','f','g','h']
-    let position = new Chess(fen)
+    this.cjs.load(fen)
     this.pieces.reset()
     for (let row = 8; row > 0; row--) {
       for (let j = 0; j < 8; j++) {
-        let id = columns[j] + row
-        let piece = position.get(id)
+        let squareId = columns[j] + row
+        let piece = this.cjs.get(squareId)
         if (piece) {
-          this.pieces.$getPiece(piece).appendTo(this.$getSquare(id))
+          this.pieces.$getPiece(piece).appendTo(this.$getSquare(squareId))
         }
       }
     }
@@ -82,8 +82,8 @@ export default class Chessboard extends Backbone.View {
         ($piece.hasClass(`bp`) && from[1] === `2` && to[1] === `1`)) {
       d.trigger(`move:promotion`, { fen: this.fen, move })
     } else {
-      const c = new Chess(this.fen)
-      const m = c.move(move)
+      this.cjs.load(this.fen)
+      const m = this.cjs.move(move)
       if (m) {
         d.trigger(`move:try`, m)
       }
