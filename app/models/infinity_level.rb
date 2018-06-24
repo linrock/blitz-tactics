@@ -21,13 +21,18 @@ class InfinityLevel < ActiveRecord::Base
 
   def new_lichess_puzzles_after(new_lichess_puzzle_id) # Array<NewLichessPuzzle>
     if new_lichess_puzzle_id.nil?
-      infinity_puzzles.limit(10)
+      puzzles = infinity_puzzles
     else
       puzzle = infinity_puzzles.find_by(
         new_lichess_puzzle_id: new_lichess_puzzle_id
       )
-      infinity_puzzles.where('index > ?', puzzle.index).limit(10)
-    end.includes(:new_lichess_puzzle).map(&:puzzle)
+      if puzzle
+        puzzles = infinity_puzzles.where('index > ?', puzzle.index)
+      else
+        return []
+      end
+    end
+    puzzles.limit(10).includes(:new_lichess_puzzle).map(&:puzzle)
   end
 
   def add_puzzle(new_lichess_puzzle)
