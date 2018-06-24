@@ -39,8 +39,6 @@ Rails.application.routes.draw do
   # admin routes
   get '/level-:level_num/edit' => 'levels#edit'
   put '/level-:level_num'      => 'levels#update'
-  get '/puzzles/search'        => 'puzzles#search'
-  get '/puzzles/:id'           => 'puzzles#show'
 
   # user routes
   put '/users/me'              => 'users#update'

@@ -1,8 +1,0 @@
-<div class="board">
-  <%= render partial: "levels/mini_board",
-             locals: {
-               puzzle_id: puzzle.id,
-               options: { fen: puzzle.fen, initialMove: puzzle.initial_move_uci }.to_json
-             } %>
-  <a class="puzzle-id" href="/puzzles/<%= puzzle.id %>"><%= puzzle.id %></a>
-</div>
