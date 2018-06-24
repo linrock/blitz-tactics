@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   post '/speedrun'                => 'game_modes/speedrun#complete'
 
   # repetition mode
+  get '/repetition'               => 'game_modes/repetition#index'
   get '/level-:level_num'         => 'game_modes/repetition#index'
   get '/level-:level_num/puzzles' => 'game_modes/repetition#puzzles'
   post '/levels/:id/attempt'      => 'game_modes/repetition#attempt'
@@ -42,5 +43,6 @@ Rails.application.routes.draw do
   get '/puzzles/:id'           => 'puzzles#show'
 
   # user routes
+  put '/users/me'              => 'users#update'
   get '/:username'             => 'users#show'
 end

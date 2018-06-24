@@ -1,6 +1,6 @@
 <div class="stats">
   <div class="infinity-stats">
-    <h3 class="game-mode-name">Infinity</h3>
+    <h3 class="game-mode-name"><a href="/infinity">Infinity</a></h3>
 
     <div class="stats-row total">
       <div class="label">Puzzles solved</div>
@@ -15,8 +15,26 @@
     <% end %>
   </div>
 
+  <div class="infinity-stats">
+    <h3 class="game-mode-name"><a href="/speedrun">Speedrun</a></h3>
+
+    <div class="stats-row total">
+      <div class="label">Speedruns completed</div>
+      <div class="count"><%= @user.num_speedruns_completed %></div>
+    </div>
+
+    <% @user.speedrun_stats.each do |row| %>
+      <div class="stats-row">
+        <div class="label"><%= row[0].capitalize %></div>
+        <div class="count"><%= row[1] %></div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="stats">
   <div class="repetition-stats">
-    <h3 class="game-mode-name">Repetition</h3>
+    <h3 class="game-mode-name"><a href="/repetition">Repetition</a></h3>
     <div class="stats-row total">
       <div class="label">Levels unlocked</div>
       <div class="count"><%= @user.num_repetition_levels_unlocked %></div>

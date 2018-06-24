@@ -1,4 +1,4 @@
-# methods only used when rendering level information
+# methods only used when rendering repeititon level information
 
 class LevelDisplay
 

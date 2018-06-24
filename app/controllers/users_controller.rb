@@ -13,4 +13,16 @@ class UsersController < ApplicationController
       return
     end
   end
+
+  # when user sets a tagline
+  def update
+    current_user.update_attributes! user_params
+    redirect_back fallback_location: root_url
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:tagline)
+  end
 end

@@ -5,6 +5,11 @@ class GameModes::RepetitionController < ApplicationController
 
   # show a level in repetition mode
   def index
+    unless @level.present?
+      @level = current_user ? current_user.highest_level_unlocked : Level.by_number(1)
+      redirect_to @level.path
+      return
+    end
     @round_times = current_user&.round_times_for_level(@level.id)&.take(10) || []
     render "game_modes/repetition"
   end
@@ -40,7 +45,7 @@ class GameModes::RepetitionController < ApplicationController
   private
 
   def set_level
-    @level = Level.by_number(params[:level_num])
+    @level = Level.by_number(params[:level_num]) if params[:level_num].present?
   end
 
   def round_params

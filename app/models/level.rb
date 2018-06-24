@@ -11,9 +11,11 @@ class Level < ActiveRecord::Base
   validate :require_unique_puzzle_ids
   validate :require_puzzles_to_exist
 
-  scope :by_number, -> (number) { find_by(slug: "level-#{number}") }
-
   delegate :path, :display_name, to: :level_display
+
+  def self.by_number(number)
+    find_by(slug: "level-#{number}")
+  end
 
   def first_level?
     slug == "level-1"

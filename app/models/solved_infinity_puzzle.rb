@@ -7,7 +7,7 @@ class SolvedInfinityPuzzle < ActiveRecord::Base
   validates :new_lichess_puzzle, presence: true
   validates :difficulty, inclusion: InfinityLevel::DIFFICULTIES
 
-  default_scope { order('updated_at ASC') }
+  default_scope { order('updated_at ASC') } # first = personal best
 
   scope :with_difficulty, -> (difficulty) do
     where(difficulty: difficulty)

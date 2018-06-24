@@ -2,7 +2,10 @@
 
 <div class="user-profile">
   <div class="container">
-    <h2 class="username"><%= @user.username %></h2>
+    <header class="player-info">
+      <h2 class="username"><%= @user.username %></h2>
+      <h3 class="tagline"><%= @user.tagline %></h3>
+    </header>
 
     <%= render partial: "users/puzzle_stats" %>
   </div>

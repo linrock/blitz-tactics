@@ -15,10 +15,6 @@ class User < ActiveRecord::Base
 
   validate :validate_username
 
-  def tagline
-    nil
-  end
-
   # infinity puzzle methods
 
   def latest_difficulty
@@ -57,6 +53,21 @@ class User < ActiveRecord::Base
       ]
     end
   end
+
+  # speedrun mode methods
+  def num_speedruns_completed
+    @num_speedruns_completed ||= completed_speedruns.count
+  end
+
+  def speedrun_stats
+    SpeedrunLevel.all.map do |level|
+      [
+        level.name,
+        completed_speedruns.formatted_personal_best(level.id)
+      ]
+    end
+  end
+
   # repetition mode methods
 
   def unlock_level(level_id)
@@ -71,7 +82,9 @@ class User < ActiveRecord::Base
   end
 
   def highest_level_unlocked
-    Level.find_by(id: self.profile["levels_unlocked"].max)
+    level = Level.find_by(id: self.profile["levels_unlocked"].max)
+    return level if level.present?
+    Level.by_number(1)
   end
 
   def unlocked_all_levels?

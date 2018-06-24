@@ -2,9 +2,15 @@
 
 <div class="user-profile me">
   <div class="container">
-    <h2 class="username"><%= @user.username %></h2>
-    <input type="text" value="<%= @user.tagline %>"
-           placeholder="Write something about yourself"/>
+    <header class="player-info">
+      <h2 class="username"><%= @user.username %></h2>
+      <%= form_tag "/users/me", method: :put do %>
+        <input type="text" value="<%= @user.tagline %>"
+               name="user[tagline]"
+               placeholder="Write something about yourself"/>
+        <input type="submit" value="Save" class="blue-button"/>
+      <% end %>
+    </header>
 
     <%= render partial: "users/puzzle_stats" %>
   </div>
