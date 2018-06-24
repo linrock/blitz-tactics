@@ -19,11 +19,13 @@ class GameModes::InfinityController < ApplicationController
   # notifying server of status updates in infinity mode
   def puzzle_solved
     if @user
-      puzzle = @user.solved_infinity_puzzles.find_by(puzzle_params)
-      if puzzle.present?
-        puzzle.touch
+      solved_puzzle = @user.solved_infinity_puzzles.find_by(
+        solved_puzzle_params
+      )
+      if solved_puzzle.present?
+        solved_puzzle.touch
       else
-        @user.solved_infinity_puzzles.create!(puzzle_params)
+        @user.solved_infinity_puzzles.create!(solved_puzzle_params)
       end
       render json: { n: @user.solved_infinity_puzzles.count }
     else
@@ -33,7 +35,7 @@ class GameModes::InfinityController < ApplicationController
 
   private
 
-  def puzzle_params
+  def solved_puzzle_params
     p_params = params.require(:puzzle).permit(:difficulty, :puzzle_id).to_h
     p_params["new_lichess_puzzle_id"] = p_params["puzzle_id"]
     p_params.delete("puzzle_id")
