@@ -2,7 +2,6 @@
 
 .speedrun-mode
   $board-size = 500px
-  $timer-font-size = 40px
 
   .container
     display flex
@@ -29,35 +28,37 @@
   .speedrun-sidebar
     margin-top $above-board-height
     margin-left 30px
-    font-size 16px
-    position relative
+    display flex
+    flex-direction column
 
-    .timer
-      font-size $timer-font-size
-      transition all 0.1s ease
+    > div
+      margin-bottom 40px
 
-      &.stopped
-        opacity 0.3
-
-      &.complete
-        color #ffff00
+      &:last-child
+        margin 0
 
     .speedrun-instructions
       font-size 17px
       line-height 26px
       width 150px
-      position absolute
-      top 57px
 
-    .progress
-      margin-top 20px
-      opacity 0.7
+    .speedrun-stats
+      .timer
+        font-size 40px
+        transition all 0.1s ease
+        margin-bottom 20px
 
-    .personal-best
-      margin-top 60px
-      font-size 16px
-      line-height 36px
+        &.stopped
+          opacity 0.3
 
-      .personal-best-time
-        font-size $timer-font-size
-        margin-bottom 9px
+        &.complete
+          color #ffff00
+
+      .description
+        font-size 16px
+
+      &.current-run .description
+        opacity 0.7
+
+      &.personal-best
+        display none

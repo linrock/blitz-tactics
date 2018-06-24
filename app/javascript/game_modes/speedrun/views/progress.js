@@ -7,11 +7,11 @@ import d from '../../../dispatcher'
 export default class Progress extends Backbone.View {
 
   get el() {
-    return ".progress"
+    return `.current-run .description`
   }
 
   initialize() {
-    this.listenTo(d, "puzzles:status", status => {
+    this.listenTo(d, `puzzles:status`, status => {
       const { i, n } = status
       this.$el.text(`${i + 1} of ${n} solved`)
     })

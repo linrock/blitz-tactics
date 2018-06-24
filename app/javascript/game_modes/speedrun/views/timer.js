@@ -11,7 +11,7 @@ const updateInterval = 33
 export default class Timer extends Backbone.View {
 
   get el() {
-    return ".timer"
+    return `.current-run .timer`
   }
 
   initialize() {
@@ -20,8 +20,8 @@ export default class Timer extends Backbone.View {
   }
 
   listenForEvents() {
-    this.listenToOnce(d, "move:try", () => this.startTimer())
-    this.listenTo(d, "puzzles:complete", () => this.notifyCompletion())
+    this.listenToOnce(d, `move:try`, () => this.startTimer())
+    this.listenTo(d, `puzzles:complete`, () => this.notifyCompletion())
   }
 
   elapsedTimeMilliseconds() {
@@ -29,13 +29,13 @@ export default class Timer extends Backbone.View {
   }
 
   startTimer() {
-    this.$el.removeClass("stopped")
+    this.$el.removeClass(`stopped`)
     this.startTime = Date.now()
     this.timerInterval = setInterval(() => this.displayElapsedTime(), updateInterval)
   }
 
   stopTimer() {
-    this.$el.addClass("complete")
+    this.$el.addClass(`complete`)
     clearInterval(this.timerInterval)
     this.displayElapsedTime()
   }

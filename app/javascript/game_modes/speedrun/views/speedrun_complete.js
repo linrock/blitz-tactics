@@ -9,19 +9,31 @@ export default class SpeedrunComplete extends Backbone.View {
     return `.speedrun-mode`
   }
 
+  get template() {
+    return `<div class="speedrun-complete">Speedrun complete!</div>`
+  }
+
   initialize() {
     this.$aboveBoard = this.$el.find(`.above-board`)
+    this.$pb = this.$el.find(`.personal-best`)
     this.listenTo(d, `speedrun:complete`, data => {
-      this.$aboveBoard.addClass(`invisible`)
-      setTimeout(() => {
-        this.$aboveBoard.html(
-          `<div class="speedrun-complete">Speedrun complete!</div>`
-        ).removeClass(`invisible`)
-      }, 600)
-      this.$el.find(`.personal-best-time`)
-        .text(formattedTime(data.best))
-      this.$el.find(`.personal-best`)
-        .removeClass(`invisible`)
+      this.showSpeedrunComplete()
+      this.showPersonalBest(data.best)
     })
+  }
+
+  showSpeedrunComplete() {
+    this.$aboveBoard.addClass(`invisible`)
+    setTimeout(() => {
+      this.$aboveBoard.html(this.template).removeClass(`invisible`)
+    }, 600)
+  }
+
+  showPersonalBest(bestTime) {
+    if (bestTime) {
+      this.$pb.show().find(`.timer`)
+        .text(formattedTime(parseInt(bestTime, 10)))
+      this.$pb.removeClass(`invisible`)
+    }
   }
 }
