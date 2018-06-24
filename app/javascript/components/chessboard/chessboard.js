@@ -13,48 +13,48 @@ import d from '../../dispatcher'
 export default class Chessboard extends Backbone.View {
 
   get el() {
-    return ".chessboard"
+    return `.chessboard`
   }
 
   initialize() {
     this.pieces = new Pieces(this)
     this.dragAndDrop = new DragAndDrop(this)
     this.pointAndClick = new PointAndClick(this)
-    // this.render("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    // this.render(`rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1`)
     this.listenToEvents()
     this.dragAndDrop.init()
   }
 
   listenToEvents() {
-    this.listenTo(d, "fen:set", fen => {
+    this.listenTo(d, `fen:set`, fen => {
       this.clearHighlights()
       this.render(fen)
     })
-    this.listenTo(d, "move:make", (move, highlight = true) => {
+    this.listenTo(d, `move:make`, (move, highlight = true) => {
       this.clearHighlights()
       const c = new Chess
       c.load(this.fen)
       const moveObj = c.move(move)
-      d.trigger("fen:set", c.fen())
+      d.trigger(`fen:set`, c.fen())
       if (moveObj && highlight) {
-        d.trigger("move:highlight", moveObj)
+        d.trigger(`move:highlight`, moveObj)
       }
     })
-    this.listenTo(d, "board:flip", () => {
+    this.listenTo(d, `board:flip`, () => {
       this.flipBoard()
     })
-    this.listenTo(d, "move:highlight", move => {
+    this.listenTo(d, `move:highlight`, move => {
       this.clearHighlights()
       setTimeout(() => {
-        this.highlightSquare(move.from, { className: "move-from" })
-        this.highlightSquare(move.to, { className: "move-to" })
+        this.highlightSquare(move.from, { className: `move-from` })
+        this.highlightSquare(move.to, { className: `move-to` })
       }, 10)
     })
   }
 
   render(fen) {
-    if (fen.split(" ").length === 4) {
-      fen += " 0 1"
+    if (fen.split(` `).length === 4) {
+      fen += ` 0 1`
     }
     this.renderFen(fen)
     this.dragAndDrop.initDraggable()
@@ -78,27 +78,27 @@ export default class Chessboard extends Backbone.View {
 
   movePiece($piece, move) {
     const c = new Chess(this.fen)
-    if (($piece.hasClass("wp") || $piece.hasClass("bp")) &&
-        (move.to[1] == "8" || move.to[1] == "1")) {
-      d.trigger("move:promotion", { fen: this.fen, move: move })
+    if (($piece.hasClass(`wp`) && move.to[1] == `8`) ||
+        ($piece.hasClass(`bp`) && move.to[1] == `1`)) {
+      d.trigger(`move:promotion`, { fen: this.fen, move })
     } else {
-      let m = c.move(move)
+      const m = c.move(move)
       if (m) {
-        d.trigger("move:try", m)
+        d.trigger(`move:try`, m)
       }
     }
   }
 
   animating() {
-    return !!this.$el.find(".piece:animated").length
+    return !!this.$el.find(`.piece:animated`).length
   }
 
   flipBoard() {
-    this.$(".square").each((i, sq) => $(sq).prependTo(this.$el))
+    this.$(`.square`).each((i, sq) => $(sq).prependTo(this.$el))
   }
 
   clearHighlights() {
-    this.$(".square.highlighted").removeClass("highlighted move-from move-to")
+    this.$(`.square.highlighted`).removeClass(`highlighted move-from move-to`)
   }
 
   highlightSquare(id, options) {
