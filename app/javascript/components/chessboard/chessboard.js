@@ -1,14 +1,36 @@
 // Basic chessboard that just renders positions
 
+import $ from 'jquery'
+require('jquery-ui/ui/widgets/droppable')
+
+import m from 'mithril'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
 import Pieces from './concerns/pieces'
-import DragAndDrop from './concerns/drag_and_drop'
+import { makeDraggable, makeDroppable } from './concerns/drag_and_drop'
 import PointAndClick from './concerns/point_and_click'
 import d from '../../dispatcher'
 
-const columns = ['a','b','c','d','e','f','g','h']
+const rows = [8, 7, 6, 5, 4, 3, 2, 1]
+const columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
+const polarities = [`light`, `dark`]
+
+function getPiece(piece) {
+  const className = piece.color + piece.type
+  return m(
+    `svg.piece.${className}.${piece.color}`, {
+      viewBox: `0 0 45 45`,
+      oncreate: vnode => makeDraggable(vnode.dom),
+    }, [
+      m(`use`, {
+        'xlink:href': `#${className}`,
+        width: `100%`,
+        height: `100%`
+      })
+    ]
+  )
+}
 
 export default class Chessboard extends Backbone.View {
 
@@ -17,13 +39,12 @@ export default class Chessboard extends Backbone.View {
   }
 
   initialize() {
+    this.initializedDroppable = false
+    this.highlights = {}
     this.cjs = new Chess()
     this.pieces = new Pieces(this)
-    this.dragAndDrop = new DragAndDrop(this)
     this.pointAndClick = new PointAndClick(this)
-    // this.render(`rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1`)
     this.listenToEvents()
-    this.dragAndDrop.init()
   }
 
   listenToEvents() {
@@ -46,10 +67,12 @@ export default class Chessboard extends Backbone.View {
     this.listenTo(d, `move:highlight`, move => {
       this.clearHighlights()
       setTimeout(() => {
-        this.highlightSquare(move.from, { className: `move-from` })
-        this.highlightSquare(move.to, { className: `move-to` })
+        this.highlightSquare(move.from, `data-from`)
+        this.highlightSquare(move.to, `data-to`)
+        this.renderVirtualDom()
       }, 10)
     })
+    this.listenTo(d, `piece:move`, ($piece, move) => this.movePiece($piece, move))
   }
 
   render(fen) {
@@ -57,22 +80,17 @@ export default class Chessboard extends Backbone.View {
       fen += ` 0 1`
     }
     this.renderFen(fen)
-    this.dragAndDrop.initDraggable()
   }
 
   renderFen(fen) {
     this.cjs.load(fen)
-    this.pieces.reset()
-    for (let row = 8; row > 0; row--) {
-      for (let j = 0; j < 8; j++) {
-        let squareId = columns[j] + row
-        let piece = this.cjs.get(squareId)
-        if (piece) {
-          this.pieces.$getPiece(piece).appendTo(this.$getSquare(squareId))
-        }
-      }
-    }
     this.fen = fen
+    this.renderVirtualDom()
+  }
+
+  renderVirtualDom() {
+    console.log(`rendering virtual dom`)
+    requestAnimationFrame(() => m.render(this.$el[0], this.virtualSquares()))
   }
 
   movePiece($piece, move) {
@@ -89,26 +107,53 @@ export default class Chessboard extends Backbone.View {
     }
   }
 
-  animating() {
-    return !!this.$el.find(`.piece:animated`).length
-  }
-
   flipBoard() {
     this.$(`.square`).each((i, sq) => this.$(sq).prependTo(this.$el))
   }
 
   clearHighlights() {
-    this.$(`.square.highlighted`).removeClass(`highlighted move-from move-to`)
+    this.highlights = {}
+    this.renderVirtualDom()
   }
 
-  highlightSquare(id, options) {
-    if (!options.className) {
-      return
+  // using data attributes to highlight because classes have
+  // some weird bug when removing classes with mithril
+  highlightSquare(id, attr) {
+    this.highlights[id] = { [attr]: `highlighted` }
+  }
+
+  virtualSquares() {
+    let i = 0
+    const squares = []
+    for (let row of rows) {
+      for (let col of columns) {
+        let id = col + row
+        const squareEls = []
+        const polarity = polarities[i % 2]
+        const piece = this.cjs.get(id)
+        if (row === 1) {
+          squareEls.push(m(`div.square-label.col.${polarity}`, {}, col))
+        }
+        if (col === `a`) {
+          squareEls.push(m(`div.square-label.row.${polarity}`, {}, row))
+        }
+        if (piece) {
+          squareEls.push(getPiece(piece))
+        }
+        const squareAttrs = {
+          'data-square': id,
+          oncreate: vnode => makeDroppable(vnode.dom, ($piece, move) => {
+            d.trigger(`piece:move`, $piece, move)
+          })
+        }
+        if (this.highlights[id]) {
+          Object.assign(squareAttrs, this.highlights[id])
+        }
+        squares.push(m(`div.square.${polarity}`, squareAttrs, squareEls))
+        i += 1
+      }
+      i += 1
     }
-    this.$getSquare(id).addClass(`highlighted ${options.className}`)
-  }
-
-  $getSquare(id) {
-    return this.$(`#${id}`)
+    return squares
   }
 }
