@@ -52,7 +52,7 @@ const getConfig = param => {
 const formattedTime = milliseconds => {
   const centisecondsStr = ("" + milliseconds % 1000)[0]
   const seconds = ~~( milliseconds / 1000 )
-  const secondsStr = ("0" + (seconds / 60)).slice(-2)
+  const secondsStr = ("0" + (seconds % 60)).slice(-2)
   const minutes = ~~( seconds / 60 )
   return `${minutes}:${secondsStr}.${centisecondsStr}`
 }
