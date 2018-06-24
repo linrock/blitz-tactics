@@ -1,5 +1,4 @@
 import m from 'mithril'
-import Backbone from 'backbone'
 import Chess from 'chess.js'
 
 import { uciToMove } from '../../utils'
@@ -8,11 +7,26 @@ const rows = [8, 7, 6, 5, 4, 3, 2, 1]
 const columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
 const polarities = [`light`, `dark`]
 
-export default class MiniChessboard extends Backbone.View {
+function getPiece(piece) {
+  const className = piece.color + piece.type
+  return m(`svg.piece.${className}.${piece.color}`, { viewBox: `0 0 45 45` },
+    [
+      m(`use`, {
+        'xlink:href': `#${className}`,
+        width: `100%`,
+        height: `100%`
+      })
+    ]
+  )
+}
+
+export default class MiniChessboard {
+  // options.el          - chessboard element
   // options.fen         - fen string
   // options.initialMove - uci string
 
-  initialize(options = {}) {
+  constructor(options = {}) {
+    this.el = options.el
     this.cjs = new Chess()
     this.highlights = {}
     if (options.fen) {
@@ -28,19 +42,6 @@ export default class MiniChessboard extends Backbone.View {
     }
   }
 
-  getPiece(piece) {
-    const className = piece.color + piece.type
-    return m(`svg.piece.${className}.${piece.color}`, { viewBox: `0 0 45 45` },
-      [
-        m(`use`, {
-          'xlink:href': `#${className}`,
-          width: `100%`,
-          height: `100%`
-        })
-      ]
-    )
-  }
-
   render(fen) {
     if (fen.split(` `).length === 4) {
       fen += ` 0 1`
@@ -49,8 +50,10 @@ export default class MiniChessboard extends Backbone.View {
   }
 
   renderFen(fen) {
-    this.cjs.load(fen)
-    requestAnimationFrame(() => m.render(this.$el[0], this.virtualSquares()))
+    if (fen !== this.cjs.fen()) {
+      this.cjs.load(fen)
+    }
+    requestAnimationFrame(() => m.render(this.el, this.virtualSquares()))
   }
 
   virtualSquares() {
@@ -62,7 +65,7 @@ export default class MiniChessboard extends Backbone.View {
         const pieces = []
         const piece = this.cjs.get(id)
         if (piece) {
-          pieces.push(this.getPiece(piece))
+          pieces.push(getPiece(piece))
         }
         const squareAttrs = {}
         if (this.highlights[id]) {
