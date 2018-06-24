@@ -2,9 +2,9 @@
 
 module SpeedrunLevelCreator
   LIMITS = {
-    'quick': 30,
-    'endurance': 100,
-    'marathon': 500
+    'quick': 50,
+    'endurance': 150,
+    'marathon': 800,
   }
 
   def quick_puzzles
@@ -14,12 +14,12 @@ module SpeedrunLevelCreator
 
   def endurance_puzzles
     NewLichessPuzzle.rating_range(1300, 1800).white_to_move
-      .vote_gt(1500).attempts_gt(10000)
+      .vote_gt(1750).attempts_gt(10000)
   end
 
   def marathon_puzzles
     NewLichessPuzzle.rating_range(0, 1900).white_to_move
-      .vote_gt(560).attempts_gt(1000)
+      .vote_gt(650).attempts_gt(1000)
   end
 
   def count_puzzle_pools

@@ -4,22 +4,22 @@ module InfinityLevelCreator
 
   def easy_puzzles
     NewLichessPuzzle.rating_range(0, 1500).white_to_move
-      .vote_gt(70).attempts_gt(1000)
+      .vote_gt(100).attempts_gt(1000)
   end
 
   def medium_puzzles
-    NewLichessPuzzle.rating_range(1500, 1800).white_to_move
-      .vote_gt(70).attempts_gt(4000)
+    NewLichessPuzzle.rating_range(1500, 1750).white_to_move
+      .vote_gt(100).attempts_gt(4000)
   end
 
   def hard_puzzles
-    NewLichessPuzzle.rating_range(1800, 2000).white_to_move
-      .vote_gt(70).attempts_gt(4000)
+    NewLichessPuzzle.rating_range(1750, 2000).white_to_move
+      .vote_gt(100).attempts_gt(4000)
   end
 
   def insane_puzzles
     NewLichessPuzzle.rating_gt(2000).white_to_move
-      .vote_gt(50).attempts_gt(700)
+      .vote_gt(70).attempts_gt(700)
   end
 
   def count_puzzle_pools

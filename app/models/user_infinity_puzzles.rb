@@ -13,7 +13,7 @@ class UserInfinityPuzzles
     puzzles = new_lichess_puzzles_after(target_difficulty, new_lichess_puzzle_id)
     if puzzles.length == 0
       puzzles = [
-        InfinityLevel.find_by(difficulty: target_difficulty).last_puzzle.puzzle
+        InfinityLevel.find_by(difficulty: target_difficulty).last_puzzle
       ]
     end
     PuzzlesJson.new(puzzles).to_json.merge({
