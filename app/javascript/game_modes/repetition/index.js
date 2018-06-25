@@ -25,7 +25,8 @@ export default class PrecisionMode {
 
     new PuzzlePlayer({
       shuffle: true,
-      loopPuzzles: true
+      loopPuzzles: true,
+      source: `${window.location.pathname}/puzzles.json`
     })
   }
 

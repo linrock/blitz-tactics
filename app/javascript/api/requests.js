@@ -27,6 +27,5 @@ export function speedrunCompleted(levelName, elapsedTimeMs) {
 }
 
 export function fetchPuzzles(source) {
-  const defaultSource = `${window.location.pathname}/puzzles.json`
-  return client.get(source || defaultSource).then(resp => resp.data)
+  return client.get(source).then(resp => resp.data)
 }
