@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import Backbone from 'backbone'
 
 import d from '../../../dispatcher'
@@ -20,8 +19,8 @@ export default class SetDifficulty extends Backbone.View {
   }
 
   highlight(difficulty) {
-    this.$el.find(".selected").removeClass("selected")
-    this.$el.find(`[data-difficulty="${difficulty}"]`).addClass("selected")
+    this.$(".selected").removeClass("selected")
+    this.$(`[data-difficulty="${difficulty}"]`).addClass("selected")
   }
 
   _selectDifficulty(e) {

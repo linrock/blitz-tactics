@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
