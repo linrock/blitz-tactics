@@ -37,21 +37,21 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="game-modes">
-      <div class="mode accuracy">
-        <h3><a href="<%= @level.path %>">Repetition</a></h3>
-        <h4 class="game-mode-description">
-          Use repetition to learn. Quickly solve puzzles
-          without mistakes to unlock the next level.
-        </h4>
-        <%= homepage_miniboard_link(@level.path, {
-              fen: @level.first_puzzle.fen,
-              initial_move: @level.first_puzzle.initial_move_uci
-            }) %>
-        <div class="under-mini-board">
-          <%= @level.display_name %>
-        </div>
+  <div class="game-modes">
+    <div class="mode accuracy">
+      <h3><a href="<%= @level.path %>">Repetition</a></h3>
+      <h4 class="game-mode-description">
+        Use repetition to learn. Quickly solve puzzles
+        without mistakes to unlock the next level.
+      </h4>
+      <%= homepage_miniboard_link(@level.path, {
+            fen: @level.first_puzzle.fen,
+            initial_move: @level.first_puzzle.initial_move_uci
+          }) %>
+      <div class="under-mini-board">
+        <%= @level.display_name %>
       </div>
     </div>
   </div>
