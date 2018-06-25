@@ -7,7 +7,7 @@ import { infinityPuzzleSolved } from '../../api/requests'
 import d from '../../dispatcher'
 
 const apiPath = `/infinity/puzzles`
-const fetchThreshold = 5             // fetch more when this many puzzles remain
+const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain
 
 export default class InfinityMode {
   constructor() {
