@@ -66,7 +66,9 @@ export default class Chessboard extends Backbone.View {
         this.renderVirtualDom()
       }, 10)
     })
-    this.listenTo(d, `piece:move`, ($piece, move) => this.movePiece($piece, move))
+    this.listenTo(d, `piece:move`, (pieceEl, move) => {
+      this.movePiece(pieceEl, move)
+    })
   }
 
   render(fen) {
@@ -86,10 +88,10 @@ export default class Chessboard extends Backbone.View {
     requestAnimationFrame(() => m.render(this.$el[0], this.virtualSquares()))
   }
 
-  movePiece($piece, move) {
+  movePiece(pieceEl, move) {
     const { from, to } = move
-    if (($piece.hasClass(`wp`) && from[1] === `7` && to[1] === `8`) ||
-        ($piece.hasClass(`bp`) && from[1] === `2` && to[1] === `1`)) {
+    if ((pieceEl.classList.contains(`wp`) && from[1] === `7` && to[1] === `8`) ||
+        (pieceEl.classList.contains(`bp`) && from[1] === `2` && to[1] === `1`)) {
       d.trigger(`move:promotion`, { fen: this.fen, move })
     } else {
       this.cjs.load(this.fen)
@@ -138,8 +140,8 @@ export default class Chessboard extends Backbone.View {
         }
         const squareAttrs = {
           'data-square': id,
-          oncreate: vnode => makeDroppable(vnode.dom, ($piece, move) => {
-            d.trigger(`piece:move`, $piece, move)
+          oncreate: vnode => makeDroppable(vnode.dom, (pieceEl, move) => {
+            d.trigger(`piece:move`, pieceEl, move)
           }),
           id,
         }

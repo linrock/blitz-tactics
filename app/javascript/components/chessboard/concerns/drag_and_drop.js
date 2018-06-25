@@ -1,9 +1,3 @@
-import $ from 'jquery'
-
-// require('jquery-ui')
-// require('jquery-ui/ui/widgets/draggable')
-// require('jquery-ui/ui/widgets/droppable')
-
 const interact = require('interactjs')
 
 export function makeDraggable(pieceEl) {
@@ -16,11 +10,6 @@ export function makeDraggable(pieceEl) {
     maxPerElement: Infinity
   })
   .on('mousedown', () => dragStarted = false)
-  .on('click', e => {
-    if (dragStarted) {
-      e.stopImmediatePropagation()
-    }
-  })
   .on('dragstart', e => {
     dragStarted = true
     const rect = interact.getElementRect(e.target)
@@ -43,44 +32,23 @@ export function makeDraggable(pieceEl) {
   .on('dragend', e => {
     e.currentTarget.style = `transform: translate3d(0, 0, 0); z-index: 1`
   })
-
-  /*
-  $(pieceEl).draggable({
-    stack: `.piece`,
-    distance: 10,
-    revert: true,
-    revertDuration: 0,
-    containment: `body`,
-    scroll: false
+  .on('click', e => {
+    if (dragStarted) {
+      e.stopImmediatePropagation()
+    }
   })
-  */
 }
 
 export function makeDroppable(squareEl, onDrop) {
   interact(squareEl).dropzone({
     accept: '.piece',
     ondrop: event => {
-      const $piece = $(event.draggable.target)
+      const pieceEl = event.draggable.target
       const move = {
         from: event.draggable.target.parentNode.dataset.square,
         to: event.target.dataset.square
       }
-      onDrop($piece, move)
+      onDrop(pieceEl, move)
     }
   })
-
-  /*
-  $(squareEl).droppable({
-    accept: `.piece`,
-    tolerance: `pointer`,
-    drop: (event, ui) => {
-      const $piece = $(ui.draggable)
-      const move = {
-        from: $piece.parents(`.square`).data(`square`),
-        to: $(event.target).data(`square`)
-      }
-      onDrop($piece, move)
-    }
-  })
-  */
 }

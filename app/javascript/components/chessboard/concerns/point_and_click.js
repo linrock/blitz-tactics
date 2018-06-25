@@ -29,8 +29,8 @@ export default class PointAndClick {
         from: this.selectedSquare,
         to: square
       }
-      const $piece = this.board.$(`#${this.selectedSquare} .piece`)
-      this.board.movePiece($piece, move)
+      const pieceEl = this.board.$el[0].querySelector(`#${this.selectedSquare} .piece`)
+      this.board.movePiece(pieceEl, move)
       this.clearSelected()
     }
   }
