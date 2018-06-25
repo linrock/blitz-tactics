@@ -5,26 +5,9 @@ import Backbone from 'backbone'
 import Chess from 'chess.js'
 
 import { makeDraggable, makeDroppable } from './concerns/drag_and_drop'
+import virtualPiece from './concerns/pieces'
 import PointAndClick from './concerns/point_and_click'
 import d from '../../dispatcher'
-
-const polarities = [`light`, `dark`]
-
-function getPiece(piece) {
-  const className = piece.color + piece.type
-  return m(
-    `svg.piece.${className}.${piece.color}`, {
-      viewBox: `0 0 45 45`,
-      oncreate: vnode => makeDraggable(vnode.dom),
-    }, [
-      m(`use`, {
-        'xlink:href': `#${className}`,
-        width: `100%`,
-        height: `100%`
-      })
-    ]
-  )
-}
 
 export default class Chessboard extends Backbone.View {
 
@@ -35,6 +18,7 @@ export default class Chessboard extends Backbone.View {
   initialize() {
     this.rows = [8, 7, 6, 5, 4, 3, 2, 1]
     this.columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
+    this.polarities = [`light`, `dark`]
     this.highlights = {}
     this.cjs = new Chess()
     this.pointAndClick = new PointAndClick(this)
@@ -125,8 +109,8 @@ export default class Chessboard extends Backbone.View {
       for (let k = 0, c = this.columns.length; k < c; k++) {
         const row = this.rows[j]
         const col = this.columns[k]
+        const polarity = this.polarities[i % 2]
         const id = `${col}${row}`
-        const polarity = polarities[i % 2]
         const squareEls = []
         if (j === 7) {
           squareEls.push(m(`div.square-label.col.${polarity}`, {}, col))
@@ -136,7 +120,7 @@ export default class Chessboard extends Backbone.View {
         }
         const piece = this.cjs.get(id)
         if (piece) {
-          squareEls.push(getPiece(piece))
+          squareEls.push(virtualPiece(piece, vnode => makeDraggable(vnode.dom)))
         }
         const squareAttrs = {
           'data-square': id,

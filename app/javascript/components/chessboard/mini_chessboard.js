@@ -1,24 +1,12 @@
 import m from 'mithril'
 import Chess from 'chess.js'
 
+import virtualPiece from './concerns/pieces'
 import { uciToMove } from '../../utils'
 
 const rows = [8, 7, 6, 5, 4, 3, 2, 1]
 const columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
 const polarities = [`light`, `dark`]
-
-function getPiece(piece) {
-  const className = piece.color + piece.type
-  return m(`svg.piece.${className}.${piece.color}`, { viewBox: `0 0 45 45` },
-    [
-      m(`use`, {
-        'xlink:href': `#${className}`,
-        width: `100%`,
-        height: `100%`
-      })
-    ]
-  )
-}
 
 export default class MiniChessboard {
   // options.el          - chessboard element
@@ -65,7 +53,7 @@ export default class MiniChessboard {
         const pieces = []
         const piece = this.cjs.get(id)
         if (piece) {
-          pieces.push(getPiece(piece))
+          pieces.push(virtualPiece(piece))
         }
         const squareAttrs = {}
         if (this.highlights[id]) {
