@@ -1,13 +1,9 @@
 // Basic chessboard that just renders positions
 
-import $ from 'jquery'
-require('jquery-ui/ui/widgets/droppable')
-
 import m from 'mithril'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
-import Pieces from './concerns/pieces'
 import { makeDraggable, makeDroppable } from './concerns/drag_and_drop'
 import PointAndClick from './concerns/point_and_click'
 import d from '../../dispatcher'
@@ -42,7 +38,6 @@ export default class Chessboard extends Backbone.View {
     this.initializedDroppable = false
     this.highlights = {}
     this.cjs = new Chess()
-    this.pieces = new Pieces(this)
     this.pointAndClick = new PointAndClick(this)
     this.listenToEvents()
   }
@@ -89,7 +84,6 @@ export default class Chessboard extends Backbone.View {
   }
 
   renderVirtualDom() {
-    console.log(`rendering virtual dom`)
     requestAnimationFrame(() => m.render(this.$el[0], this.virtualSquares()))
   }
 
@@ -113,7 +107,6 @@ export default class Chessboard extends Backbone.View {
 
   clearHighlights() {
     this.highlights = {}
-    this.renderVirtualDom()
   }
 
   // using data attributes to highlight because classes have
@@ -144,7 +137,8 @@ export default class Chessboard extends Backbone.View {
           'data-square': id,
           oncreate: vnode => makeDroppable(vnode.dom, ($piece, move) => {
             d.trigger(`piece:move`, $piece, move)
-          })
+          }),
+          id,
         }
         if (this.highlights[id]) {
           Object.assign(squareAttrs, this.highlights[id])
