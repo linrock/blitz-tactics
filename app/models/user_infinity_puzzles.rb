@@ -11,9 +11,6 @@ class UserInfinityPuzzles
   def next_puzzle_set(difficulty = nil, puzzle_id = nil)
     target_difficulty = difficulty || current_difficulty
     puzzles = infinity_puzzles_after(target_difficulty, puzzle_id)
-    if puzzles.length == 0
-      puzzles = [infinity_level(target_difficulty).last_puzzle]
-    end
     {
       puzzles: puzzles,
       difficulty: target_difficulty,
@@ -35,7 +32,7 @@ class UserInfinityPuzzles
     if @user.present?
       @user.infinity_puzzles_after(difficulty, puzzle_id)
     else
-      infinity_level(difficulty).puzzles_after_id(nil)
+      infinity_level(difficulty).puzzles_after_id(puzzle_id)
     end
   end
 end
