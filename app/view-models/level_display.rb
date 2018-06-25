@@ -15,9 +15,9 @@ class LevelDisplay
   def display_name
     return unless @level.present?
     if @level.name
-      "#{@level.number} — #{@level.name}"
+      "Level #{@level.number} — #{@level.name}"
     else
-      @level.number
+      "Level #{@level.number}"
     end
   end
 end

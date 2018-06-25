@@ -23,8 +23,8 @@ class GameModes::RepetitionController < ApplicationController
 
   # complete a round of puzzles in a level
   def attempt
-    if @user
-      attempt = @user.level_attempts.find_or_create_by(level_id: @level.id)
+    if current_user
+      attempt = current_user.level_attempts.find_or_create_by(level_id: @level.id)
       attempt.update_attribute :last_attempt_at, Time.now
       attempt.completed_rounds.create(round_params)
     end
@@ -35,7 +35,7 @@ class GameModes::RepetitionController < ApplicationController
   def complete
     next_level = @level.next_level
     # TODO handle the very last level
-    @user&.unlock_level(next_level.id)
+    current_user&.unlock_level(next_level.number)
     render json: {
       next: {
         href: next_level.path

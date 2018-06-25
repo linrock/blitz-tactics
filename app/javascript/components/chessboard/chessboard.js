@@ -104,8 +104,8 @@ export default class Chessboard extends Backbone.View {
   virtualSquares() {
     let i = 0
     const squares = []
-    for (let j = 0, r = this.rows.length; j < r; j++) {
-      for (let k = 0, c = this.columns.length; k < c; k++) {
+    for (let j = 0; j < 8; j++) {
+      for (let k = 0; k < 8; k++) {
         const row = this.rows[j]
         const col = this.columns[k]
         const polarity = this.polarities[i % 2]

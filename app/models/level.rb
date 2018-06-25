@@ -21,9 +21,8 @@ class Level < ActiveRecord::Base
     slug == "level-1"
   end
 
-  # ex. Level 2
   def number
-    slug.gsub('-', ' ').capitalize
+    slug[/(\d+)/, 1].to_i
   end
 
   def next_level
