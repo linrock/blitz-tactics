@@ -51,9 +51,6 @@ export default class Chessboard extends Backbone.View {
         this.renderVirtualDom()
       }, 10)
     })
-    this.listenTo(d, `piece:move`, (pieceEl, move) => {
-      this.movePiece(pieceEl, move)
-    })
   }
 
   render(fen) {
@@ -126,8 +123,8 @@ export default class Chessboard extends Backbone.View {
         }
         const squareAttrs = {
           'data-square': id,
-          oncreate: vnode => makeDroppable(vnode.dom, (pieceEl, move) => {
-            d.trigger(`piece:move`, pieceEl, move)
+          oncreate: vnode => makeDroppable(vnode.dom, this, (pieceEl, move) => {
+            this.movePiece(pieceEl, move)
           }),
           id,
         }

@@ -9,8 +9,8 @@ export function makeDraggable(pieceEl) {
   interact(pieceEl)
     .draggable({ maxPerElement: Infinity })
     .styleCursor(false)
-    .on('mousedown', () => dragStarted = false)
-    .on('dragstart', e => {
+    .on(`mousedown`, () => dragStarted = false)
+    .on(`dragstart`, e => {
       dragStarted = true
       const rect = interact.getElementRect(e.target)
       const startPos = {
@@ -20,7 +20,7 @@ export function makeDraggable(pieceEl) {
       initialOffset.x = e.x0 - startPos.x
       initialOffset.y = e.y0 - startPos.y
     })
-    .on('dragmove', e => {
+    .on(`dragmove`, e => {
       const dx = e.clientX - e.clientX0 + initialOffset.x
       const dy = e.clientY - e.clientY0 + initialOffset.y
       const styles = [
@@ -29,26 +29,26 @@ export function makeDraggable(pieceEl) {
       ]
       e.currentTarget.style = styles.join(`;`)
     })
-    .on('dragend', e => {
+    .on(`dragend`, e => {
       e.currentTarget.style = `transform: translate3d(0, 0, 0); z-index: 1`
     })
-    .on('click', e => {
+    .on(`click`, e => {
       if (dragStarted) {
         e.stopImmediatePropagation()
       }
     })
 }
 
-export function makeDroppable(squareEl, onDrop) {
+export function makeDroppable(squareEl, context, onDrop) {
   interact(squareEl).dropzone({
-    accept: '.piece',
+    accept: `.piece`,
     ondrop: event => {
       const pieceEl = event.draggable.target
       const move = {
         from: event.draggable.target.parentNode.dataset.square,
         to: event.target.dataset.square
       }
-      onDrop(pieceEl, move)
+      onDrop.call(context, pieceEl, move)
     }
   })
 }
