@@ -39,7 +39,8 @@ module SpeedrunLevelCreator
       ActiveRecord::Base.logger.silence do
         send("#{name}_puzzles").ascending_rating.each do |puzzle|
           break if total_levels >= limit
-          if level.add_puzzle(puzzle)
+          puzzle = level.speedrun_puzzles.create(data: puzzle.simplified_data)
+          unless puzzle.id.nil?
             num_levels_added += 1
             total_levels += 1
           end

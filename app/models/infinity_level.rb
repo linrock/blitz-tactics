@@ -12,11 +12,6 @@ class InfinityLevel < ActiveRecord::Base
     scope difficulty, -> { find_or_create_by(difficulty: difficulty) }
   end
 
-  def add_puzzle(new_lichess_puzzle)
-    puzzle = infinity_puzzles.create(data: new_lichess_puzzle.simplified_data)
-    puzzle.id ? true : false
-  end
-
   def puzzles_after_id(puzzle_id)
     if puzzle_id.nil?
       puzzles = infinity_puzzles

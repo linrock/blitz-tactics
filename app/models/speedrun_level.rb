@@ -20,11 +20,6 @@ class SpeedrunLevel < ActiveRecord::Base
     first_level.first_puzzle
   end
 
-  def add_puzzle(new_lichess_puzzle)
-    puzzle = speedrun_puzzles.create(data: new_lichess_puzzle.simplified_data)
-    puzzle.id ? true : false
-  end
-
   def first_puzzle
     speedrun_puzzles.first
   end

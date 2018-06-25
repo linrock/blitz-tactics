@@ -34,7 +34,8 @@ module InfinityLevelCreator
       level = InfinityLevel.send difficulty
       ActiveRecord::Base.logger.silence do
         send("#{difficulty}_puzzles").ascending_rating.each do |puzzle|
-          if level.add_puzzle(puzzle)
+          puzzle = level.infinity_puzzles.create(data: puzzle.simplified_data)
+          unless puzzle.id.nil?
             num_levels_added += 1
           end
         end
