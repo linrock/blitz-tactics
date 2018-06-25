@@ -270,38 +270,6 @@ ALTER SEQUENCE public.lichess_puzzles_id_seq OWNED BY public.lichess_puzzles.id;
 
 
 --
--- Name: new_lichess_puzzles; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.new_lichess_puzzles (
-    id bigint NOT NULL,
-    puzzle_id integer NOT NULL,
-    data jsonb NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: new_lichess_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.new_lichess_puzzles_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: new_lichess_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.new_lichess_puzzles_id_seq OWNED BY public.new_lichess_puzzles.id;
-
-
---
 -- Name: positions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -536,13 +504,6 @@ ALTER TABLE ONLY public.lichess_puzzles ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
--- Name: new_lichess_puzzles id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.new_lichess_puzzles ALTER COLUMN id SET DEFAULT nextval('public.new_lichess_puzzles_id_seq'::regclass);
-
-
---
 -- Name: positions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -639,14 +600,6 @@ ALTER TABLE ONLY public.levels
 
 ALTER TABLE ONLY public.lichess_puzzles
     ADD CONSTRAINT lichess_puzzles_pkey PRIMARY KEY (id);
-
-
---
--- Name: new_lichess_puzzles new_lichess_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.new_lichess_puzzles
-    ADD CONSTRAINT new_lichess_puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -761,13 +714,6 @@ CREATE UNIQUE INDEX index_lichess_puzzles_on_puzzle_id ON public.lichess_puzzles
 
 
 --
--- Name: index_new_lichess_puzzles_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_new_lichess_puzzles_on_puzzle_id ON public.new_lichess_puzzles USING btree (puzzle_id);
-
-
---
 -- Name: index_positions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -840,7 +786,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20160411003705'),
 ('20160417190025'),
 ('20161125221817'),
-('20180619172700'),
 ('20180620032206'),
 ('20180620084825'),
 ('20180621081826'),
