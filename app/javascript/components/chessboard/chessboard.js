@@ -8,8 +8,6 @@ import { makeDraggable, makeDroppable } from './concerns/drag_and_drop'
 import PointAndClick from './concerns/point_and_click'
 import d from '../../dispatcher'
 
-const rows = [8, 7, 6, 5, 4, 3, 2, 1]
-const columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
 const polarities = [`light`, `dark`]
 
 function getPiece(piece) {
@@ -35,7 +33,8 @@ export default class Chessboard extends Backbone.View {
   }
 
   initialize() {
-    this.initializedDroppable = false
+    this.rows = [8, 7, 6, 5, 4, 3, 2, 1]
+    this.columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
     this.highlights = {}
     this.cjs = new Chess()
     this.pointAndClick = new PointAndClick(this)
@@ -102,7 +101,9 @@ export default class Chessboard extends Backbone.View {
   }
 
   flipBoard() {
-    this.$(`.square`).each((i, sq) => this.$(sq).prependTo(this.$el))
+    this.columns.reverse()
+    this.rows.reverse()
+    this.renderVirtualDom()
   }
 
   clearHighlights() {
@@ -118,18 +119,20 @@ export default class Chessboard extends Backbone.View {
   virtualSquares() {
     let i = 0
     const squares = []
-    for (let row of rows) {
-      for (let col of columns) {
-        let id = col + row
-        const squareEls = []
+    for (let j = 0, r = this.rows.length; j < r; j++) {
+      for (let k = 0, c = this.columns.length; k < c; k++) {
+        const row = this.rows[j]
+        const col = this.columns[k]
+        const id = `${col}${row}`
         const polarity = polarities[i % 2]
-        const piece = this.cjs.get(id)
-        if (row === 1) {
+        const squareEls = []
+        if (j === 7) {
           squareEls.push(m(`div.square-label.col.${polarity}`, {}, col))
         }
-        if (col === `a`) {
+        if (k === 0) {
           squareEls.push(m(`div.square-label.row.${polarity}`, {}, row))
         }
+        const piece = this.cjs.get(id)
         if (piece) {
           squareEls.push(getPiece(piece))
         }
