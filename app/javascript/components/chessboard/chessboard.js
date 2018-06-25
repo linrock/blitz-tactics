@@ -23,7 +23,12 @@ export default class Chessboard extends Backbone.View {
     this.highlights = {}
     this.cjs = new Chess()
     this.pointAndClick = new PointAndClick(this)
+    this.disableMobileDragScroll()
     this.listenToEvents()
+  }
+
+  disableMobileDragScroll() {
+    this.$el[0].addEventListener('touchmove', event => event.preventDefault())
   }
 
   listenToEvents() {
