@@ -16,6 +16,7 @@ export default class Chessboard extends Backbone.View {
   }
 
   initialize() {
+    this.flipped = false
     this.rows = [8, 7, 6, 5, 4, 3, 2, 1]
     this.columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
     this.polarities = [`light`, `dark`]
@@ -87,6 +88,7 @@ export default class Chessboard extends Backbone.View {
   }
 
   flipBoard() {
+    this.flipped = !this.flipped
     this.columns.reverse()
     this.rows.reverse()
     this.renderVirtualDom()
