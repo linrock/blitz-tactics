@@ -22,8 +22,8 @@ export default class MiniChessboard {
       if (options.initialMove) {
         setTimeout(() => {
           const { from, to } = this.cjs.move(uciToMove(options.initialMove))
-          this.highlightSquare(from, `#fffcdd`)
-          this.highlightSquare(to, `#fff79b`)
+          this.highlightSquare(from, { class: `move-from` })
+          this.highlightSquare(to, { class: `move-to` })
           this.render(this.cjs.fen())
         }, 1000)
       }
@@ -55,10 +55,7 @@ export default class MiniChessboard {
         if (piece) {
           pieces.push(virtualPiece(piece))
         }
-        const squareAttrs = {}
-        if (this.highlights[id]) {
-          squareAttrs.style = this.highlights[id]
-        }
+        const squareAttrs = this.highlights[id] || {}
         squares.push(m(`div.square.${polarities[i % 2]}`, squareAttrs, pieces))
         i += 1
       }
@@ -67,7 +64,7 @@ export default class MiniChessboard {
     return squares
   }
 
-  highlightSquare(id, color) {
-    this.highlights[id] = { background: color }
+  highlightSquare(squareId, squareAttrs) {
+    this.highlights[squareId] = squareAttrs
   }
 }
