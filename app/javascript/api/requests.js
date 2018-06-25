@@ -8,12 +8,12 @@ export function infinityPuzzleSolved(puzzle) {
   return client.post(`/infinity/puzzles`, { puzzle }).then(resp => resp.data)
 }
 
-export function repetitionLevelAttempted(levelId, round) {
-  return client.post(`/levels/${levelId}/attempt`, { round })
+export function repetitionLevelAttempted(levelPath, round) {
+  return client.post(`${levelPath}/attempt`, { round })
 }
 
-export function repetitionLevelCompleted(levelId) {
-  return client.post(`/levels/${levelId}/complete`).then(resp => resp.data)
+export function repetitionLevelCompleted(levelPath) {
+  return client.post(`${levelPath}/complete`).then(resp => resp.data)
 }
 
 export function speedrunCompleted(levelName, elapsedTimeMs) {

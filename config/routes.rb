@@ -4,29 +4,29 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   # infinity mode
-  get '/infinity'                 => 'game_modes/infinity#index'
-  get '/infinity/puzzles'         => 'game_modes/infinity#puzzles'
-  post '/infinity/puzzles'        => 'game_modes/infinity#puzzle_solved'
+  get '/infinity'                => 'game_modes/infinity#index'
+  get '/infinity/puzzles'        => 'game_modes/infinity#puzzles'
+  post '/infinity/puzzles'       => 'game_modes/infinity#puzzle_solved'
 
   # speedrun mode
-  get '/speedrun'                 => 'game_modes/speedrun#index'
-  get '/speedrun/puzzles'         => 'game_modes/speedrun#puzzles'
-  post '/speedrun'                => 'game_modes/speedrun#complete'
+  get '/speedrun'                => 'game_modes/speedrun#index'
+  get '/speedrun/puzzles'        => 'game_modes/speedrun#puzzles'
+  post '/speedrun'               => 'game_modes/speedrun#complete'
 
   # repetition mode
-  get '/repetition'               => 'game_modes/repetition#index'
-  get '/level-:level_num'         => 'game_modes/repetition#index'
-  get '/level-:level_num/puzzles' => 'game_modes/repetition#puzzles'
-  post '/levels/:id/attempt'      => 'game_modes/repetition#attempt'
-  post '/levels/:id/complete'     => 'game_modes/repetition#complete'
+  get '/repetition'              => 'game_modes/repetition#index'
+  get '/level-:number'           => 'game_modes/repetition#index'
+  get '/level-:number/puzzles'   => 'game_modes/repetition#puzzles'
+  post '/level-:number/attempt'  => 'game_modes/repetition#attempt'
+  post '/level-:number/complete' => 'game_modes/repetition#complete'
 
   # pages
-  get '/positions'             => 'pages#positions'
-  get '/positions/:id'         => 'pages#position'
-  get '/position'              => 'pages#position'
-  get '/pawn-endgames'         => 'pages#pawn_endgames'
-  get '/scoreboard'            => 'pages#scoreboard'
-  get '/about'                 => 'pages#about'
+  get '/positions'               => 'pages#positions'
+  get '/positions/:id'           => 'pages#position'
+  get '/position'                => 'pages#position'
+  get '/pawn-endgames'           => 'pages#pawn_endgames'
+  get '/scoreboard'              => 'pages#scoreboard'
+  get '/about'                   => 'pages#about'
 
   # pre-defined position trainer routes
   static_routes = StaticRoutes.new
@@ -36,6 +36,6 @@ Rails.application.routes.draw do
   end
 
   # user routes
-  put '/users/me'              => 'users#update'
-  get '/:username'             => 'users#show'
+  put '/users/me'                => 'users#update'
+  get '/:username'               => 'users#show'
 end

@@ -18,6 +18,9 @@
   <%= render partial: "layouts/main_header" %>
   <%= yield %>
   <%= render partial: "static/snippets/chess_piece_svgs" %>
+  <script>
+    blitz.loggedIn = <%= current_user ? true : false %>;
+  </script>
   <%= render partial: "static/snippets/google_analytics" %>
 </body>
 </html>

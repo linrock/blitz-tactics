@@ -33,14 +33,14 @@ export default class PrecisionMode {
   listenForEvents() {
     new Listener({
       // level and round completion events
-      'round:complete': (levelId, payload) => {
-        if (levelId) {
-          repetitionLevelAttempted(levelId, payload)
+      'round:complete': (levelPath, payload) => {
+        if (levelPath) {
+          repetitionLevelAttempted(levelPath, payload)
         }
       },
 
-      'level:complete': levelId => {
-        repetitionLevelCompleted(levelId)
+      'level:complete': levelPath => {
+        repetitionLevelCompleted(levelPath)
           .then(data => d.trigger("level:unlocked", data.next.href))
       },
 
@@ -53,7 +53,7 @@ export default class PrecisionMode {
         this.level.nextPuzzle()
         d.trigger("progress:update", this.level.getProgress())
         if (this.level.nextLevelUnlocked()) {
-          d.trigger('level:complete', blitz.levelId)
+          d.trigger('level:complete', blitz.levelPath)
         }
       },
 

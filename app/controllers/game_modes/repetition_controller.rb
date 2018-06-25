@@ -1,7 +1,7 @@
 # repetition mode puzzles
 
 class GameModes::RepetitionController < ApplicationController
-  before_action :set_level, only: [:index, :puzzles]
+  before_action :set_level
 
   # show a level in repetition mode
   def index
@@ -24,7 +24,7 @@ class GameModes::RepetitionController < ApplicationController
   # complete a round of puzzles in a level
   def attempt
     if @user
-      attempt = @user.level_attempts.find_or_create_by(level_id: params[:id])
+      attempt = @user.level_attempts.find_or_create_by(level_id: @level.id)
       attempt.update_attribute :last_attempt_at, Time.now
       attempt.completed_rounds.create(round_params)
     end
@@ -33,7 +33,7 @@ class GameModes::RepetitionController < ApplicationController
 
   # successfully complete a level
   def complete
-    next_level = Level.find(params[:id]).next_level
+    next_level = @level.next_level
     # TODO handle the very last level
     @user&.unlock_level(next_level.id)
     render json: {
@@ -46,7 +46,7 @@ class GameModes::RepetitionController < ApplicationController
   private
 
   def set_level
-    @level = Level.by_number(params[:level_num]) if params[:level_num].present?
+    @level = Level.by_number(params[:number]) if params[:number].present?
   end
 
   def round_params
