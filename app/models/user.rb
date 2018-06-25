@@ -71,19 +71,23 @@ class User < ActiveRecord::Base
 
   # repetition mode methods
 
-  def unlock_level(level_id)
-    level_ids = Set.new(self.profile["levels_unlocked"])
-    level_ids << level_id
-    self.profile["levels_unlocked"] = level_ids.to_a
+  def unlocked_level_numbers
+    Set.new(self.profile["levels_unlocked"])
+  end
+
+  def unlock_level(level_number)
+    level_nums = unlocked_level_numbers
+    level_nums << level_number
+    self.profile["levels_unlocked"] = level_nums.to_a
     self.save!
   end
 
   def num_repetition_levels_unlocked
-    Set.new(self.profile["levels_unlocked"]).count
+    unlocked_level_numbers.count
   end
 
   def highest_level_unlocked
-    level = Level.find_by(id: self.profile["levels_unlocked"].max)
+    level = Level.by_number(unlocked_level_numbers.max)
     return level if level.present?
     Level.by_number(1)
   end
