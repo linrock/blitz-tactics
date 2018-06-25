@@ -17,14 +17,14 @@ export default class PositionTrainer extends Backbone.View {
 
   initialize() {
     new InteractiveBoard
-    this.depth = getConfig("depth") || SEARCH_DEPTH
-    this.engine = new StockfishEngine({ multipv: 1 })
-    this.setDebugHelpers()
     this.listenForEvents()
-    d.trigger("fen:set", this.initialFen)
     if (this.computerColor === "w") {
       d.trigger("board:flip")
     }
+    this.depth = getConfig("depth") || SEARCH_DEPTH
+    this.engine = new StockfishEngine({ multipv: 1 })
+    this.setDebugHelpers()
+    d.trigger("fen:set", this.initialFen)
     new Instructions({ fen: this.initialFen })
     new Actions()
   }
