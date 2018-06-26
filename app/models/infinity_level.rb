@@ -29,6 +29,12 @@ class InfinityLevel < ActiveRecord::Base
     infinity_puzzles.last
   end
 
+  def random_puzzle_id
+    min_puzzle_id = infinity_puzzles.minimum(:id)
+    max_puzzle_id = infinity_puzzles.maximum(:id) - 100
+    min_puzzle_id + (rand * max_puzzle_id).to_i
+  end
+
   def num_puzzles
     @num_puzzles ||= infinity_puzzles.count
   end

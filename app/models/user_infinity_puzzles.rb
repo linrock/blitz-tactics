@@ -57,17 +57,17 @@ class UserInfinityPuzzles
 
   def last_solved_infinity_puzzle_id(difficulty)
     if @user.present?
+      # last solved infinity puzzle for logged-in users
       @user.solved_infinity_puzzles
         .with_difficulty(difficulty).last&.infinity_puzzle_id
+    else
+      # random sample of puzzle set for anonymous users
+      infinity_level(difficulty).random_puzzle_id
     end
   end
 
   def infinity_puzzles_after(difficulty, puzzle_id)
-    if @user.present?
-      target_puzzle_id = puzzle_id || last_solved_infinity_puzzle_id(difficulty)
-    else
-      target_puzzle_id = puzzle_id
-    end
+    target_puzzle_id = puzzle_id || last_solved_infinity_puzzle_id(difficulty)
     infinity_level(difficulty).puzzles_after_id(target_puzzle_id)
   end
 end
