@@ -50,10 +50,6 @@ class User < ActiveRecord::Base
     @num_speedruns_completed ||= completed_speedruns.count
   end
 
-  def best_speedrun_time
-    completed_speedruns.formatted_fastest_time
-  end
-
   def speedrun_stats
     SpeedrunLevel.all.map do |level|
       [
@@ -77,10 +73,6 @@ class User < ActiveRecord::Base
       .joins(:repetition_level)
       .order('repetition_levels.number desc')
       .first&.repetition_level&.number || 0
-  end
-
-  def highest_repetition_level_unlocked
-    RepetitionLevel.number(highest_repetition_level_number_completed + 1)
   end
 
   def round_times_for_level_id(repetition_level_id)

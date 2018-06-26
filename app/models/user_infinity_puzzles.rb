@@ -3,11 +3,10 @@
 class UserInfinityPuzzles
 
   def initialize(user)
-    @user = user
+    @user = user # User or NilUser
   end
 
   # the next set of puzzles to show the user + config for the front-end
-  #
   def next_infinity_puzzle_set(difficulty = nil, puzzle_id = nil)
     target_difficulty = difficulty || current_difficulty
     puzzles = infinity_puzzles_after(target_difficulty, puzzle_id)
@@ -21,6 +20,7 @@ class UserInfinityPuzzles
     }
   end
 
+  # used on the homepage to decide the next puzzle to show
   def next_infinity_puzzle
     if @user.present?
       infinity_puzzles_after(
@@ -28,7 +28,7 @@ class UserInfinityPuzzles
         last_solved_infinity_puzzle_id(latest_difficulty)
       ).first
     else
-      InfinityLevel.find_by(difficulty: latest_difficulty).last_puzzle
+      InfinityLevel.easy.first_puzzle
     end
   end
 

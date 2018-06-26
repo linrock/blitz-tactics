@@ -1,15 +1,11 @@
 class PagesController < ApplicationController
+  before_action :set_user, only: [:home]
+
   def home
-    if current_user
-      @infinity_puzzle = current_user.next_infinity_puzzle
-      @best_speedrun_time = current_user.best_speedrun_time
-    else
-      @infinity_puzzle = InfinityLevel.easy.first_puzzle
-      @best_speedrun_time = 'None'
-    end
+    @infinity_puzzle = @user.next_infinity_puzzle
     @speedrun_puzzle = SpeedrunLevel.first_puzzle
-    @repetition_level = current_user&.highest_repetition_level_unlocked ||
-                        RepetitionLevel.first
+    @best_speedrun_time = @user.best_speedrun_time
+    @repetition_level = @user.highest_repetition_level_unlocked
   end
 
   def positions

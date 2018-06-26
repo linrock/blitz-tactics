@@ -1,14 +1,13 @@
 # repetition mode puzzles
 
 class GameModes::RepetitionController < ApplicationController
+  before_action :set_user, only: [:index]
   before_action :set_level
 
   # show a level in repetition mode
   def index
     unless @level.present?
-      @level = current_user ? current_user.highest_repetition_level_unlocked
-                            : RepetitionLevel.number(1)
-      redirect_to @level.path
+      redirect_to @user.current_user.highest_repetition_level_unlocked.path
       return
     end
     # @formatted_round_times = current_user&.round_times_for_level_id(@level.id) || []
@@ -25,7 +24,7 @@ class GameModes::RepetitionController < ApplicationController
 
   # complete a round of puzzles in a level
   def complete_lap
-    if current_user
+    if user_signed_in?
       current_user.completed_repetition_rounds.create!(
         repetition_round_params.merge(repetition_level_id: @level.id)
       )
@@ -35,7 +34,7 @@ class GameModes::RepetitionController < ApplicationController
 
   # successfully complete a level
   def complete_level
-    if current_user
+    if user_signed_in?
       current_user.completed_repetition_levels.create!(
         repetition_level_id: @level.id
       )
