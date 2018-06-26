@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include UserDelegates
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :validatable,
   # :recoverable, and :omniauthable
@@ -16,10 +18,6 @@ class User < ActiveRecord::Base
   after_initialize :set_default_profile
 
   validate :validate_username
-
-  delegate :next_infinity_puzzle,
-           :next_infinity_puzzle_set,
-           to: :user_infinity_puzzles
 
   def self.find_for_database_authentication(conditions)
     if conditions.has_key?(:username)
@@ -94,10 +92,6 @@ class User < ActiveRecord::Base
   end
 
   private
-
-  def user_infinity_puzzles
-    UserInfinityPuzzles.new(self)
-  end
 
   def email_required?
     false
