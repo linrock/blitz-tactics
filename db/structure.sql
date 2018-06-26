@@ -39,6 +39,71 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: completed_repetition_levels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_repetition_levels (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    repetition_level_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_repetition_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_repetition_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_repetition_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_repetition_levels_id_seq OWNED BY public.completed_repetition_levels.id;
+
+
+--
+-- Name: completed_repetition_rounds; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_repetition_rounds (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    repetition_level_id integer NOT NULL,
+    elapsed_time_ms integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_repetition_rounds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_repetition_rounds_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_repetition_rounds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_repetition_rounds_id_seq OWNED BY public.completed_repetition_rounds.id;
+
+
+--
 -- Name: completed_rounds; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -231,13 +296,6 @@ CREATE SEQUENCE public.levels_id_seq
 
 
 --
--- Name: levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.levels_id_seq OWNED BY public.levels.id;
-
-
---
 -- Name: lichess_puzzles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -303,6 +361,71 @@ CREATE SEQUENCE public.positions_id_seq
 --
 
 ALTER SEQUENCE public.positions_id_seq OWNED BY public.positions.id;
+
+
+--
+-- Name: repetition_levels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.repetition_levels (
+    id bigint NOT NULL,
+    number integer NOT NULL,
+    name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: repetition_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.repetition_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: repetition_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.repetition_levels_id_seq OWNED BY public.repetition_levels.id;
+
+
+--
+-- Name: repetition_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.repetition_puzzles (
+    id bigint NOT NULL,
+    repetition_level_id integer NOT NULL,
+    data jsonb NOT NULL,
+    puzzle_hash character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: repetition_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.repetition_puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: repetition_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.repetition_puzzles_id_seq OWNED BY public.repetition_puzzles.id;
 
 
 --
@@ -455,6 +578,20 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: completed_repetition_levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_repetition_levels ALTER COLUMN id SET DEFAULT nextval('public.completed_repetition_levels_id_seq'::regclass);
+
+
+--
+-- Name: completed_repetition_rounds id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_repetition_rounds ALTER COLUMN id SET DEFAULT nextval('public.completed_repetition_rounds_id_seq'::regclass);
+
+
+--
 -- Name: completed_rounds id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -490,13 +627,6 @@ ALTER TABLE ONLY public.level_attempts ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- Name: levels id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.levels ALTER COLUMN id SET DEFAULT nextval('public.levels_id_seq'::regclass);
-
-
---
 -- Name: lichess_puzzles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -508,6 +638,20 @@ ALTER TABLE ONLY public.lichess_puzzles ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.positions_id_seq'::regclass);
+
+
+--
+-- Name: repetition_levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.repetition_levels ALTER COLUMN id SET DEFAULT nextval('public.repetition_levels_id_seq'::regclass);
+
+
+--
+-- Name: repetition_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.repetition_puzzles ALTER COLUMN id SET DEFAULT nextval('public.repetition_puzzles_id_seq'::regclass);
 
 
 --
@@ -544,6 +688,22 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: completed_repetition_levels completed_repetition_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_repetition_levels
+    ADD CONSTRAINT completed_repetition_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: completed_repetition_rounds completed_repetition_rounds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_repetition_rounds
+    ADD CONSTRAINT completed_repetition_rounds_pkey PRIMARY KEY (id);
 
 
 --
@@ -587,14 +747,6 @@ ALTER TABLE ONLY public.level_attempts
 
 
 --
--- Name: levels levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.levels
-    ADD CONSTRAINT levels_pkey PRIMARY KEY (id);
-
-
---
 -- Name: lichess_puzzles lichess_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -608,6 +760,22 @@ ALTER TABLE ONLY public.lichess_puzzles
 
 ALTER TABLE ONLY public.positions
     ADD CONSTRAINT positions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: repetition_levels repetition_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.repetition_levels
+    ADD CONSTRAINT repetition_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: repetition_puzzles repetition_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.repetition_puzzles
+    ADD CONSTRAINT repetition_puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -693,20 +861,6 @@ CREATE INDEX index_level_attempts_on_user_id ON public.level_attempts USING btre
 
 
 --
--- Name: index_levels_on_secret_key; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_levels_on_secret_key ON public.levels USING btree (secret_key);
-
-
---
--- Name: index_levels_on_slug; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_levels_on_slug ON public.levels USING btree (slug);
-
-
---
 -- Name: index_lichess_puzzles_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -718,6 +872,27 @@ CREATE UNIQUE INDEX index_lichess_puzzles_on_puzzle_id ON public.lichess_puzzles
 --
 
 CREATE INDEX index_positions_on_user_id ON public.positions USING btree (user_id);
+
+
+--
+-- Name: index_repetition_levels_on_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_repetition_levels_on_number ON public.repetition_levels USING btree (number);
+
+
+--
+-- Name: index_repetition_puzzles_on_puzzle_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_repetition_puzzles_on_puzzle_hash ON public.repetition_puzzles USING btree (puzzle_hash);
+
+
+--
+-- Name: index_repetition_puzzles_on_repetition_level_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_repetition_puzzles_on_repetition_level_id ON public.repetition_puzzles USING btree (repetition_level_id);
 
 
 --
@@ -792,6 +967,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180623113358'),
 ('20180623114045'),
 ('20180623125613'),
-('20180624063512');
+('20180624063512'),
+('20180625160707'),
+('20180625160722'),
+('20180626024019'),
+('20180626024026');
 
 
