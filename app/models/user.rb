@@ -17,17 +17,20 @@ class User < ActiveRecord::Base
 
   after_initialize :set_default_profile
 
+  before_validation :nullify_blank_email
+  validates :email, uniqueness: true, allow_blank: true
   validate :validate_username
 
+  def self.old_scoreboard_ranks(n)
+    all.sort_by { |user| -user.num_repetition_levels_unlocked }.take(n)
+  end
+
+  # for devise to case-insensitively find users by username
   def self.find_for_database_authentication(conditions)
     if conditions.has_key?(:username)
       username = conditions[:username].downcase
       where("LOWER(username) = ?", username).first
     end
-  end
-
-  def self.old_scoreboard_ranks(n)
-    all.sort_by { |user| -user.num_repetition_levels_unlocked }.take(n)
   end
 
   # infinity puzzle methods
@@ -93,6 +96,10 @@ class User < ActiveRecord::Base
     self.profile ||= {
       "levels_unlocked": [1]
     }
+  end
+
+  def nullify_blank_email
+    self.email = nil if self.email.blank?
   end
 
   def validate_username
