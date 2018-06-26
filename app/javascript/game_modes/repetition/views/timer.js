@@ -1,4 +1,3 @@
-import _ from 'underscore'
 import Backbone from 'backbone'
 
 import d from '../../../dispatcher'
@@ -21,9 +20,9 @@ export default class Timer extends Backbone.View {
   }
 
   listenForEvents() {
-    this.listenTo(d, "puzzles:start", _.bind(this.startTimer, this))
-    this.listenTo(d, "puzzles:next", _.bind(this.startTimer, this))
-    this.listenTo(d, "puzzles:lap", _.bind(this.nextLap, this))
+    this.listenTo(d, "puzzles:start", () => this.startTimer())
+    this.listenTo(d, "puzzles:next", () => this.startTimer())
+    this.listenTo(d, "puzzles:lap", () => this.nextLap())
   }
 
   elapsedTimeMs() {
@@ -31,8 +30,8 @@ export default class Timer extends Backbone.View {
   }
 
   formattedTime(integer) {
-    let minutes = ~~( integer / 60 )
-    let seconds = integer % 60
+    const minutes = ~~( integer / 60 )
+    const seconds = integer % 60
     return `${minutes}:${("0" + seconds).slice(-2)}`
   }
 
@@ -47,10 +46,10 @@ export default class Timer extends Backbone.View {
     let lastElapsed
     this.startTime = Date.now()
     this.timer = setInterval(() => {
-      let elapsed = this.formattedElapsedTime()
-      if (elapsed != lastElapsed) {
+      const elapsed = this.formattedElapsedTime()
+      if (elapsed !== lastElapsed) {
         lastElapsed = elapsed
-        this.$timer.text(elapsed)
+        // this.$timer.text(elapsed)
       }
     }, updateInterval)
   }
@@ -67,7 +66,7 @@ export default class Timer extends Backbone.View {
       return
     }
     this.stopTimer()
-    this.$laps.prepend(`<div>${this.formattedElapsedTime()}</div>`)
+    // this.$laps.prepend(`<div>${this.formattedElapsedTime()}</div>`)
     this.notify()
     this.startTime = false
     this.startTimer()

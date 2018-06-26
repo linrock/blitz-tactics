@@ -25,5 +25,4 @@ export default class LevelIndicator extends Backbone.View {
       this.$levelName.addClass("invisible")
     })
   }
-
 }
