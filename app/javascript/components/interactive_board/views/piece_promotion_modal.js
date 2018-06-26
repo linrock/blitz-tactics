@@ -10,12 +10,12 @@ import d from '../../../dispatcher'
 export default class PiecePromotionModal extends Backbone.View {
 
   get el() {
-    return ".piece-promotion-modal-container"
+    return document.querySelector(`.piece-promotion-modal-container`)
   }
 
   get events() {
     return {
-      "click .piece" : "_selectPiece"
+      'click .piece' : `_selectPiece`
     }
   }
 
@@ -26,17 +26,17 @@ export default class PiecePromotionModal extends Backbone.View {
   }
 
   show() {
-    this.$el.show()
-    Mousetrap.bind("esc", () => this.hide())
+    this.el.style = `display: block`
+    Mousetrap.bind(`esc`, () => this.hide())
   }
 
   hide() {
-    this.$el.hide()
-    Mousetrap.unbind("esc")
+    this.el.style = `display: none`
+    Mousetrap.unbind(`esc`)
   }
 
   listenToEvents() {
-    this.listenTo(d, "move:promotion", (data) => {
+    this.listenTo(d, `move:promotion`, (data) => {
       this.fen = data.fen
       this.moveIntent = data.move
       this.show()
@@ -49,7 +49,7 @@ export default class PiecePromotionModal extends Backbone.View {
     this.cjs.load(this.fen)
     const m = this.cjs.move(move)
     if (m) {
-      d.trigger("move:try", m)
+      d.trigger(`move:try`, m)
     }
     this.hide()
   }

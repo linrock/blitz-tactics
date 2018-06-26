@@ -14,8 +14,8 @@ export default class SpeedrunComplete extends Backbone.View {
   }
 
   initialize() {
-    this.$aboveBoard = this.$el.find(`.above-board`)
-    this.$pb = this.$el.find(`.personal-best`)
+    this.$aboveBoard = this.$(`.above-board`)
+    this.$pb = this.$(`.personal-best`)
     this.listenTo(d, `speedrun:complete`, data => {
       this.showSpeedrunComplete()
       this.showPersonalBest(data.best)

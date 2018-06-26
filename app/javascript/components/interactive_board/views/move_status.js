@@ -11,7 +11,7 @@ const greatTiming = 5000
 export default class MoveStatus extends Backbone.View {
 
   get el() {
-    return ".move-status"
+    return document.querySelector(`.move-status`)
   }
 
   initialize() {
@@ -20,9 +20,9 @@ export default class MoveStatus extends Backbone.View {
   }
 
   listenForEvents() {
-    this.listenTo(d, "move:success", () => this.renderSuccess())
-    this.listenTo(d, "move:fail", () => this.renderFailure())
-    this.listenTo(d, "move:almost", () => this.renderAlmost())
+    this.listenTo(d, `move:success`, () => this.renderSuccess())
+    this.listenTo(d, `move:fail`, () => this.renderFailure())
+    this.listenTo(d, `move:almost`, () => this.renderAlmost())
   }
 
   renderSuccess() {
@@ -39,28 +39,28 @@ export default class MoveStatus extends Backbone.View {
   }
 
   renderFailure() {
-    this.renderFadingMessage('<div class="fail">Try Again</div>')
+    this.renderFadingMessage(`<div class="fail">Try Again</div>`)
   }
 
   renderAlmost() {
-    this.renderFadingMessage('<div class="almost">Almost</div>')
+    this.renderFadingMessage(`<div class="almost">Almost</div>`)
   }
 
   renderPerfect() {
-    this.renderFadingMessage('<div class="perfect">Perfect!</div>')
+    this.renderFadingMessage(`<div class="perfect">Perfect!</div>`)
   }
 
   renderGreat() {
-    this.renderFadingMessage('<div class="great">Great!</div>')
+    this.renderFadingMessage(`<div class="great">Great!</div>`)
   }
 
   renderGood() {
-    this.renderFadingMessage('<div class="good">Good!</div>')
+    this.renderFadingMessage(`<div class="good">Good!</div>`)
   }
 
   renderFadingMessage(html) {
-    this.$el.removeClass("fade-out")
-    this.$el.html(html)
-    setTimeout(() => this.$el.addClass("fade-out"), 50)
+    this.el.classList.remove(`fade-out`)
+    this.el.innerHTML = html
+    setTimeout(() => this.el.classList.add(`fade-out`), 50)
   }
 }

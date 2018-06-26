@@ -5,16 +5,16 @@ import d from '../../../dispatcher'
 export default class Actions extends Backbone.View {
 
   get el() {
-    return ".actions"
+    return `.actions`
   }
 
   get events() {
     return {
-      "click .restart" : "_resetPosition"
+      'click .restart' : `_resetPosition`
     }
   }
 
   _resetPosition() {
-    d.trigger("position:reset")
+    d.trigger(`position:reset`)
   }
 }
