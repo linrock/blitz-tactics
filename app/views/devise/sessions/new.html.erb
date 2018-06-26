@@ -1,10 +1,10 @@
 <% content_for(:title) { "Log in" } %>
 
 <div class="container">
-
   <div class="registration">
-
     <h2>Log in</h2>
+
+    <%= render "devise/shared/links" %>
 
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
@@ -41,9 +41,5 @@
         </div>
       <% end %>
     <% end %>
-
-    <%= render "devise/shared/links" %>
-
   </div>
-
 </div>

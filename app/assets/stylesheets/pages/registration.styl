@@ -3,7 +3,7 @@
 
   h2 
     font-size 28px
-    margin 50px 0 25px
+    margin 40px 0 25px
 
   p 
     color rgba(255,255,255,0.6)
@@ -22,6 +22,10 @@
   .field 
     margin 25px 0
 
+    .optional
+      color rgba(255,255,255,0.5)
+      margin-left 10px
+
     label 
       display block
       margin-bottom 10px
@@ -31,7 +35,11 @@
       font-size 14px
       border 0
       border-radius 2px
+      background rgba(255,255,255,0.8)
       width 100%
+
+      &:focus
+        background white
 
   .blue-button 
     font-size 18px
@@ -39,7 +47,7 @@
   .registration-links 
     color rgba(255,255,255,0.6)
     font-size 14px
-    margin-top 60px
+    margin-top 20px
 
   #error_explanation, .alert 
     width 500px

@@ -1,18 +1,21 @@
 <% content_for(:title) { "Sign up" } %>
 
 <div class="container">
-
   <div class="registration">
-
     <h2>Sign up</h2>
 
     <p>Create an account to save your progress</p>
+    <%= render "devise/shared/links" %>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-
       <div class="field">
         <%= f.label :username %>
         <%= f.text_field :username, autofocus: true %>
+      </div>
+
+      <div class="field">
+        <label>Email <span class="optional">(optional)</span></label>
+        <%= f.email_field :email %>
       </div>
 
       <div class="field">
@@ -23,15 +26,16 @@
         <%= f.password_field :password, autocomplete: "off" %>
       </div>
 
+      <div class="field">
+        <%= f.label :confirm_password %>
+        <%= f.password_field :password_confirmation, autocomplete: "off" %>
+      </div>
+
       <div class="actions">
         <%= f.submit "Sign up", class: "blue-button" %>
       </div>
     <% end %>
 
     <%= devise_error_messages! %>
-
-    <%= render "devise/shared/links" %>
-
   </div>
-
 </div>
