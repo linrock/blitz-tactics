@@ -29,7 +29,7 @@ class PagesController < ApplicationController
   end
 
   def scoreboard
-    @ranked_users = UserScoreboard.ranked_users(30)
+    @ranked_users = User.old_scoreboard_ranks(30)
   end
 
   def pawn_endgames

@@ -24,6 +24,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.old_scoreboard_ranks(n)
+    all.sort_by { |user| -user.num_repetition_levels_unlocked }.take(n)
+  end
+
   # infinity puzzle methods
 
   def latest_difficulty
