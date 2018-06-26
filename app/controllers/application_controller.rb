@@ -11,11 +11,11 @@ class ApplicationController < ActionController::Base
   end
 
   def set_user
-    @user = current_user
+    @user = current_user || NilUser.new
   end
 
   def require_logged_in_user!
-    unless current_user
+    unless user_signed_in?
       redirect_to new_user_registration_url
     end
   end

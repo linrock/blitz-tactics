@@ -35,7 +35,7 @@
     <% end %>
 
     <% if (next_level = @level&.next_level) %>
-      <% if !current_user && @level.id == 1 %>
+      <% if !user_signed_in? && @level.id == 1 %>
         <div class="next-stage invisible container anonymous">
           <div class="left">
             You've unlocked the next level!

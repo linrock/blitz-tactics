@@ -9,7 +9,7 @@
     <a href="/scoreboard" class="link-right">Scoreboard</a>
     <a href="/about" class="link-right">About</a>
 
-    <% if current_user %>
+    <% if user_signed_in? %>
       <a href="/<%= current_user.username %>" class="link-right user-link">
         <%= current_user.username %>
       </a>

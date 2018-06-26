@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
 
   validate :validate_username
 
+  delegate :next_infinity_puzzle,
+           :next_infinity_puzzle_set,
+           to: :user_infinity_puzzles
+
   def self.find_for_database_authentication(conditions)
     if conditions.has_key?(:username)
       username = conditions[:username].downcase
@@ -29,27 +33,6 @@ class User < ActiveRecord::Base
   end
 
   # infinity puzzle methods
-
-  def latest_difficulty
-    solved_infinity_puzzles.last&.difficulty || 'easy'
-  end
-
-  def infinity_puzzles_after(difficulty, puzzle_id)
-    InfinityLevel
-      .find_by(difficulty: difficulty)
-      .puzzles_after_id(puzzle_id || last_solved_infinity_puzzle_id(difficulty))
-  end
-
-  def last_solved_infinity_puzzle_id(difficulty)
-    solved_infinity_puzzles.with_difficulty(difficulty).last&.infinity_puzzle_id
-  end
-
-  def next_infinity_puzzle
-    infinity_puzzles_after(
-      latest_difficulty,
-      last_solved_infinity_puzzle_id(latest_difficulty)
-    ).first || InfinityLevel.find_by(difficulty: latest_difficulty).last_puzzle
-  end
 
   def num_infinity_puzzles_solved
     solved_infinity_puzzles.count
@@ -111,6 +94,10 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def user_infinity_puzzles
+    UserInfinityPuzzles.new(self)
+  end
 
   def email_required?
     false

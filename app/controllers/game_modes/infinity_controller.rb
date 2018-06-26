@@ -1,7 +1,7 @@
 # infinity mode puzzles
 
 class GameModes::InfinityController < ApplicationController
-  before_action :set_user, only: :puzzle_solved
+  before_action :set_user
 
   def index
     render "game_modes/infinity"
@@ -9,8 +9,7 @@ class GameModes::InfinityController < ApplicationController
 
   # json endpoint for fetching puzzles
   def puzzles
-    user_infinity_puzzles = UserInfinityPuzzles.new(current_user)
-    render json: user_infinity_puzzles.next_puzzle_set(
+    render json: @user.next_infinity_puzzle_set(
       params[:difficulty],
       params[:after_puzzle_id]
     )
@@ -18,7 +17,7 @@ class GameModes::InfinityController < ApplicationController
 
   # notifying server of status updates in infinity mode
   def puzzle_solved
-    if @user
+    if @user.present?
       solved_puzzle = @user.solved_infinity_puzzles.find_by(
         solved_puzzle_params
       )
