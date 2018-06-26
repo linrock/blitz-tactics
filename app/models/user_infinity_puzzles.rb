@@ -36,11 +36,19 @@ class UserInfinityPuzzles
   private
 
   def infinity_level(difficulty)
-    InfinityLevel.find_by(difficulty: difficulty)
+    if difficulty.nil?
+      InfinityLevel.easy
+    else
+      InfinityLevel.find_by(difficulty: difficulty)
+    end
   end
 
   def latest_difficulty
-    @user.present? ? @user.solved_infinity_puzzles.last&.difficulty : 'easy'
+    if @user.present?
+      @user.solved_infinity_puzzles.last&.difficulty || 'easy'
+    else
+      'easy'
+    end
   end
 
   def current_difficulty
