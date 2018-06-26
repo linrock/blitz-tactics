@@ -12,7 +12,7 @@ import d from '../../dispatcher'
 export default class Chessboard extends Backbone.View {
 
   get el() {
-    return `.chessboard`
+    return document.querySelector(`.chessboard`)
   }
 
   initialize() {
@@ -28,7 +28,7 @@ export default class Chessboard extends Backbone.View {
   }
 
   disableMobileDragScroll() {
-    this.$el[0].addEventListener('touchmove', event => event.preventDefault())
+    this.el.addEventListener('touchmove', event => event.preventDefault())
   }
 
   listenToEvents() {
@@ -72,7 +72,7 @@ export default class Chessboard extends Backbone.View {
   }
 
   renderVirtualDom() {
-    requestAnimationFrame(() => m.render(this.$el[0], this.virtualSquares()))
+    requestAnimationFrame(() => m.render(this.el, this.virtualSquares()))
   }
 
   tryMove(move) {

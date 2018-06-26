@@ -2,7 +2,7 @@ const interact = require('interactjs')
 
 export function makeDraggable(pieceEl) {
   let dragStarted = false
-  let initialOffset = {
+  const initialOffset = {
     x: 0,
     y: 0
   }

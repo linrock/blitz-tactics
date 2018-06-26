@@ -8,33 +8,34 @@ import d from '../../../dispatcher'
 export default class ComboCounter extends Backbone.View {
 
   get el() {
-    return ".combo-counter"
+    return document.querySelector(`.combo-counter`)
   }
 
   initialize() {
     this.counter = 0
-    this.$counter = this.$(".counter")
+    this.counterEl = this.el.querySelector(`.counter`)
     this.listenForEvents()
   }
 
   listenForEvents() {
-    this.listenTo(d, "move:success", () => {
+    this.listenTo(d, `move:success`, () => {
       this.counter += 1
-      this.$el.removeClass("invisible")
+      this.el.classList.remove(`invisible`)
       this.setCounter(this.counter)
     })
-    this.listenTo(d, "move:fail", _.bind(this.droppedCombo, this))
-    this.listenTo(d, "move:too_slow", _.bind(this.droppedCombo, this))
+    this.listenTo(d, `move:fail`, () => this.droppedCombo())
+    this.listenTo(d, `move:too_slow`, () => this.droppedCombo())
   }
 
   setCounter(counter) {
-    this.$counter.text(counter).addClass("emphasis")
-    setTimeout(() => { this.$counter.removeClass("emphasis") }, 25)
+    this.counterEl.textContent = counter
+    this.counterEl.classList.add(`emphasis`)
+    setTimeout(() => this.counterEl.classList.remove(`emphasis`), 25)
   }
 
   droppedCombo() {
     this.counter = 0
-    this.$el.addClass("invisible")
-    this.$counter.removeClass("large")
+    this.el.classList.add(`invisible`)
+    // this.counterEl.classList.remove(`large`)
   }
 }
