@@ -5,7 +5,8 @@ class RepetitionLevel < ActiveRecord::Base
   has_many :completed_repetition_levels, dependent: :destroy
   has_many :completed_repetition_rounds, dependent: :destroy
 
-  validates :number, presence: true, numericality: { greater_than: 0 }
+  validates :number,
+    presence: true, uniqueness: true, numericality: { greater_than: 0 }
 
   def self.number(number)
     find_by(number: number)

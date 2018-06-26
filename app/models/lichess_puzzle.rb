@@ -36,6 +36,6 @@ class LichessPuzzle < ActiveRecord::Base
 
   # New minimal data format
   def simplified_data
-    data["puzzle"].slice("fen", "initialMove", "lines")
+    data["puzzle"].slice("id", "fen", "initialMove", "lines")
   end
 end

@@ -26,8 +26,8 @@ export default class Timer extends Backbone.View {
     this.listenTo(d, "puzzles:lap", _.bind(this.nextLap, this))
   }
 
-  elapsedTime() {
-    return ~~(( Date.now() - this.startTime) / 1000 )
+  elapsedTimeMs() {
+    return ~~(Date.now() - this.startTime)
   }
 
   formattedTime(integer) {
@@ -36,8 +36,8 @@ export default class Timer extends Backbone.View {
     return `${minutes}:${("0" + seconds).slice(-2)}`
   }
 
-  formattedElapsed() {
-    return this.formattedTime(this.elapsedTime())
+  formattedElapsedTime() {
+    return this.formattedTime(~~(this.elapsedTimeMs() / 1000))
   }
 
   startTimer() {
@@ -47,7 +47,7 @@ export default class Timer extends Backbone.View {
     let lastElapsed
     this.startTime = Date.now()
     this.timer = setInterval(() => {
-      let elapsed = this.formattedElapsed()
+      let elapsed = this.formattedElapsedTime()
       if (elapsed != lastElapsed) {
         lastElapsed = elapsed
         this.$timer.text(elapsed)
@@ -63,19 +63,17 @@ export default class Timer extends Backbone.View {
   }
 
   nextLap() {
-    if (this.elapsedTime() === 0) {
+    if (this.elapsedTimeMs() === 0) {
       return
     }
     this.stopTimer()
-    this.$laps.prepend(`<div>${this.formattedElapsed()}</div>`)
+    this.$laps.prepend(`<div>${this.formattedElapsedTime()}</div>`)
     this.notify()
     this.startTime = false
     this.startTimer()
   }
 
   notify() {
-    d.trigger("round:complete", blitz.levelPath, {
-      time_elapsed: this.elapsedTime()
-    })
+    d.trigger("round:complete", blitz.levelPath, this.elapsedTimeMs())
   }
 }

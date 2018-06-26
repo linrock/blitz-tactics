@@ -17,8 +17,8 @@ Rails.application.routes.draw do
   get '/repetition'              => 'game_modes/repetition#index'
   get '/level-:number'           => 'game_modes/repetition#index'
   get '/level-:number/puzzles'   => 'game_modes/repetition#puzzles'
-  post '/level-:number/attempt'  => 'game_modes/repetition#attempt'
-  post '/level-:number/complete' => 'game_modes/repetition#complete'
+  post '/level-:number/attempt'  => 'game_modes/repetition#complete_lap'
+  post '/level-:number/complete' => 'game_modes/repetition#complete_level'
 
   # pages
   get '/positions'               => 'pages#positions'

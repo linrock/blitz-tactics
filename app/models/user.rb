@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :level_attempts
   has_many :solved_infinity_puzzles
   has_many :completed_speedruns
+  has_many :completed_repetition_rounds
+  has_many :completed_repetition_levels
   has_many :positions
 
   after_initialize :set_default_profile
@@ -108,6 +110,28 @@ class User < ActiveRecord::Base
       username = conditions[:username].downcase
       where("LOWER(username) = ?", username).first
     end
+  end
+
+  # new repetition mode methods
+
+  def highest_repetition_level_number_completed
+    completed_repetition_levels
+      .includes(:repetition_level)
+      .joins(:repetition_level)
+      .order('repetition_levels.number desc')
+      .first&.repetition_level&.number || 0
+  end
+
+  def highest_repetition_level_unlocked
+    RepetitionLevel.number(highest_repetition_level_number_completed + 1)
+  end
+
+  def round_times_for_level_id(repetition_level_id)
+    completed_repetition_rounds
+      .where(repetition_level_id: repetition_level_id)
+      .order(id: :desc)
+      .limit(10)
+      .map(&:formatted_time_spent)
   end
 
   private

@@ -8,7 +8,8 @@ class PagesController < ApplicationController
       @best_speedrun_time = 'None'
     end
     @speedrun_puzzle = SpeedrunLevel.first_puzzle
-    @level = current_user&.highest_level_unlocked || Level.first
+    @repetition_level = current_user&.highest_repetition_level_unlocked ||
+                        RepetitionLevel.first
   end
 
   def positions

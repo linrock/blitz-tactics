@@ -33,9 +33,9 @@ export default class PrecisionMode {
   listenForEvents() {
     new Listener({
       // level and round completion events
-      'round:complete': (levelPath, payload) => {
+      'round:complete': (levelPath, elapsedTimeMs) => {
         if (levelPath) {
-          repetitionLevelAttempted(levelPath, payload)
+          repetitionLevelAttempted(levelPath, elapsedTimeMs)
         }
       },
 

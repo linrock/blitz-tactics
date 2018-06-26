@@ -1,5 +1,4 @@
-# id, fen, initialMove, lines
-# data.id = lichess puzzle id
+# data keys - id (lichess puzzle id), fen, initialMove, lines
 
 require 'active_support/concern'
 
