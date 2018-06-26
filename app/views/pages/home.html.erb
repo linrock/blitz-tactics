@@ -14,7 +14,7 @@
               initial_move: @infinity_puzzle.initial_move_uci,
             }) %>
         <div class="under-mini-board">
-          <% if current_user.present? %>
+          <% if user_signed_in? %>
             You have solved <%= current_user.num_infinity_puzzles_solved %> puzzles
           <% else %>
             <a href="/users/sign_up">Sign up</a> to track your progress

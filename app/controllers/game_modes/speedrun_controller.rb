@@ -15,7 +15,7 @@ class GameModes::SpeedrunController < ApplicationController
 
   # user has completed a speedrun
   def complete
-    if current_user
+    if user_signed_in?
       current_user.completed_speedruns.create!({
         speedrun_level_id: completed_speedrun_level.id,
         elapsed_time_ms: completed_speedrun_params[:elapsed_time_ms].to_i
