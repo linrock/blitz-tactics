@@ -3,6 +3,7 @@
 export default class LevelStatus {
 
   constructor() {
+    this.completed = false
     this.numPuzzles = 0
     this.puzzleCounter = 0
   }

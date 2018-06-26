@@ -52,7 +52,8 @@ export default class PrecisionMode {
       'puzzles:next': () => {
         this.level.nextPuzzle()
         d.trigger("progress:update", this.level.getProgress())
-        if (this.level.nextLevelUnlocked()) {
+        if (!this.level.completed && this.level.nextLevelUnlocked()) {
+          this.level.completed = true
           d.trigger('level:complete', blitz.levelPath)
         }
       },
