@@ -296,38 +296,6 @@ CREATE SEQUENCE public.levels_id_seq
 
 
 --
--- Name: lichess_puzzles; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.lichess_puzzles (
-    id integer NOT NULL,
-    puzzle_id integer NOT NULL,
-    data jsonb NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: lichess_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.lichess_puzzles_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: lichess_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.lichess_puzzles_id_seq OWNED BY public.lichess_puzzles.id;
-
-
---
 -- Name: positions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -627,13 +595,6 @@ ALTER TABLE ONLY public.level_attempts ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- Name: lichess_puzzles id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.lichess_puzzles ALTER COLUMN id SET DEFAULT nextval('public.lichess_puzzles_id_seq'::regclass);
-
-
---
 -- Name: positions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -747,14 +708,6 @@ ALTER TABLE ONLY public.level_attempts
 
 
 --
--- Name: lichess_puzzles lichess_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.lichess_puzzles
-    ADD CONSTRAINT lichess_puzzles_pkey PRIMARY KEY (id);
-
-
---
 -- Name: positions positions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -861,13 +814,6 @@ CREATE INDEX index_level_attempts_on_user_id ON public.level_attempts USING btre
 
 
 --
--- Name: index_lichess_puzzles_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_lichess_puzzles_on_puzzle_id ON public.lichess_puzzles USING btree (puzzle_id);
-
-
---
 -- Name: index_positions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -971,6 +917,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180625160707'),
 ('20180625160722'),
 ('20180626024019'),
-('20180626024026');
+('20180626024026'),
+('20180626052132');
 
 
