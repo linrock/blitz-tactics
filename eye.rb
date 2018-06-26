@@ -4,7 +4,7 @@ Eye.config do
   logger "#{working_dir}/log/eye.log"
 end
 
-Eye.application 'meta-legend' do
+Eye.application 'blitz-tactics' do
   working_dir   working_dir
   stdall        'log/stdall.eye.log'
 
