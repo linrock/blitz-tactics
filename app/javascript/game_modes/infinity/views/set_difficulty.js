@@ -5,7 +5,7 @@ import d from '../../../dispatcher'
 export default class SetDifficulty extends Backbone.View {
 
   get el() {
-    return `.difficulties`
+    return document.querySelector(`.difficulties`)
   }
 
   get events() {
@@ -19,8 +19,11 @@ export default class SetDifficulty extends Backbone.View {
   }
 
   highlight(difficulty) {
-    this.$(`.selected`).removeClass(`selected`)
-    this.$(`[data-difficulty="${difficulty}"]`).addClass(`selected`)
+    const selectedEl = this.el.querySelector(`.selected`)
+    if (selectedEl) {
+      selectedEl.classList.remove(`selected`)
+    }
+    this.el.querySelector(`[data-difficulty="${difficulty}"]`).classList.add(`selected`)
   }
 
   _selectDifficulty(e) {

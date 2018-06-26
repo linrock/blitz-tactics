@@ -7,7 +7,7 @@ import d from '../../../dispatcher'
 export default class Progress extends Backbone.View {
 
   get el() {
-    return `.current-run .description`
+    return document.querySelector(`.current-run .description`)
   }
 
   initialize() {
@@ -20,6 +20,6 @@ export default class Progress extends Backbone.View {
   }
 
   updateProgress(i, n) {
-    this.$el.text(`${i} of ${n} solved`)
+    this.el.textContent = `${i} of ${n} solved`
   }
 }

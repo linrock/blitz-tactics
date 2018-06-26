@@ -6,7 +6,7 @@ import { formattedTime } from '../../../utils'
 export default class SpeedrunComplete extends Backbone.View {
 
   get el() {
-    return `.speedrun-mode`
+    return document.querySelector(`.speedrun-mode`)
   }
 
   get template() {
@@ -14,8 +14,8 @@ export default class SpeedrunComplete extends Backbone.View {
   }
 
   initialize() {
-    this.$aboveBoard = this.$(`.above-board`)
-    this.$pb = this.$(`.personal-best`)
+    this.aboveBoardEl = this.el.querySelector(`.above-board`)
+    this.bestTimeEl = this.el.querySelector(`.personal-best`)
     this.listenTo(d, `speedrun:complete`, data => {
       this.showSpeedrunComplete()
       this.showPersonalBest(data.best)
@@ -23,17 +23,20 @@ export default class SpeedrunComplete extends Backbone.View {
   }
 
   showSpeedrunComplete() {
-    this.$aboveBoard.addClass(`invisible`)
+    this.aboveBoardEl.classList.add(`invisible`)
     setTimeout(() => {
-      this.$aboveBoard.html(this.template).removeClass(`invisible`)
+      this.aboveBoardEl.innerHTML = this.template
+      this.aboveBoardEl.classList.remove(`invisible`)
     }, 600)
   }
 
   showPersonalBest(bestTime) {
-    if (bestTime) {
-      this.$pb.show().find(`.timer`)
-        .text(formattedTime(parseInt(bestTime, 10)))
-      this.$pb.removeClass(`invisible`)
+    if (!bestTime) {
+      return
     }
+    const formattedBestTime = formattedTime(parseInt(bestTime, 10))
+    this.bestTimeEl.style = `display: block`
+    this.bestTimeEl.querySelector(`.timer`).textContent = formattedBestTime
+    this.bestTimeEl.classList.remove(`invisible`)
   }
 }

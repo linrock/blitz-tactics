@@ -6,7 +6,7 @@ import d from '../../../dispatcher'
 export default class Instructions extends Backbone.View {
 
   get el() {
-    return ".instructions"
+    return document.querySelector(`.instructions`)
   }
 
   initialize(options = {}) {
@@ -33,8 +33,8 @@ export default class Instructions extends Backbone.View {
   }
 
   showInstructions() {
-    this.$el.text(this.instructions)
-    setTimeout(() => this.$el.removeClass("invisible"), 700)
+    this.el.textContent = this.instructions
+    setTimeout(() => this.el.classList.remove(`invisible`), 700)
   }
 
   gameOverMan(result) {
@@ -51,8 +51,8 @@ export default class Instructions extends Backbone.View {
     } else {
       text = "Game over"
     }
-    this.$el.text(text)
-    this.$el.removeClass("invisible")
+    this.el.textContent = text
+    this.el.classList.remove(`invisible`)
   }
 
   listenForEvents() {
@@ -63,7 +63,7 @@ export default class Instructions extends Backbone.View {
       this.gameOverMan(result)
     })
     this.listenTo(d, "move:try", () => {
-      this.$el.addClass("invisible")
+      this.el.classList.add("invisible")
     })
   }
 }

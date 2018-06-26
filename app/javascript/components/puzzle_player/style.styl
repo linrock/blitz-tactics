@@ -64,10 +64,14 @@ body
       display inline-block
       border-radius 2px
       font-size 12px
+      transition opacity 0.08s ease
 
       &:hover 
         cursor pointer
         background #676767
+
+      &.invisible
+        pointer-events none
 
     .move 
       font-size 14px

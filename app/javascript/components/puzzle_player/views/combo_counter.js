@@ -35,7 +35,9 @@ export default class ComboCounter extends Backbone.View {
 
   droppedCombo() {
     this.counter = 0
-    this.el.classList.add(`invisible`)
+    if (this.el) {
+      this.el.classList.add(`invisible`)
+    }
     // this.counterEl.classList.remove(`large`)
   }
 }

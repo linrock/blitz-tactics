@@ -5,14 +5,14 @@ import d from '../../../dispatcher'
 export default class PuzzleStats extends Backbone.View {
 
   get el() {
-    return ".stats"
+    return document.querySelector(`.stats`)
   }
 
   initialize() {
-    this.$n = this.$("span")
-    this.listenTo(d, "puzzles_solved:changed", n => {
-      this.$n.text(n || 0)
-      this.$el.removeClass("invisible")
+    this.nPuzzlesEl = this.el.querySelector(`span`)
+    this.listenTo(d, `puzzles_solved:changed`, n => {
+      this.nPuzzlesEl.textContent = n || 0
+      this.el.classList.remove(`invisible`)
     })
   }
 }

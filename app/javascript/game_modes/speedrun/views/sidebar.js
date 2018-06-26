@@ -7,7 +7,7 @@ import d from '../../../dispatcher'
 export default class Sidebar extends Backbone.View {
 
   get el() {
-    return `.speedrun-sidebar`
+    return document.querySelector(`.speedrun-sidebar`)
   }
 
   get events() {
@@ -17,23 +17,27 @@ export default class Sidebar extends Backbone.View {
   }
 
   initialize() {
-    this.$instructions = this.$(`.speedrun-instructions`)
-    this.$nPuzzles = this.$(`.n-puzzles`)
+    const instructionsEl = this.el.querySelector(`.speedrun-instructions`)
+    const nPuzzlesEl = this.el.querySelector(`.n-puzzles`)
     this.listenTo(d, `level:selected`, name => this.highlight(name))
     this.listenTo(d, `puzzles:fetched`, puzzles => {
-      this.$nPuzzles.text(`${puzzles.length} puzzles`).removeClass(`invisible`)
+      nPuzzlesEl.textContent = `${puzzles.length} puzzles`
+      nPuzzlesEl.classList.remove(`invisible`)
     })
     this.listenTo(d, `move:try`, () => {
-      this.$instructions.remove()
-      this.$(`.make-a-move`).remove()
-      this.$(`.timers`).show()
+      instructionsEl.remove()
+      this.el.querySelector(`.make-a-move`).remove()
+      this.el.querySelector(`.timers`).style = ``
       this.stopListening()
     })
   }
 
   highlight(name) {
-    this.$(`.selected`).removeClass(`selected`)
-    this.$(`[data-name="${name}"]`).addClass(`selected`)
+    const selectedEl = this.el.querySelector(`.selected`)
+    if (selectedEl) {
+      selectedEl.classList.remove(`selected`)
+    }
+    this.el.querySelector(`[data-name="${name}"]`).classList.add(`selected`)
   }
 
   _chooseLevel(e) {

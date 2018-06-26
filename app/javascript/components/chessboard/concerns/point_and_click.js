@@ -12,7 +12,7 @@ export default class PointAndClick {
   }
 
   listenForEvents() {
-    this.board.$el.on(`click`, `.square`, event => {
+    this.board.delegate(`click`, `.square`, event => {
       this.selectSquare(event.currentTarget.dataset.square)
     })
     this.board.listenTo(d, `move:try`, () => this.clearSelected())

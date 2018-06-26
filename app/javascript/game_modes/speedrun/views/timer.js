@@ -4,14 +4,14 @@ import Backbone from 'backbone'
 import d from '../../../dispatcher'
 import { formattedTime } from '../../../utils'
 
-const updateInterval = 33
+const updateInterval = 37
 
 // Amount of time spent so far
 //
 export default class Timer extends Backbone.View {
 
   get el() {
-    return `.current-run .timer`
+    return document.querySelector(`.current-run .timer`)
   }
 
   initialize() {
@@ -29,19 +29,19 @@ export default class Timer extends Backbone.View {
   }
 
   startTimer() {
-    this.$el.removeClass(`stopped`)
+    this.el.classList.remove(`stopped`)
     this.startTime = Date.now()
     this.timerInterval = setInterval(() => this.displayElapsedTime(), updateInterval)
   }
 
   stopTimer() {
-    this.$el.addClass(`complete`)
+    this.el.classList.add(`complete`)
     clearInterval(this.timerInterval)
     this.displayElapsedTime()
   }
 
   displayElapsedTime() {
-    this.$el.text(formattedTime(this.elapsedTimeMilliseconds()))
+    this.el.textContent = formattedTime(this.elapsedTimeMilliseconds())
   }
 
   notifyCompletion() {
