@@ -1,26 +1,23 @@
 import Backbone from 'backbone'
 
-import d from '../../dispatcher'
+import Listener from '../../listener'
 
 const soundEnabled = false
 
-export default class SoundPlayer extends Backbone.Model {
+export default class SoundPlayer {
 
-  initialize() {
+  constructor() {
     this.playSounds = soundEnabled && !!window.Audio
     if (!this.playSounds) {
       return
     }
-    this.audio = new Audio("/assets/billiard-balls.mp3")
+    this.audio = new Audio(`/assets/piece-dropped.mp3`)
     this.listenForEvents()
   }
 
   listenForEvents() {
-    this.listenTo(d, "move:success", () => {
-      if (!this.playSounds) {
-        return
-      }
-      this.audio.play()
+    new Listener({
+      'move:success': () => this.audio.play()
     })
   }
 }

@@ -12,7 +12,7 @@ import {
 import Listener from '../../listener'
 import d from '../../dispatcher'
 
-export default class PrecisionMode {
+export default class RepetitionMode {
   constructor() {
     new Background
     new LevelIndicator

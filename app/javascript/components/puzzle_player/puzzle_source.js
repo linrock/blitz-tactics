@@ -5,6 +5,7 @@ import Backbone from 'backbone'
 
 import { uciToMove, moveToUci, shuffle } from '../../utils'
 import { fetchPuzzles } from '../../api/requests'
+import Listener from '../../listener'
 import d from '../../dispatcher'
 
 // source:changed
@@ -20,9 +21,10 @@ import d from '../../dispatcher'
 
 const responseDelay = 0
 
-export default class PuzzleSource extends Backbone.Model {
+export default class PuzzleSource {
 
-  initialize(options = {}) {
+  // options - shuffle, loopPuzzles, source
+  constructor(options = {}) {
     this.i = 0
     this.current = {}
     this.puzzles = []
@@ -35,26 +37,28 @@ export default class PuzzleSource extends Backbone.Model {
 
   fetchPuzzles(source) {
     fetchPuzzles(source).then(data => {
-      d.trigger("puzzles:fetched", data.puzzles)
-      d.trigger("config:init", data)
+      d.trigger(`puzzles:fetched`, data.puzzles)
+      d.trigger(`config:init`, data)
     })
   }
 
   fetchAndAddPuzzles(source) {
-    fetchPuzzles(source).then(data => d.trigger("puzzles:added", data.puzzles))
+    fetchPuzzles(source).then(data => d.trigger(`puzzles:added`, data.puzzles))
   }
 
   listenToEvents() {
-    this.listenTo(d, "source:changed", path => this.fetchPuzzles(path))
-    this.listenTo(d, "source:changed:add", path => this.fetchAndAddPuzzles(path))
-    this.listenTo(d, "puzzles:fetched", puzzles => {
-      this.puzzles = []
-      this.addPuzzles(puzzles)
-      this.firstPuzzle()
+    new Listener({
+      'source:changed': path => this.fetchPuzzles(path),
+      'source:changed:add': path => this.fetchAndAddPuzzles(path),
+      'puzzles:fetched': puzzles => {
+        this.puzzles = []
+        this.addPuzzles(puzzles)
+        this.firstPuzzle()
+      },
+      'puzzles:added': puzzles => this.addPuzzles(puzzles),
+      'puzzles:next': () => this.nextPuzzle(),
+      'move:try': move => this.tryUserMove(move),
     })
-    this.listenTo(d, "puzzles:added", puzzles => this.addPuzzles(puzzles))
-    this.listenTo(d, "puzzles:next", () => this.nextPuzzle())
-    this.listenTo(d, "move:try", move => this.tryUserMove(move))
   }
 
   shufflePuzzles() {
@@ -82,10 +86,10 @@ export default class PuzzleSource extends Backbone.Model {
       }
       if (this.loopPuzzles) {
         this.i = 0
-        d.trigger("puzzles:lap")
+        d.trigger(`puzzles:lap`)
         this.loadPuzzleAtIndex(this.i)
       } else {
-        d.trigger("puzzles:complete")
+        d.trigger(`puzzles:complete`)
       }
     } else {
       this.loadPuzzleAtIndex(this.i)
@@ -106,48 +110,48 @@ export default class PuzzleSource extends Backbone.Model {
       boardState: _.clone(puzzle.lines),
       puzzle,
     }
-    d.trigger("puzzle:loaded", this.current)
-    d.trigger("fen:set", puzzle.fen)
+    d.trigger(`puzzle:loaded`, this.current)
+    d.trigger(`fen:set`, puzzle.fen)
     setTimeout(() => {
       const move = this.getInitialMoveSan(puzzle.initialMove)
-      d.trigger("move:make", move)
+      d.trigger(`move:make`, move)
     }, 500)
   }
 
   tryUserMove(move) {
     if (!this.started) {
       this.started = true
-      d.trigger("puzzles:start")
+      d.trigger(`puzzles:start`)
     }
     this.handleUserMove(move)
   }
 
   handleUserMove(move) {
     const attempt = this.current.boardState[moveToUci(move)]
-    if (attempt === "win") {
-      d.trigger("move:success")
+    if (attempt === `win`) {
+      d.trigger(`move:success`)
       if (this.i === this.puzzles.length - 1) {
-        d.trigger("move:make", move)
+        d.trigger(`move:make`, move)
       }
       this.puzzleSolved()
       return
-    } else if (attempt === "retry") {
-      d.trigger("move:almost")
+    } else if (attempt === `retry`) {
+      d.trigger(`move:almost`)
       return
     }
     const response = _.keys(attempt)[0]
     if (!response) {
-      d.trigger("move:fail")
+      d.trigger(`move:fail`)
       return
     }
-    d.trigger("move:make", move, false)
-    d.trigger("move:success")
-    if (attempt[response] === "win") {
+    d.trigger(`move:make`, move, false)
+    d.trigger(`move:success`)
+    if (attempt[response] === `win`) {
       this.puzzleSolved()
     } else {
       const responseMove = uciToMove(response)
       setTimeout(() => {
-        d.trigger("move:make", responseMove)
+        d.trigger(`move:make`, responseMove)
         this.current.boardState = attempt[response]
       }, responseDelay)
     }
@@ -155,12 +159,12 @@ export default class PuzzleSource extends Backbone.Model {
 
   puzzleSolved() {
     const n = this.puzzles.length
-    d.trigger("puzzle:solved", this.current.puzzle)
-    d.trigger("puzzles:status", {
+    d.trigger(`puzzle:solved`, this.current.puzzle)
+    d.trigger(`puzzles:status`, {
       i: this.i,
       lastPuzzleId: this.puzzles[n - 1].id,
       n,
     })
-    d.trigger("puzzles:next")
+    d.trigger(`puzzles:next`)
   }
 }
