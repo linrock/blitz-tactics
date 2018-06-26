@@ -20,7 +20,7 @@ export default class Chessboard extends Backbone.View {
     this.rows = [8, 7, 6, 5, 4, 3, 2, 1]
     this.columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
     this.polarities = [`light`, `dark`]
-    this.highlights = {}
+    this.highlightedSquares = {}
     this.cjs = new Chess()
     this.pointAndClick = new PointAndClick(this)
     this.disableMobileDragScroll()
@@ -75,14 +75,19 @@ export default class Chessboard extends Backbone.View {
     requestAnimationFrame(() => m.render(this.$el[0], this.virtualSquares()))
   }
 
-  movePiece(pieceEl, move) {
+  tryMove(move) {
     const { from, to } = move
-    if ((pieceEl.classList.contains(`wp`) && from[1] === `7` && to[1] === `8`) ||
-        (pieceEl.classList.contains(`bp`) && from[1] === `2` && to[1] === `1`)) {
+    const piece = this.cjs.get(from)
+    if (!piece) {
+      return
+    }
+    const { color, type } = piece
+    if (type === `p` &&
+        ((color === `w` && from[1] === `7` && to[1] === `8`) ||
+         (color === `b` && from[1] === `2` && to[1] === `1`))) {
       d.trigger(`move:promotion`, { fen: this.fen, move })
     } else {
-      this.cjs.load(this.fen)
-      const m = this.cjs.move(move)
+      const m = new Chess(this.fen).move(move)
       if (m) {
         d.trigger(`move:try`, m)
       }
@@ -97,13 +102,17 @@ export default class Chessboard extends Backbone.View {
   }
 
   clearHighlights() {
-    this.highlights = {}
+    this.highlightedSquares = {}
   }
 
   // using data attributes to highlight because classes have
   // some weird bug when removing classes with mithril
   highlightSquare(id, attr) {
-    this.highlights[id] = { [attr]: `highlighted` }
+    this.highlightedSquares[id] = { [attr]: `highlighted` }
+  }
+
+  unhighlightSquare(id) {
+    this.highlightedSquares[id] = false
   }
 
   virtualSquares() {
@@ -128,13 +137,11 @@ export default class Chessboard extends Backbone.View {
         }
         const squareAttrs = {
           'data-square': id,
-          oncreate: vnode => makeDroppable(vnode.dom, this, (pieceEl, move) => {
-            this.movePiece(pieceEl, move)
-          }),
+          oncreate: vnode => makeDroppable(vnode.dom, move => this.tryMove(move)),
           id,
         }
-        if (this.highlights[id]) {
-          Object.assign(squareAttrs, this.highlights[id])
+        if (this.highlightedSquares[id]) {
+          Object.assign(squareAttrs, this.highlightedSquares[id])
         }
         squares.push(m(`div.square.${polarity}`, squareAttrs, squareEls))
         i += 1

@@ -11,6 +11,7 @@ class UserInfinityPuzzles
     target_difficulty = difficulty || current_difficulty
     puzzles = infinity_puzzles_after(target_difficulty, puzzle_id)
     if puzzles.length == 0 and puzzle_id.nil?
+      # if user starts on the last puzzle
       puzzles = [infinity_level(target_difficulty).last_puzzle]
     end
     {

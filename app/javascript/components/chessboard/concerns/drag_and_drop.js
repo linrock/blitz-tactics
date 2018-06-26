@@ -39,16 +39,15 @@ export function makeDraggable(pieceEl) {
     })
 }
 
-export function makeDroppable(squareEl, context, onDrop) {
+export function makeDroppable(squareEl, onDrop) {
   interact(squareEl).dropzone({
     accept: `.piece`,
     ondrop: event => {
-      const pieceEl = event.draggable.target
       const move = {
         from: event.draggable.target.parentNode.dataset.square,
         to: event.target.dataset.square
       }
-      onDrop.call(context, pieceEl, move)
+      onDrop(move)
     }
   })
 }

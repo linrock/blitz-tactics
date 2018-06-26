@@ -24,9 +24,6 @@
     &.dark 
       background rgb(206, 179, 162)
 
-    &.selected 
-      background #eeffff
-
     // Light yellow highlight - rgba(255, 249, 214, 0.9)
     &.highlighted 
       &.move-from 
@@ -34,6 +31,9 @@
 
       &.move-to 
         background #fff79b
+
+    &[data-selected]
+      background #eeffff
 
     &[data-from]
       background #fffcdd
