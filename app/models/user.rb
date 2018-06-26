@@ -17,6 +17,13 @@ class User < ActiveRecord::Base
 
   validate :validate_username
 
+  def self.find_for_database_authentication(conditions)
+    if conditions.has_key?(:username)
+      username = conditions[:username].downcase
+      where("LOWER(username) = ?", username).first
+    end
+  end
+
   # infinity puzzle methods
 
   def latest_difficulty
@@ -71,45 +78,10 @@ class User < ActiveRecord::Base
     end
   end
 
-  # repetition mode methods
-
-  def unlocked_level_numbers
-    Set.new(self.profile["levels_unlocked"])
-  end
-
-  def unlock_level(level_number)
-    level_nums = unlocked_level_numbers
-    level_nums << level_number
-    self.profile["levels_unlocked"] = level_nums.to_a
-    self.save!
-  end
+  # old repetition mode methods
 
   def num_repetition_levels_unlocked
-    unlocked_level_numbers.count
-  end
-
-  def highest_level_unlocked
-    level = Level.by_number(unlocked_level_numbers.max)
-    return level if level.present?
-    Level.by_number(1)
-  end
-
-  def unlocked_all_levels?
-    num_repetition_levels_unlocked == Level.count
-  end
-
-  def round_times_for_level(level_id)
-    attempt = level_attempts.find_by_id(level_id)
-    return [] unless attempt
-    rounds = attempt.completed_rounds.order("id DESC")
-    rounds.map(&:formatted_time_spent)
-  end
-
-  def self.find_for_database_authentication(conditions)
-    if conditions.has_key?(:username)
-      username = conditions[:username].downcase
-      where("LOWER(username) = ?", username).first
-    end
+    Set.new(self.profile["levels_unlocked"]).count
   end
 
   # new repetition mode methods
