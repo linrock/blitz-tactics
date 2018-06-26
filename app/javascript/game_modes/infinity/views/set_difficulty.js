@@ -5,29 +5,29 @@ import d from '../../../dispatcher'
 export default class SetDifficulty extends Backbone.View {
 
   get el() {
-    return ".difficulties"
+    return `.difficulties`
   }
 
   get events() {
     return {
-      "click [data-difficulty]": "_selectDifficulty"
+      'click [data-difficulty]': `_selectDifficulty`
     }
   }
 
   initialize() {
-    this.listenTo(d, "difficulty:set", difficulty => this.highlight(difficulty))
+    this.listenTo(d, `difficulty:set`, difficulty => this.highlight(difficulty))
   }
 
   highlight(difficulty) {
-    this.$(".selected").removeClass("selected")
-    this.$(`[data-difficulty="${difficulty}"]`).addClass("selected")
+    this.$(`.selected`).removeClass(`selected`)
+    this.$(`[data-difficulty="${difficulty}"]`).addClass(`selected`)
   }
 
   _selectDifficulty(e) {
     const el = e.currentTarget
-    if (el.classList.toString().includes("selected")) {
+    if (el.classList.toString().includes(`selected`)) {
       return
     }
-    d.trigger("difficulty:selected", el.dataset.difficulty)
+    d.trigger(`difficulty:selected`, el.dataset.difficulty)
   }
 }

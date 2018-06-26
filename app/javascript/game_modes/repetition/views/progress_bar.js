@@ -7,28 +7,27 @@ import d from '../../../dispatcher'
 export default class ProgressBar extends Backbone.View {
 
   get el() {
-    return ".progress-bar"
+    return document.querySelector(`.progress-bar`)
   }
 
   initialize() {
-    this.$progress = this.$(".progress")
+    this.progressEl = this.el.querySelector(`.progress`)
     this.complete = false
     this.listenForEvents()
   }
 
   listenForEvents() {
-    this.listenTo(d, "progress:update", (percent) => {
-      if (this.complete) {
-        return
+    this.listenTo(d, `progress:update`, (percent) => {
+      if (!this.complete) {
+        this.updateProgress(percent)
       }
-      this.updateProgress(percent)
     })
   }
 
   updateProgress(percent) {
-    this.$progress.width(`${percent}%`)
+    this.progressEl.style = `width: ${percent}%`
     if (percent >= 100) {
-      this.$progress.addClass("complete")
+      this.progressEl.classList.add(`complete`)
       this.complete = true
     }
   }

@@ -41,7 +41,7 @@ export default class PrecisionMode {
 
       'level:complete': levelPath => {
         repetitionLevelCompleted(levelPath)
-          .then(data => d.trigger("level:unlocked", data.next.href))
+          .then(data => d.trigger(`level:unlocked`, data.next.href))
       },
 
       // level progress events
@@ -51,21 +51,21 @@ export default class PrecisionMode {
 
       'puzzles:next': () => {
         this.level.nextPuzzle()
-        d.trigger("progress:update", this.level.getProgress())
+        d.trigger(`progress:update`, this.level.getProgress())
         if (!this.level.completed && this.level.nextLevelUnlocked()) {
           this.level.completed = true
-          d.trigger('level:complete', blitz.levelPath)
+          d.trigger(`level:complete`, blitz.levelPath)
         }
       },
 
       'move:fail': () => {
         this.level.resetProgress()
-        d.trigger('progress:update', 0)
+        d.trigger(`progress:update`, 0)
       },
 
       'move:too_slow': () => {
         this.level.resetProgress()
-        d.trigger('progress:update', 0)
+        d.trigger(`progress:update`, 0)
       },
     })
   }

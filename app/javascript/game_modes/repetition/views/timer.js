@@ -9,20 +9,20 @@ const updateInterval = 50
 export default class Timer extends Backbone.View {
 
   get el() {
-    return ".times"
+    return document.querySelector(`.times`)
   }
 
   initialize() {
     this.listenForEvents()
-    this.$timer = this.$(".timer")
-    this.$laps = this.$(".laps")
+    this.timerEl = this.el.querySelector(`.timer`)
+    this.lapsEl = this.el.querySelector(`.laps`)
     this.timer = false
   }
 
   listenForEvents() {
-    this.listenTo(d, "puzzles:start", () => this.startTimer())
-    this.listenTo(d, "puzzles:next", () => this.startTimer())
-    this.listenTo(d, "puzzles:lap", () => this.nextLap())
+    this.listenTo(d, `puzzles:start`, () => this.startTimer())
+    this.listenTo(d, `puzzles:next`, () => this.startTimer())
+    this.listenTo(d, `puzzles:lap`, () => this.nextLap())
   }
 
   elapsedTimeMs() {
@@ -73,6 +73,6 @@ export default class Timer extends Backbone.View {
   }
 
   notify() {
-    d.trigger("round:complete", blitz.levelPath, this.elapsedTimeMs())
+    d.trigger(`round:complete`, blitz.levelPath, this.elapsedTimeMs())
   }
 }

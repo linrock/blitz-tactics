@@ -5,7 +5,7 @@ import d from '../../../dispatcher'
 export default class Background extends Backbone.View {
 
   get el() {
-    return "body"
+    return document.querySelector(`body`)
   }
 
   initialize() {
@@ -13,8 +13,8 @@ export default class Background extends Backbone.View {
   }
 
   listenForEvents() {
-    this.listenTo(d, "level:unlocked", () => {
-      this.$el.addClass("unlocked")
+    this.listenTo(d, `level:unlocked`, () => {
+      this.el.classList.add(`unlocked`)
     })
   }
 }

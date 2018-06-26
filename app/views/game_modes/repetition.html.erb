@@ -28,7 +28,7 @@
       <% end %>
     </label>
 
-    <% if local_assigns[:onboarding] %>
+    <% if !user_signed_in? && @level.id == 1 %>
       <div class="onboarding">
         Solve puzzles quickly and accurately to unlock the next level
       </div>
