@@ -7,7 +7,7 @@ class GameModes::RepetitionController < ApplicationController
   # show a level in repetition mode
   def index
     unless @level.present?
-      redirect_to @user.current_user.highest_repetition_level_unlocked.path
+      redirect_to @user.highest_repetition_level_unlocked.path
       return
     end
     # @formatted_round_times = current_user&.round_times_for_level_id(@level.id) || []
