@@ -57,6 +57,18 @@ const formattedTime = milliseconds => {
   return `${minutes}:${secondsStr}.${centisecondsStr}`
 }
 
+const trackEvent = (event, category, label) => {
+  const gtag = window.gtag
+  if (gtag) {
+    gtag('event', event, {
+      event_category: category,
+      event_label: label
+    })
+  } else {
+    console.log(`event: ${event}, category: ${category}, label: ${label}`)
+  }
+}
+
 export {
   uciToMove,
   moveToUci,
@@ -64,4 +76,5 @@ export {
   getQueryParam,
   getConfig,
   formattedTime,
+  trackEvent,
 }
