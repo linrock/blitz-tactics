@@ -39,7 +39,7 @@ export default class PositionTrainer extends Backbone.View {
 
   setDebugHelpers() {
     window.analyzeFen = (fen, depth) => {
-      this.engine.analyze(fen, { depth: depth })
+      this.engine.analyze(fen, { depth })
     }
   }
 
