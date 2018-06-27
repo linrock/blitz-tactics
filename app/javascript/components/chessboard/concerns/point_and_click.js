@@ -12,27 +12,37 @@ export default class PointAndClick {
   }
 
   listenForEvents() {
-    this.board.delegate(`click`, `.square`, event => {
-      this.selectSquare(event.currentTarget.dataset.square)
+    [`mousedown`, `touchstart`].forEach(clickEvent => {
+      this.board.delegate(clickEvent, `.square`, event => {
+        this.clickedSquare(event.currentTarget.dataset.square)
+      })
     })
     this.board.listenTo(d, `move:try`, () => this.clearSelected())
     this.board.listenTo(d, `move:make`, () => this.clearSelected())
   }
 
-  selectSquare(squareId) {
+  clickedSquare(squareId) {
     const piece = this.board.cjs.get(squareId)
-    if (piece && piece.color === this.moveablePieceColor) {
-      this.selectedSquare = squareId
-      this.board.highlightSquare(squareId, `data-selected`)
-      this.board.renderVirtualDom()
-    } else if (this.selectedSquare && squareId !== this.selectedSquare) {
-      const move = {
-        from: this.selectedSquare,
-        to: squareId
+    if (this.selectedSquare && squareId !== this.selectedSquare) {
+      if (this.isMoveable(piece)) {
+        this.selectSquare(squareId)
+      } else {
+        const move = {
+          from: this.selectedSquare,
+          to: squareId
+        }
+        this.board.tryMove(move)
       }
-      this.board.tryMove(move)
-      this.clearSelected()
+    } else if (this.isMoveable(piece)) {
+      this.selectSquare(squareId)
     }
+  }
+
+  selectSquare(squareId) {
+    this.clearSelected()
+    this.selectedSquare = squareId
+    this.board.highlightSquare(squareId, `data-selected`)
+    this.board.renderVirtualDom()
   }
 
   clearSelected() {
@@ -42,5 +52,9 @@ export default class PointAndClick {
     this.board.unhighlightSquare(this.selectedSquare)
     this.selectedSquare = false
     this.board.renderVirtualDom()
+  }
+
+  isMoveable(piece) {
+    return piece && piece.color === this.moveablePieceColor
   }
 }
