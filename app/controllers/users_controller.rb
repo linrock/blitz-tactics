@@ -1,6 +1,7 @@
 # user's external profile page
 
 class UsersController < ApplicationController
+  before_action :set_request_format, only: [:show]
 
   def show
     @user = User.find_by_username(params[:username])
@@ -24,5 +25,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:tagline)
+  end
+
+  def set_request_format
+    request.format = :html
   end
 end
