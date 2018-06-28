@@ -1,13 +1,13 @@
 // Basic chessboard that just renders positions
 
 import m from 'mithril'
-import Backbone from 'backbone'
 import Chess from 'chess.js'
 
 import { FEN, ChessMove } from '../../types.ts'
 import { makeDraggable, makeDroppable } from './concerns/drag_and_drop.ts'
 import PointAndClick from './concerns/point_and_click.ts'
 import virtualPiece from './concerns/pieces.ts'
+import Listener from '../../listener.ts'
 import d from '../../dispatcher.ts'
 
 interface HighlightedSquares {
@@ -16,7 +16,7 @@ interface HighlightedSquares {
   }
 }
 
-export default class Chessboard extends Backbone.View<Backbone.Model> {
+export default class Chessboard {
   private rows = [8, 7, 6, 5, 4, 3, 2, 1]
   private columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
   private polarities = [`light`, `dark`]
@@ -29,7 +29,7 @@ export default class Chessboard extends Backbone.View<Backbone.Model> {
     return document.querySelector(`.chessboard`)
   }
 
-  initialize() {
+  constructor() {
     this.flipped = false
     this.cjs = new Chess()
     this.disableMobileDragScroll()
@@ -42,29 +42,32 @@ export default class Chessboard extends Backbone.View<Backbone.Model> {
   }
 
   private listenToEvents(): void {
-    this.listenTo(d, `fen:set`, fen => {
-      this.clearHighlights()
-      this.renderFen(fen)
-    })
-    this.listenTo(d, `move:make`, (move, highlight = true) => {
-      this.clearHighlights()
-      this.cjs.load(this.fen)
-      const moveObj = this.cjs.move(move)
-      d.trigger(`fen:set`, this.cjs.fen())
-      if (moveObj && highlight) {
-        d.trigger(`move:highlight`, moveObj)
+    new Listener({
+      'fen:set': fen => {
+        this.clearHighlights()
+        this.renderFen(fen)
+      },
+
+      'move:make': (move, highlight = true) => {
+        this.clearHighlights()
+        this.cjs.load(this.fen)
+        const moveObj = this.cjs.move(move)
+        d.trigger(`fen:set`, this.cjs.fen())
+        if (moveObj && highlight) {
+          d.trigger(`move:highlight`, moveObj)
+        }
+      },
+
+      'board:flip': () => this.flipBoard(),
+
+      'move:highlight': move => {
+        this.clearHighlights()
+        setTimeout(() => {
+          this.highlightSquare(move.from, `data-from`)
+          this.highlightSquare(move.to, `data-to`)
+          this.renderVirtualDom()
+        }, 10)
       }
-    })
-    this.listenTo(d, `board:flip`, () => {
-      this.flipBoard()
-    })
-    this.listenTo(d, `move:highlight`, move => {
-      this.clearHighlights()
-      setTimeout(() => {
-        this.highlightSquare(move.from, `data-from`)
-        this.highlightSquare(move.to, `data-to`)
-        this.renderVirtualDom()
-      }, 10)
     })
   }
 

@@ -1,7 +1,7 @@
 // Point and click pieces to select and move them
 
 import { ChessMove } from '../../../types.ts'
-import d from '../../../dispatcher.ts'
+import Listener from '../../../listener.ts'
 import Chessboard from '../chessboard.ts'
 
 export default class PointAndClick {
@@ -16,12 +16,21 @@ export default class PointAndClick {
 
   private listenForEvents() {
     [`mousedown`, `touchstart`].forEach(clickEvent => {
-      this.board.delegate(clickEvent, `.square`, event => {
-        this.clickedSquare(event.currentTarget.dataset.square)
+      this.board.el.addEventListener(clickEvent, event => {
+        let targetEl = <HTMLElement>event.target
+        while (targetEl !== this.board.el) {
+          if (targetEl.classList.contains(`square`)) {
+            this.clickedSquare(targetEl.dataset.square)
+            event.stopPropagation()
+          }
+          targetEl = targetEl.parentElement
+        }
       })
     })
-    this.board.listenTo(d, `move:try`, () => this.clearSelected())
-    this.board.listenTo(d, `move:make`, () => this.clearSelected())
+    new Listener({
+      'move:try': () => this.clearSelected(),
+      'move:make': () => this.clearSelected()
+    })
   }
 
   private clickedSquare(squareId) {
