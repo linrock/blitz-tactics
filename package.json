@@ -9,6 +9,8 @@
     "jquery-slim": "^3.0.0",
     "mithril": "^1.1.6",
     "mousetrap": "^1.6.2",
+    "ts-loader": "3.5.0",
+    "typescript": "^2.9.2",
     "underscore": "^1.9.1"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 const { environment } = require('@rails/webpacker')
+const typescript =  require('./loaders/typescript')
 
 environment.config.resolve = {
   alias: {
@@ -6,4 +7,5 @@ environment.config.resolve = {
   }
 }
 
+environment.loaders.append('typescript', typescript)
 module.exports = environment
