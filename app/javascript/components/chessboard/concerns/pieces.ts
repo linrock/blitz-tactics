@@ -1,8 +1,12 @@
 import m from 'mithril'
 
-export default function virtualPiece(piece, oncreate) {
+interface PieceAttributes {
+  oncreate?: (vnode: m.Component) => void
+}
+
+export default function virtualPiece(piece, oncreate = null): m.Component {
   const className = piece.color + piece.type
-  const pieceAttrs = {}
+  const pieceAttrs: PieceAttributes = {}
   if (oncreate) {
     pieceAttrs.oncreate = oncreate
   }

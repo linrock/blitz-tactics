@@ -1,50 +1,53 @@
 import m from 'mithril'
 import Chess from 'chess.js'
 
-import virtualPiece from './concerns/pieces'
+import virtualPiece from './concerns/pieces.ts'
+import { FEN, UciMove } from '../../types.ts'
 import { uciToMove } from '../../utils.ts'
+
+interface MiniChessboardOptions {
+  el: HTMLElement
+  fen: FEN
+  initialMove?: UciMove
+}
 
 const rows = [8, 7, 6, 5, 4, 3, 2, 1]
 const columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
 const polarities = [`light`, `dark`]
 
 export default class MiniChessboard {
-  // options.el          - chessboard element
-  // options.fen         - fen string
-  // options.initialMove - uci string
+  private el: HTMLElement
+  private cjs: Chess
+  private highlights: {
+    [squareId: string]: string
+  }
 
-  constructor(options = {}) {
+  constructor(options: MiniChessboardOptions) {
     this.el = options.el
     this.cjs = new Chess()
     this.highlights = {}
-    if (options.fen) {
-      this.render(options.fen)
-      if (options.initialMove) {
-        setTimeout(() => {
-          const { from, to } = this.cjs.move(uciToMove(options.initialMove))
-          this.highlightSquare(from, { class: `move-from` })
-          this.highlightSquare(to, { class: `move-to` })
-          this.render(this.cjs.fen())
-        }, 1000)
-      }
+    this.renderFen(options.fen)
+    if (options.initialMove) {
+      setTimeout(() => {
+        const { from, to } = this.cjs.move(uciToMove(options.initialMove))
+        this.highlightSquare(from, `move-from`)
+        this.highlightSquare(to, `move-to`)
+        this.renderFen(this.cjs.fen())
+      }, 1000)
     }
   }
 
-  render(fen) {
+  private renderFen(fen: FEN): void {
     if (fen.split(` `).length === 4) {
       fen += ` 0 1`
     }
-    this.renderFen(fen)
-  }
-
-  renderFen(fen) {
     if (fen !== this.cjs.fen()) {
       this.cjs.load(fen)
     }
     requestAnimationFrame(() => m.render(this.el, this.virtualSquares()))
   }
 
-  virtualSquares() {
+  private virtualSquares(): m.Component {
     let i = 0
     const squares = []
     for (let row of rows) {
@@ -55,7 +58,10 @@ export default class MiniChessboard {
         if (piece) {
           pieces.push(virtualPiece(piece))
         }
-        const squareAttrs = this.highlights[id] || {}
+        const squareAttrs = (<any>{})
+        if (this.highlights[id]) {
+          squareAttrs.class = this.highlights[id]
+        }
         squares.push(m(`div.square.${polarities[i % 2]}`, squareAttrs, pieces))
         i += 1
       }
@@ -64,7 +70,7 @@ export default class MiniChessboard {
     return squares
   }
 
-  highlightSquare(squareId, squareAttrs) {
-    this.highlights[squareId] = squareAttrs
+  private highlightSquare(squareId, className): void {
+    this.highlights[squareId] = className
   }
 }

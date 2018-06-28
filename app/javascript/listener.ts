@@ -1,4 +1,3 @@
-import _ from 'underscore'
 import Backbone from 'backbone'
 
 import d from './dispatcher.ts'
@@ -8,15 +7,17 @@ interface EventMap {
 }
 
 export default class Listener {
-  listener: Backbone.Events
+  private listener: any
 
   constructor(eventMap: EventMap) {
-    this.listener = _.clone(Backbone.Events)
+    this.listener = Object.assign({}, Backbone.Events)
     this.listenToEvents(eventMap)
   }
 
   private listenToEvents(eventMap) {
-    Object.entries(eventMap).forEach(([event, handler]) => {
+    Object.entries(eventMap).forEach(row => {
+      const event: string = row[0]
+      const handler = <Function>row[1]
       this.listener.listenTo(d, event, handler)
     })
   }

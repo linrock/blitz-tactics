@@ -1,13 +1,17 @@
+declare var require: any
+
+import { ChessMove } from '../../../types'
+
 const interact = require('interactjs')
 
-const dragMoveStyle = (dx, dy) => [
+const dragMoveStyle = (dx: number, dy: number): string => [
   `transform: translate3d(${dx}px, ${dy}px, 0)`,
   `z-index: 5`
 ].join(`;`)
 
 const dragEndStyle = `transform: translate3d(0, 0, 0); z-index: 1`
 
-export function makeDraggable(pieceEl) {
+export function makeDraggable(pieceEl: HTMLElement) {
   const initialOffset = {
     x: 0,
     y: 0
@@ -32,7 +36,7 @@ export function makeDraggable(pieceEl) {
     .on(`dragend`, e => e.currentTarget.style = dragEndStyle)
 }
 
-export function makeDroppable(squareEl, onDrop) {
+export function makeDroppable(squareEl: HTMLElement, onDrop: (move: ChessMove) => void) {
   interact(squareEl).dropzone({
     accept: `.piece`,
     ondrop: event => {

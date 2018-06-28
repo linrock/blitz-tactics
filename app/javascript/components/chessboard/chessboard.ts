@@ -4,12 +4,26 @@ import m from 'mithril'
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
-import { makeDraggable, makeDroppable } from './concerns/drag_and_drop'
-import PointAndClick from './concerns/point_and_click'
-import virtualPiece from './concerns/pieces'
+import { FEN, ChessMove } from '../../types.ts'
+import { makeDraggable, makeDroppable } from './concerns/drag_and_drop.ts'
+import PointAndClick from './concerns/point_and_click.ts'
+import virtualPiece from './concerns/pieces.ts'
 import d from '../../dispatcher.ts'
 
-export default class Chessboard extends Backbone.View {
+interface HighlightedSquares {
+  [squareId: string]: false | {
+    [attribute: string]: string
+  }
+}
+
+export default class Chessboard extends Backbone.View<Backbone.Model> {
+  private rows = [8, 7, 6, 5, 4, 3, 2, 1]
+  private columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
+  private polarities = [`light`, `dark`]
+  private fen: FEN
+  private flipped: boolean
+  private highlightedSquares: HighlightedSquares
+  public cjs: Chess
 
   get el() {
     return document.querySelector(`.chessboard`)
@@ -17,24 +31,20 @@ export default class Chessboard extends Backbone.View {
 
   initialize() {
     this.flipped = false
-    this.rows = [8, 7, 6, 5, 4, 3, 2, 1]
-    this.columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
-    this.polarities = [`light`, `dark`]
-    this.highlightedSquares = {}
     this.cjs = new Chess()
-    this.pointAndClick = new PointAndClick(this)
     this.disableMobileDragScroll()
     this.listenToEvents()
+    new PointAndClick(this)
   }
 
-  disableMobileDragScroll() {
+  private disableMobileDragScroll(): void {
     this.el.addEventListener('touchmove', event => event.preventDefault())
   }
 
-  listenToEvents() {
+  private listenToEvents(): void {
     this.listenTo(d, `fen:set`, fen => {
       this.clearHighlights()
-      this.render(fen)
+      this.renderFen(fen)
     })
     this.listenTo(d, `move:make`, (move, highlight = true) => {
       this.clearHighlights()
@@ -58,24 +68,20 @@ export default class Chessboard extends Backbone.View {
     })
   }
 
-  render(fen) {
+  private renderFen(fen: FEN): void {
     if (fen.split(` `).length === 4) {
       fen += ` 0 1`
     }
-    this.renderFen(fen)
-  }
-
-  renderFen(fen) {
     this.cjs.load(fen)
     this.fen = fen
     this.renderVirtualDom()
   }
 
-  renderVirtualDom() {
+  public renderVirtualDom(): void {
     requestAnimationFrame(() => m.render(this.el, this.virtualSquares()))
   }
 
-  tryMove(move) {
+  public tryMove(move: ChessMove): void {
     const { from, to } = move
     const piece = this.cjs.get(from)
     if (!piece) {
@@ -94,28 +100,29 @@ export default class Chessboard extends Backbone.View {
     }
   }
 
-  flipBoard() {
+  private flipBoard(): void {
     this.flipped = !this.flipped
     this.columns.reverse()
     this.rows.reverse()
     this.renderVirtualDom()
   }
 
-  clearHighlights() {
+  private clearHighlights(): void {
     this.highlightedSquares = {}
   }
 
   // using data attributes to highlight because classes have
-  // some weird bug when removing classes with mithril
-  highlightSquare(id, attr) {
+  // some weird bug (all classes get removed) when removing classes
+  // with mithril
+  public highlightSquare(id, attr): void {
     this.highlightedSquares[id] = { [attr]: `highlighted` }
   }
 
-  unhighlightSquare(id) {
-    this.highlightedSquares[id] = false
+  public unhighlightSquare(id): void {
+    this.highlightedSquares[id] = {}
   }
 
-  virtualSquares() {
+  public virtualSquares(): m.Component {
     let i = 0
     const squares = []
     for (let j = 0; j < 8; j++) {

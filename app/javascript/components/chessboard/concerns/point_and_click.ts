@@ -1,17 +1,20 @@
 // Point and click pieces to select and move them
 
+import { ChessMove } from '../../../types.ts'
 import d from '../../../dispatcher.ts'
+import Chessboard from '../chessboard.ts'
 
 export default class PointAndClick {
+  private board: Chessboard
+  private moveablePieceColor = `w`
+  private selectedSquare: string|boolean = false
 
   constructor(board) {
     this.board = board
-    this.moveablePieceColor = `w`
-    this.selectedSquare = false
     this.listenForEvents()
   }
 
-  listenForEvents() {
+  private listenForEvents() {
     [`mousedown`, `touchstart`].forEach(clickEvent => {
       this.board.delegate(clickEvent, `.square`, event => {
         this.clickedSquare(event.currentTarget.dataset.square)
@@ -21,14 +24,14 @@ export default class PointAndClick {
     this.board.listenTo(d, `move:make`, () => this.clearSelected())
   }
 
-  clickedSquare(squareId) {
+  private clickedSquare(squareId) {
     const piece = this.board.cjs.get(squareId)
     if (this.selectedSquare && squareId !== this.selectedSquare) {
       if (this.isMoveable(piece)) {
         this.selectSquare(squareId)
       } else {
-        const move = {
-          from: this.selectedSquare,
+        const move: ChessMove = {
+          from: <string>this.selectedSquare,
           to: squareId
         }
         this.board.tryMove(move)
@@ -38,14 +41,14 @@ export default class PointAndClick {
     }
   }
 
-  selectSquare(squareId) {
+  private selectSquare(squareId) {
     this.clearSelected()
     this.selectedSquare = squareId
     this.board.highlightSquare(squareId, `data-selected`)
     this.board.renderVirtualDom()
   }
 
-  clearSelected() {
+  private clearSelected() {
     if (!this.selectedSquare) {
       return
     }
@@ -54,7 +57,7 @@ export default class PointAndClick {
     this.board.renderVirtualDom()
   }
 
-  isMoveable(piece) {
+  private isMoveable(piece): boolean {
     return piece && piece.color === this.moveablePieceColor
   }
 }
