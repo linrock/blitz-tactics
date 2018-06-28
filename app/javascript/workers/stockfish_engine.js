@@ -20,11 +20,13 @@ export default class StockfishEngine {
     this.stockfish.addEventListener('message', e => console.log(e.data))
   }
 
-  analyze(fen, options = {}, callback = (output) => {}) {
+  analyze(fen, options = {}) {
     let targetDepth = +options.depth || SEARCH_DEPTH
     this.stockfish.postMessage('position fen ' + fen)
-    this.emitEvaluationWhenDone(fen, targetDepth, callback)
-    this.stockfish.postMessage('go depth ' + targetDepth)
+    return new Promise((resolve, reject) => {
+      this.emitEvaluationWhenDone(fen, targetDepth, resolve)
+      this.stockfish.postMessage('go depth ' + targetDepth)
+    })
   }
 
   emitEvaluationWhenDone(fen, depth, callback) {

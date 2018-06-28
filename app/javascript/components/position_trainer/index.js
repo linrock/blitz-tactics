@@ -54,7 +54,7 @@ export default class PositionTrainer extends Backbone.View {
 
     this.listenTo(d, "fen:set", fen => {
       this.currentFen = fen
-      this.engine.analyze(fen, { depth: this.depth }, output => {
+      this.engine.analyze(fen, { depth: this.depth }).then(output => {
         const { fen, state } = output
         const computerMove = state.eval.best
         if (fen !== this.currentFen) {
