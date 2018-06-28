@@ -2,17 +2,57 @@
 
 <div class="container">
   <div class="scoreboard">
-    <h2>Scoreboard</h2>
+    <h1>Scoreboard</h1>
 
     <div class="scores">
-      <% @ranked_users.each do |user| %>
-        <div class="user">
-          <div class="username">
-            <a href="/<%= user.username %>"><%= user.username %></a>
-          </div>
-          <div class="max-level"><%= user.num_repetition_levels_unlocked %></div>
+      <h2>Past 7 days</h2>
+      <div class="recent-scores">
+        <div class="game-mode-scores">
+          <h3>Most infinity puzzles solved</h3>
+
+          <% @top_infinity.each do |user, count| %>
+            <div class="user-score">
+              <a class="username" href="/<%= user.username %>"><%= user.username %></a>
+              <div class="score"><%= count %></div>
+            </div>
+          <% end %>
         </div>
-      <% end %>
+
+        <div class="game-mode-scores">
+          <h3>Most speedruns completed</h3>
+
+          <% @top_speedruns.each do |user, count| %>
+            <div class="user-score">
+              <a class="username" href="/<%= user.username %>"><%= user.username %></a>
+              <div class="score"><%= count %></div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="game-mode-scores">
+          <h3>Repetition levels completed</h3>
+
+          <% @top_repetition.each do |user, count| %>
+            <div class="user-score">
+              <a class="username" href="/<%= user.username %>"><%= user.username %></a>
+              <div class="score"><%= count %></div>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
+
+    <% if @hall_of_fame.present? %>
+      <div class="scores">
+        <h2>Hall of fame</h2>
+        <div class="hall-of-fame">
+          <h3>All repetition levels completed</h3>
+
+          <% @hall_of_fame.each do |user| %>
+            <a class="username" href="/<%= user.username %>"><%= user.username %></a>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

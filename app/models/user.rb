@@ -25,6 +25,10 @@ class User < ActiveRecord::Base
     all.sort_by { |user| -user.num_repetition_levels_unlocked }.take(n)
   end
 
+  def self.all_repetition_levels_unlocked
+    all.select {|u| u.num_repetition_levels_unlocked == RepetitionLevel.count }
+  end
+
   # for devise to case-insensitively find users by username
   def self.find_for_database_authentication(conditions)
     if conditions.has_key?(:username)

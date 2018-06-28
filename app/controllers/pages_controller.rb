@@ -25,7 +25,21 @@ class PagesController < ApplicationController
   end
 
   def scoreboard
-    @ranked_users = User.old_scoreboard_ranks(30)
+    time = 7.days.ago
+    n = 10
+    @top_speedruns = CompletedSpeedrun.where('created_at > ?', time).unscoped
+      .group(:user_id).count
+      .sort_by {|_,v| -v }.take(n)
+      .map {|user_id, count| [User.find_by(id: user_id), count] }
+    @top_infinity = SolvedInfinityPuzzle.where('created_at > ?', time).unscoped
+      .group(:user_id).count
+      .sort_by {|_,v| -v }.take(n)
+      .map {|user_id, count| [User.find_by(id: user_id), count] }
+    @top_repetition = CompletedRepetitionLevel.where('created_at > ?', time).unscoped
+      .group(:user_id).count
+      .sort_by {|_,v| -v }.take(n)
+      .map {|user_id, count| [User.find_by(id: user_id), count] }
+    @hall_of_fame = User.all_repetition_levels_unlocked
   end
 
   def pawn_endgames
