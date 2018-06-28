@@ -1,7 +1,7 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
-import { formattedTime } from '../../../utils'
+import d from '../../../dispatcher.ts'
+import { formattedTime } from '../../../utils.ts'
 
 export default class SpeedrunComplete extends Backbone.View {
 

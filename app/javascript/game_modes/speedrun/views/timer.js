@@ -1,8 +1,8 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
-import { formattedTime } from '../../../utils'
+import d from '../../../dispatcher.ts'
+import { formattedTime } from '../../../utils.ts'
 
 const updateInterval = 37
 

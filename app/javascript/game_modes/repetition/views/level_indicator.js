@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import d from '../../../dispatcher.ts'
 
 // Level name, next level, etc.
 //

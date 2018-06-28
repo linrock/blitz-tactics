@@ -1,6 +1,6 @@
 // Point and click pieces to select and move them
 
-import d from '../../../dispatcher'
+import d from '../../../dispatcher.ts'
 
 export default class PointAndClick {
 

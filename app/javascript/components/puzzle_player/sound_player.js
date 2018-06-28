@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import Listener from '../../listener'
+import Listener from '../../listener.ts'
 
 const soundEnabled = false
 

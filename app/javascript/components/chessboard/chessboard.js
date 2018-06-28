@@ -7,7 +7,7 @@ import Chess from 'chess.js'
 import { makeDraggable, makeDroppable } from './concerns/drag_and_drop'
 import PointAndClick from './concerns/point_and_click'
 import virtualPiece from './concerns/pieces'
-import d from '../../dispatcher'
+import d from '../../dispatcher.ts'
 
 export default class Chessboard extends Backbone.View {
 

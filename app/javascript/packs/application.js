@@ -1,6 +1,6 @@
 import FastClick from 'fastclick'
 import MiniChessboard from '../components/chessboard/mini_chessboard'
-import routes from '../routes'
+import routes from '../routes.ts'
 
 window.blitz = {};
 

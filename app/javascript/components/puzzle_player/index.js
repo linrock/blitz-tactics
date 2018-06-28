@@ -6,8 +6,8 @@ import PuzzleHint from './views/puzzle_hint'
 import PuzzleSource from './puzzle_source'
 // import SoundPlayer from './sound_player'
 
-import Listener from '../../listener'
-import { trackEvent } from '../../utils'
+import Listener from '../../listener.ts'
+import { trackEvent } from '../../utils.ts'
 
 export default class PuzzlePlayer {
   constructor(options = {}) {

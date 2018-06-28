@@ -2,7 +2,7 @@
 
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import d from '../../../dispatcher.ts'
 
 export default class Progress extends Backbone.View {
 

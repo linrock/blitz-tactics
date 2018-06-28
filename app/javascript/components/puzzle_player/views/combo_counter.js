@@ -3,7 +3,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import d from '../../../dispatcher.ts'
 
 export default class ComboCounter extends Backbone.View {
 

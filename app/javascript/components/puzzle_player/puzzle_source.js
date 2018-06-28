@@ -3,10 +3,10 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import { uciToMove, moveToUci, shuffle } from '../../utils'
+import { uciToMove, moveToUci, shuffle } from '../../utils.ts'
 import { fetchPuzzles } from '../../api/requests'
-import Listener from '../../listener'
-import d from '../../dispatcher'
+import Listener from '../../listener.ts'
+import d from '../../dispatcher.ts'
 
 // source:changed
 // puzzles:fetched
@@ -107,7 +107,7 @@ export default class PuzzleSource {
   loadPuzzleAtIndex(i) {
     const puzzle = this.puzzles[i]
     this.current = {
-      boardState: _.clone(puzzle.lines),
+      boardState: Object.assign({}, puzzle.lines),
       puzzle,
     }
     d.trigger(`puzzle:loaded`, this.current)

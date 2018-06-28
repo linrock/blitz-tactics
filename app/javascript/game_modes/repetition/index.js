@@ -9,8 +9,8 @@ import {
   repetitionLevelAttempted,
   repetitionLevelCompleted
 } from '../../api/requests'
-import Listener from '../../listener'
-import d from '../../dispatcher'
+import Listener from '../../listener.ts'
+import d from '../../dispatcher.ts'
 
 export default class RepetitionMode {
   constructor() {

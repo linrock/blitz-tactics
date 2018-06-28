@@ -2,7 +2,7 @@ import m from 'mithril'
 import Chess from 'chess.js'
 
 import virtualPiece from './concerns/pieces'
-import { uciToMove } from '../../utils'
+import { uciToMove } from '../../utils.ts'
 
 const rows = [8, 7, 6, 5, 4, 3, 2, 1]
 const columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]

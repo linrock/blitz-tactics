@@ -1,5 +1,9 @@
-const uciToMove = uci => {
-  const m = {
+declare var blitz: any
+
+import { UciMove, ChessMove } from './types.ts'
+
+const uciToMove = (uci: UciMove): ChessMove => {
+  const m: ChessMove = {
     from: uci.slice(0,2),
     to: uci.slice(2,4)
   }
@@ -9,7 +13,7 @@ const uciToMove = uci => {
   return m
 }
 
-const moveToUci = move => {
+const moveToUci = (move: ChessMove): UciMove => {
   if (move.promotion) {
     return `${move.from}${move.to}${move.promotion}`
   } else {
@@ -17,7 +21,7 @@ const moveToUci = move => {
   }
 }
 
-const shuffle = original => {
+const shuffle = (original: Array<any>): Array<any> => {
   const array = original.slice(0)
   let counter = array.length
   while (counter > 0) {
@@ -30,26 +34,26 @@ const shuffle = original => {
   return array
 }
 
-const getQueryParam = param => {
-  let query = window.location.search.substring(1);
-  let vars = query.split('&');
+const getQueryParam = (param: string): string => {
+  let query = window.location.search.substring(1)
+  let vars = query.split('&')
   for (let i = 0; i < vars.length; i++) {
-    let pair = vars[i].split('=');
+    let pair = vars[i].split('=')
     if (decodeURIComponent(pair[0]) === param) {
-      return decodeURIComponent(pair[1]);
+      return decodeURIComponent(pair[1])
     }
   }
 }
 
-const getConfig = param => {
+const getConfig = (param: string): string => {
   let query = getQueryParam(param)
   if (blitz.position) {
-    return blitz.position[param] || query;
+    return blitz.position[param] || query
   }
-  return query;
+  return query
 }
 
-const formattedTime = milliseconds => {
+const formattedTime = (milliseconds: number): string => {
   const centisecondsStr = ("" + milliseconds % 1000)[0]
   const seconds = ~~( milliseconds / 1000 )
   const secondsStr = ("0" + (seconds % 60)).slice(-2)
@@ -57,8 +61,8 @@ const formattedTime = milliseconds => {
   return `${minutes}:${secondsStr}.${centisecondsStr}`
 }
 
-const trackEvent = (event, category, label) => {
-  const gtag = window.gtag
+const trackEvent = (event, category, label): void => {
+  const gtag = (<any>window).gtag
   if (gtag) {
     gtag('event', event, {
       event_category: category,

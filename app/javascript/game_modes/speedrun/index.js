@@ -4,8 +4,8 @@ import Timer from './views/timer'
 import Progress from './views/progress'
 import SpeedrunComplete from './views/speedrun_complete'
 import { speedrunCompleted } from '../../api/requests'
-import Listener from '../../listener'
-import d from '../../dispatcher'
+import Listener from '../../listener.ts'
+import d from '../../dispatcher.ts'
 
 const apiPath = `/speedrun/puzzles`
 
