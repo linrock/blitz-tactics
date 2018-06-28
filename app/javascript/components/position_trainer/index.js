@@ -1,7 +1,7 @@
 import Backbone from 'backbone'
 import Chess from 'chess.js'
 
-import StockfishEngine from '../../workers/stockfish_engine'
+import StockfishEngine from '../../workers/stockfish_engine.ts'
 import InteractiveBoard from '../interactive_board'
 import Instructions from './views/instructions'
 import Actions from './views/actions'
@@ -21,7 +21,7 @@ export default class PositionTrainer extends Backbone.View {
       d.trigger("board:flip")
     }
     this.depth = getConfig("depth") || SEARCH_DEPTH
-    this.engine = new StockfishEngine({ multipv: 1 })
+    this.engine = new StockfishEngine
     this.setDebugHelpers()
     d.trigger("fen:set", this.initialFen)
     new Instructions({ fen: this.initialFen })
@@ -39,7 +39,7 @@ export default class PositionTrainer extends Backbone.View {
 
   setDebugHelpers() {
     window.analyzeFen = (fen, depth) => {
-      this.engine.analyze(fen, { depth })
+      this.engine.analyze(fen, { multipv: 1, depth })
     }
   }
 
@@ -54,9 +54,9 @@ export default class PositionTrainer extends Backbone.View {
 
     this.listenTo(d, "fen:set", fen => {
       this.currentFen = fen
-      this.engine.analyze(fen, { depth: this.depth }).then(output => {
+      this.engine.analyze(fen, { depth: this.depth, multipv: 1 }).then(output => {
         const { fen, state } = output
-        const computerMove = state.eval.best
+        const computerMove = state.evaluation.best
         if (fen !== this.currentFen) {
           return
         }

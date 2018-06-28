@@ -1,40 +1,65 @@
+import { FEN, UciMove } from '../types'
+
+declare var WebAssembly: any
+
 const wasmSupported = typeof WebAssembly === 'object' && WebAssembly.validate(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00))
 
-export default class StockfishEngine {
+interface PositionEvaluation {
+  depth: number
+  nps: number
+  best: UciMove
+  cp: number
+  mate: number|null
+  pvs: Array<UciMove>
+}
 
-  constructor(options = {}) {
-    this.multipv = options.multipv || 1
-    this.stockfish = new Worker(`/assets/stockfish${wasmSupported ? '.wasm' : ''}.js`)
-    this.initStockfish()
+interface PositionAnalysis {
+  fen: FEN
+  state: {
+    [evaluation: string]: PositionEvaluation
   }
+}
 
-  initStockfish() {
-    if (this.multipv > 1) {
-      this.stockfish.postMessage('setoption name MultiPV value ' + this.multipv)
-    }
+interface AnalysisOptions {
+  multipv: number
+  depth: number
+}
+
+export default class StockfishEngine {
+  private stockfish: Worker
+
+  constructor() {
+    this.stockfish = new Worker(`/assets/stockfish${wasmSupported ? '.wasm' : ''}.js`)
     this.stockfish.postMessage('uci')
     this.debugMessages()
   }
 
-  debugMessages() {
-    this.stockfish.addEventListener('message', e => console.log(e.data))
-  }
-
-  analyze(fen, options = {}) {
-    let targetDepth = +options.depth || SEARCH_DEPTH
+  public analyze(fen: FEN, options: AnalysisOptions): Promise<PositionAnalysis> {
+    const { depth, multipv } = options
     this.stockfish.postMessage('position fen ' + fen)
+    if (multipv > 1) {
+      this.stockfish.postMessage('setoption name MultiPV value ' + multipv)
+    }
     return new Promise((resolve, reject) => {
-      this.emitEvaluationWhenDone(fen, targetDepth, resolve)
-      this.stockfish.postMessage('go depth ' + targetDepth)
+      this.emitEvaluationWhenDone(fen, options, resolve)
+      this.stockfish.postMessage('go depth ' + depth)
     })
   }
 
-  emitEvaluationWhenDone(fen, depth, callback) {
-    const start = new Date()
-    const targetDepth = depth
-    const targetMultiPv = this.multipv
+  private debugMessages() {
+    this.stockfish.addEventListener('message', e => console.log(e.data))
+  }
 
-    const done = (state) => {
+  private emitEvaluationWhenDone(
+    fen: FEN,
+    options: AnalysisOptions,
+    callback: (analysis: PositionAnalysis) => void
+  ) {
+    const start = new Date()
+    const targetDepth = options.depth
+    const targetMultiPv = options.multipv
+
+    const done = state => {
       this.stockfish.removeEventListener('message', processOutput)
       callback({ fen, state })
     }
@@ -74,7 +99,7 @@ export default class StockfishEngine {
 
       if (multiPv === 1) {
         state = {
-          eval: {
+          evaluation: {
             depth: depth,
             nps: parseInt(matches[5]),
             best: matches[6].split(' ')[0],
@@ -83,9 +108,9 @@ export default class StockfishEngine {
             pvs: []
           }
         }
-      } else if (!state || depth < state.eval.depth) return // multipv progress
+      } else if (!state || depth < state.evaluation.depth) return // multipv progress
 
-      state.eval.pvs[multiPv - 1] = {
+      state.evaluation.pvs[multiPv - 1] = {
         cp: cp,
         mate: mate,
         pv: matches[6],
