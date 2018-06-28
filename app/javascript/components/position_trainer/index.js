@@ -54,21 +54,20 @@ export default class PositionTrainer extends Backbone.View {
 
     this.listenTo(d, "fen:set", fen => {
       this.currentFen = fen
-      this.engine.analyze(fen, { depth: this.depth })
+      this.engine.analyze(fen, { depth: this.depth }, output => {
+        const { fen, state } = output
+        const computerMove = state.eval.best
+        if (fen !== this.currentFen) {
+          return
+        }
+        if (this.isComputersTurn(fen)) {
+          d.trigger("move:try", uciToMove(computerMove))
+        }
+      })
       this.notifyIfGameOver(fen)
     })
 
     this.listenTo(d, "move:try", move => d.trigger("move:make", move))
-
-    this.listenTo(d, "analysis:done", data => {
-      if (data.fen !== this.currentFen) {
-        return
-      }
-      console.dir(data)
-      if (this.isComputersTurn(data.fen)) {
-        d.trigger("move:try", uciToMove(data.eval.best))
-      }
-    })
   }
 
   notifyIfGameOver(fen) {

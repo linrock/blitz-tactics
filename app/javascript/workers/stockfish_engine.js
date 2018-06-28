@@ -1,5 +1,3 @@
-import d from '../dispatcher'
-
 const wasmSupported = typeof WebAssembly === 'object' && WebAssembly.validate(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00))
 
 export default class StockfishEngine {
@@ -22,25 +20,21 @@ export default class StockfishEngine {
     this.stockfish.addEventListener('message', e => console.log(e.data))
   }
 
-  analyze(fen, options = {}) {
+  analyze(fen, options = {}, callback = (output) => {}) {
     let targetDepth = +options.depth || SEARCH_DEPTH
     this.stockfish.postMessage('position fen ' + fen)
-    this.emitEvaluationWhenDone(fen, targetDepth)
+    this.emitEvaluationWhenDone(fen, targetDepth, callback)
     this.stockfish.postMessage('go depth ' + targetDepth)
   }
 
-  emitEvaluationWhenDone(fen, depth) {
-    let start = new Date()
-    let targetDepth = depth
-    let targetMultiPv = this.multipv
+  emitEvaluationWhenDone(fen, depth, callback) {
+    const start = new Date()
+    const targetDepth = depth
+    const targetMultiPv = this.multipv
 
-    let done = (state) => {
-      console.log("time elapsed: " + (Date.now() - start))
-      d.trigger("analysis:done", {
-        fen: fen,
-        eval: state.eval
-      })
+    const done = (state) => {
       this.stockfish.removeEventListener('message', processOutput)
+      callback({ fen, state })
     }
 
     // Modified from lila/ui/analyse/src/ceval/stockfishProtocol.js
@@ -48,6 +42,7 @@ export default class StockfishEngine {
     let state
     let processOutput = (e) => {
       if (e.data.indexOf('bestmove ') === 0) {
+        done(state)
         return
       }
 
@@ -93,10 +88,6 @@ export default class StockfishEngine {
         mate: mate,
         pv: matches[6],
         best: matches[6].split(' ')[0]
-      }
-
-      if (multiPv === targetMultiPv && state.eval.depth === targetDepth) {
-        done(state)
       }
     }
 
