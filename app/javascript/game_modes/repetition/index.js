@@ -4,7 +4,7 @@ import LevelIndicator from './views/level_indicator'
 import Onboarding from './views/onboarding'
 import ProgressBar from './views/progress_bar'
 import Timer from './views/timer'
-import LevelStatus from './models/level_status'
+import LevelStatus from './models/level_status.ts'
 import {
   repetitionLevelAttempted,
   repetitionLevelCompleted

@@ -8,7 +8,6 @@ module PuzzleRecord
   DATA_KEYS = %w( id fen initialMove lines )
 
   included do
-
     before_validation :calculate_and_set_puzzle_hash
     validates :data, presence: true
     validates :puzzle_hash, uniqueness: true

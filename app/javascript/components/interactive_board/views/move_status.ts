@@ -8,7 +8,8 @@ const greatTiming = 5000
 // Encouragement when successful, 
 // discouragement when making a wrong move
 //
-export default class MoveStatus extends Backbone.View {
+export default class MoveStatus extends Backbone.View<Backbone.Model> {
+  private timeSinceSuccess: number
 
   get el() {
     return document.querySelector(`.move-status`)
@@ -26,8 +27,8 @@ export default class MoveStatus extends Backbone.View {
   }
 
   renderSuccess() {
-    let time = Date.now()
-    let tDiff = time - this.timeSinceSuccess
+    const time = Date.now()
+    const tDiff = time - this.timeSinceSuccess
     if (tDiff < perfectTiming) {
       this.renderPerfect()
     } else if (tDiff < greatTiming) {

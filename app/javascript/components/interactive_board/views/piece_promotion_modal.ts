@@ -2,36 +2,38 @@ import Backbone from 'backbone'
 import Mousetrap from 'mousetrap'
 import Chess from 'chess.js'
 
+import { FEN, ChessMove } from '../../../types.ts'
 import d from '../../../dispatcher.ts'
 
 // When you make a pawn move that requires pawn promotion,
 // this is what shows up
 //
-export default class PiecePromotionModal extends Backbone.View {
+export default class PiecePromotionModal extends Backbone.View<Backbone.Model> {
+  private fen: FEN
+  private moveIntent: ChessMove
+  private readonly cjs = new Chess
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.piece-promotion-modal-container`)
   }
 
-  get events() {
+  events(): Backbone.EventsHash {
     return {
       'click .piece' : `_selectPiece`
     }
   }
 
   initialize() {
-    this.cjs = new Chess()
-    this.moveIntent = false
     this.listenToEvents()
   }
 
   show() {
-    this.el.style = `display: block`
+    Object.assign(this.el, { style: `display: block`})
     Mousetrap.bind(`esc`, () => this.hide())
   }
 
   hide() {
-    this.el.style = `display: none`
+    Object.assign(this.el, { style: `display: none`})
     Mousetrap.unbind(`esc`)
   }
 
@@ -45,7 +47,9 @@ export default class PiecePromotionModal extends Backbone.View {
 
   _selectPiece(e) {
     const chosenPiece = e.currentTarget.dataset.piece
-    const move = Object.assign({}, this.moveIntent, { promotion: chosenPiece })
+    const move: ChessMove = Object.assign({}, this.moveIntent, {
+      promotion: chosenPiece
+    })
     this.cjs.load(this.fen)
     const m = this.cjs.move(move)
     if (m) {

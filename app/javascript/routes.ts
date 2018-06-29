@@ -3,7 +3,11 @@ import RepetitionMode from './game_modes/repetition'
 import SpeedrunMode from './game_modes/speedrun'
 import PositionTrainer from './components/position_trainer'
 
-const routes = {
+interface RouteMap {
+  [routeKey: string]: { new(): void }
+}
+
+const routes: RouteMap = {
   // game modes
   "game_modes/speedrun#index": SpeedrunMode,
   "game_modes/infinity#index": InfinityMode,

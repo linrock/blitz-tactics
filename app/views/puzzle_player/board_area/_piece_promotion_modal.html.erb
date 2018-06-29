@@ -5,29 +5,13 @@
     </div>
 
     <div class="pieces">
-      <a class="piece" href="javascript:" data-piece="q">
-        <svg class="piece" viewBox="0 0 45 45">
-          <use xlink:href="#wq" width="100%" height="100%"/>
-        </svg>
-      </a>
-
-      <a class="piece" href="javascript:" data-piece="r">
-        <svg class="piece" viewBox="0 0 45 45">
-          <use xlink:href="#wr" width="100%" height="100%"/>
-        </svg>
-      </a>
-
-      <a class="piece" href="javascript:" data-piece="n">
-        <svg class="piece" viewBox="0 0 45 45">
-          <use xlink:href="#wn" width="100%" height="100%"/>
-        </svg>
-      </a>
-
-      <a class="piece" href="javascript:" data-piece="b">
-        <svg class="piece" viewBox="0 0 45 45">
-          <use xlink:href="#wb" width="100%" height="100%"/>
-        </svg>
-      </a>
+      <% %w( q r n b ).each do |piece| %>
+        <a class="piece" href="javascript:" data-piece="<%= piece %>">
+          <svg class="piece" viewBox="0 0 45 45">
+            <use xlink:href="#w<%= piece %>" width="100%" height="100%"/>
+          </svg>
+        </a>
+      <% end %>
     </div>
   </div>
 

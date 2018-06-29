@@ -7,7 +7,7 @@ interface EventMap {
 }
 
 export default class Listener {
-  private listener: any
+  private readonly listener: any
 
   constructor(eventMap: EventMap) {
     this.listener = Object.assign({}, Backbone.Events)

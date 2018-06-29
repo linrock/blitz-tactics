@@ -2,7 +2,14 @@ import FastClick from 'fastclick'
 import MiniChessboard from '../components/chessboard/mini_chessboard.ts'
 import routes from '../routes.ts'
 
-window.blitz = {};
+interface BlitzConfig {
+  levelPath?: string
+  position?: object
+  loggedIn?: boolean
+}
+
+const blitz: BlitzConfig = {};
+(<any>window).blitz = blitz
 
 document.addEventListener(`DOMContentLoaded`, () => {
   const { controller, action } = document.querySelector(`body`).dataset
@@ -14,7 +21,7 @@ document.addEventListener(`DOMContentLoaded`, () => {
   }
 
   // initialize all mini chessboards
-  document.querySelectorAll(`.mini-chessboard`).forEach(el => {
+  [].forEach.call(document.querySelectorAll(`.mini-chessboard`), el => {
     let { fen, initialMove, options } = el.dataset
     if (options) {
       options = JSON.parse(options)

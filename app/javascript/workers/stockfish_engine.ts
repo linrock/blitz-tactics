@@ -26,7 +26,7 @@ interface AnalysisOptions {
 }
 
 export default class StockfishEngine {
-  private stockfish: Worker
+  private readonly stockfish: Worker
 
   constructor() {
     this.stockfish = new Worker(`/assets/stockfish${wasmSupported ? '.wasm' : ''}.js`)

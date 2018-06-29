@@ -5,16 +5,15 @@ import Listener from '../../../listener.ts'
 import Chessboard from '../chessboard.ts'
 
 export default class PointAndClick {
-  private board: Chessboard
   private moveablePieceColor = `w`
   private selectedSquare: string|boolean = false
 
-  constructor(board) {
+  constructor(private board: Chessboard) {
     this.board = board
     this.listenForEvents()
   }
 
-  private listenForEvents() {
+  private listenForEvents(): void {
     [`mousedown`, `touchstart`].forEach(clickEvent => {
       this.board.el.addEventListener(clickEvent, event => {
         let targetEl = <HTMLElement>event.target
@@ -33,7 +32,7 @@ export default class PointAndClick {
     })
   }
 
-  private clickedSquare(squareId) {
+  private clickedSquare(squareId): void {
     const piece = this.board.cjs.get(squareId)
     if (this.selectedSquare && squareId !== this.selectedSquare) {
       if (this.isMoveable(piece)) {
@@ -50,14 +49,14 @@ export default class PointAndClick {
     }
   }
 
-  private selectSquare(squareId) {
+  private selectSquare(squareId): void {
     this.clearSelected()
     this.selectedSquare = squareId
     this.board.highlightSquare(squareId, `data-selected`)
     this.board.renderVirtualDom()
   }
 
-  private clearSelected() {
+  private clearSelected(): void {
     if (!this.selectedSquare) {
       return
     }

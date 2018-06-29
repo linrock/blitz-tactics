@@ -1,22 +1,19 @@
 // Tracks progress within the level and whether the next level is unlocked
 //
 export default class LevelStatus {
+  private numPuzzles = 0
+  private puzzleCounter = 0
+  public completed = false
 
-  constructor() {
-    this.completed = false
-    this.numPuzzles = 0
-    this.puzzleCounter = 0
-  }
-
-  setNumPuzzles(numPuzzles) {
+  public setNumPuzzles(numPuzzles: number) {
     this.numPuzzles = numPuzzles
   }
 
-  nextPuzzle() {
+  public nextPuzzle(): void {
     this.puzzleCounter += 1
   }
 
-  getProgress() {
+  public getProgress(): number {
     let progress = ~~( 100 * this.puzzleCounter / this.numPuzzles )
     if (progress > 100) {
       progress = 100
@@ -24,11 +21,11 @@ export default class LevelStatus {
     return progress
   }
 
-  resetProgress() {
+  public resetProgress(): void {
     this.puzzleCounter = 0
   }
 
-  nextLevelUnlocked() {
+  public nextLevelUnlocked(): boolean {
     return this.getProgress() === 100
   }
 }

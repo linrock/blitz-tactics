@@ -1,8 +1,8 @@
 declare var require: any
 
-import { ChessMove } from '../../../types'
-
 const interact = require('interactjs')
+
+import { ChessMove } from '../../../types'
 
 const dragMoveStyle = (dx: number, dy: number): string => [
   `transform: translate3d(${dx}px, ${dy}px, 0)`,
