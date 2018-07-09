@@ -12,6 +12,6 @@ class UserRepetitionLevels
     else
       level_number = 1
     end
-    RepetitionLevel.number(level_number)
+    RepetitionLevel.number(level_number) || RepetitionLevel.last
   end
 end
