@@ -14,10 +14,11 @@ export default class PointAndClick {
   }
 
   private listenForEvents(): void {
+    const boardEl = this.board.el;
     [`mousedown`, `touchstart`].forEach(clickEvent => {
-      this.board.el.addEventListener(clickEvent, event => {
+      boardEl.addEventListener(clickEvent, event => {
         let targetEl = <HTMLElement>event.target
-        while (targetEl !== this.board.el) {
+        while (targetEl && targetEl !== boardEl) {
           if (targetEl.classList.contains(`square`)) {
             this.clickedSquare(targetEl.dataset.square)
             event.stopPropagation()
