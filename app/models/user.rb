@@ -58,7 +58,8 @@ class User < ActiveRecord::Base
   end
 
   def speedrun_stats
-    SpeedrunLevel.all.map do |level|
+    level_ids = completed_speedruns.pluck(Arel.sql('distinct(speedrun_level_id)'))
+    SpeedrunLevel.where(id: level_ids).order('id ASC').map do |level|
       [
         level.name,
         completed_speedruns.formatted_personal_best(level.id)
