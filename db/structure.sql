@@ -856,17 +856,17 @@ CREATE INDEX index_solved_infinity_puzzles_on_user_id_and_updated_at ON public.s
 
 
 --
--- Name: index_speedrun_puzzles_on_puzzle_hash; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_speedrun_puzzles_on_puzzle_hash ON public.speedrun_puzzles USING btree (puzzle_hash);
-
-
---
 -- Name: index_speedrun_puzzles_on_speedrun_level_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_speedrun_puzzles_on_speedrun_level_id ON public.speedrun_puzzles USING btree (speedrun_level_id);
+
+
+--
+-- Name: index_speedrun_puzzles_on_speedrun_level_id_and_puzzle_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_speedrun_puzzles_on_speedrun_level_id_and_puzzle_hash ON public.speedrun_puzzles USING btree (speedrun_level_id, puzzle_hash);
 
 
 --
@@ -918,6 +918,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180625160722'),
 ('20180626024019'),
 ('20180626024026'),
-('20180626052132');
+('20180626052132'),
+('20181206064113'),
+('20181206064149');
 
 
