@@ -16,13 +16,19 @@ export default class Speedrun {
     new Progress
     new SpeedrunComplete
 
+    let levelName
+
     new Listener({
       'level:selected': name => {
         d.trigger(`source:changed`, `${apiPath}?name=${name}`)
       },
 
+      'config:init': data => {
+        levelName = data.level_name
+      },
+
       'timer:stopped': elapsedTimeMs => {
-        speedrunCompleted(`quick`, elapsedTimeMs).then(data => {
+        speedrunCompleted(levelName, elapsedTimeMs).then(data => {
           d.trigger(`speedrun:complete`, data)
         })
       }
