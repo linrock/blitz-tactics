@@ -3,8 +3,11 @@ class PagesController < ApplicationController
 
   def home
     @infinity_puzzle = @user.next_infinity_puzzle
-    @speedrun_puzzle = SpeedrunLevel.first_puzzle
-    @best_speedrun_time = @user.best_speedrun_time
+    @hours_until_tomorrow = 24 - DateTime.now.hour
+    @speedrun_level = SpeedrunLevel.todays_level
+    @speedrun_level_date = SpeedrunLevel.todays_date
+    @best_speedrun_time = @user.best_speedrun_time(@speedrun_level)
+    @speedrun_puzzle = @speedrun_level.first_puzzle
     @repetition_level = @user.highest_repetition_level_unlocked
   end
 

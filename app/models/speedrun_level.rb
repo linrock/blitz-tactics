@@ -37,8 +37,15 @@ class SpeedrunLevel < ActiveRecord::Base
   end
 
   # fastest 5 first speedruns for this level
-  def top_speedruns
-    first_runs = completed_speedruns.unscoped.group(:user_id).minimum(:id).values
+  def fastest_first_speedruns
+    first_runs = completed_speedruns.group(:user_id).minimum(:id).values
+    top_5 = completed_speedruns.where(id: first_runs).order(elapsed_time_ms: :asc).limit(5)
+    top_5
+  end
+
+  # fastest overall speedruns for this level
+  def fastest_speedruns
+    first_runs = completed_speedruns.group(:user_id).minimum(:id).values
     top_5 = completed_speedruns.where(id: first_runs).order(elapsed_time_ms: :asc).limit(5)
     top_5
   end

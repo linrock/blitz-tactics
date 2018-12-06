@@ -6,9 +6,10 @@ class UserSpeedruns
     @user = user # User or NilUser
   end
 
-  def best_speedrun_time
+  def best_speedrun_time(speedrun_level)
     if @user.present?
-      @user.completed_speedruns.formatted_fastest_time
+      @user.completed_speedruns
+        .where(speedrun_level_id: speedrun_level.id).formatted_fastest_time
     else
       'None'
     end

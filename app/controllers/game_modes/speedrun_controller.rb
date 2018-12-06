@@ -6,9 +6,11 @@ class GameModes::SpeedrunController < ApplicationController
     render "game_modes/speedrun"
   end
 
-  # json endpoint for fetching puzzles
+  # json endpoint for fetching puzzles on initial pageload
   def puzzles
+    speedrun_level = SpeedrunLevel.todays_level || SpeedrunLevel.first_level
     render json: {
+      level_name: speedrun_level.name,
       puzzles: speedrun_level.speedrun_puzzles
     }
   end
@@ -31,14 +33,6 @@ class GameModes::SpeedrunController < ApplicationController
   end
 
   private
-
-  def speedrun_level
-    if params[:name]
-      SpeedrunLevel.find_by(name: params[:name])
-    else
-      SpeedrunLevel.first_level
-    end
-  end
 
   def completed_speedrun_level
     @completed_speedrun_level ||= SpeedrunLevel.find_by(

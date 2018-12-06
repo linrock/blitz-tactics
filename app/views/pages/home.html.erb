@@ -2,56 +2,99 @@
   <div class="container">
     <h2>Fast-paced chess puzzles. Choose a game mode to get started.</h2>
 
-    <div class="game-modes">
-      <div class="mode infinity">
-        <h3><a href="/infinity">Infinity</a></h3>
-        <h4 class="game-mode-description">
-          Blaze through endless puzzles.
-          Change the difficulty to challenge yourself.
-        </h4>
-        <%= homepage_miniboard_link("/infinity", {
-              fen: @infinity_puzzle.fen,
-              initial_move: @infinity_puzzle.initial_move_uci,
-            }) %>
-        <div class="under-mini-board">
-          <% if user_signed_in? %>
-            You have solved <%= current_user.num_infinity_puzzles_solved %> puzzles
-          <% else %>
-            <a href="/users/sign_up">Sign up</a> to track your progress
-          <% end %>
+    <div class="game-modes-container">
+      <div class="game-modes left">
+        <div class="mode infinity">
+          <h3><a href="/infinity">Infinity</a></h3>
+          <h4 class="game-mode-description">
+            Blaze through endless puzzles.
+            Change the difficulty to challenge yourself.
+          </h4>
+          <%= homepage_miniboard_link("/infinity", {
+                fen: @infinity_puzzle.fen,
+                initial_move: @infinity_puzzle.initial_move_uci,
+              }) %>
+          <div class="under-mini-board">
+            <% if user_signed_in? %>
+              You have solved <%= current_user.num_infinity_puzzles_solved %> puzzles
+            <% else %>
+              <a href="/users/sign_up">Sign up</a> to track your progress
+            <% end %>
+          </div>
+        </div>
+
+        <div class="mode accuracy">
+          <h3><a href="<%= @repetition_level.path %>">Repetition</a></h3>
+          <h4 class="game-mode-description">
+            Use repetition to learn. Quickly solve puzzles
+            without mistakes to unlock the next level.
+          </h4>
+          <%= homepage_miniboard_link(@repetition_level.path, {
+                fen: @repetition_level.first_puzzle.fen,
+                initial_move: @repetition_level.first_puzzle.initial_move_uci
+              }) %>
+          <div class="under-mini-board">
+            <%= @repetition_level.display_name %>
+          </div>
         </div>
       </div>
 
-      <div class="mode speedrun">
-        <h3><a href="/speedrun">Speedrun</a></h3>
-        <h4 class="game-mode-description">
-          Solve a sequence of puzzles as fast as you can.
-          Set your personal best, then beat it.
-        </h4>
-        <%= homepage_miniboard_link("/speedrun", {
-              fen: @speedrun_puzzle.fen,
-              initial_move: @speedrun_puzzle.initial_move_uci
-            }) %>
-        <div class="under-mini-board">
-          Best time: <%= @best_speedrun_time %>
-        </div>
-      </div>
-    </div>
-  </div>
+      <div class="game-modes right">
+        <div class="mode speedrun">
+          <h3><a href="/speedrun">Speedrun</a></h3>
+          <h4 class="game-mode-description">
+            Solve a sequence of puzzles as quickly as you can.
+            Puzzles change every day.
+          </h4>
+          <%= homepage_miniboard_link("/speedrun", {
+                fen: @speedrun_puzzle.fen,
+                initial_move: @speedrun_puzzle.initial_move_uci
+              }) %>
+          <div class="under-mini-board speedrun">
+            <div class="daily-level">
+              <div><%= @speedrun_level_date %></div>
+              <div class="next-day">Next speedrun in <%= @hours_until_tomorrow %> hours</div>
+            </div>
 
-  <div class="game-modes">
-    <div class="mode accuracy">
-      <h3><a href="<%= @repetition_level.path %>">Repetition</a></h3>
-      <h4 class="game-mode-description">
-        Use repetition to learn. Quickly solve puzzles
-        without mistakes to unlock the next level.
-      </h4>
-      <%= homepage_miniboard_link(@repetition_level.path, {
-            fen: @repetition_level.first_puzzle.fen,
-            initial_move: @repetition_level.first_puzzle.initial_move_uci
-          }) %>
-      <div class="under-mini-board">
-        <%= @repetition_level.display_name %>
+            <% if user_signed_in? %>
+              <div class="your-best-times">
+                Your best time: <span class="best-time"><%= @best_speedrun_time %></span>
+              </div>
+            <% end %>
+
+            <% if @speedrun_level.fastest_first_speedruns.present? %>
+              <div class="top-5-first-speedruns top-players">
+                <h5>Fastest first speedruns today</h5>
+                <% @speedrun_level.fastest_first_speedruns.each_with_index do |completed_speedrun, i| %>
+                  <div class="ranking">
+                    <div class="place">#<%= i+ 1 %></div>
+                    <div class="time-spent"><%= completed_speedrun.formatted_time_spent %></div>
+                    <div class="player-name">
+                      <% user = completed_speedrun.user %>
+                      <a class="username" href="/<%= user.username %>"><%= user.username %></a>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+
+            <% if false and @speedrun_level.fastest_speedruns.present? %>
+              <div class="top-5-speedruns top-players">
+                <h5>Fastest speedruns today</h5>
+                <% @speedrun_level.fastest_speedruns.each_with_index do |completed_speedrun, i| %>
+                  <div class="ranking">
+                    <div class="place">#<%= i+ 1 %></div>
+                    <div class="time-spent"><%= completed_speedrun.formatted_time_spent %></div>
+                    <div class="player-name">
+                      <% user = completed_speedrun.user %>
+                      <a class="username" href="/<%= user.username %>"><%= user.username %></a>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
