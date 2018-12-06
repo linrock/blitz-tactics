@@ -18,6 +18,15 @@ class GameModes::SpeedrunController < ApplicationController
   # user has completed a speedrun
   def complete
     if user_signed_in?
+      level_name = completed_speedrun_params[:level_name]
+      if level_name =~ /\A201\d-/
+        date = Date.strptime(level_name) rescue nil
+        if !date or date > Date.today
+          render status: 400, json: {}
+          return
+        end
+      end
+      completed_speedrun_level = SpeedrunLevel.find_by(name: level_name)
       current_user.completed_speedruns.create!({
         speedrun_level_id: completed_speedrun_level.id,
         elapsed_time_ms: completed_speedrun_params[:elapsed_time_ms].to_i
@@ -33,12 +42,6 @@ class GameModes::SpeedrunController < ApplicationController
   end
 
   private
-
-  def completed_speedrun_level
-    @completed_speedrun_level ||= SpeedrunLevel.find_by(
-      name: completed_speedrun_params[:level_name]
-    )
-  end
 
   def completed_speedrun_params
     params.require(:speedrun).permit(:elapsed_time_ms, :level_name)
