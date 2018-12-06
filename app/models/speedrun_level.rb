@@ -28,12 +28,12 @@ class SpeedrunLevel < ActiveRecord::Base
     find_by(name: 'quick')
   end
 
-  def self.first_puzzle
-    first_level.first_puzzle
+  def puzzles
+    speedrun_puzzles.order('id ASC')
   end
 
   def first_puzzle
-    speedrun_puzzles.first
+    puzzles.first
   end
 
   # fastest 5 first speedruns for this level

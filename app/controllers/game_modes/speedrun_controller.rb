@@ -11,7 +11,7 @@ class GameModes::SpeedrunController < ApplicationController
     speedrun_level = SpeedrunLevel.todays_level || SpeedrunLevel.first_level
     render json: {
       level_name: speedrun_level.name,
-      puzzles: speedrun_level.speedrun_puzzles
+      puzzles: speedrun_level.puzzles
     }
   end
 
