@@ -10,7 +10,6 @@ module PuzzleRecord
   included do
     before_validation :calculate_and_set_puzzle_hash
     validates :data, presence: true
-    validates :puzzle_hash, uniqueness: true
     validate :check_data_fields
 
     default_scope { order('id ASC') }

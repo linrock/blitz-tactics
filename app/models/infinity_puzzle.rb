@@ -5,4 +5,6 @@ class InfinityPuzzle < ActiveRecord::Base
 
   belongs_to :infinity_level
   has_many :solved_infinity_puzzles, dependent: :destroy
+
+  validates :puzzle_hash, uniqueness: true
 end
