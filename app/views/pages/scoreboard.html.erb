@@ -9,7 +9,7 @@
         <div class="game-mode-scores">
           <h3>Most infinity puzzles solved</h3>
 
-          <% @top_infinity.each do |user, count| %>
+          <% @scoreboard.top_infinity.each do |user, count| %>
             <div class="user-score">
               <%= user_link user %>
               <div class="score"><%= count %></div>
@@ -20,7 +20,7 @@
         <div class="game-mode-scores">
           <h3>Most speedruns completed</h3>
 
-          <% @top_speedruns.each do |user, count| %>
+          <% @scoreboard.top_speedruns.each do |user, count| %>
             <div class="user-score">
               <%= user_link user %>
               <div class="score"><%= count %></div>
@@ -31,7 +31,7 @@
         <div class="game-mode-scores">
           <h3>Repetition levels completed</h3>
 
-          <% @top_repetition.each do |user, count| %>
+          <% @scoreboard.top_repetition.each do |user, count| %>
             <div class="user-score">
               <%= user_link user %>
               <div class="score"><%= count %></div>
@@ -41,13 +41,13 @@
       </div>
     </div>
 
-    <% if @hall_of_fame.present? %>
+    <% if @scoreboard.hall_of_fame.present? %>
       <div class="scores">
         <h2>Hall of fame</h2>
         <div class="hall-of-fame">
           <h3>All repetition levels completed</h3>
 
-          <% @hall_of_fame.each do |user| %>
+          <% @scoreboard.hall_of_fame.each do |user| %>
             <%= user_link user %>
           <% end %>
         </div>

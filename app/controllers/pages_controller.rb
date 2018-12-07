@@ -29,21 +29,7 @@ class PagesController < ApplicationController
   end
 
   def scoreboard
-    time = 7.days.ago
-    n = 10
-    @top_speedruns = CompletedSpeedrun.unscoped
-      .group(:user_id).count
-      .sort_by {|_,v| -v }.take(n)
-      .map {|user_id, count| [User.find_by(id: user_id), count] }
-    @top_infinity = SolvedInfinityPuzzle.unscoped
-      .group(:user_id).count
-      .sort_by {|_,v| -v }.take(n)
-      .map {|user_id, count| [User.find_by(id: user_id), count] }
-    @top_repetition = CompletedRepetitionLevel.unscoped
-      .group(:user_id).count
-      .sort_by {|_,v| -v }.take(n)
-      .map {|user_id, count| [User.find_by(id: user_id), count] }
-    @hall_of_fame = User.all_repetition_levels_unlocked
+    @scoreboard = Scoreboard.new
   end
 
   def pawn_endgames

@@ -80,10 +80,10 @@
           <% end %>
 
           <h6>Past 7 days</h6>
-          <% if @scoreboard.top_infinity.present? %>
+          <% if @scoreboard.top_infinity_recent.present? %>
             <div class="top-infinity top-players">
               <h5>Most infinity puzzles solved</h5>
-              <% @scoreboard.top_infinity.each do |user, puzzles_solved| %>
+              <% @scoreboard.top_infinity_recent.each do |user, puzzles_solved| %>
                 <div class="ranking">
                   <div class="player-name">
                     <%= user_link(user) %>
@@ -94,10 +94,10 @@
             </div>
           <% end %>
 
-          <% if @scoreboard.top_repetition.present? %>
+          <% if @scoreboard.top_repetition_recent.present? %>
             <div class="top-repetition top-players">
               <h5>Most repetition levels completed</h5>
-              <% @scoreboard.top_repetition.each do |user, levels_completed| %>
+              <% @scoreboard.top_repetition_recent.each do |user, levels_completed| %>
                 <div class="ranking">
                   <div class="player-name">
                     <%= user_link(user) %>
