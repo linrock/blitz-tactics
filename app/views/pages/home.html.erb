@@ -89,10 +89,10 @@
       <% if fastest_speedruns.present? %>
         <div class="fastest-speedruns top-players">
           <h5>Fastest speedruns today</h5>
-          <% fastest_speedruns.each do |completed_speedrun| %>
+          <% fastest_speedruns.each do |user, formatted_time_spent| %>
             <div class="ranking">
-              <div class="player-name"><%= user_link(completed_speedrun.user) %></div>
-              <div class="stats"><%= completed_speedrun.formatted_time_spent %></div>
+              <div class="player-name"><%= user_link(user) %></div>
+              <div class="stats"><%= formatted_time_spent %></div>
             </div>
           <% end %>
         </div>

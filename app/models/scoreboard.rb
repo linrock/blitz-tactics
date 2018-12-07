@@ -12,7 +12,14 @@ class Scoreboard
 
   def fastest_speedruns(speedrun_level)
     return unless speedrun_level.present?
-    speedrun_level.fastest_speedruns
+    speedrun_level.completed_speedruns.group(:user_id).minimum(:elapsed_time_ms)
+      .sort_by {|_,v| -v }.take(@n_homepage)
+      .map do |user_id, elapsed_time_ms|
+        [
+          User.find_by(id: user_id),
+          sprintf("%0.1fs" % (elapsed_time_ms.to_f / 1000))
+        ]
+      end
   end
 
   def countdown_high_scores(countdown_level)

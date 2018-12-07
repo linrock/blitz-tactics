@@ -36,20 +36,6 @@ class SpeedrunLevel < ActiveRecord::Base
     puzzles.first
   end
 
-  # fastest 5 first speedruns for this level
-  def fastest_first_speedruns
-    first_runs = completed_speedruns.group(:user_id).minimum(:id).values
-    top_5 = completed_speedruns.where(id: first_runs).order(elapsed_time_ms: :asc).limit(5)
-    top_5
-  end
-
-  # fastest overall speedruns for this level
-  def fastest_speedruns
-    first_runs = completed_speedruns.group(:user_id).minimum(:id).values
-    top_5 = completed_speedruns.where(id: first_runs).order(elapsed_time_ms: :asc).limit(5)
-    top_5
-  end
-
   def num_puzzles
     @num_puzzles ||= speedrun_puzzles.count
   end
