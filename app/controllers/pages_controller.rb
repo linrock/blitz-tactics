@@ -9,6 +9,7 @@ class PagesController < ApplicationController
     @best_speedrun_time = @user.best_speedrun_time(@speedrun_level)
     @speedrun_puzzle = @speedrun_level.first_puzzle
     @repetition_level = @user.highest_repetition_level_unlocked
+    @scoreboard = Scoreboard.new
   end
 
   def positions

@@ -51,49 +51,62 @@
                 initial_move: @speedrun_puzzle.initial_move_uci
               }) %>
           <div class="under-mini-board speedrun">
-            <div class="daily-level">
-              <div><%= @speedrun_level_date %></div>
-              <div class="next-day">Next speedrun in <%= @hours_until_tomorrow %> hours</div>
-            </div>
-
             <% if user_signed_in? %>
               <div class="your-best-times">
                 Your best time: <span class="best-time"><%= @best_speedrun_time %></span>
               </div>
             <% end %>
 
-            <% if @speedrun_level.fastest_first_speedruns.present? %>
-              <div class="top-5-first-speedruns top-players">
-                <h5>Fastest first speedruns today</h5>
-                <% @speedrun_level.fastest_first_speedruns.each_with_index do |completed_speedrun, i| %>
-                  <div class="ranking">
-                    <div class="place">#<%= i+ 1 %></div>
-                    <div class="time-spent"><%= completed_speedrun.formatted_time_spent %></div>
-                    <div class="player-name">
-                      <% user = completed_speedrun.user %>
-                      <a class="username" href="/<%= user.username %>"><%= user.username %></a>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            <% end %>
-
-            <% if false and @speedrun_level.fastest_speedruns.present? %>
-              <div class="top-5-speedruns top-players">
-                <h5>Fastest speedruns today</h5>
-                <% @speedrun_level.fastest_speedruns.each_with_index do |completed_speedrun, i| %>
-                  <div class="ranking">
-                    <div class="place">#<%= i+ 1 %></div>
-                    <div class="time-spent"><%= completed_speedrun.formatted_time_spent %></div>
-                    <div class="player-name">
-                      <% user = completed_speedrun.user %>
-                      <a class="username" href="/<%= user.username %>"><%= user.username %></a>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            <% end %>
+            <div class="daily-level">
+              <div class="next-day">Next speedrun in <%= @hours_until_tomorrow %> hours</div>
+            </div>
           </div>
+        </div>
+
+        <div class="mini-scoreboard">
+          <% fastest_speedruns = @scoreboard.fastest_speedruns(@speedrun_level) %>
+          <% if fastest_speedruns.present? %>
+            <div class="fastest-speedruns top-players">
+              <h5>Fastest speedruns today</h5>
+              <% fastest_speedruns.each do |completed_speedrun| %>
+                <div class="ranking">
+                  <div class="player-name">
+                    <%= user_link(completed_speedrun.user) %>
+                  </div>
+                  <div class="stats"><%= completed_speedrun.formatted_time_spent %></div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <h6>Past 7 days</h6>
+          <% if @scoreboard.top_infinity.present? %>
+            <div class="top-infinity top-players">
+              <h5>Most infinity puzzles solved</h5>
+              <% @scoreboard.top_infinity.each do |user, puzzles_solved| %>
+                <div class="ranking">
+                  <div class="player-name">
+                    <%= user_link(user) %>
+                  </div>
+                  <div class="stats"><%= puzzles_solved %></div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <% if @scoreboard.top_repetition.present? %>
+            <div class="top-repetition top-players">
+              <h5>Most repetition levels completed</h5>
+              <% @scoreboard.top_repetition.each do |user, levels_completed| %>
+                <div class="ranking">
+                  <div class="player-name">
+                    <%= user_link(user) %>
+                  </div>
+                  <div class="stats"><%= levels_completed %></div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

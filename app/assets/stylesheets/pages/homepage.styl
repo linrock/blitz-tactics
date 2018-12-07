@@ -58,36 +58,49 @@
           text-decoration underline
 
       &.speedrun
-        text-align left
-        font-size 14px
-
-        .daily-level
-          font-size 13px
-          display flex
-          margin-bottom 40px
-
-          .next-day
-            margin-left auto
+        .your-best-times
+          margin-bottom 7px
 
         .best-time
           color rgba(250, 250, 250, 0.8)
 
-        .top-players
-          margin 30px 0
+  .mini-scoreboard
+    width 250px
+    margin 0 auto
 
-          h5
-            margin-bottom 5px
+    h6
+      color rgba(250, 250, 250, 0.25)
+      margin-bottom 5px
 
-        .ranking
-          padding 5px 0
-          display flex
-          color rgba(250, 250, 250, 0.8)
+    .top-players
+      margin 10px 0 30px
+      font-size 14px
 
-          .place
-            width 40px
+      // headings for stats
+      h5
+        color rgba(250, 250, 250, 0.4)
+        margin-bottom 5px
 
-          .time-spent
-            width 70px
+    .ranking
+      padding 5px 0
+      display flex
+      color rgba(250, 250, 250, 0.8)
+
+      .place
+        width 40px
+
+      .player-name
+        width 180px
+
+      .stats
+        width 70px
+
+      a
+        color rgba(250, 250, 250, 0.8)
+        text-decoration none
+
+        &:hover
+          text-decoration underline
 
   .miniboard-link
     display block

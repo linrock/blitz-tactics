@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def user_link(user)
+    link_to user.username, "/#{user.username}", class: "username"
+  end
+
   def https_registration_url
     if Rails.env.production?
       new_user_registration_url(:protocol => "https")
