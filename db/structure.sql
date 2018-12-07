@@ -39,6 +39,38 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: completed_countdown_levels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_countdown_levels (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    countdown_level_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_countdown_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_countdown_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_countdown_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_countdown_levels_id_seq OWNED BY public.completed_countdown_levels.id;
+
+
+--
 -- Name: completed_repetition_levels; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -167,6 +199,70 @@ CREATE SEQUENCE public.completed_speedruns_id_seq
 --
 
 ALTER SEQUENCE public.completed_speedruns_id_seq OWNED BY public.completed_speedruns.id;
+
+
+--
+-- Name: countdown_levels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.countdown_levels (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: countdown_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.countdown_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: countdown_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.countdown_levels_id_seq OWNED BY public.countdown_levels.id;
+
+
+--
+-- Name: countdown_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.countdown_puzzles (
+    id bigint NOT NULL,
+    countdown_level_id integer NOT NULL,
+    data jsonb NOT NULL,
+    puzzle_hash character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: countdown_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.countdown_puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: countdown_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.countdown_puzzles_id_seq OWNED BY public.countdown_puzzles.id;
 
 
 --
@@ -546,6 +642,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: completed_countdown_levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_countdown_levels ALTER COLUMN id SET DEFAULT nextval('public.completed_countdown_levels_id_seq'::regclass);
+
+
+--
 -- Name: completed_repetition_levels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -571,6 +674,20 @@ ALTER TABLE ONLY public.completed_rounds ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.completed_speedruns ALTER COLUMN id SET DEFAULT nextval('public.completed_speedruns_id_seq'::regclass);
+
+
+--
+-- Name: countdown_levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.countdown_levels ALTER COLUMN id SET DEFAULT nextval('public.countdown_levels_id_seq'::regclass);
+
+
+--
+-- Name: countdown_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.countdown_puzzles ALTER COLUMN id SET DEFAULT nextval('public.countdown_puzzles_id_seq'::regclass);
 
 
 --
@@ -652,6 +769,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: completed_countdown_levels completed_countdown_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_countdown_levels
+    ADD CONSTRAINT completed_countdown_levels_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: completed_repetition_levels completed_repetition_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -681,6 +806,22 @@ ALTER TABLE ONLY public.completed_rounds
 
 ALTER TABLE ONLY public.completed_speedruns
     ADD CONSTRAINT completed_speedruns_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: countdown_levels countdown_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.countdown_levels
+    ADD CONSTRAINT countdown_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: countdown_puzzles countdown_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.countdown_puzzles
+    ADD CONSTRAINT countdown_puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -772,10 +913,31 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: index_completed_countdown_levels_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_countdown_levels_on_user_id ON public.completed_countdown_levels USING btree (user_id);
+
+
+--
 -- Name: index_completed_speedruns_on_user_id_and_speedrun_level_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_completed_speedruns_on_user_id_and_speedrun_level_id ON public.completed_speedruns USING btree (user_id, speedrun_level_id);
+
+
+--
+-- Name: index_countdown_puzzles_on_countdown_level_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_countdown_puzzles_on_countdown_level_id ON public.countdown_puzzles USING btree (countdown_level_id);
+
+
+--
+-- Name: index_countdown_puzzles_on_countdown_level_id_and_puzzle_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_countdown_puzzles_on_countdown_level_id_and_puzzle_hash ON public.countdown_puzzles USING btree (countdown_level_id, puzzle_hash);
 
 
 --
@@ -920,6 +1082,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180626024026'),
 ('20180626052132'),
 ('20181206064113'),
-('20181206064149');
+('20181206064149'),
+('20181207065925'),
+('20181207070038'),
+('20181207070049');
 
 
