@@ -17,6 +17,7 @@ class GameModes::CountdownController < ApplicationController
 
   # user has completed a countdown level
   def complete
+    score = completed_countdown_params[:score].to_i
     if user_signed_in?
       level_name = completed_countdown_params[:level_name]
       if level_name =~ /\A201\d-/
@@ -26,18 +27,20 @@ class GameModes::CountdownController < ApplicationController
           return
         end
       end
-      completed_countdown_level = CountdownLevel.find_by(name: level_name)
-      current_user.completed_countdowns.create!({
-        countdown_level_id: completed_countdown_level.id,
-        elapsed_time_ms: completed_countdown_params[:elapsed_time_ms].to_i
+      countdown_level = CountdownLevel.find_by(name: level_name)
+      current_user.completed_countdown_levels.create!({
+        countdown_level_id: countdown_level.id,
+        score: score
       })
       render json: {
-        best: current_user.completed_countdowns.personal_best(
-          completed_countdown_level.id
-        )
+        score: score,
+        best: current_user.completed_countdown_levels.personal_best(countdown_level.id)
       }
     else
-      render json: {}
+      render json: {
+        score: score,
+        best: score
+      }
     end
   end
 

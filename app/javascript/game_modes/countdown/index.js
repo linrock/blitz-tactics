@@ -2,7 +2,8 @@ import PuzzlePlayer from '../../components/puzzle_player'
 import Sidebar from './views/sidebar'
 import Timer from './views/timer'
 import Progress from './views/progress'
-// import CountdownComplete from './views/countdown_complete'
+import Modal from './views/modal'
+import CountdownComplete from './views/countdown_complete'
 import { countdownCompleted } from '../../api/requests'
 import Listener from '../../listener.ts'
 import d from '../../dispatcher.ts'
@@ -14,7 +15,8 @@ export default class Countdown {
     new Sidebar
     new Timer
     new Progress
-    // new CountdownComplete
+    new Modal
+    new CountdownComplete
 
     let levelName
 

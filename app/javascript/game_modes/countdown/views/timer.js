@@ -5,7 +5,7 @@ import d from '../../../dispatcher.ts'
 import { formattedTimeSeconds } from '../../../utils.ts'
 
 const updateInterval = 100   // timer updates this frequently
-const penaltyMs = 20000 * 5      // lose this much time per mistake
+const penaltyMs = 30000      // lose this much time per mistake
 
 // Amount of time spent so far
 //
@@ -44,6 +44,7 @@ export default class Timer extends Backbone.View {
     this.timerInterval = setInterval(() => {
       const timeLeft = this.timeLeftMilliseconds()
       if (timeLeft <= 0) {
+        this.stopTimer()
         this.notifyCompletion()
       } else {
         this.displayTimeLeft(formattedTimeSeconds(timeLeft))
@@ -62,7 +63,6 @@ export default class Timer extends Backbone.View {
   }
 
   notifyCompletion() {
-    this.stopTimer()
-    d.trigger("timer:stopped", this.timeLeftMilliseconds())
+    d.trigger("timer:stopped")
   }
 }

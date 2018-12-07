@@ -22,6 +22,6 @@ export default class Progress extends Backbone.View {
   }
 
   updateProgress() {
-    this.el.textContent = `${this.nSolved} solved`
+    this.el.textContent = `${this.nSolved} puzzles solved`
   }
 }
