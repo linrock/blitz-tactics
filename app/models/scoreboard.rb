@@ -13,7 +13,7 @@ class Scoreboard
   def fastest_speedruns(speedrun_level)
     return unless speedrun_level.present?
     speedrun_level.completed_speedruns.group(:user_id).minimum(:elapsed_time_ms)
-      .sort_by {|_,v| -v }.take(@n_homepage)
+      .sort_by(&:last).take(@n_homepage)
       .map do |user_id, elapsed_time_ms|
         [
           User.find_by(id: user_id),
