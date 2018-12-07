@@ -63,6 +63,25 @@
           </div>
         </div>
 
+        <div class="mode countdown">
+          <h3><a href="/countdown">Countdown</a></h3>
+          <h4 class="game-mode-description">
+            Solve as many puzzles as you can before the time runs out.
+            Mistakes cost time.
+          </h4>
+          <%= homepage_miniboard_link("/countdown", {
+                fen: @speedrun_puzzle.fen,
+                initial_move: @speedrun_puzzle.initial_move_uci
+              }) %>
+          <div class="under-mini-board">
+            <% if user_signed_in? %>
+              <div class="your-best-times">
+                Your best score: <span class="best-time">37</span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
         <div class="mini-scoreboard">
           <% fastest_speedruns = @scoreboard.fastest_speedruns(@speedrun_level) %>
           <% if fastest_speedruns.present? %>

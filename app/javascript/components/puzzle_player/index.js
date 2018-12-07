@@ -16,9 +16,13 @@ export default class PuzzlePlayer {
 
     // views
     new InteractiveBoard
-    new ComboCounter
     new Instructions
-    new PuzzleHint
+    if (!options.noCounter) {
+      new ComboCounter
+    }
+    if (!options.noHint) {
+      new PuzzleHint
+    }
 
     new Listener({
       'puzzle:solved': puzzle => {

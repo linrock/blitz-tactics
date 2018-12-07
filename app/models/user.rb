@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :level_attempts
   has_many :solved_infinity_puzzles
   has_many :completed_speedruns
+  has_many :completed_countdowns
   has_many :completed_repetition_rounds
   has_many :completed_repetition_levels
   has_many :positions

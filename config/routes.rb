@@ -13,6 +13,11 @@ Rails.application.routes.draw do
   get '/speedrun/puzzles'        => 'game_modes/speedrun#puzzles'
   post '/speedrun'               => 'game_modes/speedrun#complete'
 
+  # countdown mode
+  get '/countdown'               => 'game_modes/countdown#index'
+  get '/countdown/puzzles'       => 'game_modes/countdown#puzzles'
+  post '/countdown'              => 'game_modes/countdown#complete'
+
   # repetition mode
   get '/repetition'              => 'game_modes/repetition#index'
   get '/level-:number'           => 'game_modes/repetition#index'

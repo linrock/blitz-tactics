@@ -1,0 +1,49 @@
+# countdown mode puzzles
+
+class GameModes::CountdownController < ApplicationController
+
+  def index
+    render "game_modes/countdown"
+  end
+
+  # json endpoint for fetching puzzles on initial pageload
+  def puzzles
+    countdown_level = CountdownLevel.todays_level
+    render json: {
+      level_name: countdown_level.name,
+      puzzles: countdown_level.puzzles
+    }
+  end
+
+  # user has completed a countdown level
+  def complete
+    if user_signed_in?
+      level_name = completed_countdown_params[:level_name]
+      if level_name =~ /\A201\d-/
+        date = Date.strptime(level_name) rescue nil
+        if !date or date > Date.today
+          render status: 400, json: {}
+          return
+        end
+      end
+      completed_countdown_level = CountdownLevel.find_by(name: level_name)
+      current_user.completed_countdowns.create!({
+        countdown_level_id: completed_countdown_level.id,
+        elapsed_time_ms: completed_countdown_params[:elapsed_time_ms].to_i
+      })
+      render json: {
+        best: current_user.completed_countdowns.personal_best(
+          completed_countdown_level.id
+        )
+      }
+    else
+      render json: {}
+    end
+  end
+
+  private
+
+  def completed_countdown_params
+    params.require(:countdown).permit(:level_name, :score)
+  end
+end

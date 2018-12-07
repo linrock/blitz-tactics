@@ -31,6 +31,16 @@ export function speedrunCompleted(levelName, elapsedTimeMs) {
   return client.post(`/speedrun`, params).then(resp => resp.data)
 }
 
+export function countdownCompleted(levelName, score) {
+  const params = {
+    countdown: {
+      level_name: levelName,
+      score,
+    }
+  }
+  return client.post(`/countdown`, params).then(resp => resp.data)
+}
+
 export function fetchPuzzles(source) {
   return client.get(source).then(resp => resp.data)
 }

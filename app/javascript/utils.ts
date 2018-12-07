@@ -61,6 +61,13 @@ const formattedTime = (milliseconds: number): string => {
   return `${minutes}:${secondsStr}.${centisecondsStr}`
 }
 
+const formattedTimeSeconds = (milliseconds: number): string => {
+  const seconds = ~~( milliseconds / 1000 )
+  const secondsStr = ("0" + (seconds % 60)).slice(-2)
+  const minutes = ~~( seconds / 60 )
+  return `${minutes}:${secondsStr}`
+}
+
 const trackEvent = (event, category, label): void => {
   const gtag = (<any>window).gtag
   if (gtag) {
@@ -80,5 +87,6 @@ export {
   getQueryParam,
   getConfig,
   formattedTime,
+  formattedTimeSeconds,
   trackEvent,
 }

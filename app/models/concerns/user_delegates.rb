@@ -23,6 +23,10 @@ module UserDelegates
       UserSpeedruns.new(self)
     end
 
+    def user_countdowns
+      UserCountdowns.new(self)
+    end
+
     def user_repetition_levels
       UserRepetitionLevels.new(self)
     end
