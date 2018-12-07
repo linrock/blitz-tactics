@@ -11,6 +11,8 @@ module UserDelegates
 
     delegate :best_speedrun_time, to: :user_speedruns
 
+    delegate :best_countdown_score, to: :user_countdown_levels
+
     delegate :highest_repetition_level_unlocked, to: :user_repetition_levels
 
     private
@@ -23,8 +25,8 @@ module UserDelegates
       UserSpeedruns.new(self)
     end
 
-    def user_countdowns
-      UserCountdowns.new(self)
+    def user_countdown_levels
+      UserCountdownLevels.new(self)
     end
 
     def user_repetition_levels

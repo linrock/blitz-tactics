@@ -9,6 +9,8 @@ class PagesController < ApplicationController
     @best_speedrun_time = @user.best_speedrun_time(@speedrun_level)
     @speedrun_puzzle = @speedrun_level.first_puzzle
     @repetition_level = @user.highest_repetition_level_unlocked
+    @countdown_level = CountdownLevel.todays_level
+    @countdown_level_score = @user.best_countdown_score(@countdown_level)
     @scoreboard = Scoreboard.new
   end
 

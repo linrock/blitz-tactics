@@ -53,7 +53,7 @@
           <div class="under-mini-board">
             <% if user_signed_in? %>
               <div class="your-best-times">
-                Your best score: <span class="best-time">37</span>
+                Your best score: <span class="best-time"><%= @countdown_level_score %></span>
               </div>
             <% end %>
           </div>
