@@ -46,6 +46,7 @@ CREATE TABLE public.completed_countdown_levels (
     id bigint NOT NULL,
     user_id integer NOT NULL,
     countdown_level_id integer NOT NULL,
+    score integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
