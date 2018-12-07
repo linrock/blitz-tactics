@@ -91,6 +91,10 @@ class User < ActiveRecord::Base
       .map(&:formatted_time_spent)
   end
 
+  def num_repetition_levels_completed
+    completed_repetition_levels.count
+  end
+
   private
 
   def email_required?
