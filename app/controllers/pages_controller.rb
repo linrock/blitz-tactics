@@ -31,15 +31,15 @@ class PagesController < ApplicationController
   def scoreboard
     time = 7.days.ago
     n = 10
-    @top_speedruns = CompletedSpeedrun.where('created_at > ?', time).unscoped
+    @top_speedruns = CompletedSpeedrun.unscoped
       .group(:user_id).count
       .sort_by {|_,v| -v }.take(n)
       .map {|user_id, count| [User.find_by(id: user_id), count] }
-    @top_infinity = SolvedInfinityPuzzle.where('created_at > ?', time).unscoped
+    @top_infinity = SolvedInfinityPuzzle.unscoped
       .group(:user_id).count
       .sort_by {|_,v| -v }.take(n)
       .map {|user_id, count| [User.find_by(id: user_id), count] }
-    @top_repetition = CompletedRepetitionLevel.where('created_at > ?', time).unscoped
+    @top_repetition = CompletedRepetitionLevel.unscoped
       .group(:user_id).count
       .sort_by {|_,v| -v }.take(n)
       .map {|user_id, count| [User.find_by(id: user_id), count] }
