@@ -8,25 +8,41 @@ class Scoreboard
     @n_scoreboard = 10
   end
 
+  # homepage scoreboard
+
   def fastest_speedruns(speedrun_level)
+    return unless speedrun_level.present?
     speedrun_level.fastest_speedruns
   end
 
-  # most infinity puzzles solved in the past 7 days
-  def top_infinity_recent
+  def countdown_high_scores(countdown_level)
+    return unless countdown_level.present?
+    CompletedCountdownLevel.where(countdown_level_id: countdown_level.id)
+      .group(:user_id).maximum(:score)
+      .sort_by {|_,v| -v }.take(@n_homepage)
+      .map do |user_id, score|
+        [
+          User.find_by(id: user_id),
+          score
+        ]
+      end
+  end
+
+  def top_infinity_recent # most infinity puzzles solved in the past 7 days
     @top_infinity_recent ||= group_and_count(
       SolvedInfinityPuzzle.unscoped.where('created_at > ?', @recent_time),
       @n_homepage
     )
   end
 
-  # most repetition levels solved in the past 7 days
-  def top_repetition_recent
+  def top_repetition_recent # most repetition levels solved in the past 7 days
     @top_repetition_recent ||= group_and_count(
       CompletedRepetitionLevel.unscoped.where('created_at > ?', @recent_time),
       @n_homepage
     )
   end
+
+  # scoreboard standalone page
 
   def top_speedruns
     group_and_count(CompletedSpeedrun.unscoped, @n_scoreboard)
