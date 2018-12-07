@@ -9,7 +9,8 @@ class UserCountdownLevels
   def best_countdown_score(countdown_level)
     if @user.present?
       @user.completed_countdown_levels
-        .where(countdown_level_id: countdown_level.id).maximum(:score)
+        .where(countdown_level_id: countdown_level.id)
+        .maximum(:score) rescue 'None'
     else
       'None'
     end
