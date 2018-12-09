@@ -22,11 +22,11 @@ document.addEventListener(`DOMContentLoaded`, () => {
 
   // initialize all mini chessboards
   [].forEach.call(document.querySelectorAll(`.mini-chessboard`), el => {
-    let { fen, initialMove, options } = el.dataset
+    let { fen, initialMove, flip, options } = el.dataset
     if (options) {
       options = JSON.parse(options)
     }
-    new MiniChessboard({ el, fen, initialMove, ...options })
+    new MiniChessboard({ el, fen, flip: flip === `true`, initialMove, ...options })
   })
 
   FastClick.attach(document.body)

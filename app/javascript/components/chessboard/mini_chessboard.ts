@@ -8,16 +8,17 @@ import { uciToMove } from '../../utils.ts'
 interface MiniChessboardOptions {
   el: HTMLElement
   fen: FEN
+  flip?: boolean
   initialMove?: UciMove
 }
 
-const rows = [8, 7, 6, 5, 4, 3, 2, 1]
-const columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
 const polarities = [`light`, `dark`]
 
 export default class MiniChessboard {
   private el: HTMLElement
   private cjs: Chess
+  private rows = [8, 7, 6, 5, 4, 3, 2, 1]
+  private columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
   private highlights: {
     [squareId: string]: string
   }
@@ -26,6 +27,10 @@ export default class MiniChessboard {
     this.el = options.el
     this.cjs = new Chess()
     this.highlights = {}
+    if (options.flip) {
+      this.rows.reverse()
+      this.columns.reverse()
+    }
     this.renderFen(options.fen)
     if (options.initialMove) {
       setTimeout(() => {
@@ -50,8 +55,8 @@ export default class MiniChessboard {
   private virtualSquares(): m.Component {
     let i = 0
     const squares = []
-    for (let row of rows) {
-      for (let col of columns) {
+    for (let row of this.rows) {
+      for (let col of this.columns) {
         let id = col + row
         const pieces = []
         const piece = this.cjs.get(id)

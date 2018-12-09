@@ -4,6 +4,7 @@
 
 <div class="mini-chessboard"
      data-fen="<%= fen %>"
+     data-flip="<%= flip %>"
      data-initial-move="<%= initial_move %>">
   <% polarity = %w( light dark ).cycle %>
   <% rows = (1..8).to_a.reverse %>

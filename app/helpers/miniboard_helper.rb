@@ -24,10 +24,10 @@ module MiniboardHelper
     render partial: "static/snippets/miniboard_link", locals: options
   end
 
-  # homepage miniboards are never rotated
+  # homepage miniboards are rotated if the first move is by white
   def homepage_miniboard_link(path, options)
     locals = options.merge({
-      flip: false,
+      flip: options[:fen].include?(" w "),
       path: path,
     })
     render partial: "static/snippets/miniboard_link", locals: locals
