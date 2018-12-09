@@ -5,7 +5,6 @@ import Listener from '../../../listener.ts'
 import Chessboard from '../chessboard.ts'
 
 export default class PointAndClick {
-  private moveablePieceColor = `w`
   private selectedSquare: string|boolean = false
 
   constructor(private board: Chessboard) {
@@ -14,8 +13,9 @@ export default class PointAndClick {
   }
 
   private listenForEvents(): void {
-    const boardEl = this.board.el;
-    [`mousedown`, `touchstart`].forEach(clickEvent => {
+    const boardEl = this.board.el
+    const clickEvents = [`mousedown`, `touchstart`]
+    clickEvents.forEach(clickEvent => {
       boardEl.addEventListener(clickEvent, event => {
         let targetEl = <HTMLElement>event.target
         while (targetEl && targetEl !== boardEl) {
@@ -66,7 +66,11 @@ export default class PointAndClick {
     this.board.renderVirtualDom()
   }
 
+  private moveablePieceColor(): string {
+    return this.board.isFlipped ? `b` : `w`
+  }
+
   private isMoveable(piece): boolean {
-    return piece && piece.color === this.moveablePieceColor
+    return piece && piece.color === this.moveablePieceColor()
   }
 }

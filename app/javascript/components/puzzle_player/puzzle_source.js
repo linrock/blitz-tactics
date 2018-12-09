@@ -111,6 +111,7 @@ export default class PuzzleSource {
       puzzle,
     }
     d.trigger(`puzzle:loaded`, this.current)
+    d.trigger(`board:flipped`, !!puzzle.fen.match(/ w /))
     d.trigger(`fen:set`, puzzle.fen)
     setTimeout(() => {
       const move = this.getInitialMoveSan(puzzle.initialMove)

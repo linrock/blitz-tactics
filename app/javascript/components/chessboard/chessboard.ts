@@ -21,16 +21,16 @@ export default class Chessboard {
   private columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
   private polarities = [`light`, `dark`]
   private fen: FEN
-  private flipped: boolean
   private highlightedSquares: HighlightedSquares
   public cjs: Chess
+  public isFlipped: boolean
 
   get el() {
     return document.querySelector(`.chessboard`)
   }
 
   constructor() {
-    this.flipped = false
+    this.isFlipped = false
     this.cjs = new Chess()
     this.disableMobileDragScroll()
     this.listenToEvents()
@@ -59,6 +59,12 @@ export default class Chessboard {
       },
 
       'board:flip': () => this.flipBoard(),
+
+      'board:flipped': shouldBeFlipped => {
+        if (shouldBeFlipped !== this.isFlipped) {
+          this.flipBoard()
+        }
+      },
 
       'move:highlight': move => {
         this.clearHighlights()
@@ -104,7 +110,7 @@ export default class Chessboard {
   }
 
   private flipBoard(): void {
-    this.flipped = !this.flipped
+    this.isFlipped = !this.isFlipped
     this.columns.reverse()
     this.rows.reverse()
     this.renderVirtualDom()
