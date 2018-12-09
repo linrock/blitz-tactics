@@ -32,6 +32,10 @@ class SpeedrunLevel < ActiveRecord::Base
     find_by(name: yesterday.to_s)
   end
 
+  def self.two_days_ago_level
+    find_by(name: 2.days.ago.to_date.to_s)
+  end
+
   def self.first_level
     find_by(name: 'quick')
   end

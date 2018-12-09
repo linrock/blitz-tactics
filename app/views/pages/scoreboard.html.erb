@@ -4,7 +4,47 @@
   <div class="scoreboard">
     <h1>Scoreboard</h1>
 
-    <div class="scores">
+    <div class="new-scores">
+      <div class="recent-scores">
+        <% @recent_days.each do |label, method| %>
+          <% fastest_speedruns = @scoreboard.fastest_speedruns(SpeedrunLevel.send(method)) %>
+          <% countdown_high_scores = @scoreboard.countdown_high_scores(CountdownLevel.send(method)) %>
+
+          <% if fastest_speedruns.present? or countdown_high_scores.present? %>
+            <div class="scores">
+              <h2><%= label %></h2>
+
+              <% if fastest_speedruns.present? %>
+                <div class="game-mode-scores">
+                  <h3>Fastest speedruns</h3>
+
+                  <% fastest_speedruns.each do |user, formatted_time_spent| %>
+                    <div class="user-score">
+                      <%= user_link(user) %>
+                      <div class="score"><%= formatted_time_spent %></div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <% if countdown_high_scores.present? %>
+                <div class="game-mode-scores">
+                  <h3>Countdown high scores</h3>
+
+                  <% countdown_high_scores.each do |user, high_score| %>
+                    <div class="user-score">
+                      <%= user_link(user) %>
+                      <div class="score"><%= high_score %></div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <h2>All-time high scores</h2>
       <div class="recent-scores">
         <div class="game-mode-scores">
           <h3>Most infinity puzzles solved</h3>
@@ -42,10 +82,10 @@
     </div>
 
     <% if @scoreboard.hall_of_fame.present? %>
-      <div class="scores">
+      <div class="old-scores">
         <h2>Hall of fame</h2>
         <div class="hall-of-fame">
-          <h3>All repetition levels completed</h3>
+          <h3>All original repetition levels completed</h3>
 
           <% @scoreboard.hall_of_fame.each do |user| %>
             <%= user_link user %>

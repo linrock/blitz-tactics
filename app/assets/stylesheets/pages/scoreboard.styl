@@ -1,36 +1,40 @@
 .scoreboard 
   margin 0 auto
 
+  // scoreboard
   h1
     text-align center
     margin 50px 0
     font-size 22px
     font-family Orbitron, Arial, sans-serif
     text-transform uppercase
-    letter-spacing 1px
+    letter-spacing 2px
     opacity 0.6
 
+  // today, yesterday, all-time high scores
   h2
     margin-bottom 16px
+    opacity 0.2
 
+  // fastest speedruns, countdown high scores
   h3
-    font-size 14px
+    font-size 15px
     opacity 0.5
-    margin-bottom 20px
+    margin-bottom 8px
 
   .username
     color inherit
     text-decoration none
     padding 7px 0
-    width 236px
+    width 33%
     float left
     opacity 0.8
 
     &:hover
       opacity 1
 
-  .scores 
-    margin-bottom 80px
+  .scores
+    margin-bottom 30px
 
   .recent-scores
     display flex
@@ -39,10 +43,12 @@
 
     .game-mode-scores
       width 200px
+      margin-bottom 30px
 
     .user-score
       display flex
       align-items center
+      font-size 15px
 
       .score
         margin-left auto

@@ -34,6 +34,11 @@ class PagesController < ApplicationController
 
   def scoreboard
     @scoreboard = Scoreboard.new
+    @recent_days = {
+      "2 days ago" => :two_days_ago_level,
+      "Yesterday"  => :yesterdays_level,
+      "Today"      => :todays_level
+    }
   end
 
   def pawn_endgames
