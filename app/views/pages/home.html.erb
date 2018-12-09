@@ -47,8 +47,8 @@
             Mistakes cost time.
           </h4>
           <%= homepage_miniboard_link("/countdown", {
-                fen: @speedrun_puzzle.fen,
-                initial_move: @speedrun_puzzle.initial_move_uci
+                fen: @countdown_puzzle.fen,
+                initial_move: @countdown_puzzle.initial_move_uci
               }) %>
           <div class="under-mini-board">
             <% if user_signed_in? %>

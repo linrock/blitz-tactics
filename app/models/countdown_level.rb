@@ -24,4 +24,8 @@ class CountdownLevel < ActiveRecord::Base
   def puzzles
     countdown_puzzles.order('id ASC')
   end
+
+  def first_puzzle
+    puzzles.first
+  end
 end

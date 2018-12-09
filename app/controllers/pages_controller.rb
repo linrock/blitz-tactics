@@ -11,6 +11,7 @@ class PagesController < ApplicationController
     @repetition_level = @user.highest_repetition_level_unlocked
     @countdown_level = CountdownLevel.todays_level
     @countdown_level_score = @user.best_countdown_score(@countdown_level)
+    @countdown_puzzle = @countdown_level.first_puzzle
     @scoreboard = Scoreboard.new
   end
 
