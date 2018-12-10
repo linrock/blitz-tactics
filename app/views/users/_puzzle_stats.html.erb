@@ -1,3 +1,10 @@
+<% if @user.hall_of_famer? %>
+  <div class="achievements">
+    <h4>Hall of famer</h4>
+    <div>Solved all 65 original repetition levels</div>
+  </div>
+<% end %>
+
 <div class="stats">
 
   <% if @user.num_countdowns_completed > 0 or @user.num_speedruns_completed > 0 %>

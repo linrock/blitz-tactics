@@ -22,14 +22,6 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true, allow_blank: true
   validate :validate_username
 
-  def self.old_scoreboard_ranks(n)
-    all.sort_by { |user| -user.num_repetition_levels_unlocked }.take(n)
-  end
-
-  def self.all_repetition_levels_unlocked
-    all.select {|u| u.num_repetition_levels_unlocked == RepetitionLevel.count }
-  end
-
   # for devise to case-insensitively find users by username
   def self.find_for_database_authentication(conditions)
     if conditions.has_key?(:username)
@@ -54,6 +46,7 @@ class User < ActiveRecord::Base
   end
 
   # speedrun mode methods
+
   def num_speedruns_completed
     @num_speedruns_completed ||= completed_speedruns.count
   end
@@ -61,11 +54,12 @@ class User < ActiveRecord::Base
   def speedrun_stats
     level_ids = completed_speedruns.pluck(Arel.sql('distinct(speedrun_level_id)'))
     SpeedrunLevel.where(id: level_ids).order('id DESC').map do |level|
+      next if level.name == "quick"
       [
         level.name,
         completed_speedruns.formatted_personal_best(level.id)
       ]
-    end
+    end.compact.sort_by {|name, time| name }.reverse
   end
 
   # countdown mode methods
@@ -81,13 +75,14 @@ class User < ActiveRecord::Base
         level.name,
         completed_countdown_levels.personal_best(level.id)
       ]
-    end
+    end.sort_by {|name, time| name }.reverse
   end
 
   # old repetition mode methods
 
-  def num_repetition_levels_unlocked
-    Set.new(self.profile["levels_unlocked"]).count
+  def hall_of_famer?
+    return false unless self.profile["levels_unlocked"]
+    Set.new(self.profile["levels_unlocked"]).count == 65
   end
 
   # new repetition mode methods
