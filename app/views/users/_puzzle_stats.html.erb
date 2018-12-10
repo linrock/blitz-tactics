@@ -7,7 +7,7 @@
 
 <div class="stats">
 
-  <% if @user.num_countdowns_completed > 0 or @user.num_speedruns_completed > 0 %>
+  <% if @user.recent_high_scores? %>
     <div class="recent-high-scores">
       <h2>Recent high scores</h2>
 
@@ -41,63 +41,76 @@
     </div>
   <% end %>
 
-  <div class="all-time-high-scores">
-    <h2>All-time stats</h2>
+  <% if @user.all_time_high_scores? %>
+    <div class="all-time-high-scores">
+      <h2>All-time stats</h2>
 
-    <% if @user.num_infinity_puzzles_solved > 0 %>
       <div class="training-mode-stats">
-        <h3 class="game-mode-name"><a href="/infinity">Infinity</a></h3>
         <div class="stats-rows">
-          <div class="stats-row total">
-            <div class="label">Puzzles solved</div>
-            <div class="count"><%= @user.num_infinity_puzzles_solved %></div>
-          </div>
+          <% if @user.num_countdowns_completed > 0 %>
+            <div class="stats-row total">
+              <div class="long-label">Countdowns completed</div>
+              <div class="count"><%= @user.num_countdowns_completed %></div>
+            </div>
+          <% end %>
 
-          <% @user.infinity_puzzles_solved_by_difficulty.each do |row| %>
-            <% next if row[1] == 0 %>
-            <div class="stats-row">
-              <div class="label"><%= row[0].capitalize %></div>
-              <div class="count"><%= row[1] %></div>
+          <% if @user.num_speedruns_completed > 0 %>
+            <div class="stats-row total">
+              <div class="long-label">Speedruns completed</div>
+              <div class="count"><%= @user.num_speedruns_completed %></div>
+            </div>
+          <% end %>
+
+          <% if @user.num_infinity_puzzles_solved > 0 %>
+            <div class="stats-row total">
+              <div class="long-label">Infinity puzzles solved</div>
+              <div class="count"><%= @user.num_infinity_puzzles_solved %></div>
+            </div>
+          <% end %>
+
+          <% if @user.num_repetition_levels_completed > 0 %>
+            <div class="stats-row total">
+              <div class="long-label">Repetitions completed</div>
+              <div class="count"><%= @user.num_repetition_levels_completed %></div>
             </div>
           <% end %>
         </div>
       </div>
-    <% end %>
 
-    <% if @user.num_repetition_levels_completed > 0 %>
-      <div class="training-mode-stats">
-        <h3 class="game-mode-name"><a href="/repetition">Repetition</a></h3>
-        <div class="stats-rows">
-          <div class="stats-row total">
-            <div class="label">Levels unlocked</div>
-            <div class="count"><%= @user.num_repetition_levels_completed %></div>
+      <% if @user.num_infinity_puzzles_solved > 0 %>
+        <div class="training-mode-stats">
+          <h3 class="game-mode-name"><a href="/infinity">Infinity</a></h3>
+          <div class="stats-rows">
+            <% @user.infinity_puzzles_solved_by_difficulty.each do |name, count| %>
+              <% next if count == 0 %>
+              <div class="stats-row">
+                <div class="label"><%= name.capitalize %></div>
+                <div class="count"><%= count %></div>
+              </div>
+            <% end %>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
 
-    <% if @user.num_countdowns_completed > 0 %>
-      <div class="training-mode-stats">
-        <h3 class="game-mode-name"><a href="/countdown">Countdown</a></h3>
-        <div class="stats-rows">
-          <div class="stats-row total">
-            <div class="label">Levels completed</div>
-            <div class="count"><%= @user.num_countdowns_completed %></div>
+      <% if @user.num_repetition_levels_completed > 0 %>
+        <div class="training-mode-stats">
+          <h3 class="game-mode-name"><a href="/repetition">Repetition</a></h3>
+          <div class="stats-rows">
+            <% @user.repetition_stats.each do |repetition_level, time| %>
+              <div class="stats-row">
+                <div class="label">
+                  <% if false %>
+                    <%= link_to "Level #{repetition_level.number}", repetition_level.path %>
+                  <% else %>
+                    Level <%= repetition_level.number %>
+                  <% end %>
+                </div>
+                <div class="count"><%= time %></div>
+              </div>
+            <% end %>
           </div>
         </div>
-      </div>
-    <% end %>
-
-    <% if @user.num_speedruns_completed > 0 %>
-      <div class="training-mode-stats">
-        <h3 class="game-mode-name"><a href="/speedrun">Speedrun</a></h3>
-        <div class="stats-rows">
-          <div class="stats-row total">
-            <div class="label">Levels completed</div>
-            <div class="count"><%= @user.num_speedruns_completed %></div>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
+      <% end %>
+    </div>
+  <% end %>
 </div>

@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   # infinity puzzle methods
 
   def num_infinity_puzzles_solved
-    solved_infinity_puzzles.count
+    @num_infinity_puzzles_solved ||= solved_infinity_puzzles.count
   end
 
   def infinity_puzzles_solved_by_difficulty
@@ -87,6 +87,18 @@ class User < ActiveRecord::Base
 
   # new repetition mode methods
 
+  def repetition_stats
+    fastest_laps = completed_repetition_rounds
+      .group(:repetition_level_id)
+      .minimum(:elapsed_time_ms)
+      .map do |repetition_level_id, elapsed_time_ms|
+        [
+          RepetitionLevel.find_by(id: repetition_level_id),
+          Time.at(elapsed_time_ms / 1000).strftime("%M:%S").gsub(/^0/, '')
+        ]
+      end
+  end
+
   def highest_repetition_level_number_completed
     completed_repetition_levels
       .includes(:repetition_level)
@@ -104,7 +116,19 @@ class User < ActiveRecord::Base
   end
 
   def num_repetition_levels_completed
-    completed_repetition_levels.count
+    @num_repetition_levels_completed ||= completed_repetition_levels.count
+  end
+
+  # user puzzle stats
+
+  def recent_high_scores?
+    num_countdowns_completed > 0 or num_speedruns_completed
+  end
+
+  def all_time_high_scores?
+    recent_high_scores? \
+      or num_repetition_levels_completed > 0 \
+      or num_infinity_puzzles_solved > 0
   end
 
   private
