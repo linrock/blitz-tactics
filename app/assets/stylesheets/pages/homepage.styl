@@ -64,9 +64,31 @@
       .best-time
         color rgba(250, 250, 250, 0.8)
 
+  .miniboard-link
+    display block
+    transition all 0.15s ease
+
+    &:hover
+      box-shadow 0 0 7px #ffe800
+
+      .mini-chessboard
+        border 1px solid #ffe800
+
+    a
+      display block
+
+  // scores at the bottom of the page
+  .mini-chessboard
+    display block
+    width 250px
+    height 250px
+    margin 0 auto
+    transition border 0.15s ease
+
   .mini-scoreboard
     display flex
     margin 0 auto
+    justify-content space-between
 
     // past 7 days, yesterday, today
     h6
@@ -87,14 +109,12 @@
       display flex
       color rgba(250, 250, 250, 0.8)
 
-      .place
-        width 40px
-
       .player-name
-        width 180px
+        width 150px
 
       .stats
-        width 70px
+        width 50px
+        text-align right
 
       a
         color rgba(250, 250, 250, 0.8)
@@ -102,23 +122,3 @@
 
         &:hover
           text-decoration underline
-
-  .miniboard-link
-    display block
-    transition all 0.15s ease
-
-    &:hover
-      box-shadow 0 0 7px #ffe800
-
-      .mini-chessboard
-        border 1px solid #ffe800
-
-    a
-      display block
-
-  .mini-chessboard 
-    display block
-    width 250px
-    height 250px
-    margin 0 auto
-    transition border 0.15s ease

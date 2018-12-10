@@ -23,7 +23,7 @@
           </div>
         </div>
 
-        <div class="mode accuracy">
+        <div class="mode repetition">
           <h3><a href="<%= @repetition_level.path %>">Repetition</a></h3>
           <h4 class="game-mode-description">
             Use repetition to learn. Quickly solve puzzles
@@ -105,7 +105,7 @@
 
         <% if @scoreboard.top_repetition_recent.present? %>
           <div class="top-repetition top-players">
-            <h5>Most repetition levels completed</h5>
+            <h5>Repetition levels completed</h5>
             <% @scoreboard.top_repetition_recent.each do |user, levels_completed| %>
               <div class="ranking">
                 <div class="player-name"><%= user_link(user) %></div>

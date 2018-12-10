@@ -1,35 +1,38 @@
 <div class="stats">
-  <div class="recent-high-scores">
-    <h2>Recent high scores</h2>
 
-    <% if @user.num_countdowns_completed > 0 %>
-      <div class="game-mode-stats">
-        <h3 class="game-mode-name"><a href="/countdown">Countdown</a></h3>
-        <div class="stats-rows">
-          <% @user.countdown_stats.each do |row| %>
-            <div class="stats-row">
-              <div class="label"><%= row[0].capitalize %></div>
-              <div class="count"><%= row[1] %></div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
+  <% if @user.num_countdowns_completed > 0 or @user.num_speedruns_completed > 0 %>
+    <div class="recent-high-scores">
+      <h2>Recent high scores</h2>
 
-    <% if @user.num_speedruns_completed > 0 %>
-      <div class="game-mode-stats">
-        <h3 class="game-mode-name"><a href="/speedrun">Speedrun</a></h3>
-        <div class="stats-rows">
-          <% @user.speedrun_stats.each do |row| %>
-            <div class="stats-row">
-              <div class="label"><%= row[0].capitalize %></div>
-              <div class="count"><%= row[1] %></div>
-            </div>
-          <% end %>
+      <% if @user.num_countdowns_completed > 0 %>
+        <div class="game-mode-stats">
+          <h3 class="game-mode-name"><a href="/countdown">Countdown</a></h3>
+          <div class="stats-rows">
+            <% @user.countdown_stats.each do |row| %>
+              <div class="stats-row">
+                <div class="label"><%= row[0].capitalize %></div>
+                <div class="count"><%= row[1] %></div>
+              </div>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
-  </div>
+      <% end %>
+
+      <% if @user.num_speedruns_completed > 0 %>
+        <div class="game-mode-stats">
+          <h3 class="game-mode-name"><a href="/speedrun">Speedrun</a></h3>
+          <div class="stats-rows">
+            <% @user.speedrun_stats.each do |row| %>
+              <div class="stats-row">
+                <div class="label"><%= row[0].capitalize %></div>
+                <div class="count"><%= row[1] %></div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class="all-time-high-scores">
     <h2>All-time stats</h2>
