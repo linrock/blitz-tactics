@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
           RepetitionLevel.find_by(id: repetition_level_id),
           Time.at(elapsed_time_ms / 1000).strftime("%M:%S").gsub(/^0/, '')
         ]
-      end
+      end.sort_by {|level, _| level.number }
   end
 
   def highest_repetition_level_number_completed
