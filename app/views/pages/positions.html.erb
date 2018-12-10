@@ -2,10 +2,9 @@
 
 <div class="positions-index container">
   <h2>Position trainer</h2>
-
   <div class="positions">
     <p class="description">
-      Choose from a list of chess positions to go train yourself at playing it correctly!
+      Choose from a list of chess positions to train yourself at playing them correctly
     </p>
 
     <div class="examples">
@@ -20,7 +19,6 @@
   </div>
 
   <h2>Pawn endgames</h2>
-
   <div class="positions">
     <p class="description">
       Practice playing these common pawn endgame positions and learn the ideas behind them
@@ -45,5 +43,28 @@
     </div>
 
     <a href="/pawn-endgames" class="button more-button">More pawn endgames &raquo;</a>
+  </div>
+
+  <h2>Rook endgames</h2>
+  <div class="positions">
+    <div class="description">
+      Some more rook and pawn endgame concepts
+    </div>
+
+    <div class="examples">
+      <%= linked_miniboard "Rule of five", "3r4/8/8/6k1/3P4/3K4/8/5R2 w - -", "win" %>
+      <%= linked_miniboard "Prevent a bridge", "2k1K3/4P3/8/8/5r2/8/8/3R4 w - -", "win" %>
+      <%= linked_miniboard "Alternate method", "4K3/2k1P3/8/8/8/8/3R4/5r2 w - -", "win" %>
+
+      <%= linked_miniboard "Back-rank defense", "1r4k1/R7/5KP1/8/8/8/8/8 b - -", "draw" %>
+      <%= linked_miniboard "No Philidor", "8/8/8/8/8/5pk1/1r6/R5K1 b - -", "win" %>
+      <%= linked_miniboard "Short side defense", "4K3/4P1k1/8/8/8/8/r7/5R2 b - -", "draw" %>
+
+      <%= linked_miniboard "Reach Lucena", "r7/2KP1k2/8/8/8/8/8/4R3 w - -", "win" %>
+      <%= linked_miniboard "Long side blunder", "4k3/R7/5K2/5P2/8/8/8/5r2 w - -", "win" %>
+      <%= linked_miniboard "Isolated pawns", "8/8/R3Pk1K/7P/8/8/8/4r3 b - -", "draw" %>
+    </div>
+
+    <a href="/rook-endgames" class="button more-button">More rook endgames &raquo;</a>
   </div>
 </div>

@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get '/positions/:id'           => 'pages#position'
   get '/position'                => 'pages#position'
   get '/pawn-endgames'           => 'pages#pawn_endgames'
+  get '/rook-endgames'           => 'pages#rook_endgames'
   get '/scoreboard'              => 'pages#scoreboard'
   get '/about'                   => 'pages#about'
 
