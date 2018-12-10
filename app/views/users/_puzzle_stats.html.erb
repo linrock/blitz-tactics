@@ -99,7 +99,7 @@
             <% @user.repetition_stats.each do |repetition_level, time| %>
               <div class="stats-row">
                 <div class="label">
-                  <% if false %>
+                  <% if @user and repetition_level.number <= @user.highest_repetition_level_number_completed %>
                     <%= link_to "Level #{repetition_level.number}", repetition_level.path %>
                   <% else %>
                     Level <%= repetition_level.number %>

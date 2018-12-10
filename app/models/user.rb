@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
   end
 
   def highest_repetition_level_number_completed
-    completed_repetition_levels
+    @highest_repetition_level_number_completed ||= completed_repetition_levels
       .includes(:repetition_level)
       .joins(:repetition_level)
       .order('repetition_levels.number desc')
