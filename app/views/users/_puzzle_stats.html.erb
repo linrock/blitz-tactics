@@ -1,43 +1,93 @@
 <div class="stats">
-  <div class="infinity-stats">
-    <h3 class="game-mode-name"><a href="/infinity">Infinity</a></h3>
+  <div class="recent-high-scores">
+    <h2>Recent high scores</h2>
 
-    <div class="stats-row total">
-      <div class="label">Puzzles solved</div>
-      <div class="count"><%= @user.num_infinity_puzzles_solved %></div>
-    </div>
+    <% if @user.num_countdowns_completed > 0 %>
+      <div class="game-mode-stats">
+        <h3 class="game-mode-name"><a href="/countdown">Countdown</a></h3>
+        <div class="stats-rows">
+          <% @user.countdown_stats.each do |row| %>
+            <div class="stats-row">
+              <div class="label"><%= row[0].capitalize %></div>
+              <div class="count"><%= row[1] %></div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
 
-    <% @user.infinity_puzzles_solved_by_difficulty.each do |row| %>
-      <div class="stats-row">
-        <div class="label"><%= row[0].capitalize %></div>
-        <div class="count"><%= row[1] %></div>
+    <% if @user.num_speedruns_completed > 0 %>
+      <div class="game-mode-stats">
+        <h3 class="game-mode-name"><a href="/speedrun">Speedrun</a></h3>
+        <div class="stats-rows">
+          <% @user.speedrun_stats.each do |row| %>
+            <div class="stats-row">
+              <div class="label"><%= row[0].capitalize %></div>
+              <div class="count"><%= row[1] %></div>
+            </div>
+          <% end %>
+        </div>
       </div>
     <% end %>
   </div>
 
-  <div class="infinity-stats">
-    <h3 class="game-mode-name"><a href="/speedrun">Speedrun</a></h3>
+  <div class="all-time-high-scores">
+    <h2>All-time stats</h2>
 
-    <div class="stats-row total">
-      <div class="label">Speedruns completed</div>
-      <div class="count"><%= @user.num_speedruns_completed %></div>
-    </div>
+    <% if @user.num_infinity_puzzles_solved > 0 %>
+      <div class="training-mode-stats">
+        <h3 class="game-mode-name"><a href="/infinity">Infinity</a></h3>
+        <div class="stats-rows">
+          <div class="stats-row total">
+            <div class="label">Puzzles solved</div>
+            <div class="count"><%= @user.num_infinity_puzzles_solved %></div>
+          </div>
 
-    <% @user.speedrun_stats.each do |row| %>
-      <div class="stats-row">
-        <div class="label"><%= row[0].capitalize %></div>
-        <div class="count"><%= row[1] %></div>
+          <% @user.infinity_puzzles_solved_by_difficulty.each do |row| %>
+            <% next if row[1] == 0 %>
+            <div class="stats-row">
+              <div class="label"><%= row[0].capitalize %></div>
+              <div class="count"><%= row[1] %></div>
+            </div>
+          <% end %>
+        </div>
       </div>
     <% end %>
-  </div>
-</div>
 
-<div class="stats">
-  <div class="repetition-stats">
-    <h3 class="game-mode-name"><a href="/repetition">Repetition</a></h3>
-    <div class="stats-row total">
-      <div class="label">Levels unlocked</div>
-      <div class="count"><%= @user.num_repetition_levels_completed %></div>
-    </div>
+    <% if @user.num_repetition_levels_completed > 0 %>
+      <div class="training-mode-stats">
+        <h3 class="game-mode-name"><a href="/repetition">Repetition</a></h3>
+        <div class="stats-rows">
+          <div class="stats-row total">
+            <div class="label">Levels unlocked</div>
+            <div class="count"><%= @user.num_repetition_levels_completed %></div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @user.num_countdowns_completed > 0 %>
+      <div class="training-mode-stats">
+        <h3 class="game-mode-name"><a href="/countdown">Countdown</a></h3>
+        <div class="stats-rows">
+          <div class="stats-row total">
+            <div class="label">Levels completed</div>
+            <div class="count"><%= @user.num_countdowns_completed %></div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @user.num_speedruns_completed > 0 %>
+      <div class="training-mode-stats">
+        <h3 class="game-mode-name"><a href="/speedrun">Speedrun</a></h3>
+        <div class="stats-rows">
+          <div class="stats-row total">
+            <div class="label">Levels completed</div>
+            <div class="count"><%= @user.num_speedruns_completed %></div>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

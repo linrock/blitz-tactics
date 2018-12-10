@@ -60,10 +60,26 @@ class User < ActiveRecord::Base
 
   def speedrun_stats
     level_ids = completed_speedruns.pluck(Arel.sql('distinct(speedrun_level_id)'))
-    SpeedrunLevel.where(id: level_ids).order('id ASC').map do |level|
+    SpeedrunLevel.where(id: level_ids).order('id DESC').map do |level|
       [
         level.name,
         completed_speedruns.formatted_personal_best(level.id)
+      ]
+    end
+  end
+
+  # countdown mode methods
+
+  def num_countdowns_completed
+    @num_countdowns_completed ||= completed_countdown_levels.count
+  end
+
+  def countdown_stats
+    level_ids = completed_countdown_levels.pluck(Arel.sql('distinct(countdown_level_id)'))
+    CountdownLevel.where(id: level_ids).order('id DESC').map do |level|
+      [
+        level.name,
+        completed_countdown_levels.personal_best(level.id)
       ]
     end
   end

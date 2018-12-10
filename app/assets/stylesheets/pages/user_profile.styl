@@ -5,23 +5,19 @@
 
   header.player-info
     padding-bottom 30px
-    border-bottom 1px solid rgba(255,255,255,0.2)
 
     .username
-      text-align center
       font-size 36px
       font-family $main-font
       margin-bottom 25px
 
     .tagline
-      text-align center
       font-size 18px
       font-family $main-font
       opacity 0.6
 
   form
     display flex
-    justify-content center
 
     input[type="text"]
       font-family $main-font
@@ -34,37 +30,62 @@
     .blue-button
       font-size 16px
 
+  .sign-out
+    float right
+
+    input[type="submit"]
+      background none
+      border none
+      color rgba(255,255,255,0.5)
+      font-size 14px
+      transition 0.1s ease
+
+      &:hover
+        color white
+        cursor pointer
+
   .stats
     display flex
     justify-content space-between
     margin 60px auto
-    width 540px
 
-    .game-mode-name
-      font-size 30px
-      text-align center
+  // recent high scores, all-time stats
+  .stats h2
+    opacity 0.2
 
-      a
-        color inherit
-        text-decoration none
+  .recent-high-scores
+    margin-right 100px
 
-        &:hover
-          color #ffe800
+  // speedrun, countdown high scores sections
+  .game-mode-stats
+    margin 20px 0
+
+  // all-time stats
+  .training-mode-stats
+    margin 20px 0
+    display flex
+
+  .game-mode-name
+    width 100px
+    padding 5px 0
+    color rgba(255,255,255,0.3)
+
+    a
+      color inherit
+      text-decoration none
+      transition color 0.15s ease
+
+      &:hover
+        color rgba(255,255,255,1)
 
   .stats-row
     display flex
     padding 5px 0
 
-    &.total
-      margin 30px 0
-
     .label
       opacity 0.4
-      width 170px
+      width 140px
 
     .count
       width 70px
       text-align right
-
-  .repetition-stats
-    margin 0 auto

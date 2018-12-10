@@ -3,7 +3,12 @@
 <div class="user-profile me">
   <div class="container">
     <header class="player-info">
+      <div class="sign-out">
+        <%= button_to 'Sign out', destroy_user_session_path, method: :delete %>
+      </div>
+
       <h2 class="username"><%= @user.username %></h2>
+
       <%= form_tag "/users/me", method: :put do %>
         <input type="text" value="<%= @user.tagline %>"
                name="user[tagline]"
