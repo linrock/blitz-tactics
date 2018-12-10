@@ -64,7 +64,7 @@ class Scoreboard
   end
 
   def hall_of_fame
-    @hall_of_fame ||= User.all_repetition_levels_unlocked
+    @hall_of_fame ||= User.where("jsonb_array_length(profile -> 'levels_unlocked') = 65")
   end
 
   private
