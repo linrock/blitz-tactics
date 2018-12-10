@@ -16,6 +16,14 @@
       font-family $main-font
       opacity 0.6
 
+  a
+    color inherit
+    text-decoration none
+    transition color 0.15s ease
+
+    &:hover
+      color rgba(255,255,255,1)
+
   form
     display flex
 
@@ -71,14 +79,6 @@
   .training-mode-stats
     margin 20px 0
     display flex
-
-    a
-      color inherit
-      text-decoration none
-      transition color 0.15s ease
-
-      &:hover
-        color rgba(255,255,255,1)
 
   .game-mode-name
     width 100px
