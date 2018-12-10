@@ -10,8 +10,7 @@ class GameModes::RepetitionController < ApplicationController
       redirect_to @user.highest_repetition_level_unlocked.path
       return
     end
-    # @formatted_round_times = current_user&.round_times_for_level_id(@level.id) || []
-    @formatted_round_times = []
+    @formatted_round_times = current_user&.round_times_for_level_id(@level.id) || []
     render "game_modes/repetition"
   end
 

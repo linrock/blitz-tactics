@@ -49,7 +49,7 @@ export default class Timer extends Backbone.View {
       const elapsed = this.formattedElapsedTime()
       if (elapsed !== lastElapsed) {
         lastElapsed = elapsed
-        // this.$timer.text(elapsed)
+        this.timerEl.textContent = elapsed
       }
     }, updateInterval)
   }

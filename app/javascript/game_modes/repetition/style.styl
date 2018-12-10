@@ -2,10 +2,28 @@
 
 .repetition-mode 
 
-  .board-area, .chessboard
+  .main
+    display flex
+    justify-content center
+
+  .chessboard
     width $board-size
     height $board-size
-    margin 0 auto
+
+  .sidebar
+    margin 12px 0 0 12px
+    text-align right
+    width 50px
+
+    .times
+      font-size 20px
+      line-height 28px
+
+      .timer
+        opacity 0.9
+
+      .laps
+        opacity 0.3
 
   // progress indicator under the main header for the current level
   .progress-bar 
@@ -22,3 +40,4 @@
       &.complete 
         width 100%
         background #63F706
+
