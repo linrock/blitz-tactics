@@ -267,6 +267,40 @@ ALTER SEQUENCE public.countdown_puzzles_id_seq OWNED BY public.countdown_puzzles
 
 
 --
+-- Name: haste_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.haste_puzzles (
+    id bigint NOT NULL,
+    data jsonb NOT NULL,
+    difficulty integer NOT NULL,
+    color character varying NOT NULL,
+    puzzle_hash character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: haste_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.haste_puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: haste_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.haste_puzzles_id_seq OWNED BY public.haste_puzzles.id;
+
+
+--
 -- Name: infinity_levels; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -393,6 +427,13 @@ CREATE SEQUENCE public.levels_id_seq
 
 
 --
+-- Name: levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.levels_id_seq OWNED BY public.levels.id;
+
+
+--
 -- Name: positions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -403,7 +444,7 @@ CREATE TABLE public.positions (
     goal character varying,
     name character varying,
     description text,
-    configuration jsonb DEFAULT '"{}"'::jsonb NOT NULL,
+    configuration jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -692,6 +733,13 @@ ALTER TABLE ONLY public.countdown_puzzles ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: haste_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.haste_puzzles ALTER COLUMN id SET DEFAULT nextval('public.haste_puzzles_id_seq'::regclass);
+
+
+--
 -- Name: infinity_levels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -710,6 +758,13 @@ ALTER TABLE ONLY public.infinity_puzzles ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.level_attempts ALTER COLUMN id SET DEFAULT nextval('public.level_attempts_id_seq'::regclass);
+
+
+--
+-- Name: levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.levels ALTER COLUMN id SET DEFAULT nextval('public.levels_id_seq'::regclass);
 
 
 --
@@ -826,6 +881,14 @@ ALTER TABLE ONLY public.countdown_puzzles
 
 
 --
+-- Name: haste_puzzles haste_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.haste_puzzles
+    ADD CONSTRAINT haste_puzzles_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: infinity_levels infinity_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -850,6 +913,14 @@ ALTER TABLE ONLY public.level_attempts
 
 
 --
+-- Name: levels levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.levels
+    ADD CONSTRAINT levels_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: positions positions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -871,14 +942,6 @@ ALTER TABLE ONLY public.repetition_levels
 
 ALTER TABLE ONLY public.repetition_puzzles
     ADD CONSTRAINT repetition_puzzles_pkey PRIMARY KEY (id);
-
-
---
--- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.schema_migrations
-    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
 
 --
@@ -942,6 +1005,20 @@ CREATE UNIQUE INDEX index_countdown_puzzles_on_countdown_level_id_and_puzzle_has
 
 
 --
+-- Name: index_haste_puzzles_on_difficulty_and_color; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_haste_puzzles_on_difficulty_and_color ON public.haste_puzzles USING btree (difficulty, color);
+
+
+--
+-- Name: index_haste_puzzles_on_puzzle_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_haste_puzzles_on_puzzle_hash ON public.haste_puzzles USING btree (puzzle_hash);
+
+
+--
 -- Name: index_infinity_levels_on_difficulty; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -974,6 +1051,20 @@ CREATE INDEX index_level_attempts_on_level_id ON public.level_attempts USING btr
 --
 
 CREATE INDEX index_level_attempts_on_user_id ON public.level_attempts USING btree (user_id);
+
+
+--
+-- Name: index_levels_on_secret_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_levels_on_secret_key ON public.levels USING btree (secret_key);
+
+
+--
+-- Name: index_levels_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_levels_on_slug ON public.levels USING btree (slug);
 
 
 --
@@ -1054,6 +1145,13 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING btree (version);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -1086,6 +1184,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181206064149'),
 ('20181207065925'),
 ('20181207070038'),
-('20181207070049');
+('20181207070049'),
+('20181211070754');
 
 
