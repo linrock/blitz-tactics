@@ -13,21 +13,22 @@ class GameModes::HasteController < ApplicationController
     }
   end
 
-  # user has completed a haste round
+  # player has completed a haste round
   def complete
     score = completed_haste_round_params[:score].to_i
     if user_signed_in?
-      current_user.completed_haste_rounds.create!(score: score)
-      render json: {
-        score: score,
-        best: current_user.best_haste_score(Date.today)
-      }
+      if score > 0
+        current_user.completed_haste_rounds.create!(score: score)
+      end
+      best = current_user.best_haste_score(Date.today)
     else
-      render json: {
-        score: score,
-        best: score
-      }
+      best = score
     end
+    render json: {
+      score: score,
+      best: current_user.best_haste_score(Date.today),
+      high_scores: CompletedHasteRound.high_scores(24.hours.ago)
+    }
   end
 
   private

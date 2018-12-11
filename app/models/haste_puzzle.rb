@@ -9,6 +9,7 @@ class HastePuzzle < ActiveRecord::Base
   validates :difficulty, numericality: true
   validates :color, inclusion: COLORS
 
+  # get a random easy puzzle to show on the homepage
   def self.random
     unscoped.where(difficulty: 0).order(Arel.sql('RANDOM()')).first
   end
