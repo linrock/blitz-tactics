@@ -11,15 +11,11 @@ class GameModes::RepetitionController < ApplicationController
       return
     end
     @formatted_round_times = current_user&.round_times_for_level_id(@level.id) || []
-    @fastest_five = @level.completed_repetition_rounds
-      .group(:user_id).minimum(:elapsed_time_ms)
-      .sort_by {|user_id, time| time }.take(5)
-      .map do |user_id, time|
-        [
-          User.find_by(id: user_id),
-          Time.at(time / 1000).strftime("%M:%S").gsub(/^0/, '')
-        ]
-      end
+    if current_user&.completed_repetition_level?(@level)
+      @high_scores = @level.high_scores
+    else
+      @high_scores = []
+    end
     render "game_modes/repetition"
   end
 
@@ -50,8 +46,11 @@ class GameModes::RepetitionController < ApplicationController
     # TODO handle the very last level
     render json: {
       next: {
-        href: @level.next_level.path
-      }
+        href: @level.next_level.path,
+      },
+      high_scores: @level.high_scores.map do |user, score|
+        [user.username, score]
+      end
     }
   end
 

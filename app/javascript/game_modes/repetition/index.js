@@ -4,6 +4,7 @@ import LevelIndicator from './views/level_indicator'
 import Onboarding from './views/onboarding'
 import ProgressBar from './views/progress_bar'
 import Timer from './views/timer'
+import HighScores from './views/high_scores'
 import LevelStatus from './models/level_status.ts'
 import {
   repetitionLevelAttempted,
@@ -19,6 +20,7 @@ export default class RepetitionMode {
     new Onboarding
     new ProgressBar
     new Timer
+    new HighScores
 
     this.level = new LevelStatus()
     this.listenForEvents()
@@ -41,7 +43,10 @@ export default class RepetitionMode {
 
       'level:complete': levelPath => {
         repetitionLevelCompleted(levelPath)
-          .then(data => d.trigger(`level:unlocked`, data.next.href))
+          .then(data => {
+            d.trigger(`level:high_scores`, data.high_scores)
+            d.trigger(`level:unlocked`, data.next.href)
+          })
       },
 
       // level progress events

@@ -32,11 +32,25 @@ class RepetitionLevel < ActiveRecord::Base
     "/level-#{number}"
   end
 
+  # shown under the board on homepage and repetition level page
   def display_name
     if name
       "Level #{number} — #{name}"
     else
       "Level #{number}"
     end
+  end
+
+  # top five fastest users and round times for this level
+  def high_scores
+    completed_repetition_rounds
+      .group(:user_id).minimum(:elapsed_time_ms)
+      .sort_by {|user_id, time| time }.take(5)
+      .map do |user_id, time|
+        [
+          User.find_by(id: user_id),
+          Time.at(time / 1000).strftime("%M:%S").gsub(/^0/, '')
+        ]
+      end
   end
 end

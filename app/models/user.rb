@@ -115,6 +115,13 @@ class User < ActiveRecord::Base
       .map(&:formatted_time_spent)
   end
 
+
+  def completed_repetition_level?(repetition_level_id)
+    completed_repetition_rounds
+      .where(repetition_level_id: repetition_level_id)
+      .count > 0
+  end
+
   def num_repetition_levels_completed
     @num_repetition_levels_completed ||= completed_repetition_levels.count
   end

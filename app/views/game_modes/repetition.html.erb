@@ -63,15 +63,17 @@
         </div>
       </div>
 
-      <div class="high-scores">
+      <div class="high-scores invisible">
         <h2>Fastest rounds</h2>
 
-        <% @fastest_five.each do |user, time| %>
-          <div class="high-score">
-            <div class="time"><%= time %></div>
-            <div class="player"><%= user_link user %></div>
-          </div>
-        <% end %>
+        <div class="scores">
+          <% @high_scores.each do |user, time| %>
+            <div class="high-score">
+              <div class="time"><%= time %></div>
+              <div class="player"><%= user_link user %></div>
+            </div>
+          <% end %>
+        </div>
       </div>
     </aside>
   </div>
