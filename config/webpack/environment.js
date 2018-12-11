@@ -3,7 +3,7 @@ const typescript =  require('./loaders/typescript')
 
 environment.config.resolve = {
   alias: {
-    jquery: 'jquery-slim'
+    jquery: 'backbone.native'
   }
 }
 

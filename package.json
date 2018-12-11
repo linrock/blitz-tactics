@@ -4,6 +4,7 @@
     "@types/backbone": "^1.3.42",
     "axios": "^0.18.0",
     "backbone": "^1.3.3",
+    "backbone.native": "^1.0.0",
     "chess.js": "^0.10.2",
     "fastclick": "^1.0.6",
     "interactjs": "^1.3.4",
