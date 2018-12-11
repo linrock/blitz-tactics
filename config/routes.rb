@@ -18,6 +18,11 @@ Rails.application.routes.draw do
   get '/countdown/puzzles'       => 'game_modes/countdown#puzzles'
   post '/countdown'              => 'game_modes/countdown#complete'
 
+  # haste mode
+  get '/haste'                   => 'game_modes/haste#index'
+  get '/haste/puzzles'           => 'game_modes/haste#puzzles'
+  post '/haste'                  => 'game_modes/haste#complete'
+
   # repetition mode
   get '/repetition'              => 'game_modes/repetition#index'
   get '/level-:number'           => 'game_modes/repetition#index'

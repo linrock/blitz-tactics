@@ -7,10 +7,12 @@ class PagesController < ApplicationController
     @speedrun_puzzle = @speedrun_level.first_puzzle
     @countdown_level = CountdownLevel.todays_level
     @countdown_puzzle = @countdown_level.first_puzzle
+    @haste_puzzle = HastePuzzle.random
     @scoreboard = Scoreboard.new
 
     # user-specific
     @infinity_puzzle = @user.next_infinity_puzzle
+    @haste_best_score = @user.best_haste_score(Date.today)
     @best_speedrun_time = @user.best_speedrun_time(@speedrun_level)
     @repetition_level = @user.highest_repetition_level_unlocked
     @countdown_level_score = @user.best_countdown_score(@countdown_level)

@@ -41,6 +41,15 @@ export function countdownCompleted(levelName, score) {
   return client.post(`/countdown`, params).then(resp => resp.data)
 }
 
+export function hasteRoundCompleted(score) {
+  const params = {
+    haste: {
+      score,
+    }
+  }
+  return client.post(`/haste`, params).then(resp => resp.data)
+}
+
 export function fetchPuzzles(source) {
   return client.get(source).then(resp => resp.data)
 }

@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :solved_infinity_puzzles
   has_many :completed_speedruns
   has_many :completed_countdown_levels
+  has_many :completed_haste_rounds
   has_many :completed_repetition_rounds
   has_many :completed_repetition_levels
   has_many :positions
@@ -60,6 +61,12 @@ class User < ActiveRecord::Base
         completed_speedruns.formatted_personal_best(level.id)
       ]
     end.compact.sort_by {|name, time| name }.reverse
+  end
+
+  # haste mode methods
+
+  def haste_round_high_score(date)
+    completed_haste_rounds.personal_best(date)
   end
 
   # countdown mode methods

@@ -13,6 +13,8 @@ module UserDelegates
 
     delegate :best_countdown_score, to: :user_countdown_levels
 
+    delegate :best_haste_score, to: :user_haste_rounds
+
     delegate :highest_repetition_level_unlocked, to: :user_repetition_levels
 
     private
@@ -27,6 +29,10 @@ module UserDelegates
 
     def user_countdown_levels
       UserCountdownLevels.new(self)
+    end
+
+    def user_haste_rounds
+      UserHasteRounds.new(self)
     end
 
     def user_repetition_levels
