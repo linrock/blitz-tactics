@@ -44,11 +44,14 @@
 
       .timer
         font-size 40px
-        transition all 0.2s ease
+        transition all 0.25s ease
         margin-bottom 20px
 
         &.stopped
           opacity 0.3
+
+        &.rewarded
+          color #34FF00
 
         &.penalized
           color red
@@ -89,7 +92,7 @@
       // a high score by another player
       .high-score
         display flex
-        margin 5px 0
+        margin 8px 0
 
         .score
           font-size 16px

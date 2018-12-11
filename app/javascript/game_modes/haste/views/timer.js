@@ -4,8 +4,10 @@ import Backbone from 'backbone'
 import d from '../../../dispatcher.ts'
 import { formattedTimeSeconds } from '../../../utils.ts'
 
-const updateInterval = 100   // timer updates this frequently
-const penaltyMs = 20000      // lose this much time per mistake
+const updateIntervalMs = 100  // timer updates this frequently
+const rewardThreshold = 10    // combo this many moves to gain time
+const rewardMs = 7000         // gain this much time per combo
+const penaltyMs = 30000       // lose this much time per mistake
 
 // Amount of time spent so far
 //
@@ -17,25 +19,43 @@ export default class Timer extends Backbone.View {
 
   initialize() {
     this.initialTimeMs = parseInt(this.el.textContent[0]) * 60 * 1000 + 500
-    this.lostTimeMs = 0
+    this.timeModifierMs = 0
+    this.comboSize = 0
     this.timerInterval = false
     this.listenForEvents()
   }
 
   listenForEvents() {
     this.listenToOnce(d, `move:try`, () => this.startTimer())
+    this.listenTo(d, `move:success`, () => this.incrementCombo())
     this.listenTo(d, `move:fail`, () => this.loseTime())
     this.listenTo(d, `puzzles:complete`, () => this.notifyCompletion())
   }
 
   timeLeftMilliseconds() {
-    return this.initialTimeMs - (Date.now() - this.startTime) - this.lostTimeMs
+    return this.initialTimeMs - (Date.now() - this.startTime) + this.timeModifierMs
   }
 
+  incrementCombo() {
+    this.comboSize += 1
+    if (this.comboSize % rewardThreshold === 0) {
+      this.gainTime()
+    }
+  }
+
+  // gain time with higher combos
+  gainTime() {
+    this.timeModifierMs += rewardMs
+    this.el.classList.add(`rewarded`)
+    setTimeout(() => this.el.classList.remove(`rewarded`), 250)
+  }
+
+  // lose time when making mistakes
   loseTime() {
-    this.lostTimeMs += penaltyMs
+    this.comboSize = 0
+    this.timeModifierMs -= penaltyMs
     this.el.classList.add(`penalized`)
-    setTimeout(() => this.el.classList.remove(`penalized`), 200)
+    setTimeout(() => this.el.classList.remove(`penalized`), 250)
   }
 
   startTimer() {
@@ -49,7 +69,7 @@ export default class Timer extends Backbone.View {
       } else {
         this.displayTimeLeft(formattedTimeSeconds(timeLeft))
       }
-    }, updateInterval)
+    }, updateIntervalMs)
   }
 
   stopTimer() {

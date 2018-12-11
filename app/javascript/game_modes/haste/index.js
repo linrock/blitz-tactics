@@ -35,7 +35,6 @@ export default class Haste {
     new PuzzlePlayer({
       shuffle: false,
       loopPuzzles: false,
-      noCounter: true,
       noHint: true,
       source: apiPath,
     })
