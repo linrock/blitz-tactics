@@ -72,6 +72,38 @@ ALTER SEQUENCE public.completed_countdown_levels_id_seq OWNED BY public.complete
 
 
 --
+-- Name: completed_haste_rounds; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_haste_rounds (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    score integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_haste_rounds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_haste_rounds_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_haste_rounds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_haste_rounds_id_seq OWNED BY public.completed_haste_rounds.id;
+
+
+--
 -- Name: completed_repetition_levels; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -691,6 +723,13 @@ ALTER TABLE ONLY public.completed_countdown_levels ALTER COLUMN id SET DEFAULT n
 
 
 --
+-- Name: completed_haste_rounds id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_haste_rounds ALTER COLUMN id SET DEFAULT nextval('public.completed_haste_rounds_id_seq'::regclass);
+
+
+--
 -- Name: completed_repetition_levels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -830,6 +869,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.completed_countdown_levels
     ADD CONSTRAINT completed_countdown_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: completed_haste_rounds completed_haste_rounds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_haste_rounds
+    ADD CONSTRAINT completed_haste_rounds_pkey PRIMARY KEY (id);
 
 
 --
@@ -981,6 +1028,20 @@ ALTER TABLE ONLY public.users
 --
 
 CREATE INDEX index_completed_countdown_levels_on_user_id ON public.completed_countdown_levels USING btree (user_id);
+
+
+--
+-- Name: index_completed_haste_rounds_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_haste_rounds_on_created_at ON public.completed_haste_rounds USING btree (created_at);
+
+
+--
+-- Name: index_completed_haste_rounds_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_haste_rounds_on_user_id ON public.completed_haste_rounds USING btree (user_id);
 
 
 --
@@ -1185,6 +1246,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181207065925'),
 ('20181207070038'),
 ('20181207070049'),
-('20181211070754');
+('20181211070754'),
+('20181211073138');
 
 
