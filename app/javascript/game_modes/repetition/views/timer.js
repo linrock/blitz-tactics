@@ -66,7 +66,8 @@ export default class Timer extends Backbone.View {
       return
     }
     this.stopTimer()
-    // this.$laps.prepend(`<div>${this.formattedElapsedTime()}</div>`)
+    const lastLap =`<div>${this.formattedElapsedTime()}</div>`
+    this.lapsEl.innerHTML = lastLap + this.lapsEl.innerHTML
     this.notify()
     this.startTime = false
     this.startTimer()

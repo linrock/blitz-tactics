@@ -11,6 +11,15 @@ class GameModes::RepetitionController < ApplicationController
       return
     end
     @formatted_round_times = current_user&.round_times_for_level_id(@level.id) || []
+    @fastest_five = @level.completed_repetition_rounds
+      .group(:user_id).minimum(:elapsed_time_ms)
+      .sort_by {|user_id, time| time }.take(5)
+      .map do |user_id, time|
+        [
+          User.find_by(id: user_id),
+          Time.at(time / 1000).strftime("%M:%S").gsub(/^0/, '')
+        ]
+      end
     render "game_modes/repetition"
   end
 
