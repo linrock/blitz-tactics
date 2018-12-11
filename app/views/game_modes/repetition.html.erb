@@ -2,10 +2,56 @@
 
 <section class="repetition-mode">
   <%= render partial: "puzzle_player/progress_bar" %>
-  <%= render partial: "puzzle_player/above_board" %>
-
   <div class="main">
-    <%= render partial: "puzzle_player/board_area" %>
+    <div class="board-area-container">
+      <%= render partial: "puzzle_player/above_board" %>
+      <%= render partial: "puzzle_player/board_area" %>
+      <div class="under-board">
+        <label class="level-name">
+          <% if @level %>
+            <%= @level.display_name %>
+          <% elsif (title = local_assigns[:title]) %>
+            <%= title %>
+          <% end %>
+        </label>
+
+        <% if !user_signed_in? && @level.id == 1 %>
+          <div class="onboarding">
+            Solve puzzles quickly and accurately to unlock the next level
+          </div>
+        <% end %>
+
+        <% if (next_level = @level&.next_level) %>
+          <% if !user_signed_in? && @level.id == 1 %>
+            <div class="next-stage invisible container anonymous">
+              <div class="left">
+                You've unlocked the next level!
+                <div class="small">
+                  Sign up to save your progress, or continue to Level <%= next_level.number %>
+                </div>
+              </div>
+              <div class="right">
+                <a class="blue-button" href="<%= https_registration_url %>">
+                  Sign up
+                </a>
+                <a class="blue-button" href="<%= next_level.path %>">
+                  Level <%= next_level.number %> <%= fa_icon "angle-double-right" %>
+                </a>
+              </div>
+            </div>
+          <% else %>
+            <div class="next-stage invisible container">
+              <div class="left">You've unlocked the next level!</div>
+              <div class="right">
+                <a class="blue-button" href="<%= next_level.path %>">
+                  Level <%= next_level.number %> <%= fa_icon "angle-double-right" %>
+                </a>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
 
     <aside class="sidebar">
       <div class="times">
@@ -28,52 +74,6 @@
         <% end %>
       </div>
     </aside>
-  </div>
-
-  <div class="under-board">
-    <label class="level-name">
-      <% if @level %>
-        <%= @level.display_name %>
-      <% elsif (title = local_assigns[:title]) %>
-        <%= title %>
-      <% end %>
-    </label>
-
-    <% if !user_signed_in? && @level.id == 1 %>
-      <div class="onboarding">
-        Solve puzzles quickly and accurately to unlock the next level
-      </div>
-    <% end %>
-
-    <% if (next_level = @level&.next_level) %>
-      <% if !user_signed_in? && @level.id == 1 %>
-        <div class="next-stage invisible container anonymous">
-          <div class="left">
-            You've unlocked the next level!
-            <div class="small">
-              Sign up to save your progress, or continue to Level <%= next_level.number %>
-            </div>
-          </div>
-          <div class="right">
-            <a class="blue-button" href="<%= https_registration_url %>">
-              Sign up
-            </a>
-            <a class="blue-button" href="<%= next_level.path %>">
-              Level <%= next_level.number %> <%= fa_icon "angle-double-right" %>
-            </a>
-          </div>
-        </div>
-      <% else %>
-        <div class="next-stage invisible container">
-          <div class="left">You've unlocked the next level!</div>
-          <div class="right">
-            <a class="blue-button" href="<%= next_level.path %>">
-              Level <%= next_level.number %> <%= fa_icon "angle-double-right" %>
-            </a>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
   </div>
 </section>
 
