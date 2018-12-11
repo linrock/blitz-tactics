@@ -26,7 +26,7 @@ class GameModes::HasteController < ApplicationController
     end
     render json: {
       score: score,
-      best: current_user.best_haste_score(Date.today),
+      best: best,
       high_scores: CompletedHasteRound.high_scores(24.hours.ago)
     }
   end
