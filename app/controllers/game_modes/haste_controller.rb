@@ -27,7 +27,9 @@ class GameModes::HasteController < ApplicationController
     render json: {
       score: score,
       best: best,
-      high_scores: CompletedHasteRound.high_scores(24.hours.ago)
+      high_scores: CompletedHasteRound.high_scores(24.hours.ago).map do |user, score|
+        [user.username, score]
+      end
     }
   end
 

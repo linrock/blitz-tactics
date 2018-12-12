@@ -108,33 +108,6 @@
     </div>
 
     <div class="mini-scoreboard">
-      <div class="scores">
-        <h6>Past 7 days</h6>
-        <% if @scoreboard.top_infinity_recent.present? %>
-          <div class="top-infinity top-players">
-            <h5>Most infinity puzzles solved</h5>
-            <% @scoreboard.top_infinity_recent.each do |user, puzzles_solved| %>
-              <div class="ranking">
-                <div class="player-name"><%= user_link(user) %></div>
-                <div class="stats"><%= puzzles_solved %></div>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-
-        <% if @scoreboard.top_repetition_recent.present? %>
-          <div class="top-repetition top-players">
-            <h5>Repetition levels completed</h5>
-            <% @scoreboard.top_repetition_recent.each do |user, levels_completed| %>
-              <div class="ranking">
-                <div class="player-name"><%= user_link(user) %></div>
-                <div class="stats"><%= levels_completed %></div>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-
       <% fastest_speedruns = @scoreboard.fastest_speedruns(SpeedrunLevel.yesterdays_level) %>
       <% countdown_high_scores = @scoreboard.countdown_high_scores(CountdownLevel.yesterdays_level) %>
       <% if fastest_speedruns.present? or countdown_high_scores.present? %>
@@ -159,6 +132,35 @@
                 <div class="ranking">
                   <div class="player-name"><%= user_link(user) %></div>
                   <div class="stats"><%= high_score %></div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @scoreboard.recent_scores? %>
+        <div class="scores">
+          <h6>Past 24 hours</h6>
+          <% if @scoreboard.top_haste_scores_recent.present? %>
+            <div class="top-players">
+              <h5>Haste high scores</h5>
+              <% @scoreboard.top_haste_scores_recent.each do |user, high_score| %>
+                <div class="ranking">
+                  <div class="player-name"><%= user_link(user) %></div>
+                  <div class="stats"><%= high_score %></div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <% if @scoreboard.top_infinity_recent.present? %>
+            <div class="top-infinity top-players">
+              <h5>Most infinity puzzles solved</h5>
+              <% @scoreboard.top_infinity_recent.each do |user, puzzles_solved| %>
+                <div class="ranking">
+                  <div class="player-name"><%= user_link(user) %></div>
+                  <div class="stats"><%= puzzles_solved %></div>
                 </div>
               <% end %>
             </div>

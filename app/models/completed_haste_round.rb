@@ -16,7 +16,7 @@ class CompletedHasteRound < ActiveRecord::Base
       .sort_by {|user_id, score| -score }.take(5)
       .map do |user_id, score|
         [
-          User.find_by(id: user_id)&.username,
+          User.find_by(id: user_id),
           score
         ]
       end

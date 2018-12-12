@@ -3,7 +3,7 @@
 class Scoreboard
 
   def initialize
-    @recent_time = 7.days.ago
+    @recent_time = 24.hours.ago
     @n_homepage = 5
     @n_scoreboard = 10
   end
@@ -35,18 +35,21 @@ class Scoreboard
       end
   end
 
-  def top_infinity_recent # most infinity puzzles solved in the past 7 days
+  # past 24 hours
+
+  def recent_scores?
+    top_infinity_recent.present? or top_haste_scores_recent.present?
+  end
+
+  def top_infinity_recent
     @top_infinity_recent ||= group_and_count(
       SolvedInfinityPuzzle.unscoped.where('created_at > ?', @recent_time),
       @n_homepage
     )
   end
 
-  def top_repetition_recent # most repetition levels solved in the past 7 days
-    @top_repetition_recent ||= group_and_count(
-      CompletedRepetitionLevel.unscoped.where('created_at > ?', @recent_time),
-      @n_homepage
-    )
+  def top_haste_scores_recent
+    @top_haste_scores_recent ||= CompletedHasteRound.high_scores(@recent_time)
   end
 
   # scoreboard standalone page
