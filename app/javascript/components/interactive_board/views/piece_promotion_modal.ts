@@ -19,7 +19,8 @@ export default class PiecePromotionModal extends Backbone.View<Backbone.Model> {
 
   events(): Backbone.EventsHash {
     return {
-      'click .piece' : `_selectPiece`
+      'click .piece' : `_selectPiece`,
+      'click .background' : `hide`
     }
   }
 
@@ -28,25 +29,25 @@ export default class PiecePromotionModal extends Backbone.View<Backbone.Model> {
   }
 
   show() {
-    Object.assign(this.el, { style: `display: block`})
+    this.el.style.display = `block`
     Mousetrap.bind(`esc`, () => this.hide())
   }
 
   hide() {
-    Object.assign(this.el, { style: `display: none`})
+    this.el.style.display = `none`
     Mousetrap.unbind(`esc`)
   }
 
   listenToEvents() {
-    this.listenTo(d, `move:promotion`, (data) => {
+    this.listenTo(d, `move:promotion`, data => {
       this.fen = data.fen
       this.moveIntent = data.move
       this.show()
     })
   }
 
-  _selectPiece(e) {
-    const chosenPiece = e.currentTarget.dataset.piece
+  _selectPiece(e, childElement) {
+    const chosenPiece = childElement.dataset.piece
     const move: ChessMove = Object.assign({}, this.moveIntent, {
       promotion: chosenPiece
     })

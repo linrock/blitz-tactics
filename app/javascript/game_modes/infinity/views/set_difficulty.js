@@ -26,8 +26,8 @@ export default class SetDifficulty extends Backbone.View {
     this.el.querySelector(`[data-difficulty="${difficulty}"]`).classList.add(`selected`)
   }
 
-  _selectDifficulty(e) {
-    const el = e.currentTarget
+  _selectDifficulty(e, childElement) {
+    const el = childElement
     if (el.classList.toString().includes(`selected`)) {
       return
     }

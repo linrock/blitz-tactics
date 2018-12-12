@@ -7,7 +7,7 @@
     <div class="pieces">
       <% %w( q r n b ).each do |piece| %>
         <a class="piece" href="javascript:" data-piece="<%= piece %>">
-          <svg class="piece" viewBox="0 0 45 45">
+          <svg viewBox="0 0 45 45">
             <use xlink:href="#w<%= piece %>" width="100%" height="100%"/>
           </svg>
         </a>
