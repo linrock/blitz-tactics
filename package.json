@@ -8,7 +8,6 @@
     "chess.js": "^0.10.2",
     "fastclick": "^1.0.6",
     "interactjs": "^1.3.4",
-    "jquery-slim": "^3.0.0",
     "mithril": "^1.1.6",
     "mousetrap": "^1.6.2",
     "ts-loader": "3.5.0",
