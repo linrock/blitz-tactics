@@ -5,7 +5,7 @@ class CompletedSpeedrun < ActiveRecord::Base
   belongs_to :user
   belongs_to :speedrun_level
 
-  validates :elapsed_time_ms, numericality: { greater_than: 1_000 }
+  validates :elapsed_time_ms, numericality: { greater_than: 10_000 }
 
   def formatted_time_spent
     sprintf("%0.1fs" % (elapsed_time_ms.to_f / 1000))

@@ -6,7 +6,8 @@ import { formattedTimeSeconds } from '../../../utils.ts'
 
 const updateIntervalMs = 100  // timer updates this frequently
 const rewardThreshold = 10    // combo this many moves to gain time
-const rewardMs = 7000         // gain this much time per combo
+const rewardMs = 7000         // gain this much time at the reward threshold
+const comboRewardMs = 3000    // gain this much more time for maintaining combo
 const penaltyMs = 30000       // lose this much time per mistake
 
 // Amount of time spent so far
@@ -38,14 +39,16 @@ export default class Timer extends Backbone.View {
 
   incrementCombo() {
     this.comboSize += 1
-    if (this.comboSize % rewardThreshold === 0) {
-      this.gainTime()
-    }
+    this.gainTime()
   }
 
   // gain time with higher combos
   gainTime() {
+    if (this.comboSize % rewardThreshold !== 0) {
+      return
+    }
     this.timeModifierMs += rewardMs
+    this.timeModifierMs += (comboRewardMs * (this.comboSize / rewardThreshold - 1))
     this.el.classList.add(`rewarded`)
     setTimeout(() => this.el.classList.remove(`rewarded`), 250)
   }
