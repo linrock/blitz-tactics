@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   # :recoverable, and :omniauthable
 
   devise :database_authenticatable, :registerable, :rememberable,
-         :trackable, :validatable
+         :trackable, :validatable, :recoverable
 
   has_many :level_attempts
   has_many :solved_infinity_puzzles
