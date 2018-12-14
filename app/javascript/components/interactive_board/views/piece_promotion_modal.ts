@@ -20,7 +20,6 @@ export default class PiecePromotionModal extends Backbone.View<Backbone.Model> {
   events(): Backbone.EventsHash {
     return {
       'click .piece' : `_selectPiece`,
-      'click .background' : `hide`
     }
   }
 
