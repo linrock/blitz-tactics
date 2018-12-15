@@ -11,8 +11,10 @@
 </div>
 
 <script>
-  blitz.position = {
-    fen: "<%= @position.fen %>",
-    goal: "<%= @position.goal %>"
-  };
+  document.addEventListener(`DOMContentLoaded`, () => {
+    blitz.position = {
+      fen: "<%= @position.fen %>",
+      goal: "<%= @position.goal %>"
+    }
+  })
 </script>

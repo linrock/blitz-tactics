@@ -32,5 +32,7 @@
 <% end %>
 
 <script>
-  blitz.position = <%= @route[:options].to_json.html_safe %>;
+  document.addEventListener('DOMContentLoaded', () => {
+    blitz.position = <%= @route[:options].to_json.html_safe %>;
+  })
 </script>
