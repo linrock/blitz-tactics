@@ -2,8 +2,8 @@
 <html>
 <head>
   <title><%= content_for?(:title) && "#{yield(:title)} | Blitz Tactics" || "Blitz Tactics" %></title>
-  <meta name="description" content="<%= content_for?(:meta_description) && yield(:meta_description) || "Fast-paced chess tactics trainer. Unlock the next level by solving puzzles quickly and accurately." %>">
-  <meta name="keywords" content="chess tactics, chess puzzles, tactics trainer, chess tactics trainer">
+  <meta name="description" content="<%= content_for?(:meta_description) && yield(:meta_description) || "A chess tactics server with fast-paced puzzles. Unlock the next level by solving puzzles quickly and accurately." %>">
+  <meta name="keywords" content="chess tactics server, chess puzzles, tactics trainer, chess tactics trainer">
   <meta name="viewport" content="width=700, user-scalable=yes">
 
   <%= javascript_pack_tag 'application', defer: true %>
