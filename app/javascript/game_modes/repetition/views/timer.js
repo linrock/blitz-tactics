@@ -74,6 +74,6 @@ export default class Timer extends Backbone.View {
   }
 
   notify() {
-    d.trigger(`round:complete`, blitz.levelPath, this.elapsedTimeMs())
+    d.trigger(`round:complete`, this.elapsedTimeMs())
   }
 }

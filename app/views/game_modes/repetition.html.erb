@@ -1,6 +1,6 @@
 <% content_for(:title) { "#{@level.display_name} | Repetition mode" } %>
 
-<section class="repetition-mode">
+<section class="repetition-mode" data-level="<%= @level.path %>">
   <%= render partial: "puzzle_player/progress_bar" %>
   <div class="main">
     <div class="board-area-container">
@@ -78,7 +78,3 @@
     </aside>
   </div>
 </section>
-
-<script>
-  blitz.levelPath = "<%= @level.path %>";
-</script>

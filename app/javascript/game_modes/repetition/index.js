@@ -19,34 +19,22 @@ export default class RepetitionMode {
     new LevelIndicator
     new Onboarding
     new ProgressBar
-    new Timer
     new HighScores
+    new Timer
 
     this.level = new LevelStatus()
-    this.listenForEvents()
+    const levelPath = document.querySelector(".repetition-mode").dataset.level
 
     new PuzzlePlayer({
       shuffle: true,
       loopPuzzles: true,
       source: `${window.location.pathname}/puzzles.json`
     })
-  }
 
-  listenForEvents() {
     new Listener({
       // level and round completion events
-      'round:complete': (levelPath, elapsedTimeMs) => {
-        if (levelPath) {
-          repetitionLevelAttempted(levelPath, elapsedTimeMs)
-        }
-      },
-
-      'level:complete': levelPath => {
-        repetitionLevelCompleted(levelPath)
-          .then(data => {
-            d.trigger(`level:high_scores`, data.high_scores)
-            d.trigger(`level:unlocked`, data.next.href)
-          })
+      'round:complete': elapsedTimeMs => {
+        repetitionLevelAttempted(levelPath, elapsedTimeMs)
       },
 
       // level progress events
@@ -59,7 +47,10 @@ export default class RepetitionMode {
         d.trigger(`progress:update`, this.level.getProgress())
         if (!this.level.completed && this.level.nextLevelUnlocked()) {
           this.level.completed = true
-          d.trigger(`level:complete`, blitz.levelPath)
+          repetitionLevelCompleted(levelPath).then(data => {
+            d.trigger(`level:high_scores`, data.high_scores)
+            d.trigger(`level:unlocked`, data.next.href)
+          })
         }
       },
 
