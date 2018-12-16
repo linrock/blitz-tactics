@@ -16,24 +16,24 @@ Vancura position
   fen: R7/6k1/P4r2/1K6/8/8/8/8 b - -
   goal: draw
 
-Checkmate with two bishops
+Two bishops | Checkmates
   Practice checkmating with two bishops. White to play wins.
-  /kbb-vs-k-checkmate
+  /checkmates/two-bishops
   fen: 8/8/4k3/8/8/2K2B2/5B2/8 w - -
   goal: win
   depth: 10
 
-Checkmate with knight and bishop
+Knight and bishop | Checkmates
   Practice checkmating with a bishop and knight. White to play wins.
-  /kbn-vs-k-checkmate
+  /checkmates/bishop-and-knight
   fen: 4k3/8/8/8/8/8/8/4KBN1 w - -
   goal: win
   depth: 10
 
-Checkmate with queen vs rook
-  Practice checkmating with a king and a queen against a king and a rook. White to play wins.
-  /kq-vs-kr-checkmate
-  fen: 8/3k4/4r3/8/8/1Q6/3K4/8 w - -
+Two knights | Checkmates
+  Practice checkmating with two knights vs a pawn. White to play wins.
+  /checkmates/two-knights
+  fen: 8/5K1k/8/5N2/8/3p4/3N4/8 w - -
   goal: win
   depth: 10
 

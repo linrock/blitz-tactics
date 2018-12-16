@@ -1,22 +1,32 @@
 <% content_for(:title) { "Positions Trainer" } %>
 
 <div class="positions-index container">
-  <h2>Position trainer</h2>
+  <h2>Chess endgame practice</h2>
   <div class="positions">
     <p class="description">
-      Choose from a list of chess positions to train yourself at playing them correctly
+      Choose from a list of chess endgame puzzles to
+      train yourself at playing them correctly
     </p>
 
     <div class="examples">
       <%= linked_miniboard_route "/lucena-position" %>
       <%= linked_miniboard_route "/philidor-position" %>
       <%= linked_miniboard_route "/vancura-position" %>
-
-      <%= linked_miniboard_route "/kbb-vs-k-checkmate" %>
-      <%= linked_miniboard_route "/kbn-vs-k-checkmate" %>
-      <%= linked_miniboard_route "/kq-vs-kr-checkmate" %>
     </div>
   </div>
+
+  <h2>Bishop and knight checkmates</h2>
+  <div class="positions">
+    <p class="description">
+      Checkmating with minor pieces isn't as straightforward
+      as using rooks and queens. Practice them here
+    </p>
+
+    <%= linked_miniboard_route "/checkmates/two-bishops" %>
+    <%= linked_miniboard_route "/checkmates/bishop-and-knight" %>
+    <%= linked_miniboard_route "/checkmates/two-knights" %>
+  </div>
+
 
   <h2>Pawn endgames</h2>
   <div class="positions">
