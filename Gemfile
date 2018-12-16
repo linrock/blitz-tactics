@@ -16,7 +16,6 @@ gem 'devise', '~> 4.3'
 gem 'bugsnag'
 
 # assets
-gem 'font-awesome-rails'
 gem 'sprockets', '>= 3.0.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'tilt', '~> 2.0'
