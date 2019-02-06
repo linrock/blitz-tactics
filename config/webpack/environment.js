@@ -7,5 +7,5 @@ environment.config.resolve = {
   }
 }
 
-environment.loaders.append('typescript', typescript)
+environment.loaders.prepend('typescript', typescript)
 module.exports = environment

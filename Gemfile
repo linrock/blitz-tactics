@@ -20,7 +20,7 @@ gem 'sprockets', '>= 3.0.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'tilt', '~> 2.0'
 gem 'stylus', '~> 1.0.2'
-gem 'webpacker', '~> 3.5'
+gem 'webpacker', '>= 4.0.x'
 
 group :development do
   gem 'listen'

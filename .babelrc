@@ -1,18 +1,10 @@
 {
   "presets": [
-    ["env", {
-      "modules": false,
+    ["@babel/preset-env", {
       "targets": {
         "browsers": "> 1%",
-        "uglify": true
       },
-      "useBuiltIns": true
+      "useBuiltIns": "usage"
     }]
   ],
-
-  "plugins": [
-    "syntax-dynamic-import",
-    "transform-object-rest-spread",
-    ["transform-class-properties", { "spec": true }]
-  ]
 }
