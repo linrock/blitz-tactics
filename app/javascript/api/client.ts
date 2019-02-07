@@ -1,6 +1,10 @@
 import axios from 'axios'
+import {
+  AxiosRequestConfig,
+  AxiosPromise,
+} from 'axios'
 
-const headersWithCsrfToken = () => {
+const headersWithCsrfToken = (): AxiosRequestConfig => {
   const token = document
     .querySelector('meta[name="csrf-token"]')
     .getAttribute('content')
@@ -13,15 +17,15 @@ const headersWithCsrfToken = () => {
 
 class APIClient {
 
-  get(path) {
-    return axios.get(...arguments)
+  get(path): AxiosPromise {
+    return axios.get(path)
   }
 
-  post(path, data) {
+  post(path, data): AxiosPromise {
     return axios.post(path, data, headersWithCsrfToken())
   }
 
-  put(path, data) {
+  put(path, data): AxiosPromise {
     return axios.put(path, data, headersWithCsrfToken())
   }
 }
