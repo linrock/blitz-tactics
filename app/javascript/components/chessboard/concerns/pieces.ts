@@ -5,7 +5,7 @@ interface PieceAttributes {
 }
 
 export default function virtualPiece(piece, oncreate = null): m.Component {
-  const className = piece.color + piece.type
+  const className: string = piece.color + piece.type
   const pieceAttrs: PieceAttributes = {}
   if (oncreate) {
     pieceAttrs.oncreate = oncreate
