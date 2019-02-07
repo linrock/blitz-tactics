@@ -7,9 +7,10 @@
     "lib": ["es2017", "dom"],
     "module": "es6",
     "moduleResolution": "node",
+    "noEmit": true,
     "baseUrl": ".",
     "paths": {
-        "*": ["node_modules/*", "app/javascript/*"]
+      "*": ["node_modules/*", "app/javascript/*"]
     },
     "sourceMap": true,
     "target": "es5"
