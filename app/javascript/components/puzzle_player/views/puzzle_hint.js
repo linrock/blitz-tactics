@@ -1,7 +1,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher.ts'
+import d from '../../../dispatcher'
 
 const comboDroppedAfterMs = 7000
 const hintDelay = 750

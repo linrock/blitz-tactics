@@ -5,13 +5,13 @@ import Onboarding from './views/onboarding'
 import ProgressBar from './views/progress_bar'
 import Timer from './views/timer'
 import HighScores from './views/high_scores'
-import LevelStatus from './models/level_status.ts'
+import LevelStatus from './models/level_status'
 import {
   repetitionLevelAttempted,
   repetitionLevelCompleted
 } from '../../api/requests'
-import Listener from '../../listener.ts'
-import d from '../../dispatcher.ts'
+import Listener from '../../listener'
+import d from '../../dispatcher'
 
 export default class RepetitionMode {
   constructor() {

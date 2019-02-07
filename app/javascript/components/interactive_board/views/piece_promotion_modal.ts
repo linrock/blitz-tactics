@@ -2,8 +2,8 @@ import Backbone from 'backbone'
 import Mousetrap from 'mousetrap'
 import Chess from 'chess.js'
 
-import { FEN, ChessMove } from '../../../types.ts'
-import d from '../../../dispatcher.ts'
+import { FEN, ChessMove } from '../../../types'
+import d from '../../../dispatcher'
 
 // When you make a pawn move that requires pawn promotion,
 // this is what shows up

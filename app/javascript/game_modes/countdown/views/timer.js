@@ -1,8 +1,8 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher.ts'
-import { formattedTimeSeconds } from '../../../utils.ts'
+import d from '../../../dispatcher'
+import { formattedTimeSeconds } from '../../../utils'
 
 const updateInterval = 100   // timer updates this frequently
 const penaltyMs = 30000      // lose this much time per mistake

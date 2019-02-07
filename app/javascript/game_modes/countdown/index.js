@@ -5,8 +5,8 @@ import Progress from './views/progress'
 import Modal from './views/modal'
 import CountdownComplete from './views/countdown_complete'
 import { countdownCompleted } from '../../api/requests'
-import Listener from '../../listener.ts'
-import d from '../../dispatcher.ts'
+import Listener from '../../listener'
+import d from '../../dispatcher'
 
 const apiPath = `/countdown/puzzles`
 

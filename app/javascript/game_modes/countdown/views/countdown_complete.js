@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher.ts'
+import d from '../../../dispatcher'
 
 export default class CountdownComplete extends Backbone.View {
 

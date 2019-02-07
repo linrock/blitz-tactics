@@ -2,9 +2,9 @@ import PuzzlePlayer from '../../components/puzzle_player'
 import NoMoreLeft from './views/no_more_left'
 import PuzzleStats from './views/puzzle_stats'
 import SetDifficulty from './views/set_difficulty'
-import Listener from '../../listener.ts'
+import Listener from '../../listener'
 import { infinityPuzzleSolved } from '../../api/requests'
-import d from '../../dispatcher.ts'
+import d from '../../dispatcher'
 
 const apiPath = `/infinity/puzzles`
 const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain

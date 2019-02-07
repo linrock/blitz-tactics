@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher.ts'
+import d from '../../../dispatcher'
 
 // Fastest 5 player round times in the sidebar
 

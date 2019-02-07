@@ -1,8 +1,8 @@
 // Point and click pieces to select and move them
 
-import { ChessMove } from '../../../types.ts'
-import Listener from '../../../listener.ts'
-import Chessboard from '../chessboard.ts'
+import { ChessMove } from '../../../types'
+import Listener from '../../../listener'
+import Chessboard from '../chessboard'
 
 export default class PointAndClick {
   private selectedSquare: string|boolean = false

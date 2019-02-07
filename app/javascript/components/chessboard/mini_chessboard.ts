@@ -1,9 +1,9 @@
 import m from 'mithril'
 import Chess from 'chess.js'
 
-import virtualPiece from './concerns/pieces.ts'
-import { FEN, UciMove } from '../../types.ts'
-import { uciToMove } from '../../utils.ts'
+import virtualPiece from './concerns/pieces'
+import { FEN, UciMove } from '../../types'
+import { uciToMove } from '../../utils'
 
 interface MiniChessboardOptions {
   el: HTMLElement

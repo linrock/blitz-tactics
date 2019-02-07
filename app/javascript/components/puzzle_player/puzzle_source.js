@@ -3,10 +3,10 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import { uciToMove, moveToUci, shuffle } from '../../utils.ts'
+import { uciToMove, moveToUci, shuffle } from '../../utils'
 import { fetchPuzzles } from '../../api/requests'
-import Listener from '../../listener.ts'
-import d from '../../dispatcher.ts'
+import Listener from '../../listener'
+import d from '../../dispatcher'
 
 // source:changed
 // puzzles:fetched

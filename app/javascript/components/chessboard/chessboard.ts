@@ -3,12 +3,12 @@
 import m from 'mithril'
 import Chess from 'chess.js'
 
-import { FEN, ChessMove } from '../../types.ts'
-import { makeDraggable, makeDroppable } from './concerns/drag_and_drop.ts'
-import PointAndClick from './concerns/point_and_click.ts'
-import virtualPiece from './concerns/pieces.ts'
-import Listener from '../../listener.ts'
-import d from '../../dispatcher.ts'
+import { FEN, ChessMove } from '../../types'
+import { makeDraggable, makeDroppable } from './concerns/drag_and_drop'
+import PointAndClick from './concerns/point_and_click'
+import virtualPiece from './concerns/pieces'
+import Listener from '../../listener'
+import d from '../../dispatcher'
 
 interface HighlightedSquares {
   [squareId: string]: false | {

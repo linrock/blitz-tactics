@@ -5,8 +5,8 @@ import Progress from './views/progress'
 import Modal from './views/modal'
 import Complete from './views/complete'
 import { hasteRoundCompleted } from '../../api/requests'
-import Listener from '../../listener.ts'
-import d from '../../dispatcher.ts'
+import Listener from '../../listener'
+import d from '../../dispatcher'
 
 const apiPath = `/haste/puzzles`
 
