@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "tsc": "./node_modules/.bin/tsc"
+    "dev": "./bin/webpack-dev-server",
+    "tsc": "./node_modules/.bin/tsc --watch"
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.1.0",

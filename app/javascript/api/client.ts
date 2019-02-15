@@ -21,7 +21,7 @@ class APIClient {
     return axios.get(path)
   }
 
-  post(path, data): AxiosPromise {
+  post(path, data = {}): AxiosPromise {
     return axios.post(path, data, headersWithCsrfToken())
   }
 
