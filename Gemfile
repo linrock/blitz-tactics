@@ -13,6 +13,7 @@ gem 'dalli'
 gem 'dotenv-rails'
 gem 'bootsnap', require: false
 gem 'devise', '~> 4.3'
+gem 'slim'
 gem 'bugsnag'
 
 # assets
