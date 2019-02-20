@@ -10,22 +10,22 @@
         h4 Board squares
         .squares
           .square-color.light
-            .square
+            .square(data-sq="light")
             input.hex(type="text" value="#{@board&.light_square_color}")
           .square-color.dark
-            .square
+            .square(data-sq="dark")
             input.hex(type="text" value="#{@board&.dark_square_color}")
 
         h4 Opponent's move
         .squares
           .square-color.from
-            .square
+            .square(data-sq="from")
             input.hex(
               type="text"
               value="#{@board&.opponent_from_square_color}"
             )
           .square-color.to
-            .square
+            .square(data-sq="to")
             input.hex(
               type="text"
               value="#{@board&.opponent_to_square_color}"
@@ -34,11 +34,11 @@
         h4 Selected square
         .squares
           .square-color.selected
-            .square
+            .square(data-sq="selected")
             input.hex(type="text" value="#{@board&.selected_square_color}")
 
         .action-buttons
           button.gray.reset-colors Reset colors
           button.blue.save-colors Save colors
 
-style.custom-board-style= @board&.to_css
+  style(type="text/css")= @board&.to_css
