@@ -2328,6 +2328,16 @@ dom-serializer@0:
     domelementtype "~1.1.1"
     entities "~1.1.1"
 
+dom-transform@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/dom-transform/-/dom-transform-2.1.0.tgz#86b2cb94367f2ebae5e222093ab689f27a5b6ff7"
+  integrity sha1-hrLLlDZ/Lrrl4iIJOraJ8npbb/c=
+  dependencies:
+    is-array "^1.0.1"
+    prefix "^1.0.0"
+    to-string "^0.2.0"
+    trim "0.0.1"
+
 domain-browser@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
@@ -3415,6 +3425,11 @@ is-accessor-descriptor@^1.0.0:
   integrity sha512-m5hnHTkcVsPfqx3AKlyttIPb7J+XykHvJP2B9bZDjlhLIoEq4XoK64Vg7boZlVWYK6LUY94dYPEE7Lh0ZkZKcQ==
   dependencies:
     kind-of "^6.0.0"
+
+is-array@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/is-array/-/is-array-1.0.1.tgz#e9850cc2cc860c3bc0977e84ccf0dd464584279a"
+  integrity sha1-6YUMwsyGDDvAl36EzPDdRkWEJ5o=
 
 is-arrayish@^0.2.1:
   version "0.2.1"
@@ -5464,6 +5479,11 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.2, postcss@^7.0.5,
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
+prefix@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/prefix/-/prefix-1.0.0.tgz#f12bcaea03e580be7929fb365c301184558a0356"
+  integrity sha1-8SvK6gPlgL55Kfs2XDARhFWKA1Y=
+
 private@^0.1.6:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"
@@ -6109,6 +6129,16 @@ signal-exit@^3.0.0:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
 
+simple-color-picker@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/simple-color-picker/-/simple-color-picker-0.1.2.tgz#5184de3def837bde03a9ae6a90e1351fabb65144"
+  integrity sha1-UYTePe+De94Dqa5qkOE1H6u2UUQ=
+  dependencies:
+    component-emitter "^1.2.1"
+    dom-transform "^2.1.0"
+    is-number "^3.0.0"
+    tinycolor2 "^1.3.0"
+
 simple-swizzle@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
@@ -6557,6 +6587,11 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
+tinycolor2@^1.3.0:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
+  integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
+
 to-arraybuffer@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/to-arraybuffer/-/to-arraybuffer-1.0.1.tgz#7d229b1fcc637e466ca081180836a7aabff83f43"
@@ -6592,6 +6627,11 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
+to-string@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/to-string/-/to-string-0.2.0.tgz#467a1d675757885335ae35e7ae8788da355a2754"
+  integrity sha1-RnodZ1dXiFM1rjXnroeI2jVaJ1Q=
+
 tough-cookie@~2.4.3:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.4.3.tgz#53f36da3f47783b0925afa06ff9f3b165280f781"
@@ -6609,6 +6649,11 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
+
+trim@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/trim/-/trim-0.0.1.tgz#5858547f6b290757ee95cccc666fb50084c460dd"
+  integrity sha1-WFhUf2spB1fulczMZm+1AITEYN0=
 
 "true-case-path@^1.0.2":
   version "1.0.3"
