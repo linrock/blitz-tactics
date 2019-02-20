@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   has_many :completed_repetition_levels
   has_many :positions
 
+  has_one :user_chessboard
+
   after_initialize :set_default_profile
 
   before_validation :nullify_blank_email

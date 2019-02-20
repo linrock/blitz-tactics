@@ -1,0 +1,36 @@
+.user-profile.customize-board
+  .container
+    h2 Customize board
+    h3 Click on any square to customize its color
+
+    .custom-board
+      .left
+        = render partial: "puzzle_player/board_area/chessboard"
+      .right
+        h4 Board squares
+        .squares
+          .square-color.light
+            .square
+            input.hex(type="text" value="#ffffff")
+          .square-color.dark
+            .square
+            input.hex(type="text" value="#ffffff")
+
+        h4 Opponent's move
+        .squares
+          .square-color.from
+            .square
+            input.hex(type="text" value="#ffffff")
+          .square-color.to
+            .square
+            input.hex(type="text" value="#ffffff")
+
+        h4 Selected square
+        .squares
+          .square-color.selected
+            .square
+            input.hex(type="text" value="#ffffff")
+
+        .action-buttons
+          button.reset-colors Reset colors
+          button.save-colors Save colors

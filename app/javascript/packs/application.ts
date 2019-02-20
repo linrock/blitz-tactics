@@ -13,9 +13,9 @@ const blitz: BlitzConfig = {};
 
 document.addEventListener(`DOMContentLoaded`, () => {
   const { controller, action } = document.querySelector(`body`).dataset
-  const route = routes[`${controller}#${action}`]
 
   // initialize route components/views
+  const route = routes[`${controller}#${action}`]
   if (typeof route !== `undefined`) {
     new route
   }

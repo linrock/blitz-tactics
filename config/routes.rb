@@ -46,6 +46,10 @@ Rails.application.routes.draw do
     get route => "pages#defined_position"
   end
 
+  # customization routes
+  get '/board'                   => 'users#board'
+  put '/board'                   => 'users#update_board'
+
   # user routes
   put '/users/me'                => 'users#update'
   get '/:username'               => 'users#show'

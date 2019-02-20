@@ -21,6 +21,13 @@ class UsersController < ApplicationController
     redirect_back fallback_location: root_url
   end
 
+  # customize a board
+  def board
+  end
+
+  def update_board
+  end
+
   private
 
   def user_params
