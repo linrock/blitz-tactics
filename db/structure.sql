@@ -673,6 +673,42 @@ ALTER SEQUENCE public.speedrun_puzzles_id_seq OWNED BY public.speedrun_puzzles.i
 
 
 --
+-- Name: user_chessboards; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_chessboards (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    light_square_color character varying,
+    dark_square_color character varying,
+    selected_square_color character varying,
+    opponent_move_from_square_color character varying,
+    opponent_move_to_square_color character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: user_chessboards_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_chessboards_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_chessboards_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_chessboards_id_seq OWNED BY public.user_chessboards.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -849,6 +885,13 @@ ALTER TABLE ONLY public.speedrun_puzzles ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: user_chessboards id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_chessboards ALTER COLUMN id SET DEFAULT nextval('public.user_chessboards_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1013,6 +1056,14 @@ ALTER TABLE ONLY public.speedrun_levels
 
 ALTER TABLE ONLY public.speedrun_puzzles
     ADD CONSTRAINT speedrun_puzzles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_chessboards user_chessboards_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_chessboards
+    ADD CONSTRAINT user_chessboards_pkey PRIMARY KEY (id);
 
 
 --
@@ -1185,6 +1236,13 @@ CREATE UNIQUE INDEX index_speedrun_puzzles_on_speedrun_level_id_and_puzzle_hash 
 
 
 --
+-- Name: index_user_chessboards_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_chessboards_on_user_id ON public.user_chessboards USING btree (user_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1247,6 +1305,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181207070038'),
 ('20181207070049'),
 ('20181211070754'),
-('20181211073138');
+('20181211073138'),
+('20190220052623');
 
 
