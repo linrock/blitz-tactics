@@ -1,4 +1,6 @@
 import Backbone from 'backbone'
+import SimpleColorPicker from 'simple-color-picker'
+
 import Chessboard from '../chessboard/chessboard'
 import d from '../../dispatcher'
 
@@ -11,16 +13,18 @@ const defaultColors = {
 }
 
 export default class CustomBoard extends Backbone.View<Backbone.Model> {
+  private colorPicker: SimpleColorPicker
+
   get el() {
     return document.querySelector('.custom-board')
   }
 
   events(): Backbone.EventsHash {
     return {
-      'click .square-color':  '_chooseColor',
-      'keyup .hex':           '_setColor',
-      'click .reset-colors':  '_resetColors',
-      'click .save-colors':   '_saveColors',
+      'click .square-color .square':  '_toggleColorPicker',
+      'keyup .hex':                   '_setColor',
+      'click .reset-colors':          '_resetColors',
+      'click .save-colors':           '_saveColors',
     }
   }
 
@@ -37,9 +41,11 @@ export default class CustomBoard extends Backbone.View<Backbone.Model> {
     d.trigger(`move:highlight`, { from: `a3`, to: `a2` })
     const squares = ['light', 'dark', 'selected', 'from', 'to']
     squares.forEach(square => {
-      const color = defaultColors[square]
-      this.squareColorInput(square).value = color
-      this.square(square).style.background = color
+      const colorInputEl = this.squareColorInput(square)
+      const colorSquareEl = this.square(square)
+      const color = colorInputEl.value || defaultColors[square]
+      colorInputEl.value = color
+      colorSquareEl.style.background = color
     })
   }
 
@@ -56,8 +62,22 @@ export default class CustomBoard extends Backbone.View<Backbone.Model> {
     return getComputedStyle(el).backgroundColor
   }
 
-  private _chooseColor() {
-    console.log('choosing color')
+  private _toggleColorPicker(e) {
+    if (this.colorPicker) {
+      this.colorPicker.remove()
+      this.colorPicker = null
+    }
+    const squareEl = e.target
+    const colorInputEl = squareEl.nextSibling
+    this.colorPicker = new SimpleColorPicker({
+      color: squareEl.style.background,
+      el: e.currentTarget,
+    })
+    this.colorPicker.on('update', () => {
+      const color = this.colorPicker.getHexString()
+      colorInputEl.value = color
+      squareEl.style.background = color
+    })
   }
 
   private _setColor(e) {

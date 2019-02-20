@@ -1,7 +1,7 @@
 .user-profile.customize-board
   .container
-    h2 Customize board
-    h3 Click on any square to customize its color
+    h2 Customize board colors
+    h3 Click on a square to the right or edit a hex color directly
 
     .custom-board
       .left
@@ -11,26 +11,34 @@
         .squares
           .square-color.light
             .square
-            input.hex(type="text" value="#ffffff")
+            input.hex(type="text" value="#{@board&.light_square_color}")
           .square-color.dark
             .square
-            input.hex(type="text" value="#ffffff")
+            input.hex(type="text" value="#{@board&.dark_square_color}")
 
         h4 Opponent's move
         .squares
           .square-color.from
             .square
-            input.hex(type="text" value="#ffffff")
+            input.hex(
+              type="text"
+              value="#{@board&.opponent_from_square_color}"
+            )
           .square-color.to
             .square
-            input.hex(type="text" value="#ffffff")
+            input.hex(
+              type="text"
+              value="#{@board&.opponent_to_square_color}"
+            )
 
         h4 Selected square
         .squares
           .square-color.selected
             .square
-            input.hex(type="text" value="#ffffff")
+            input.hex(type="text" value="#{@board&.selected_square_color}")
 
         .action-buttons
-          button.reset-colors Reset colors
-          button.save-colors Save colors
+          button.gray.reset-colors Reset colors
+          button.blue.save-colors Save colors
+
+style.custom-board-style= @board&.to_css
