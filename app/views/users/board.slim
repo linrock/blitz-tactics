@@ -10,21 +10,25 @@
         h4 Board squares
         .squares
           .square-color.light
+            .color-picker.invisible
             .square(data-sq="light")
             input.hex(type="text" value="#{@board&.light_square_color}")
           .square-color.dark
+            .color-picker.invisible
             .square(data-sq="dark")
             input.hex(type="text" value="#{@board&.dark_square_color}")
 
         h4 Opponent's move
         .squares
           .square-color.from
+            .color-picker.invisible
             .square(data-sq="from")
             input.hex(
               type="text"
               value="#{@board&.opponent_from_square_color}"
             )
           .square-color.to
+            .color-picker.invisible
             .square(data-sq="to")
             input.hex(
               type="text"
@@ -34,6 +38,7 @@
         h4 Selected square
         .squares
           .square-color.selected
+            .color-picker.invisible
             .square(data-sq="selected")
             input.hex(type="text" value="#{@board&.selected_square_color}")
 

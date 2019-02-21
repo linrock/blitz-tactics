@@ -23,21 +23,38 @@
       display flex
       margin-bottom 30px
 
+    // contains colorpicker, square, color text input
     .square-color
+      position relative
+
+      // color picker container style
+      .color-picker
+        position absolute
+        right 75px
+        background black
+        padding 6px
+        z-index 1
+
+      // preview square
       .square
         margin-right 10px
         width 60px
         height 60px
+
+        &:hover
+          cursor pointer
 
       input
         width 60px
         border 0
         float left
         padding 5px 0
+        color #aeaeae
         background none
-        color white
-        opacity 0.5
         text-align center
+
+        &:focus
+          color white
 
     .action-buttons
       margin-top 30px
@@ -64,3 +81,4 @@
 
       &.blue
         background #2C9BEA
+
