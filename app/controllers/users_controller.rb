@@ -23,11 +23,12 @@ class UsersController < ApplicationController
     redirect_back fallback_location: root_url
   end
 
-  # customize a board
-  def board
+  # GET /customize - customize user chessboard
+  def customize_board
     @board = current_user.user_chessboard
   end
 
+  # PUT /customize - update user chessboard
   def update_board
     board = current_user.user_chessboard || current_user.build_user_chessboard
     board.update_attributes! board_params

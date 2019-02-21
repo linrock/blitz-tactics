@@ -47,8 +47,8 @@ Rails.application.routes.draw do
   end
 
   # customization routes
-  get '/board'                   => 'users#board'
-  put '/board'                   => 'users#update_board'
+  get '/customize'               => 'users#customize_board'
+  put '/customize'               => 'users#update_board'
 
   # user routes
   put '/users/me'                => 'users#update'

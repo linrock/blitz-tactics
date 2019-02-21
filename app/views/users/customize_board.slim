@@ -6,7 +6,7 @@
     .custom-board
       .left
         = render partial: "puzzle_player/board_area/chessboard"
-      = form_tag "/board", method: :put, class: "right"
+      = form_tag "/customize", method: :put, class: "right"
         h4 Board squares
         .squares
           .square-color.light

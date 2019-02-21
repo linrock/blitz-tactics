@@ -5,7 +5,7 @@ import CountdownMode from './game_modes/countdown'
 import HasteMode from './game_modes/haste'
 
 import PositionTrainer from './components/position_trainer'
-import CustomBoard from './components/custom_board'
+import CustomizeBoard from './components/customize_board'
 
 interface RouteMap {
   [routeKey: string]: { new(): void }
@@ -24,7 +24,7 @@ const routes: RouteMap = {
   "pages#defined_position": PositionTrainer,
 
   // user profile
-  "users#board": CustomBoard,
+  "users#customize_board": CustomizeBoard,
 }
 
 export default routes

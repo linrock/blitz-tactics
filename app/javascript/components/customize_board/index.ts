@@ -38,7 +38,7 @@ class BoardStyles extends Backbone.Model {
   }
 }
 
-export default class CustomBoard extends Backbone.View<Backbone.Model> {
+export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
   // private boardStyles: BoardStyles
   private colorPicker: any
 
@@ -63,7 +63,7 @@ export default class CustomBoard extends Backbone.View<Backbone.Model> {
     d.trigger(`fen:set`, `1Q6/8/8/8/8/2K5/k7/8 b - - 13 62`)
     d.trigger(`move:highlight`, { from: `a3`, to: `a2` })
     setTimeout(() => {
-      document.getElementById(`b8`).setAttribute('data-selected', 1)
+      document.getElementById(`b8`).setAttribute('data-selected', '1')
     }, 500)
     const squares = ['light', 'dark', 'selected', 'from', 'to']
     const initialColors = {}
@@ -132,7 +132,6 @@ export default class CustomBoard extends Backbone.View<Backbone.Model> {
       const colorHex = tinycolor(colorText).toHexString()
       this.boardStyles.set(squareEl.dataset.sq, colorHex)
     }
-    console.log(`setting color for ${squareEl.dataset.sq}`)
   }
 
   private _resetColors(e) {
