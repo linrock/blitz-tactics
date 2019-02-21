@@ -1,4 +1,4 @@
-class RatedPuzzleAttempt < ApplicationRecord
+class RatedPuzzleAttempt < ActiveRecord::Base
   # outcomes from the user's perspective vs. the puzzle
   OUTCOMES = %w( win loss draw )
 
@@ -12,7 +12,7 @@ class RatedPuzzleAttempt < ApplicationRecord
 
   # entry point for creating puzzle attempts + updating ratings
   def self.attempt!(user_rating, rated_puzzle, uci_moves)
-    ActiveRecord::Transaction do
+    ActiveRecord::Base.transaction do
       player_g2 = Rating.new(
         user_rating.rating,
         user_rating.rating_deviation,
@@ -34,7 +34,7 @@ class RatedPuzzleAttempt < ApplicationRecord
         pre_puzzle_rating: rated_puzzle.rating,
         pre_puzzle_rating_deviation: rated_puzzle.rating_deviation,
         pre_puzzle_rating_volatility: rated_puzzle.rating_volatility,
-      })
+      }
       ranking = case outcome
         when "win" then [1, 2]
         when "loss" then [2, 1]

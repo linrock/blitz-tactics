@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :positions
 
   has_one :user_chessboard
+  has_one :user_rating
 
   after_initialize :set_default_profile
 

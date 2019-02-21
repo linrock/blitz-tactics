@@ -15,11 +15,12 @@ class GameModes::RatedController < ApplicationController
 
   # user has attempted a rated puzzle
   def attempt
+    puzzle_attempt_params
   end
 
   private
 
   def puzzle_attempt_params
-    params.require(:puzzle_attempt).permit(:id, :uci_moves)
+    params.require(:puzzle_attempt).permit(:id, :uci_moves, :elapsed_time_ms)
   end
 end
