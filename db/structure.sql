@@ -502,6 +502,93 @@ ALTER SEQUENCE public.positions_id_seq OWNED BY public.positions.id;
 
 
 --
+-- Name: rated_puzzle_attempts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rated_puzzle_attempts (
+    id bigint NOT NULL,
+    user_rating_id integer NOT NULL,
+    rated_puzzle_id integer NOT NULL,
+    uci_moves jsonb NOT NULL,
+    outcome character varying NOT NULL,
+    pre_user_rating double precision NOT NULL,
+    pre_user_rating_deviation double precision NOT NULL,
+    pre_user_rating_volatility double precision NOT NULL,
+    pre_puzzle_rating double precision NOT NULL,
+    pre_puzzle_rating_deviation double precision NOT NULL,
+    pre_puzzle_rating_volatility double precision NOT NULL,
+    post_user_rating double precision NOT NULL,
+    post_user_rating_deviation double precision NOT NULL,
+    post_user_rating_volatility double precision NOT NULL,
+    post_puzzle_rating double precision NOT NULL,
+    post_puzzle_rating_deviation double precision NOT NULL,
+    post_puzzle_rating_volatility double precision NOT NULL,
+    elapsed_time_ms integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: rated_puzzle_attempts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rated_puzzle_attempts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: rated_puzzle_attempts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.rated_puzzle_attempts_id_seq OWNED BY public.rated_puzzle_attempts.id;
+
+
+--
+-- Name: rated_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rated_puzzles (
+    id bigint NOT NULL,
+    data jsonb NOT NULL,
+    color character varying NOT NULL,
+    puzzle_hash character varying NOT NULL,
+    initial_rating double precision NOT NULL,
+    initial_rating_deviation double precision NOT NULL,
+    initial_rating_volatility double precision NOT NULL,
+    rating double precision NOT NULL,
+    rating_deviation double precision NOT NULL,
+    rating_volatility double precision NOT NULL,
+    rated_puzzle_attempts_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: rated_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rated_puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: rated_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.rated_puzzles_id_seq OWNED BY public.rated_puzzles.id;
+
+
+--
 -- Name: repetition_levels; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -709,6 +796,44 @@ ALTER SEQUENCE public.user_chessboards_id_seq OWNED BY public.user_chessboards.i
 
 
 --
+-- Name: user_ratings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_ratings (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    initial_rating double precision NOT NULL,
+    initial_rating_deviation double precision NOT NULL,
+    initial_rating_volatility double precision NOT NULL,
+    rating double precision NOT NULL,
+    rating_deviation double precision NOT NULL,
+    rating_volatility double precision NOT NULL,
+    rated_puzzle_attempts_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: user_ratings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_ratings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_ratings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_ratings_id_seq OWNED BY public.user_ratings.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -850,6 +975,20 @@ ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.po
 
 
 --
+-- Name: rated_puzzle_attempts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rated_puzzle_attempts ALTER COLUMN id SET DEFAULT nextval('public.rated_puzzle_attempts_id_seq'::regclass);
+
+
+--
+-- Name: rated_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rated_puzzles ALTER COLUMN id SET DEFAULT nextval('public.rated_puzzles_id_seq'::regclass);
+
+
+--
 -- Name: repetition_levels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -889,6 +1028,13 @@ ALTER TABLE ONLY public.speedrun_puzzles ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.user_chessboards ALTER COLUMN id SET DEFAULT nextval('public.user_chessboards_id_seq'::regclass);
+
+
+--
+-- Name: user_ratings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_ratings ALTER COLUMN id SET DEFAULT nextval('public.user_ratings_id_seq'::regclass);
 
 
 --
@@ -1019,6 +1165,22 @@ ALTER TABLE ONLY public.positions
 
 
 --
+-- Name: rated_puzzle_attempts rated_puzzle_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rated_puzzle_attempts
+    ADD CONSTRAINT rated_puzzle_attempts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: rated_puzzles rated_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rated_puzzles
+    ADD CONSTRAINT rated_puzzles_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: repetition_levels repetition_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1064,6 +1226,14 @@ ALTER TABLE ONLY public.speedrun_puzzles
 
 ALTER TABLE ONLY public.user_chessboards
     ADD CONSTRAINT user_chessboards_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_ratings user_ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_ratings
+    ADD CONSTRAINT user_ratings_pkey PRIMARY KEY (id);
 
 
 --
@@ -1187,6 +1357,34 @@ CREATE INDEX index_positions_on_user_id ON public.positions USING btree (user_id
 
 
 --
+-- Name: index_rated_puzzle_attempts_on_rated_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_rated_puzzle_attempts_on_rated_puzzle_id ON public.rated_puzzle_attempts USING btree (rated_puzzle_id);
+
+
+--
+-- Name: index_rated_puzzle_attempts_on_user_rating_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_rated_puzzle_attempts_on_user_rating_id ON public.rated_puzzle_attempts USING btree (user_rating_id);
+
+
+--
+-- Name: index_rated_puzzles_on_puzzle_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_rated_puzzles_on_puzzle_hash ON public.rated_puzzles USING btree (puzzle_hash);
+
+
+--
+-- Name: index_rated_puzzles_on_rating; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_rated_puzzles_on_rating ON public.rated_puzzles USING btree (rating);
+
+
+--
 -- Name: index_repetition_levels_on_number; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1240,6 +1438,13 @@ CREATE UNIQUE INDEX index_speedrun_puzzles_on_speedrun_level_id_and_puzzle_hash 
 --
 
 CREATE UNIQUE INDEX index_user_chessboards_on_user_id ON public.user_chessboards USING btree (user_id);
+
+
+--
+-- Name: index_user_ratings_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_ratings_on_user_id ON public.user_ratings USING btree (user_id);
 
 
 --
@@ -1306,6 +1511,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181207070049'),
 ('20181211070754'),
 ('20181211073138'),
-('20190220052623');
+('20190220052623'),
+('20190221152057'),
+('20190221152105'),
+('20190221152109');
 
 
