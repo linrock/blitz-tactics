@@ -14,6 +14,11 @@ const defaultColors = {
 }
 
 class BoardStyles extends Backbone.Model {
+  public setColor(squareType: string, color: string) {
+    const colorHex = tinycolor(color).toHexString().toUpperCase()
+    this.set(squareType, colorHex)
+  }
+
   public css(): string {
     const { light, dark, from, to, selected } = this.attributes
     let css = ""
@@ -53,6 +58,7 @@ export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
   events(): Backbone.EventsHash {
     return {
       'click .square-color .square':  '_toggleColorPicker',
+      'keypress .hex':                '_preventFormSubmit',
       'keyup .hex':                   '_textInputColor',
       'click .reset-colors':          '_resetColors',
     }
@@ -120,7 +126,7 @@ export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
     colorPickerContainerEl.classList.remove(`invisible`)
     this.colorPicker.on('update', () => {
       const color = this.colorPicker.getHexString()
-      this.boardStyles.set(squareEl.dataset.sq, color)
+      this.boardStyles.setColor(squareEl.dataset.sq, color)
     })
   }
 
@@ -129,8 +135,15 @@ export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
     const colorText = colorInputEl.value
     const squareEl = colorInputEl.previousSibling
     if (e.which === 13 || colorText.length >= 6) {
-      const colorHex = tinycolor(colorText).toHexString()
-      this.boardStyles.set(squareEl.dataset.sq, colorHex)
+      this.boardStyles.setColor(squareEl.dataset.sq, colorText)
+    }
+  }
+
+  private _preventFormSubmit(e) {
+    if (e.which === 13) {
+      e.preventDefault()
+      e.stopImmediatePropagation()
+      return false
     }
   }
 
