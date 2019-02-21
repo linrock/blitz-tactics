@@ -30,6 +30,11 @@ Rails.application.routes.draw do
   post '/level-:number/attempt'  => 'game_modes/repetition#complete_lap'
   post '/level-:number/complete' => 'game_modes/repetition#complete_level'
 
+  # rated puzzles mode
+  get '/rated'                   => 'game_modes/rated#index'
+  get '/rated/puzzles'           => 'game_modes/rated#puzzles'
+  post '/rated'                  => 'game_modes/rated#attempt'
+
   # pages
   get '/positions'               => 'pages#positions'
   get '/positions/:id'           => 'pages#position'
