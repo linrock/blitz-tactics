@@ -15,21 +15,24 @@ const defaultColors = {
 
 class BoardStyles extends Backbone.Model {
   public css(): string {
+    const { light, dark, from, to, selected } = this.attributes
     let css = ""
-    if (this.get(`light`)) {
-     css += `.chessboard .square.light { background: ${this.get(`light`)} !important; }`
+    if (light) {
+      css += `.chessboard .square.light { background: ${light} !important; }`
+      css += `.chessboard .square .square-label.dark { color: ${light} !important; }`
     }
-    if (this.get(`dark`)) {
-     css += `.chessboard .square.dark { background: ${this.get(`dark`)} !important; }`
+    if (dark) {
+      css += `.chessboard .square.dark { background: ${dark} !important; }`
+      css += `.chessboard .square .square-label.light { color: ${dark} !important; }`
     }
-    if (this.get(`from`)) {
-     css += `.chessboard .square[data-from] { background: ${this.get(`from`)} !important; }`
+    if (from) {
+      css += `.chessboard .square[data-from] { background: ${from} !important; }`
     }
-    if (this.get(`to`)) {
-     css += `.chessboard .square[data-to] { background: ${this.get(`to`)} !important; }`
+    if (to) {
+      css += `.chessboard .square[data-to] { background: ${to} !important; }`
     }
-    if (this.get(`selected`)) {
-     css += `.chessboard .square[data-selected] { background: ${this.get(`selected`)} !important; }`
+    if (selected) {
+      css += `.chessboard .square[data-selected] { background: ${selected} !important; }`
     }
     return css
   }
