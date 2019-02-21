@@ -23,46 +23,48 @@ class UserChessboard < ActiveRecord::Base
   # returns nil if no styles defined, CSS string otherwise
   def to_css
     styles = []
-    if light_square_color
-      styles << "
-        .chessboard .square.light {
-          background: #{light_square_color} !important;
-        }
-        .chessboard .square .square-label.dark {
-          color: #{light_square_color} !important;
-        }
-      "
-    end
-    if dark_square_color
-      styles << "
-        .chessboard .square.dark {
-          background: #{dark_square_color} !important;
-        }
-        .chessboard .square .square-label.light {
-          color: #{dark_square_color} !important;
-        }
-      "
-    end
-    if selected_square_color
-      styles << "
-        .chessboard .square[data-selected] {
-          background: #{selected_square_color} !important;
-        }
-      "
-    end
-    if opponent_from_square_color
-      styles << "
-        .chessboard .square[data-from] {
-          background: #{opponent_from_square_color} !important;
-        }
-      "
-    end
-    if opponent_to_square_color
-      styles << "
-        .chessboard .square[data-to] {
-          background: #{opponent_to_square_color} !important;
-        }
-      "
+    %w( chessboard mini-chessboard ).each do |board_class|
+      if light_square_color
+        styles << "
+          .#{board_class} .square.light {
+            background: #{light_square_color} !important;
+          }
+          .#{board_class} .square .square-label.dark {
+            color: #{light_square_color} !important;
+          }
+        "
+      end
+      if dark_square_color
+        styles << "
+          .#{board_class} .square.dark {
+            background: #{dark_square_color} !important;
+          }
+          .#{board_class} .square .square-label.light {
+            color: #{dark_square_color} !important;
+          }
+        "
+      end
+      if selected_square_color
+        styles << "
+          .#{board_class} .square[data-selected] {
+            background: #{selected_square_color} !important;
+          }
+        "
+      end
+      if opponent_from_square_color
+        styles << "
+          .#{board_class} .square[data-from] {
+            background: #{opponent_from_square_color} !important;
+          }
+        "
+      end
+      if opponent_to_square_color
+        styles << "
+          .#{board_class} .square[data-to] {
+            background: #{opponent_to_square_color} !important;
+          }
+        "
+      end
     end
     return unless styles.length > 0
     styles.join("\n")

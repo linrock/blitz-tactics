@@ -18,5 +18,10 @@
   <%= yield %>
   <%= render partial: "static/snippets/chess_piece_svgs" %>
   <%= render partial: "static/snippets/google_analytics" %>
+  <% if current_user&.user_chessboard && params[:controller] != 'users' %>
+    <style type="text/css">
+      <%= current_user.user_chessboard.to_css %>
+    </style>
+  <% end %>
 </body>
 </html>
