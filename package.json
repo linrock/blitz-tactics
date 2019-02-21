@@ -16,6 +16,7 @@
     "mithril": "^1.1.6",
     "mousetrap": "^1.6.2",
     "simple-color-picker": "^0.1.2",
+    "tinycolor2": "^1.4.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.1",
     "underscore": "^1.9.1"
