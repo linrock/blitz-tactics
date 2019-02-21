@@ -3,7 +3,7 @@
 class UsersController < ApplicationController
   before_action :set_request_format, only: [:show]
   before_action :require_logged_in_user!,
-    only: [:update, :board, :update_board]
+    only: [:update, :customize_board, :update_board]
 
   def show
     @user = User.find_by_username(params[:username])
