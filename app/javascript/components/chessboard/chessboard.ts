@@ -1,5 +1,6 @@
 // Basic chessboard that just renders positions
 
+import _ from 'underscore'
 import m from 'mithril'
 import Chess from 'chess.js'
 
@@ -100,7 +101,10 @@ export default class Chessboard {
     if (type === `p` &&
         ((color === `w` && from[1] === `7` && to[1] === `8`) ||
          (color === `b` && from[1] === `2` && to[1] === `1`))) {
-      d.trigger(`move:promotion`, { fen: this.fen, move })
+      const validMoves = this.cjs.moves({ verbose: true })
+      if (_.find(validMoves, m => m.from === from && m.to === to)) {
+        d.trigger(`move:promotion`, { fen: this.fen, move })
+      }
     } else {
       const m = new Chess(this.fen).move(move)
       if (m) {
