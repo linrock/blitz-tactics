@@ -32,7 +32,7 @@ class UsersController < ApplicationController
   def update_board
     board = current_user.user_chessboard || current_user.build_user_chessboard
     board.update_attributes! board_params
-    redirect_back fallback_location: root_url
+    redirect_to "/"
   end
 
   private
