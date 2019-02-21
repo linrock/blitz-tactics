@@ -8,6 +8,6 @@ class CreateUserRatings < ActiveRecord::Migration[5.2]
       t.integer :puzzle_attempts_count, null: false
       t.timestamps null: false
     end
-    add_index :user_ratings, :user_id
+    add_index :user_ratings, :user_id, unique: true
   end
 end
