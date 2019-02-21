@@ -682,8 +682,8 @@ CREATE TABLE public.user_chessboards (
     light_square_color character varying,
     dark_square_color character varying,
     selected_square_color character varying,
-    opponent_move_from_square_color character varying,
-    opponent_move_to_square_color character varying,
+    opponent_from_square_color character varying,
+    opponent_to_square_color character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

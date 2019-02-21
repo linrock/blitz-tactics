@@ -5,8 +5,8 @@ class CreateUserChessboard < ActiveRecord::Migration[5.2]
       t.string :light_square_color
       t.string :dark_square_color
       t.string :selected_square_color
-      t.string :opponent_move_from_square_color
-      t.string :opponent_move_to_square_color
+      t.string :opponent_from_square_color
+      t.string :opponent_to_square_color
       t.timestamps null: false
     end
     add_index :user_chessboards, :user_id, unique: true
