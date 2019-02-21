@@ -3,6 +3,9 @@ class CreateRatedPuzzles < ActiveRecord::Migration[5.2]
     create_table :rated_puzzles do |t|
       t.jsonb :data, null: false
       t.string :puzzle_hash, null: false
+      t.float :initial_rating, null: false
+      t.float :initial_rating_deviation, null: false
+      t.float :initial_rating_volatility, null: false
       t.float :rating, null: false
       t.float :rating_deviation, null: false
       t.float :rating_volatility, null: false
