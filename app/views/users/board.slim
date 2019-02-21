@@ -6,17 +6,25 @@
     .custom-board
       .left
         = render partial: "puzzle_player/board_area/chessboard"
-      .right
+      = form_tag "/board", method: :put, class: "right"
         h4 Board squares
         .squares
           .square-color.light
             .color-picker.invisible
             .square(data-sq="light")
-            input.hex(type="text" value="#{@board&.light_square_color}")
+            input.hex(
+              type="text"
+              name="board[light_square_color]"
+              value="#{@board&.light_square_color}"
+            )
           .square-color.dark
             .color-picker.invisible
             .square(data-sq="dark")
-            input.hex(type="text" value="#{@board&.dark_square_color}")
+            input.hex(
+              type="text"
+              name="board[dark_square_color]"
+              value="#{@board&.dark_square_color}"
+            )
 
         h4 Opponent's move
         .squares
@@ -25,6 +33,7 @@
             .square(data-sq="from")
             input.hex(
               type="text"
+              name="board[opponent_from_square_color]"
               value="#{@board&.opponent_from_square_color}"
             )
           .square-color.to
@@ -32,6 +41,7 @@
             .square(data-sq="to")
             input.hex(
               type="text"
+              name="board[opponent_to_square_color]"
               value="#{@board&.opponent_to_square_color}"
             )
 
@@ -40,7 +50,11 @@
           .square-color.selected
             .color-picker.invisible
             .square(data-sq="selected")
-            input.hex(type="text" value="#{@board&.selected_square_color}")
+            input.hex(
+              type="text"
+              name="board[selected_square_color]"
+              value="#{@board&.selected_square_color}"
+            )
 
         .action-buttons
           button.gray.reset-colors Reset colors

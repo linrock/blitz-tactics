@@ -3,7 +3,7 @@
 class UserChessboard < ActiveRecord::Base
   belongs_to :user
 
-  HEX_REGEX = /\A#[0-9a-f]{6}\z/
+  HEX_REGEX = /\A#[0-9A-F]{6}\z/
 
   COLOR_FIELDS = [
     :light_square_color,
@@ -14,6 +14,8 @@ class UserChessboard < ActiveRecord::Base
   ]
 
   before_validation :nullify_blank_colors
+  before_validation :capitalize_hex_colors
+
   COLOR_FIELDS.each do |color|
     validates color, format: HEX_REGEX, allow_nil: true
   end
@@ -24,35 +26,41 @@ class UserChessboard < ActiveRecord::Base
     if light_square_color
       styles << "
         .chessboard .square.light {
-          background: #{light_square_color};
+          background: #{light_square_color} !important;
+        }
+        .chessboard .square .square-label.dark {
+          color: #{light_square_color} !important;
         }
       "
     end
     if dark_square_color
       styles << "
         .chessboard .square.dark {
-          background: #{dark_square_color};
+          background: #{dark_square_color} !important;
+        }
+        .chessboard .square .square-label.light {
+          color: #{dark_square_color} !important;
         }
       "
     end
     if selected_square_color
       styles << "
         .chessboard .square[data-selected] {
-          background: #{selected_square_color};
+          background: #{selected_square_color} !important;
         }
       "
     end
     if opponent_from_square_color
       styles << "
         .chessboard .square[data-from] {
-          background: #{opponent_from_square_color};
+          background: #{opponent_from_square_color} !important;
         }
       "
     end
     if opponent_to_square_color
       styles << "
         .chessboard .square[data-to] {
-          background: #{opponent_to_square_color};
+          background: #{opponent_to_square_color} !important;
         }
       "
     end
@@ -65,6 +73,12 @@ class UserChessboard < ActiveRecord::Base
   def nullify_blank_colors
     COLOR_FIELDS.each do |field|
       send("#{field}=", nil) unless field.present?
+    end
+  end
+
+  def capitalize_hex_colors
+    COLOR_FIELDS.each do |field|
+      send("#{field}=", send(field).upcase) if field.present?
     end
   end
 end

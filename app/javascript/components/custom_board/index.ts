@@ -55,7 +55,6 @@ export default class CustomBoard extends Backbone.View<Backbone.Model> {
       'click .square-color .square':  '_toggleColorPicker',
       'keyup .hex':                   '_textInputColor',
       'click .reset-colors':          '_resetColors',
-      'click .save-colors':           '_saveColors',
     }
   }
 
@@ -136,11 +135,8 @@ export default class CustomBoard extends Backbone.View<Backbone.Model> {
     console.log(`setting color for ${squareEl.dataset.sq}`)
   }
 
-  private _resetColors() {
+  private _resetColors(e) {
+    e.preventDefault()
     this.boardStyles.set(defaultColors)
-  }
-
-  private _saveColors() {
-    console.log('saving colors')
   }
 }
