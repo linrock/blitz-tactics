@@ -3,6 +3,7 @@ import RepetitionMode from './game_modes/repetition'
 import SpeedrunMode from './game_modes/speedrun'
 import CountdownMode from './game_modes/countdown'
 import HasteMode from './game_modes/haste'
+import RatedMode from './game_modes/rated'
 
 import PositionTrainer from './components/position_trainer'
 import CustomizeBoard from './components/customize_board'
@@ -18,6 +19,7 @@ const routes: RouteMap = {
   "game_modes/haste#index": HasteMode,
   "game_modes/infinity#index": InfinityMode,
   "game_modes/repetition#index": RepetitionMode,
+  "game_modes/rated#index": RatedMode,
 
   // position trainers
   "pages#position": PositionTrainer,

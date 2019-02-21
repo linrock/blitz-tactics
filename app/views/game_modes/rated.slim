@@ -1,0 +1,26 @@
+- content_for(:title) { "Rated mode" }
+
+section.rated-mode
+  .container
+    .board-area-container
+      = render partial: "puzzle_player/above_board"
+      = render partial: "puzzle_player/board_area"
+    aside.rated-sidebar
+      .timers
+        .current-status
+          .your-rating
+            span= @user_rating.rating.round
+            span your rating
+          .n-solved
+            span= "#{@user_rating.rated_puzzle_attempts_count || 0}"
+            span puzzles solved
+
+      .instructions
+        ul
+          li You have 7 seconds to solve each puzzle
+          li Each correct move in a puzzle gives you 1 extra second
+          li Solving a puzzle after time runs out counts as a draw
+          li Click start or make a move to begin
+
+        .make-a-move
+          button.blue-button Start

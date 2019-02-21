@@ -16,7 +16,7 @@ export default class Listener {
 
   private listenToEvents(eventMap) {
     Object.entries(eventMap).forEach(row => {
-      const event: string = row[0]
+      const event = <string>row[0]
       const handler = <Function>row[1]
       this.listener.listenTo(d, event, handler)
     })

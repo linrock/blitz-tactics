@@ -1,4 +1,5 @@
-// fetches puzzles from the server
+// fetches puzzles from the server, handles player moves,
+// and emits events (success, almost, fail)
 
 import _ from 'underscore'
 import Backbone from 'backbone'

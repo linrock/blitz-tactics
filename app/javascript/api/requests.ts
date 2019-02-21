@@ -50,6 +50,17 @@ export function hasteRoundCompleted(score) {
   return client.post(`/haste`, params).then(resp => resp.data)
 }
 
+export function ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs) {
+  const params = {
+    puzzle_attempt: {
+      id: puzzleId,
+      uci_moves: uciMoves,
+      elapsed_time_ms: elapsedTimeMs,
+    }
+  }
+  return client.post(`/rated`, params).then(resp => resp.data)
+}
+
 export function fetchPuzzles(source) {
   return client.get(source).then(resp => resp.data)
 }
