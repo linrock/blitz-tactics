@@ -29,3 +29,8 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'pry'
 end
+
+group :test do
+  gem 'rspec'
+  gem 'rspec-rails'
+end
