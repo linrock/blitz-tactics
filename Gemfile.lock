@@ -94,6 +94,7 @@ GEM
       state_machines
       thor
     ffi (1.9.25)
+    glicko2 (0.2.3)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     hitimes (1.3.0)
@@ -213,6 +214,7 @@ DEPENDENCIES
   devise (~> 4.3)
   dotenv-rails
   eye
+  glicko2
   listen
   pg (~> 1.0)
   pry

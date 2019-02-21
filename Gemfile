@@ -15,6 +15,7 @@ gem 'bootsnap', require: false
 gem 'devise', '~> 4.3'
 gem 'slim'
 gem 'bugsnag'
+gem 'glicko2'
 
 # assets
 gem 'sprockets', '>= 3.0.0'
