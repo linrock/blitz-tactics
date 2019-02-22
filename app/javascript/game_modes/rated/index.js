@@ -37,14 +37,9 @@ export default class Rated {
         t0 = +new Date()
       },
 
-      'move:make': move => {
-        moveSequence.push(move)
-      },
+      'move:make': move => moveSequence.push(move),
+      'move:almost': move => moveSequence.push(move),
 
-      'move:almost': move => {
-        moveSequence.push(move)
-      }
-      ,
       'move:fail': move => {
         moveSequence.push(move)
         console.log(`puzzle failed :( - ${JSON.stringify(moveSequence)}`)

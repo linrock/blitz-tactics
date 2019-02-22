@@ -6,12 +6,13 @@ section.rated-mode
       = render partial: "puzzle_player/above_board"
       = render partial: "puzzle_player/board_area"
     aside.rated-sidebar
-      .timers
-        .current-status
-          .your-rating
-            div your rating
-            .player-rating= @user_rating.rating.round
-          .n-solved
+      .current-status
+        .your-rating
+          .label Your rating
+          .player-rating= @user_rating.rating.round
+        .n-solved
+
+      .moves-attempted(style="display: none")
 
       .instructions
         ul
@@ -20,5 +21,4 @@ section.rated-mode
           li Solving a puzzle after time runs out counts as a draw
           li Click start or make a move to begin
 
-        .make-a-move
-          button.blue-button Start
+        button.blue-button Start

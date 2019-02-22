@@ -1,3 +1,4 @@
+@import "_colors"
 @import "_variables"
 
 .rated-mode
@@ -29,49 +30,58 @@
     margin-left 30px
     display flex
     flex-direction column
-    justify-content space-evenly
 
-    .make-a-move
-      line-height 26px
+    .your-rating .label
+      margin-bottom 10px
+
+    .player-rating
+      font-size 20px
+      transition all 0.25s ease
+      margin-bottom 20px
+
+      &.rewarded
+        color #34FF00
+
+      &.penalized
+        color red
+
+    .n-solved
+      font-size 16px
+      line-height 22px
+      height 44px
+      margin-left 1px
       opacity 0.7
 
-    .timers
-      height 100%
-      display flex
-      flex-direction column
-      align-items center
-      justify-content space-evenly
+    // list of moves attempted with success/failure
+    .moves-attempted
+      height 200px
+      margin-top 40px
+      overflow-y hidden
 
-      .timer
-        font-size 40px
-        transition all 0.25s ease
-        margin-bottom 20px
+      .move-attempt
+        margin 5px 0
 
-        &.stopped
-          opacity 0.3
+        &.success
+          color $move-perfect
+        &.fail
+          color $move-fail
+        &.almost
+          color $move-almost
 
-        &.rewarded
-          color #34FF00
-
-        &.penalized
-          color red
-
-        &.complete
-          color #ffff00
-
-      .n-solved
-        font-size 16px
-        line-height 22px
-        height 44px
-        margin-left 1px
-        opacity 0.7
-
-  // shows up in the sidebar after a level is complete
-  .haste-complete
+  aside .instructions
     display flex
     flex-direction column
     height 100%
     justify-content space-evenly
+
+    ul
+      // list-style-type disc
+      font-size 14px
+      line-height 18px
+      opacity 0.7
+
+      li
+       margin 15px 0
 
     .label
       font-size 13px

@@ -49,8 +49,8 @@ export default class Chessboard {
         this.renderFen(fen)
       },
 
-      'move:make': (move, options = { highlight: true }) => {
-        const { highlight } = options
+      'move:make': (move, options = {}) => {
+        const highlight = options.opponent
         this.clearHighlights()
         this.cjs.load(this.fen)
         const moveObj = this.cjs.move(move)

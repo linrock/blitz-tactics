@@ -116,7 +116,7 @@ export default class PuzzleSource {
     d.trigger(`fen:set`, puzzle.fen)
     setTimeout(() => {
       const move = this.getInitialMoveSan(puzzle.initialMove)
-      d.trigger(`move:make`, move)
+      d.trigger(`move:make`, move, { opponent: true })
       d.trigger(`move:sound`, move)
     }, 500)
   }
@@ -147,7 +147,7 @@ export default class PuzzleSource {
       d.trigger(`move:fail`, move)
       return
     }
-    d.trigger(`move:make`, move, { highlight: false })
+    d.trigger(`move:make`, move)
     d.trigger(`move:success`)
     if (attempt[response] === `win`) {
       this.puzzleSolved()
@@ -155,7 +155,7 @@ export default class PuzzleSource {
       d.trigger(`move:sound`, move)
       const responseMove = uciToMove(response)
       setTimeout(() => {
-        d.trigger(`move:make`, responseMove)
+        d.trigger(`move:make`, responseMove, { opponent: true })
         this.current.boardState = attempt[response]
       }, responseDelay)
     }

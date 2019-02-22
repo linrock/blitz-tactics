@@ -3,7 +3,7 @@ class RatedPuzzle < ActiveRecord::Base
 
   has_many :rated_puzzle_attempts
 
-  # try a sequence of moves and see what the outcome is
+  # try a sequence of moves and see if the player won or lost
   def result_of_uci_moves(uci_moves)
     node = lines
     uci_moves.each do |uci_move|
