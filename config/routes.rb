@@ -33,7 +33,10 @@ Rails.application.routes.draw do
   # rated puzzles mode
   get '/rated'                   => 'game_modes/rated#index'
   get '/rated/puzzles'           => 'game_modes/rated#puzzles'
-  post '/rated'                  => 'game_modes/rated#attempt'
+
+  get '/rated/attempts'          => 'game_modes/rated#puzzle_attempts_list'
+  get '/rated/attempts/:id'      => 'game_modes/rated#puzzle_attempt'
+  post '/rated/attempts'         => 'game_modes/rated#attempt'
 
   # pages
   get '/positions'               => 'pages#positions'

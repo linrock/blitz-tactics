@@ -58,7 +58,7 @@ export function ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs) {
       elapsed_time_ms: elapsedTimeMs,
     }
   }
-  return client.post(`/rated`, params).then(resp => resp.data)
+  return client.post(`/rated/attempts`, params).then(resp => resp.data)
 }
 
 export function fetchPuzzles(source) {
