@@ -4,14 +4,16 @@ class GameModes::RatedController < ApplicationController
   before_action :require_logged_in_user!
 
   def index
-    @user_rating = user_rating
+    user_rating
     render "game_modes/rated"
   end
 
   # GET /rated/puzzles - for fetching puzzles on initial pageload
   def puzzles
     render json: {
-      puzzles: RatedPuzzle.all.limit(100)
+      puzzles: RatedPuzzle.where.not(
+        id: user_rating.rated_puzzle_attempts.pluck(:rated_puzzle_id)
+      ).limit(100)
     }
   end
 
@@ -51,7 +53,7 @@ class GameModes::RatedController < ApplicationController
   private
 
   def user_rating
-    current_user.user_rating || current_user.build_user_rating
+    @user_rating = current_user.user_rating || current_user.build_user_rating
   end
 
   def puzzle_attempt_params
