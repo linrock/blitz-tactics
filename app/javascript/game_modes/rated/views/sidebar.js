@@ -12,6 +12,12 @@ export default class Sidebar extends Backbone.View {
     return document.querySelector(`.rated-sidebar`)
   }
 
+  get events() {
+    return {
+      'click .start-button': () => d.trigger(`puzzles:next`)
+    }
+  }
+
   get instructionsEl() {
     return this.el.querySelector(`.instructions`)
   }
@@ -29,14 +35,13 @@ export default class Sidebar extends Backbone.View {
   }
 
   initialize() {
-    this.listenToOnce(d, `move:try`, () => {
+    this.listenToOnce(d, `puzzles:next`, () => {
       this.instructionsEl.remove()
       this.movesAttemptedEl.style = ``
     })
     this.listenTo(d, `rated_puzzle:attempted`, data => {
-      this.playerRatingEl.textContent = Math.round(
-        data.rated_puzzle_attempt.post_user_rating
-      )
+      this.playerRatingEl.textContent =
+        Math.round(data.rated_puzzle_attempt.post_user_rating)
       this.nPuzzlesEl.textContent =
         data.user_rating.rated_puzzle_attempts_count
     })

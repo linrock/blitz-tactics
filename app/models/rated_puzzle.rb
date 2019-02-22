@@ -11,7 +11,7 @@ class RatedPuzzle < ActiveRecord::Base
           SELECT rated_puzzle_id FROM rated_puzzle_attempts
           WHERE rated_puzzle_attempts.user_rating_id = ?
         )
-      ", user.user_rating.id)
+      ", user.user_rating.id).order('rating ASC')
     else
       RatedPuzzle
     end.limit(100)

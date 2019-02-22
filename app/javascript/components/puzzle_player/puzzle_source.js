@@ -1,5 +1,5 @@
 // fetches puzzles from the server, handles player moves,
-// and emits events (success, almost, fail)
+// and emits move events (move:success, move:almost, move:fail)
 
 import _ from 'underscore'
 import Backbone from 'backbone'
@@ -133,9 +133,10 @@ export default class PuzzleSource {
     const attempt = this.current.boardState[moveToUci(move)]
     if (attempt === `win`) {
       d.trigger(`move:success`)
-      if (this.i === this.puzzles.length - 1) {
-        d.trigger(`move:make`, move)
-      }
+      d.trigger(`move:make`, move)
+      // if (this.i === this.puzzles.length - 1) {
+      //   d.trigger(`move:make`, move)
+      // }
       this.puzzleSolved()
       return
     } else if (attempt === `retry`) {

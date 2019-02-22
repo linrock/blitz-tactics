@@ -13,6 +13,7 @@ export default class Rated {
     new Sidebar
     new Modal
 
+    let gameStarted = false
     let puzzleId
     let moveSequence = []
     let t0
@@ -35,10 +36,16 @@ export default class Rated {
         t0 = +new Date()
       },
 
+      'puzzles:next': () => gameStarted = true,
+
       'move:make': move => moveSequence.push(move),
       'move:almost': move => moveSequence.push(move),
 
       'move:fail': move => {
+        if (!gameStarted) {
+          gameStarted = true
+          return
+        }
         moveSequence.push(move)
         console.log(`puzzle failed :( - ${JSON.stringify(moveSequence)}`)
         attemptPuzzle(puzzleId, moveSequence)
@@ -47,6 +54,10 @@ export default class Rated {
       },
 
       'puzzle:solved': () => {
+        if (!gameStarted) {
+          gameStarted = true
+          return
+        }
         console.log(`puzzle solved :) - ${JSON.stringify(moveSequence)}`)
         attemptPuzzle(puzzleId, moveSequence)
         moveSequence = []

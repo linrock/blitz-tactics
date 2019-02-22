@@ -11,7 +11,9 @@ class GameModes::RatedController < ApplicationController
   # GET /rated/puzzles - for fetching puzzles on initial pageload
   def puzzles
     render json: {
-      puzzles: RatedPuzzle.for_user(current_user)
+      puzzles: [
+        RepetitionLevel.number(1).first_puzzle
+      ] + RatedPuzzle.for_user(current_user)
     }
   end
 
