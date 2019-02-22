@@ -11,9 +11,7 @@ class GameModes::RatedController < ApplicationController
   # GET /rated/puzzles - for fetching puzzles on initial pageload
   def puzzles
     render json: {
-      puzzles: RatedPuzzle.where.not(
-        id: user_rating.rated_puzzle_attempts.pluck(:rated_puzzle_id)
-      ).limit(100)
+      puzzles: RatedPuzzle.for_user(current_user)
     }
   end
 
