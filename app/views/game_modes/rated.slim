@@ -9,11 +9,9 @@ section.rated-mode
       .timers
         .current-status
           .your-rating
-            span= @user_rating.rating.round
-            span your rating
+            div your rating
+            .player-rating= @user_rating.rating.round
           .n-solved
-            span= "#{@user_rating.rated_puzzle_attempts_count || 0}"
-            span puzzles solved
 
       .instructions
         ul

@@ -139,15 +139,15 @@ export default class PuzzleSource {
       this.puzzleSolved()
       return
     } else if (attempt === `retry`) {
-      d.trigger(`move:almost`)
+      d.trigger(`move:almost`, move)
       return
     }
     const response = _.keys(attempt)[0]
     if (!response) {
-      d.trigger(`move:fail`)
+      d.trigger(`move:fail`, move)
       return
     }
-    d.trigger(`move:make`, move, false)
+    d.trigger(`move:make`, move, { highlight: false })
     d.trigger(`move:success`)
     if (attempt[response] === `win`) {
       this.puzzleSolved()

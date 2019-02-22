@@ -49,7 +49,8 @@ export default class Chessboard {
         this.renderFen(fen)
       },
 
-      'move:make': (move, highlight = true) => {
+      'move:make': (move, options = { highlight: true }) => {
+        const { highlight } = options
         this.clearHighlights()
         this.cjs.load(this.fen)
         const moveObj = this.cjs.move(move)
@@ -106,7 +107,7 @@ export default class Chessboard {
         d.trigger(`move:promotion`, { fen: this.fen, move })
       }
     } else {
-      const m = new Chess(this.fen).move(move)
+      const m: ChessMove = new Chess(this.fen).move(move)
       if (m) {
         d.trigger(`move:try`, m)
       }

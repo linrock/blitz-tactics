@@ -51,7 +51,7 @@ class RatingUpdater
         rating_deviation: player_g2.rating_deviation,
         rating_volatility: player_g2.volatility,
       })
-      RatedPuzzleAttempt.create!(
+      rated_puzzle_attempt = RatedPuzzleAttempt.create!(
         puzzle_attempt_attributes.merge({
           post_user_rating: player_g2.rating,
           post_user_rating_deviation: player_g2.rating_deviation,
@@ -66,12 +66,13 @@ class RatingUpdater
         rating_deviation: puzzle_g2.rating_deviation,
         rating_volatility: puzzle_g2.volatility,
       })
+      rated_puzzle_attempt
     end
   end
 
   # win, loss, draw - player's perspective vs. puzzle
   def get_outcome(uci_moves, elapsed_time_ms)
-    result = @rated_puzzle.try_uci_moves(uci_moves)
+    result = @rated_puzzle.result_of_uci_moves(uci_moves)
     if result == "win"
       elapsed_time_ms < 7_000 ? "win" : "draw"
     else

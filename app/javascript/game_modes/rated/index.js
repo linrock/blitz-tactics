@@ -16,8 +16,19 @@ export default class Rated {
     new Modal
 
     let puzzleId
-    let userMoves = []
+    let moveSequence = []
     let t0
+
+    const attemptPuzzle = (puzzleId, moveSequence) => {
+      const elapsedTimeMs = +new Date() - t0
+      console.log(JSON.stringify(moveSequence))
+      const uciMoves = moveSequence.slice(1).map(m => moveToUci(m))
+      console.log(JSON.stringify(uciMoves))
+      ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs).then(data => {
+        console.log(JSON.stringify(data.rated_puzzle_attempt))
+        d.trigger(`rated_puzzle:attempted`, data.rated_puzzle_attempt)
+      })
+    }
 
     new Listener({
       'puzzle:loaded': current => {
@@ -26,31 +37,26 @@ export default class Rated {
         t0 = +new Date()
       },
 
-      'move:try': move => {
-        userMoves.push(move)
+      'move:make': move => {
+        moveSequence.push(move)
       },
 
-      'move:fail': () => {
-        console.log('puzzle failed :(')
-        console.log(JSON.stringify(userMoves))
-        ratedPuzzleAttempted(
-          puzzleId,
-          userMoves.map(m => moveToUci(m)),
-          +new Date() - t0
-        )
+      'move:almost': move => {
+        moveSequence.push(move)
+      }
+      ,
+      'move:fail': move => {
+        moveSequence.push(move)
+        console.log(`puzzle failed :( - ${JSON.stringify(moveSequence)}`)
+        attemptPuzzle(puzzleId, moveSequence)
+        moveSequence = []
         d.trigger(`puzzles:next`)
-        userMoves = []
       },
 
       'puzzle:solved': () => {
-        console.log('puzzle solved :)')
-        console.log(JSON.stringify(userMoves))
-        ratedPuzzleAttempted(
-          puzzleId,
-          userMoves.map(m => moveToUci(m)),
-          +new Date() - t0
-        )
-        userMoves = []
+        console.log(`puzzle solved :) - ${JSON.stringify(moveSequence)}`)
+        attemptPuzzle(puzzleId, moveSequence)
+        moveSequence = []
       },
     })
 

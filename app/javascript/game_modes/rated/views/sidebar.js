@@ -10,10 +10,18 @@ export default class Sidebar extends Backbone.View {
     return document.querySelector(`.rated-sidebar`)
   }
 
+  get instructionsEl() {
+    return this.el.querySelector(`.instructions`)
+  }
+
+  get playerRatingEl() {
+    return this.el.querySelector(`.player-rating`)
+  }
+
   initialize() {
-    this.listenToOnce(d, `move:try`, () => {
-      this.el.querySelector(`.instructions`).remove()
-      // this.el.querySelector(`.timers`).style = ``
+    this.listenToOnce(d, `move:try`, () => this.instructionsEl.remove())
+    this.listenTo(d, `rated_puzzle:attempted`, data => {
+      this.playerRatingEl.textContent = Math.round(data.post_user_rating)
     })
   }
 }

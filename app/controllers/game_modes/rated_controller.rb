@@ -21,7 +21,15 @@ class GameModes::RatedController < ApplicationController
     rating_updater = RatingUpdater.new(current_user, rated_puzzle)
     rated_puzzle_attempt = rating_updater.attempt!(puzzle_attempt_params)
     render json: {
-      rated_puzzle_attempt: rated_puzzle_attempt
+      rated_puzzle_attempt: rated_puzzle_attempt.as_json({
+        only: [
+          :outcome,
+          :pre_user_rating,
+          :post_user_rating,
+          :pre_puzzle_rating,
+          :post_puzzle_rating,
+        ]
+      })
     }
   end
 
