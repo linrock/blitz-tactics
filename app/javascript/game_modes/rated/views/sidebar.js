@@ -20,6 +20,10 @@ export default class Sidebar extends Backbone.View {
     return this.el.querySelector(`.player-rating`)
   }
 
+  get nPuzzlesEl() {
+    return this.el.querySelector(`.n-puzzles`)
+  }
+
   get movesAttemptedEl() {
     return this.el.querySelector(`.moves-attempted`)
   }
@@ -30,7 +34,11 @@ export default class Sidebar extends Backbone.View {
       this.movesAttemptedEl.style = ``
     })
     this.listenTo(d, `rated_puzzle:attempted`, data => {
-      this.playerRatingEl.textContent = Math.round(data.post_user_rating)
+      this.playerRatingEl.textContent = Math.round(
+        data.rated_puzzle_attempt.post_user_rating
+      )
+      this.nPuzzlesEl.textContent =
+        data.user_rating.rated_puzzle_attempts_count
     })
     this.listenTo(d, `move:make`, (move, options = {}) => {
       if (!options.opponent) {

@@ -11,6 +11,8 @@ section.rated-mode
           .label Your rating
           .player-rating= @user_rating.rating.round
         .n-solved
+          .label # puzzles
+          .n-puzzles= @user_rating.rated_puzzle_attempts_count
 
       .moves-attempted(style="display: none")
 

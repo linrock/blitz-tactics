@@ -1,6 +1,5 @@
 import PuzzlePlayer from '../../components/puzzle_player'
 import Sidebar from './views/sidebar'
-import Progress from './views/progress'
 import Modal from './views/modal'
 import { ratedPuzzleAttempted } from '../../api/requests'
 import Listener from '../../listener'
@@ -12,7 +11,6 @@ const apiPath = `/rated/puzzles`
 export default class Rated {
   constructor() {
     new Sidebar
-    new Progress
     new Modal
 
     let puzzleId
@@ -25,8 +23,8 @@ export default class Rated {
       const uciMoves = moveSequence.slice(1).map(m => moveToUci(m))
       console.log(JSON.stringify(uciMoves))
       ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs).then(data => {
-        console.log(JSON.stringify(data.rated_puzzle_attempt))
-        d.trigger(`rated_puzzle:attempted`, data.rated_puzzle_attempt)
+        console.log(JSON.stringify(data))
+        d.trigger(`rated_puzzle:attempted`, data)
       })
     }
 
