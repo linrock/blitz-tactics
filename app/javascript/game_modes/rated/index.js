@@ -38,13 +38,23 @@ export default class Rated {
 
       'puzzles:next': () => gameStarted = true,
 
-      'move:make': move => moveSequence.push(move),
-      'move:almost': move => moveSequence.push(move),
+      'move:make': move => {
+        if (gameStarted) {
+          moveSequence.push(move)
+        }
+      },
+
+      'move:almost': move => {
+        if (gameStarted) {
+          moveSequence.push(move)
+        }
+      },
 
       'move:fail': move => {
         if (!gameStarted) {
           gameStarted = true
           d.trigger(`puzzles:next`)
+          moveSequence = []
           return
         }
         moveSequence.push(move)
@@ -57,6 +67,7 @@ export default class Rated {
       'puzzle:solved': () => {
         if (!gameStarted) {
           gameStarted = true
+          moveSequence = []
           return
         }
         console.log(`puzzle solved :) - ${JSON.stringify(moveSequence)}`)
