@@ -44,6 +44,7 @@ export default class Rated {
       'move:fail': move => {
         if (!gameStarted) {
           gameStarted = true
+          d.trigger(`puzzles:next`)
           return
         }
         moveSequence.push(move)
@@ -69,6 +70,7 @@ export default class Rated {
       loopPuzzles: false,
       noHint: true,
       source: apiPath,
+      mode: 'rated',
     })
   }
 }

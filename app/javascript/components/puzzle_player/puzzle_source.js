@@ -32,6 +32,7 @@ export default class PuzzleSource {
     this.started = false
     this.shuffle = options.shuffle
     this.loopPuzzles = options.loopPuzzles
+    this.mode = options.mode
     this.fetchPuzzles(options.source)
     this.listenToEvents()
   }
@@ -133,10 +134,12 @@ export default class PuzzleSource {
     const attempt = this.current.boardState[moveToUci(move)]
     if (attempt === `win`) {
       d.trigger(`move:success`)
-      d.trigger(`move:make`, move)
-      // if (this.i === this.puzzles.length - 1) {
-      //   d.trigger(`move:make`, move)
-      // }
+      if (this.mode === `rated`) {
+        d.trigger(`move:make`, move)
+      } else if (this.i === this.puzzles.length - 1) {
+        // TODO look into whether this check is needed
+        d.trigger(`move:make`, move)
+      }
       this.puzzleSolved()
       return
     } else if (attempt === `retry`) {
