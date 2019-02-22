@@ -46,11 +46,6 @@ class RatingUpdater
       rating_period.game([player_g2, puzzle_g2], ranking)
       next_rating_period = rating_period.generate_next(0.5)
       next_rating_period.players.each(&:update_obj)
-      @user_rating.update_attributes!({
-        rating: player_g2.rating,
-        rating_deviation: player_g2.rating_deviation,
-        rating_volatility: player_g2.volatility,
-      })
       rated_puzzle_attempt = RatedPuzzleAttempt.create!(
         puzzle_attempt_attributes.merge({
           post_user_rating: player_g2.rating,
@@ -61,6 +56,11 @@ class RatingUpdater
           post_puzzle_rating_volatility: puzzle_g2.volatility,
         })
       )
+      @user_rating.update_attributes!({
+        rating: player_g2.rating,
+        rating_deviation: player_g2.rating_deviation,
+        rating_volatility: player_g2.volatility,
+      })
       @rated_puzzle.update_attributes!({
         rating: puzzle_g2.rating,
         rating_deviation: puzzle_g2.rating_deviation,

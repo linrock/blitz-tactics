@@ -29,6 +29,9 @@ class GameModes::RatedController < ApplicationController
           :pre_puzzle_rating,
           :post_puzzle_rating,
         ]
+      }),
+      user_rating: current_user.user_rating.reload.as_json({
+        only: [:rated_puzzle_attempts_count]
       })
     }
   end
