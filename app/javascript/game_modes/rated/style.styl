@@ -73,6 +73,9 @@
         )
 
       .move-attempt
+        display flex
+        height 18px
+        align-items center
         margin 5px 0
         transition opacity 0.2s ease
 
@@ -82,6 +85,10 @@
           color $move-fail
         &.almost
           color $move-almost
+
+        svg
+          width 14px
+          margin-right 8px
 
   aside .instructions
     display flex

@@ -70,7 +70,13 @@ export default class Sidebar extends Backbone.View {
     moveEl.classList.add(`move-attempt`)
     moveEl.classList.add(`invisible`)
     moveEl.classList.add(className)
-    moveEl.textContent = moveSan
+    const svgId = className === `fail` ? `#x-mark` : `#check-mark`
+    moveEl.innerHTML = `
+      <svg viewBox="0 0 45 45">
+        <use xlink:href="${svgId}" width="100%" height="100%"></use>
+      </svg>
+      <div class="move-san">${moveSan}</div>
+    `
     return moveEl
   }
 }
