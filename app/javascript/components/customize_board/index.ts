@@ -1,8 +1,8 @@
 import Backbone from 'backbone'
 import SimpleColorPicker from 'simple-color-picker'
-import tinycolor from 'tinycolor2'
 
 import Chessboard from '../chessboard/chessboard'
+import BoardStyles from './board_styles'
 import d from '../../dispatcher'
 
 const defaultColors = {
@@ -13,38 +13,9 @@ const defaultColors = {
   selected: '#EEFFFF',
 }
 
-class BoardStyles extends Backbone.Model {
-  public setColor(squareType: string, color: string) {
-    const colorHex = tinycolor(color).toHexString().toUpperCase()
-    this.set(squareType, colorHex)
-  }
-
-  public css(): string {
-    const { light, dark, from, to, selected } = this.attributes
-    let css = ""
-    if (light) {
-      css += `.chessboard .square.light { background: ${light} !important; }`
-      css += `.chessboard .square .square-label.dark { color: ${light} !important; }`
-    }
-    if (dark) {
-      css += `.chessboard .square.dark { background: ${dark} !important; }`
-      css += `.chessboard .square .square-label.light { color: ${dark} !important; }`
-    }
-    if (from) {
-      css += `.chessboard .square[data-from] { background: ${from} !important; }`
-    }
-    if (to) {
-      css += `.chessboard .square[data-to] { background: ${to} !important; }`
-    }
-    if (selected) {
-      css += `.chessboard .square[data-selected] { background: ${selected} !important; }`
-    }
-    return css
-  }
-}
+const boardStyles = new BoardStyles()
 
 export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
-  // private boardStyles: BoardStyles
   private colorPicker: any
 
   get el(): HTMLElement {
@@ -78,17 +49,16 @@ export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
       const color = colorInputEl.value || defaultColors[squareType]
       initialColors[squareType] = color
     })
-    this.boardStyles = new BoardStyles()
-    this.listenTo(this.boardStyles, `change`, () => {
-      Object.entries(this.boardStyles.changedAttributes()).forEach(([sqType, color]) => {
+    this.listenTo(boardStyles, `change`, () => {
+      Object.entries(boardStyles.changedAttributes()).forEach(([sqType, color]) => {
         this.squareColorInputEl(sqType).value = <string>color
         this.squareEl(sqType).style.background = <string>color
       })
-      this.styleEl.textContent = this.boardStyles.css()
+      this.styleEl.textContent = boardStyles.css()
     })
-    this.boardStyles.set(initialColors)
+    boardStyles.set(initialColors)
     document.addEventListener(`click`, e => {
-      let node = e.target
+      let node = <HTMLElement>e.target
       while (node) {
         if (node.classList.contains(`square-color`)) {
           return
@@ -126,7 +96,7 @@ export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
     colorPickerContainerEl.classList.remove(`invisible`)
     this.colorPicker.on('update', () => {
       const color = this.colorPicker.getHexString()
-      this.boardStyles.setColor(squareEl.dataset.sq, color)
+      boardStyles.setColor(squareEl.dataset.sq, color)
     })
   }
 
@@ -135,7 +105,7 @@ export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
     const colorText = colorInputEl.value
     const squareEl = colorInputEl.previousSibling
     if (e.which === 13 || colorText.length >= 6) {
-      this.boardStyles.setColor(squareEl.dataset.sq, colorText)
+      boardStyles.setColor(squareEl.dataset.sq, colorText)
     }
   }
 
@@ -149,6 +119,6 @@ export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
 
   private _resetColors(e) {
     e.preventDefault()
-    this.boardStyles.set(defaultColors)
+    boardStyles.set(defaultColors)
   }
 }
