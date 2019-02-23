@@ -60,12 +60,15 @@ export default class Sidebar extends Backbone.View {
   }
 
   addMoveAttempt(moveSan, className) {
-    this.movesAttemptedEl.prepend(this.moveAttemptEl(moveSan, className))
+    const el = this.moveAttemptEl(moveSan, className)
+    this.movesAttemptedEl.prepend(el)
+    setTimeout(() => el.classList.remove(`invisible`), 0)
   }
 
   moveAttemptEl(moveSan, className) {
     const moveEl = document.createElement(`div`)
     moveEl.classList.add(`move-attempt`)
+    moveEl.classList.add(`invisible`)
     moveEl.classList.add(className)
     moveEl.textContent = moveSan
     return moveEl
