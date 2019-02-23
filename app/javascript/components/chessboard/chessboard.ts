@@ -17,6 +17,10 @@ interface HighlightedSquares {
   }
 }
 
+interface MoveOptions {
+  opponent?: boolean
+}
+
 export default class Chessboard {
   private rows = [8, 7, 6, 5, 4, 3, 2, 1]
   private columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
@@ -49,7 +53,7 @@ export default class Chessboard {
         this.renderFen(fen)
       },
 
-      'move:make': (move, options = {}) => {
+      'move:make': (move, options: MoveOptions = {}) => {
         const highlight = options.opponent
         this.clearHighlights()
         this.cjs.load(this.fen)
