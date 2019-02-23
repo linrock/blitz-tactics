@@ -48,6 +48,7 @@ class RatingUpdater
       rating_period.game([player_g2, puzzle_g2], ranking)
       next_rating_period = rating_period.generate_next(TAU)
       next_rating_period.players.each(&:update_obj)
+      player_g2 = modify_player_g2(player_g2, outcome)
       rated_puzzle_attempt = RatedPuzzleAttempt.create!(
         puzzle_attempt_attributes.merge({
           post_user_rating: player_g2.rating,
@@ -83,6 +84,25 @@ class RatingUpdater
   end
 
   private
+
+  # player - max loss of 19 points, no points lost for a draw
+  def modify_player_g2(player_g2, outcome)
+    if outcome == "draw" && player_g2.rating < @user_rating.rating
+      Rating.new(
+        @user_rating.rating,
+        @user_rating.rating_deviation,
+        @user_rating.rating_volatility
+      )
+    elsif outcome == "loss"
+      Rating.new(
+        [@user_rating.rating - 19, player_g2.rating].max,
+        player_g2.rating_deviation,
+        player_g2.volatility
+      )
+    else
+      player_g2
+    end
+  end
 
   def init_user_rating(user)
     user.user_rating || user.create_user_rating
