@@ -1,6 +1,8 @@
 # Updates ratings for players and puzzles
 
 class RatingUpdater
+  TAU = 1.2   # glicko2 system constant - 0.3 to 1.2
+
   Rating = Struct.new(:rating, :rating_deviation, :volatility)
 
   def initialize(user, rated_puzzle)
@@ -44,7 +46,7 @@ class RatingUpdater
       end
       rating_period = Glicko2::RatingPeriod.from_objs([player_g2, puzzle_g2])
       rating_period.game([player_g2, puzzle_g2], ranking)
-      next_rating_period = rating_period.generate_next(0.5)
+      next_rating_period = rating_period.generate_next(TAU)
       next_rating_period.players.each(&:update_obj)
       rated_puzzle_attempt = RatedPuzzleAttempt.create!(
         puzzle_attempt_attributes.merge({
