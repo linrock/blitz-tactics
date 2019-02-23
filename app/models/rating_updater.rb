@@ -1,7 +1,7 @@
 # Updates ratings for players and puzzles
 
 class RatingUpdater
-  TAU = 1.2   # glicko2 system constant - 0.3 to 1.2
+  TAU = 0.5   # glicko2 system constant - 0.3 to 1.2
 
   Rating = Struct.new(:rating, :rating_deviation, :volatility)
 
@@ -85,11 +85,11 @@ class RatingUpdater
 
   private
 
-  # player - max loss of 19 points, no points lost for a draw
+  # player - max loss of 19 points, gain at least half a point for a draw
   def modify_player_g2(player_g2, outcome)
-    if outcome == "draw" && player_g2.rating < @user_rating.rating
+    if outcome == "draw" && player_g2.rating < @user_rating.rating + 0.5
       Rating.new(
-        @user_rating.rating,
+        @user_rating.rating + 0.5,
         @user_rating.rating_deviation,
         @user_rating.rating_volatility
       )

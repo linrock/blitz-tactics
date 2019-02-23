@@ -18,23 +18,11 @@ export default class Sidebar extends Backbone.View {
     }
   }
 
-  get instructionsEl() {
-    return this.el.querySelector(`.instructions`)
-  }
-
-  get playerRatingEl() {
-    return this.el.querySelector(`.player-rating`)
-  }
-
-  get nPuzzlesEl() {
-    return this.el.querySelector(`.n-puzzles`)
-  }
-
-  get movesAttemptedEl() {
-    return this.el.querySelector(`.moves-attempted`)
-  }
-
   initialize() {
+    this.instructionsEl = this.el.querySelector(`.instructions`)
+    this.playerRatingEl = this.el.querySelector(`.player-rating`)
+    this.nPuzzlesEl = this.el.querySelector(`.n-puzzles`)
+    this.movesAttemptedEl = this.el.querySelector(`.moves-attempted`)
     this.listenToOnce(d, `puzzles:next`, () => {
       this.instructionsEl.remove()
       this.movesAttemptedEl.style = ``
