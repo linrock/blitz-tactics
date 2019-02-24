@@ -1,4 +1,6 @@
 import FastClick from 'fastclick'
+
+import SoundPlayer from '../components/sound_player'
 import MiniChessboard from '../components/chessboard/mini_chessboard'
 import routes from '../routes'
 
@@ -28,6 +30,9 @@ document.addEventListener(`DOMContentLoaded`, () => {
     }
     new MiniChessboard({ el, fen, flip: flip === `true`, initialMove, ...options })
   })
+
+  // initialize global views/components
+  new SoundPlayer()
 
   FastClick.attach(document.body)
 })
