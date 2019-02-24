@@ -17,7 +17,7 @@ class UserRating < ActiveRecord::Base
     return if initial_rating.present?
     self.initial_rating = 1500
     self.initial_rating_deviation = 350
-    self.initial_rating_volatility = 0.6
+    self.initial_rating_volatility = 0.06
     self.rating = self.initial_rating
     self.rating_deviation = self.initial_rating_deviation
     self.rating_volatility = self.initial_rating_volatility
