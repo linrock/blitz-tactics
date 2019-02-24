@@ -58,7 +58,15 @@ export default class PuzzleSource {
         this.firstPuzzle()
       },
       'puzzles:added': puzzles => this.addPuzzles(puzzles),
-      'puzzles:next': () => this.nextPuzzle(),
+      'puzzles:next': () => {
+        const n = this.puzzles.length
+        d.trigger(`puzzles:status`, {
+          i: this.i,
+          lastPuzzleId: this.puzzles[n - 1].id,
+          n,
+        })
+        this.nextPuzzle()
+      },
       'move:try': move => this.tryUserMove(move),
     })
   }
@@ -166,13 +174,7 @@ export default class PuzzleSource {
   }
 
   puzzleSolved() {
-    const n = this.puzzles.length
     d.trigger(`puzzle:solved`, this.current.puzzle)
-    d.trigger(`puzzles:status`, {
-      i: this.i,
-      lastPuzzleId: this.puzzles[n - 1].id,
-      n,
-    })
     d.trigger(`puzzles:next`)
   }
 }

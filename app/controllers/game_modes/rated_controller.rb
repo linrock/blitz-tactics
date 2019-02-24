@@ -10,10 +10,12 @@ class GameModes::RatedController < ApplicationController
 
   # GET /rated/puzzles - for fetching puzzles on initial pageload
   def puzzles
+    puzzles = RatedPuzzle.for_user(current_user)
+    unless params[:next].present?
+      puzzles = [RepetitionLevel.number(1).first_puzzle] + puzzles
+    end
     render json: {
-      puzzles: [
-        RepetitionLevel.number(1).first_puzzle
-      ] + RatedPuzzle.for_user(current_user)
+      puzzles: puzzles
     }
   end
 

@@ -7,6 +7,7 @@ import d from '../../dispatcher'
 import { moveToUci } from '../../utils'
 
 const apiPath = `/rated/puzzles`
+const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain
 
 export default class Rated {
   constructor() {
@@ -20,11 +21,8 @@ export default class Rated {
 
     const attemptPuzzle = (puzzleId, moveSequence) => {
       const elapsedTimeMs = +new Date() - t0
-      console.log(JSON.stringify(moveSequence))
       const uciMoves = moveSequence.slice(1).map(m => moveToUci(m))
-      console.log(JSON.stringify(uciMoves))
       ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs).then(data => {
-        console.log(JSON.stringify(data))
         d.trigger(`rated_puzzle:attempted`, data)
       })
     }
@@ -74,6 +72,14 @@ export default class Rated {
         attemptPuzzle(puzzleId, moveSequence)
         moveSequence = []
       },
+
+      'puzzles:status': status => {
+        const { i, n, lastPuzzleId } = status
+        console.log(`${i} of ${n}`)
+        if (i + fetchThreshold > n) {
+          d.trigger(`source:changed:add`, `${apiPath}?next=true`)
+        }
+      }
     })
 
     new PuzzlePlayer({
