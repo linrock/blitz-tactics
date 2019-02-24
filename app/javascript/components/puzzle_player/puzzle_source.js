@@ -116,6 +116,7 @@ export default class PuzzleSource {
     setTimeout(() => {
       const move = this.getInitialMoveSan(puzzle.initialMove)
       d.trigger(`move:make`, move)
+      d.trigger(`move:sound`, move)
     }, 500)
   }
 
@@ -150,6 +151,7 @@ export default class PuzzleSource {
     if (attempt[response] === `win`) {
       this.puzzleSolved()
     } else {
+      d.trigger(`move:sound`, move)
       const responseMove = uciToMove(response)
       setTimeout(() => {
         d.trigger(`move:make`, responseMove)

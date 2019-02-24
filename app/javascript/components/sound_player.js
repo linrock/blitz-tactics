@@ -6,8 +6,8 @@ import d from '../dispatcher'
 
 const theme = `sfx`
 const audioMap = {
-  'move:make': new Audio(`/sounds/${theme}/Move.mp3`),
-  'move:fail': new Audio(`/sounds/${theme}/LowTime.mp3`),
+  'move:sound': new Audio(`/sounds/${theme}/Move.mp3`),
+  'move:fail': new Audio(`/sounds/${theme}/Check.mp3`),
   'puzzle:solved': new Audio(`/sounds/${theme}/Capture.mp3`),
 }
 
@@ -58,7 +58,7 @@ export default class SoundPlayer extends Backbone.View {
   }
 
   playSound(type) {
-    if (this.soundEnabled && audioMap[type].readyState === 4) {
+    if (this.soundEnabled && audioMap[type].readyState >= 2) {
       audioMap[type].play()
     }
   }
