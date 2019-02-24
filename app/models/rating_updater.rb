@@ -60,6 +60,8 @@ class RatingUpdater
         })
       )
       logger.info "#{@user_rating.user.username} - #{outcome} - #{@user_rating.rating.round} -> #{player_g2.rating.round} (#{@user_rating.rating_deviation.round} -> #{player_g2.rating_deviation.round})"
+      logger.info "#{@user_rating.user.username} - moves #{uci_moves}"
+      logger.info "#{@user_rating.user.username} - time #{elapsed_time_ms / 1000.to_f}s"
       logger.info "puzzle #{@rated_puzzle.id} - #{@rated_puzzle.rating.round} -> #{puzzle_g2.rating.round} (#{@rated_puzzle.rating_deviation.round} -> #{puzzle_g2.rating_deviation.round})"
       @user_rating.update_attributes!({
         rating: player_g2.rating,
@@ -78,8 +80,9 @@ class RatingUpdater
   # win, loss, draw - player's perspective vs. puzzle
   def get_outcome(uci_moves, elapsed_time_ms)
     result = @rated_puzzle.result_of_uci_moves(uci_moves)
+    threshold = 7_000 + (uci_moves.length - 1) / 2 * 3_000
     if result == "win"
-      elapsed_time_ms < 7_000 ? "win" : "draw"
+      elapsed_time_ms < threshold ? "win" : "draw"
     else
       "loss"
     end
