@@ -147,6 +147,17 @@ class User < ActiveRecord::Base
       or num_infinity_puzzles_solved > 0
   end
 
+  # user settings
+
+  def set_sound_enabled(enabled)
+    self.profile["sound_enabled"] = enabled
+    self.save!
+  end
+
+  def sound_enabled?
+    !!self.profile["sound_enabled"]
+  end
+
   private
 
   def email_required?

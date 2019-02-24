@@ -28,6 +28,10 @@ class APIClient {
   put(path, data): AxiosPromise {
     return axios.put(path, data, headersWithCsrfToken())
   }
+
+  patch(path, data): AxiosPromise {
+    return axios.patch(path, data, headersWithCsrfToken())
+  }
 }
 
 const api = new APIClient

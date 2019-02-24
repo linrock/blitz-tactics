@@ -19,4 +19,12 @@ module ApplicationHelper
       new_user_session_path
     end
   end
+
+  def sound_enabled?
+    if user_signed_in?
+      current_user.sound_enabled?
+    else
+      session[:sound_enabled] == true
+    end
+  end
 end

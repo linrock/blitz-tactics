@@ -1,7 +1,15 @@
 import Backbone from 'backbone'
 
+import { toggleSound } from '../api/requests'
 import Listener from '../listener'
 import d from '../dispatcher'
+
+const theme = `sfx`
+const audioMap = {
+  'move:make': new Audio(`/sounds/${theme}/move.ogg`),
+  'move:fail': new Audio(`/sounds/${theme}/low_time.ogg`),
+  'puzzle:solved': new Audio(`/sounds/${theme}/capture.ogg`),
+}
 
 export default class SoundPlayer extends Backbone.View {
 
@@ -22,24 +30,6 @@ export default class SoundPlayer extends Backbone.View {
     if (this.playSounds) {
       this.loadSounds()
     }
-  }
-
-  loadSounds() {
-    if (this.soundsLoaded) {
-      return
-    }
-    this.theme = `sfx`
-    this.audioMap = {
-      'move:make': new Audio(`/sounds/${this.theme}/move.ogg`),
-      'move:fail': new Audio(`/sounds/${this.theme}/low_time.ogg`),
-      'puzzle:solved': new Audio(`/sounds/${this.theme}/capture.ogg`),
-    }
-    Object.values(this.audioMap).forEach(audio => audio.load())
-    const eventMap = {}
-    Object.keys(this.audioMap).forEach(event => {
-      eventMap[event] = () => this.playSound(event)
-    })
-    new Listener(eventMap)
     new Listener({
       'sound:enabled': enabled => {
         const el = this.volumeIconEl.querySelector(`use`)
@@ -49,14 +39,27 @@ export default class SoundPlayer extends Backbone.View {
         } else {
           el.setAttribute(`xlink:href`, `#volume-off`)
         }
+        toggleSound(enabled)
       }
     })
+  }
+
+  loadSounds() {
+    if (this.soundsLoaded) {
+      return
+    }
+    Object.values(audioMap).forEach(audio => audio.load())
+    const eventMap = {}
+    Object.keys(audioMap).forEach(event => {
+      eventMap[event] = () => this.playSound(event)
+    })
+    new Listener(eventMap)
     this.soundsLoaded = true
   }
 
   playSound(type) {
-    if (this.soundEnabled && this.audioMap[type].readyState === 4) {
-      this.audioMap[type].play()
+    if (this.soundEnabled && audioMap[type].readyState === 4) {
+      audioMap[type].play()
     }
   }
 

@@ -50,6 +50,8 @@ Rails.application.routes.draw do
   get '/customize'               => 'users#customize_board'
   put '/customize'               => 'users#update_board'
 
+  patch '/settings'              => 'user_settings#update'
+
   # user routes
   put '/users/me'                => 'users#update'
   get '/:username'               => 'users#show'

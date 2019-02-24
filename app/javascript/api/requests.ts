@@ -53,3 +53,12 @@ export function hasteRoundCompleted(score) {
 export function fetchPuzzles(source) {
   return client.get(source).then(resp => resp.data)
 }
+
+export function toggleSound(enabled) {
+  const params = {
+    settings: {
+      sound_enabled: enabled,
+    }
+  }
+  return client.patch(`/settings`, params).then(resp => resp.data)
+}
