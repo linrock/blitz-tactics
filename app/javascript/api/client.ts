@@ -5,7 +5,7 @@ import {
 } from 'axios'
 
 const headersWithCsrfToken = (): AxiosRequestConfig => {
-  const token = document
+  const token: string = document
     .querySelector('meta[name="csrf-token"]')
     .getAttribute('content')
   return {
