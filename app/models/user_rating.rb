@@ -1,4 +1,5 @@
 class UserRating < ActiveRecord::Base
+  belongs_to :user
   has_many :rated_puzzle_attempts
 
   after_initialize :initialize_glicko2_rating

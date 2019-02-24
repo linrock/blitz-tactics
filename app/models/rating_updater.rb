@@ -59,6 +59,8 @@ class RatingUpdater
           post_puzzle_rating_volatility: puzzle_g2.volatility,
         })
       )
+      logger.info "#{@user_rating.user.username} - #{outcome} - #{@user_rating.rating.round} -> #{player_g2.rating.round} (#{@user_rating.rating_deviation.round} -> #{player_g2.rating_deviation.round})"
+      logger.info "puzzle #{@rated_puzzle.id} - #{@rated_puzzle.rating.round} -> #{puzzle_g2.rating.round} (#{@rated_puzzle.rating_deviation.round} -> #{puzzle_g2.rating_deviation.round})"
       @user_rating.update_attributes!({
         rating: player_g2.rating,
         rating_deviation: player_g2.rating_deviation,
@@ -85,11 +87,11 @@ class RatingUpdater
 
   private
 
-  # player - max loss of 19 points, gain at least half a point for a draw
+  # favors players - max loss of 19 points, gain at least 1 point for a draw
   def modify_player_g2(player_g2, outcome)
-    if outcome == "draw" && player_g2.rating < @user_rating.rating + 0.5
+    if outcome == "draw" && player_g2.rating < @user_rating.rating + 1
       Rating.new(
-        @user_rating.rating + 0.5,
+        @user_rating.rating + 1,
         @user_rating.rating_deviation,
         @user_rating.rating_volatility
       )
@@ -106,5 +108,9 @@ class RatingUpdater
 
   def init_user_rating(user)
     user.user_rating || user.create_user_rating
+  end
+
+  def logger
+    @logger ||= Logger.new("#{Rails.root}/log/rated_puzzles.log")
   end
 end
