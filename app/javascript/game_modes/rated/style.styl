@@ -1,16 +1,22 @@
 @import "_colors"
-@import "_variables"
 
 .rated-mode
   $board-size = 500px
+  $above-board-height = 80px
 
   .container
     display flex
 
   .above-board
     width $board-size
+    height $above-board-height
     margin 0
     transition opacity 0.5s ease
+
+    // white/black to move
+    .instructions
+      top 25px
+      font-size 22px
 
   .board-area, .chessboard
     width $board-size
@@ -36,7 +42,7 @@
 
     .player-rating
       font-size 20px
-      transition all 0.25s ease
+      transition color 0.25s ease
       margin-bottom 30px
 
       &.rewarded
