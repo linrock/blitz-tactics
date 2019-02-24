@@ -10,8 +10,8 @@ section.rated-mode
         .your-rating
           .label Your rating
           .player-rating= @user_rating.rating.round
-        .n-solved
-          .label # puzzles
+        .puzzles-seen
+          .label Puzzles seen
           .n-puzzles= @user_rating.rated_puzzle_attempts_count
 
       .moves-attempted(style="display: none")
@@ -19,9 +19,7 @@ section.rated-mode
 
       .instructions
         ul
-          li You have 7 seconds to solve each puzzle
-          li Each correct move in a puzzle gives you 1 extra second
-          li Solving a puzzle after time runs out counts as a draw
+          li Solve puzzles quickly to gain more rating points
           li Click start or make a move to begin
 
         button.blue-button.start-button Start
