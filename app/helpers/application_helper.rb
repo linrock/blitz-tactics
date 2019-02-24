@@ -24,7 +24,7 @@ module ApplicationHelper
     if user_signed_in?
       current_user.sound_enabled?
     else
-      session[:sound_enabled] == true
+      session[:sound_enabled].nil? || session[:sound_enabled]  == true
     end
   end
 end
