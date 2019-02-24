@@ -3,20 +3,32 @@ class RatedPuzzle < ActiveRecord::Base
 
   has_many :rated_puzzle_attempts
 
+  def self.unseen(user_rating)
+    where("
+      id NOT IN (
+        SELECT rated_puzzle_id FROM rated_puzzle_attempts
+        WHERE rated_puzzle_attempts.user_rating_id = ?
+      )
+    ", user_rating.id)
+  end
+
+  def self.rating_range(low, high)
+    where("rating >= ? AND rating <= ?", low, high)
+  end
+
   # selects a set of rated puzzles for a given user id
   def self.for_user(user)
     user_rating = user.user_rating
     if user_rating
-      unseen_puzzles = RatedPuzzle.where("
-        id NOT IN (
-          SELECT rated_puzzle_id FROM rated_puzzle_attempts
-          WHERE rated_puzzle_attempts.user_rating_id = ?
-        )
-      ", user_rating.id).order('rating ASC').limit(10)
-      rating = user_rating.rating
-      similar_rating_puzzles = RatedPuzzle.where(
-        "rating >= ? AND rating <= ?", rating - 50, rating + 50
-      ).limit(10)
+      unseen_puzzles = RatedPuzzle
+        .unseen(user_rating)
+        .order('rating ASC')
+        .limit(10)
+      rating_value = user_rating.rating
+      similar_rating_puzzles = RatedPuzzle
+        .unseen(user_rating)
+        .rating_range(rating_value - 50, rating_value + 50)
+        .limit(10)
       (unseen_puzzles + similar_rating_puzzles).uniq.shuffle
     else
       RatedPuzzle.order('rating ASC').limit(20)
