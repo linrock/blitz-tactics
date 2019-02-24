@@ -56,7 +56,6 @@ export default class Rated {
           return
         }
         moveSequence.push(move)
-        console.log(`puzzle failed :( - ${JSON.stringify(moveSequence)}`)
         attemptPuzzle(puzzleId, moveSequence)
         moveSequence = []
         d.trigger(`puzzles:next`)
@@ -68,7 +67,6 @@ export default class Rated {
           moveSequence = []
           return
         }
-        console.log(`puzzle solved :) - ${JSON.stringify(moveSequence)}`)
         attemptPuzzle(puzzleId, moveSequence)
         moveSequence = []
       },
@@ -85,6 +83,8 @@ export default class Rated {
     new PuzzlePlayer({
       shuffle: false,
       loopPuzzles: false,
+      noCombo: true,
+      noCounter: true,
       noHint: true,
       source: apiPath,
       mode: 'rated',

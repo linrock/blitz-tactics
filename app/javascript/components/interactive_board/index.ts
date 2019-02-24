@@ -5,9 +5,11 @@ import MoveStatus from './views/move_status'
 import PiecePromotionModal from './views/piece_promotion_modal'
 
 export default class InteractiveBoard {
-  constructor() {
+  constructor(options = {}) {
     new Chessboard
-    new MoveStatus
+    if (!options.noCombo) {
+      new MoveStatus
+    }
     new PiecePromotionModal
   }
 }
