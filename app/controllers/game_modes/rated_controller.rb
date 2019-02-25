@@ -34,6 +34,12 @@ class GameModes::RatedController < ApplicationController
   # POST /rated/attempts - player submits a puzzle attempt after a puzzle
   def attempt
     rated_puzzle = RatedPuzzle.find puzzle_attempt_params[:id]
+    if user_rating.rated_puzzle_attempts.exists?(rated_puzzle_id: rated_puzzle.id)
+      render status: 400, json: {
+        error: "Puzzle #{rated_puzzle.id} already attempted"
+      }
+      return
+    end
     rating_updater = RatingUpdater.new(current_user, rated_puzzle)
     rated_puzzle_attempt = rating_updater.attempt!(puzzle_attempt_params)
     render json: {
