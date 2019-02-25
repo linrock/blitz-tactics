@@ -22,13 +22,51 @@ import d from '../../dispatcher'
 
 const responseDelay = 0
 
+// de-duplicates puzzles
+class Puzzles {
+
+  constructor(options) {
+    this.puzzleList = []
+    this.puzzleSet = new Set()
+  }
+
+  addPuzzles(puzzles) {
+    puzzles.forEach(puzzle => {
+      if (!this.puzzleSet.has(puzzle.id)) {
+        this.puzzleSet.add(puzzle.id)
+        this.puzzleList.push(puzzle)
+      }
+    })
+  }
+
+  shuffle() {
+    let shuffled = shuffle(this.puzzleList)
+    while (this.lastPuzzle().fen === shuffled[0].fen) {
+      shuffled = shuffle(this.puzzleList)
+    }
+    this.puzzleList = shuffled
+  }
+
+  count() {
+    return this.puzzleList.length
+  }
+
+  puzzleAt(index) {
+    return this.puzzleList[index]
+  }
+
+  lastPuzzle() {
+    return this.puzzleAt(this.count() - 1)
+  }
+}
+
 export default class PuzzleSource {
 
   // options - shuffle, loopPuzzles, source
   constructor(options = {}) {
     this.i = 0
     this.current = {}
-    this.puzzles = []
+    this.puzzles = new Puzzles()
     this.started = false
     this.shuffle = options.shuffle
     this.loopPuzzles = options.loopPuzzles
@@ -53,16 +91,16 @@ export default class PuzzleSource {
       'source:changed': path => this.fetchPuzzles(path),
       'source:changed:add': path => this.fetchAndAddPuzzles(path),
       'puzzles:fetched': puzzles => {
-        this.puzzles = []
+        this.puzzles = new Puzzles()
         this.addPuzzles(puzzles)
         this.firstPuzzle()
       },
       'puzzles:added': puzzles => this.addPuzzles(puzzles),
       'puzzles:next': () => {
-        const n = this.puzzles.length
+        const n = this.puzzles.count()
         d.trigger(`puzzles:status`, {
           i: this.i,
-          lastPuzzleId: this.puzzles[n - 1].id,
+          lastPuzzleId: this.puzzles.lastPuzzle().id,
           n,
         })
         this.nextPuzzle()
@@ -71,16 +109,8 @@ export default class PuzzleSource {
     })
   }
 
-  shufflePuzzles() {
-    let shuffled = shuffle(this.puzzles)
-    while (shuffled[0].fen === this.puzzles[this.puzzles.length - 1].fen) {
-      shuffled = shuffle(this.puzzles)
-    }
-    this.puzzles = shuffled
-  }
-
   addPuzzles(puzzles) {
-    this.puzzles = this.puzzles.concat(puzzles)
+    this.puzzles.addPuzzles(puzzles)
   }
 
   firstPuzzle() {
@@ -90,9 +120,9 @@ export default class PuzzleSource {
 
   nextPuzzle() {
     this.i = this.i + 1
-    if (this.i === this.puzzles.length) {
+    if (this.i === this.puzzles.count()) {
       if (this.shuffle) {
-        this.shufflePuzzles()
+        this.puzzles.shuffle()
       }
       if (this.loopPuzzles) {
         this.i = 0
@@ -115,7 +145,7 @@ export default class PuzzleSource {
   }
 
   loadPuzzleAtIndex(i) {
-    const puzzle = this.puzzles[i]
+    const puzzle = this.puzzles.puzzleAt(i)
     this.current = {
       boardState: Object.assign({}, puzzle.lines),
       puzzle,
@@ -144,7 +174,7 @@ export default class PuzzleSource {
       d.trigger(`move:success`)
       if (this.mode === `rated`) {
         d.trigger(`move:make`, move)
-      } else if (this.i === this.puzzles.length - 1) {
+      } else if (this.i === this.puzzles.count() - 1) {
         // TODO look into whether this check is needed
         d.trigger(`move:make`, move)
       }
