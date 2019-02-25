@@ -4,6 +4,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
+import { ChessMove } from '../../types'
 import { uciToMove, moveToUci, shuffle } from '../../utils'
 import { fetchPuzzles } from '../../api/requests'
 import Listener from '../../listener'
@@ -22,15 +23,24 @@ import d from '../../dispatcher'
 
 const responseDelay = 0
 
+interface InitialMove {
+  san: string,
+  uci: string,
+}
+
+type Puzzle = {
+  id: number
+  fen: string
+  lines: object
+  initialMove: InitialMove
+}
+
 // de-duplicates puzzles
 class Puzzles {
+  puzzleList: Array<Puzzle> = []
+  puzzleSet: Set<number> = new Set()
 
-  constructor(options) {
-    this.puzzleList = []
-    this.puzzleSet = new Set()
-  }
-
-  addPuzzles(puzzles) {
+  addPuzzles(puzzles: Array<Puzzle>) {
     puzzles.forEach(puzzle => {
       if (!this.puzzleSet.has(puzzle.id)) {
         this.puzzleSet.add(puzzle.id)
@@ -47,27 +57,45 @@ class Puzzles {
     this.puzzleList = shuffled
   }
 
-  count() {
+  count(): number {
     return this.puzzleList.length
   }
 
-  puzzleAt(index) {
+  puzzleAt(index): Puzzle {
     return this.puzzleList[index]
   }
 
-  lastPuzzle() {
+  lastPuzzle(): Puzzle {
     return this.puzzleAt(this.count() - 1)
   }
 }
 
-export default class PuzzleSource {
+interface PuzzleOptions {
+  shuffle?: boolean,
+  loopPuzzles?: boolean,
+  mode?: string,
+  source?: string,
+}
+
+interface PuzzleState {
+  boardState?: object,
+  puzzle?: Puzzle,
+}
+
+export default class PuzzleSource<PuzzleSourceInterface> {
+  private i = 0
+  private puzzles = new Puzzles()
+  private started = false
+  private shuffle = false
+  private loopPuzzles = false
+  private current: PuzzleState
+  private mode: string
 
   // options - shuffle, loopPuzzles, source
-  constructor(options = {}) {
+  constructor(options: PuzzleOptions = {}) {
     this.i = 0
     this.current = {}
     this.puzzles = new Puzzles()
-    this.started = false
     this.shuffle = options.shuffle
     this.loopPuzzles = options.loopPuzzles
     this.mode = options.mode
@@ -75,18 +103,18 @@ export default class PuzzleSource {
     this.listenToEvents()
   }
 
-  fetchPuzzles(source) {
+  private fetchPuzzles(source) {
     fetchPuzzles(source).then(data => {
       d.trigger(`puzzles:fetched`, data.puzzles)
       d.trigger(`config:init`, data)
     })
   }
 
-  fetchAndAddPuzzles(source) {
+  private fetchAndAddPuzzles(source) {
     fetchPuzzles(source).then(data => d.trigger(`puzzles:added`, data.puzzles))
   }
 
-  listenToEvents() {
+  private listenToEvents() {
     new Listener({
       'source:changed': path => this.fetchPuzzles(path),
       'source:changed:add': path => this.fetchAndAddPuzzles(path),
@@ -109,16 +137,16 @@ export default class PuzzleSource {
     })
   }
 
-  addPuzzles(puzzles) {
+  private addPuzzles(puzzles) {
     this.puzzles.addPuzzles(puzzles)
   }
 
-  firstPuzzle() {
+  private firstPuzzle() {
     this.i = 0
     this.loadPuzzleAtIndex(this.i)
   }
 
-  nextPuzzle() {
+  private nextPuzzle() {
     this.i = this.i + 1
     if (this.i === this.puzzles.count()) {
       if (this.shuffle) {
@@ -136,7 +164,8 @@ export default class PuzzleSource {
     }
   }
 
-  getInitialMoveSan(move) {
+  // should make this one type of move
+  private getInitialMoveSan(move): string|ChessMove {
     if (move.san) {
       return move.san
     } else {
@@ -144,7 +173,7 @@ export default class PuzzleSource {
     }
   }
 
-  loadPuzzleAtIndex(i) {
+  private loadPuzzleAtIndex(i: number) {
     const puzzle = this.puzzles.puzzleAt(i)
     this.current = {
       boardState: Object.assign({}, puzzle.lines),
@@ -160,7 +189,7 @@ export default class PuzzleSource {
     }, 500)
   }
 
-  tryUserMove(move) {
+  private tryUserMove(move: ChessMove) {
     if (!this.started) {
       this.started = true
       d.trigger(`puzzles:start`)
@@ -168,7 +197,7 @@ export default class PuzzleSource {
     this.handleUserMove(move)
   }
 
-  handleUserMove(move) {
+  private handleUserMove(move: ChessMove) {
     const attempt = this.current.boardState[moveToUci(move)]
     if (attempt === `win`) {
       d.trigger(`move:success`)
@@ -203,7 +232,7 @@ export default class PuzzleSource {
     }
   }
 
-  puzzleSolved() {
+  private puzzleSolved() {
     d.trigger(`puzzle:solved`, this.current.puzzle)
     d.trigger(`puzzles:next`)
   }
