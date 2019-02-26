@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { subscribe } from '../../../store'
 
 // Fastest 5 player round times in the sidebar
 
@@ -15,7 +15,9 @@ export default class HighScores extends Backbone.View {
     if (this.scoresEl.innerText.length > 0) {
       this.showHighScores()
     }
-    this.listenTo(d, `level:high_scores`, scores => this.renderScores(scores))
+    subscribe({
+      'level:high_scores': scores => this.renderScores(scores)
+    })
   }
 
   template(playerName, time) {

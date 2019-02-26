@@ -8,7 +8,7 @@ import { ChessMove } from '../../types'
 import { uciToMove, moveToUci, shuffle } from '../../utils'
 import { fetchPuzzles } from '../../api/requests'
 import Listener from '../../listener'
-import d from '../../dispatcher'
+import { dispatch } from '../../store'
 
 // source:changed
 // puzzles:fetched
@@ -105,13 +105,13 @@ export default class PuzzleSource<PuzzleSourceInterface> {
 
   private fetchPuzzles(source) {
     fetchPuzzles(source).then(data => {
-      d.trigger(`puzzles:fetched`, data.puzzles)
-      d.trigger(`config:init`, data)
+      dispatch(`puzzles:fetched`, data.puzzles)
+      dispatch(`config:init`, data)
     })
   }
 
   private fetchAndAddPuzzles(source) {
-    fetchPuzzles(source).then(data => d.trigger(`puzzles:added`, data.puzzles))
+    fetchPuzzles(source).then(data => dispatch(`puzzles:added`, data.puzzles))
   }
 
   private listenToEvents() {
@@ -126,7 +126,7 @@ export default class PuzzleSource<PuzzleSourceInterface> {
       'puzzles:added': puzzles => this.addPuzzles(puzzles),
       'puzzles:next': () => {
         const n = this.puzzles.count()
-        d.trigger(`puzzles:status`, {
+        dispatch(`puzzles:status`, {
           i: this.i,
           lastPuzzleId: this.puzzles.lastPuzzle().id,
           n,
@@ -154,10 +154,10 @@ export default class PuzzleSource<PuzzleSourceInterface> {
       }
       if (this.loopPuzzles) {
         this.i = 0
-        d.trigger(`puzzles:lap`)
+        dispatch(`puzzles:lap`)
         this.loadPuzzleAtIndex(this.i)
       } else {
-        d.trigger(`puzzles:complete`)
+        dispatch(`puzzles:complete`)
       }
     } else {
       this.loadPuzzleAtIndex(this.i)
@@ -179,20 +179,20 @@ export default class PuzzleSource<PuzzleSourceInterface> {
       boardState: Object.assign({}, puzzle.lines),
       puzzle,
     }
-    d.trigger(`puzzle:loaded`, this.current)
-    d.trigger(`board:flipped`, !!puzzle.fen.match(/ w /))
-    d.trigger(`fen:set`, puzzle.fen)
+    dispatch(`puzzle:loaded`, this.current)
+    dispatch(`board:flipped`, !!puzzle.fen.match(/ w /))
+    dispatch(`fen:set`, puzzle.fen)
     setTimeout(() => {
       const move = this.getInitialMoveSan(puzzle.initialMove)
-      d.trigger(`move:make`, move, { opponent: true })
-      d.trigger(`move:sound`, move)
+      dispatch(`move:make`, move, { opponent: true })
+      dispatch(`move:sound`, move)
     }, 500)
   }
 
   private tryUserMove(move: ChessMove) {
     if (!this.started) {
       this.started = true
-      d.trigger(`puzzles:start`)
+      dispatch(`puzzles:start`)
     }
     this.handleUserMove(move)
   }
@@ -200,40 +200,40 @@ export default class PuzzleSource<PuzzleSourceInterface> {
   private handleUserMove(move: ChessMove) {
     const attempt = this.current.boardState[moveToUci(move)]
     if (attempt === `win`) {
-      d.trigger(`move:success`)
+      dispatch(`move:success`)
       if (this.mode === `rated`) {
-        d.trigger(`move:make`, move)
+        dispatch(`move:make`, move)
       } else if (this.i === this.puzzles.count() - 1) {
         // TODO look into whether this check is needed
-        d.trigger(`move:make`, move)
+        dispatch(`move:make`, move)
       }
       this.puzzleSolved()
       return
     } else if (attempt === `retry`) {
-      d.trigger(`move:almost`, move)
+      dispatch(`move:almost`, move)
       return
     }
     const response = _.keys(attempt)[0]
     if (!response) {
-      d.trigger(`move:fail`, move)
+      dispatch(`move:fail`, move)
       return
     }
-    d.trigger(`move:make`, move)
-    d.trigger(`move:success`)
+    dispatch(`move:make`, move)
+    dispatch(`move:success`)
     if (attempt[response] === `win`) {
       this.puzzleSolved()
     } else {
-      d.trigger(`move:sound`, move)
+      dispatch(`move:sound`, move)
       const responseMove = uciToMove(response)
       setTimeout(() => {
-        d.trigger(`move:make`, responseMove, { opponent: true })
+        dispatch(`move:make`, responseMove, { opponent: true })
         this.current.boardState = attempt[response]
       }, responseDelay)
     }
   }
 
   private puzzleSolved() {
-    d.trigger(`puzzle:solved`, this.current.puzzle)
-    d.trigger(`puzzles:next`)
+    dispatch(`puzzle:solved`, this.current.puzzle)
+    dispatch(`puzzles:next`)
   }
 }

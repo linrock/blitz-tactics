@@ -2,7 +2,7 @@ import Backbone from 'backbone'
 
 import { toggleSound } from '../api/requests'
 import Listener from '../listener'
-import d from '../dispatcher'
+import { dispatch } from '../store'
 
 const theme = `sfx`
 const audioMap = {
@@ -65,6 +65,6 @@ export default class SoundPlayer extends Backbone.View {
 
   _toggleVolume() {
     this.soundEnabled = !this.soundEnabled
-    d.trigger(`sound:enabled`, this.soundEnabled)
+    dispatch(`sound:enabled`, this.soundEnabled)
   }
 }

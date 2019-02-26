@@ -10,8 +10,7 @@ import {
   repetitionLevelAttempted,
   repetitionLevelCompleted
 } from '../../api/requests'
-import Listener from '../../listener'
-import d from '../../dispatcher'
+import { dispatch, subscribe } from '../../store'
 
 export default class RepetitionMode {
   constructor() {
@@ -31,7 +30,7 @@ export default class RepetitionMode {
       source: `${window.location.pathname}/puzzles.json`
     })
 
-    new Listener({
+    subscribe({
       // level and round completion events
       'round:complete': elapsedTimeMs => {
         repetitionLevelAttempted(levelPath, elapsedTimeMs)
@@ -44,24 +43,24 @@ export default class RepetitionMode {
 
       'puzzles:next': () => {
         this.level.nextPuzzle()
-        d.trigger(`progress:update`, this.level.getProgress())
+        dispatch(`progress:update`, this.level.getProgress())
         if (!this.level.completed && this.level.nextLevelUnlocked()) {
           this.level.completed = true
           repetitionLevelCompleted(levelPath).then(data => {
-            d.trigger(`level:high_scores`, data.high_scores)
-            d.trigger(`level:unlocked`, data.next.href)
+            dispatch(`level:high_scores`, data.high_scores)
+            dispatch(`level:unlocked`, data.next.href)
           })
         }
       },
 
       'move:fail': () => {
         this.level.resetProgress()
-        d.trigger(`progress:update`, 0)
+        dispatch(`progress:update`, 0)
       },
 
       'move:too_slow': () => {
         this.level.resetProgress()
-        d.trigger(`progress:update`, 0)
+        dispatch(`progress:update`, 0)
       },
     })
   }

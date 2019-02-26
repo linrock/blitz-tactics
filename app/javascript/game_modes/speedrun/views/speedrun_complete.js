@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher.ts'
+import { subscribe } from '../../../store'
 import { formattedTime } from '../../../utils.ts'
 
 export default class SpeedrunComplete extends Backbone.View {
@@ -12,9 +12,11 @@ export default class SpeedrunComplete extends Backbone.View {
   initialize() {
     this.bestTimeEl = this.el.querySelector(`.personal-best`)
     this.playAgainEl = this.el.querySelector(`.blue-button`)
-    this.listenTo(d, `speedrun:complete`, data => {
-      this.renderPersonalBest(data.best)
-      this.showPlayAgain()
+    subscribe({
+      'speedrun:complete': data => {
+        this.renderPersonalBest(data.best)
+        this.showPlayAgain()
+      }
     })
   }
 

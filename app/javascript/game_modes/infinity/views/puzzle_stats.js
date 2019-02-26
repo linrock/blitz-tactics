@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { subscribe } from '../../../store'
 
 export default class PuzzleStats extends Backbone.View {
 
@@ -10,9 +10,11 @@ export default class PuzzleStats extends Backbone.View {
 
   initialize() {
     this.nPuzzlesEl = this.el.querySelector(`span`)
-    this.listenTo(d, `puzzles_solved:changed`, n => {
-      this.nPuzzlesEl.textContent = n || 0
-      this.el.classList.remove(`invisible`)
+    subscribe({
+      'puzzles_solved:changed': n => {
+        this.nPuzzlesEl.textContent = n || 0
+        this.el.classList.remove(`invisible`)
+      }
     })
   }
 }

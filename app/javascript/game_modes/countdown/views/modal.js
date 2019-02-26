@@ -2,7 +2,7 @@
 
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { subscribe } from '../../../store'
 
 export default class Modal extends Backbone.View {
 
@@ -11,9 +11,11 @@ export default class Modal extends Backbone.View {
   }
 
   initialize() {
-    this.listenTo(d, `timer:stopped`, () => {
-      this.el.style.display = ``
-      this.el.classList.remove(`invisible`)
+    subscribe({
+      'timer:stopped': () => {
+        this.el.style.display = ``
+        this.el.classList.remove(`invisible`)
+      }
     })
   }
 }

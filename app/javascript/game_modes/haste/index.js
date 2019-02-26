@@ -6,7 +6,7 @@ import Modal from './views/modal'
 import Complete from './views/complete'
 import { hasteRoundCompleted } from '../../api/requests'
 import Listener from '../../listener'
-import d from '../../dispatcher'
+import { dispatch } from '../../store'
 
 const apiPath = `/haste/puzzles`
 
@@ -27,7 +27,7 @@ export default class Haste {
 
       'timer:complete': score => {
         hasteRoundCompleted(score).then(data => {
-          d.trigger(`haste:complete`, data)
+          dispatch(`haste:complete`, data)
         })
       }
     })

@@ -2,7 +2,7 @@
 
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher.ts'
+import { subscribeOnce } from '../../../store'
 
 export default class Sidebar extends Backbone.View {
 
@@ -11,10 +11,11 @@ export default class Sidebar extends Backbone.View {
   }
 
   initialize() {
-    this.listenTo(d, `move:try`, () => {
-      this.el.querySelector(`.make-a-move`).remove()
-      this.el.querySelector(`.timers`).style = ``
-      this.stopListening()
+    subscribeOnce({
+      'move:try': () => {
+        this.el.querySelector(`.make-a-move`).remove()
+        this.el.querySelector(`.timers`).style = ``
+      }
     })
   }
 }

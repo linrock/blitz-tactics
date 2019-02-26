@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import Listener from '../../../listener'
 
 const perfectTiming = 2500
 const greatTiming = 5000
@@ -21,9 +21,11 @@ export default class MoveStatus extends Backbone.View<Backbone.Model> {
   }
 
   listenForEvents() {
-    this.listenTo(d, `move:success`, () => this.renderSuccess())
-    this.listenTo(d, `move:fail`, () => this.renderFailure())
-    this.listenTo(d, `move:almost`, () => this.renderAlmost())
+    new Listener({
+      'move:success': () => this.renderSuccess(),
+      'move:fail': () => this.renderFailure(),
+      'move:almost': () => this.renderAlmost(),
+    })
   }
 
   renderSuccess() {

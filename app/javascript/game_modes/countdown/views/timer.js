@@ -1,7 +1,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { dispatch, subscribe, subscribeOnce } from '../../../store'
 import { formattedTimeSeconds } from '../../../utils'
 
 const updateInterval = 100   // timer updates this frequently
@@ -23,9 +23,11 @@ export default class Timer extends Backbone.View {
   }
 
   listenForEvents() {
-    this.listenToOnce(d, `move:try`, () => this.startTimer())
-    this.listenTo(d, `move:fail`, () => this.loseTime())
-    this.listenTo(d, `puzzles:complete`, () => this.notifyCompletion())
+    subscribeOnce(`move:try`, () => this.startTimer())
+    subscribe({
+      'move:fail': () => this.loseTime(),
+      'puzzles:complete': () => this.notifyCompletion(),
+    })
   }
 
   timeLeftMilliseconds() {
@@ -63,6 +65,6 @@ export default class Timer extends Backbone.View {
   }
 
   notifyCompletion() {
-    d.trigger("timer:stopped")
+    dispatch("timer:stopped")
   }
 }

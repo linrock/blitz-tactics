@@ -2,7 +2,7 @@
 
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher.ts'
+import { subscribe } from '../../../store'
 
 export default class Progress extends Backbone.View {
 
@@ -11,11 +11,13 @@ export default class Progress extends Backbone.View {
   }
 
   initialize() {
-    this.listenTo(d, `puzzles:fetched`, puzzles => {
-      this.updateProgress(0, puzzles.length)
-    })
-    this.listenTo(d, `puzzles:status`, ({ i , n }) => {
-      this.updateProgress(i + 1, n)
+    subscribe({
+      'puzzles:fetched': puzzles => {
+        this.updateProgress(0, puzzles.length)
+      },
+      'puzzles:status': ({ i , n }) => {
+        this.updateProgress(i + 1, n)
+      },
     })
   }
 

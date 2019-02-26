@@ -1,7 +1,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { dispatch, subscribe } from '../../../store'
 
 const comboDroppedAfterMs = 7000
 const hintDelay = 750
@@ -25,16 +25,14 @@ export default class PuzzleHint extends Backbone.View {
     this.timeout = false
     this.moveEl = this.el.querySelector(`.move`)
     this.buttonEl = this.el.querySelector(`.hint-trigger`)
-    this.listenForEvents()
-  }
-
-  listenForEvents() {
-    this.listenTo(d, `puzzle:loaded`, current => {
-      this.current = current
-      this.delayedShowHint()
+    subscribe({
+      'puzzle:loaded': current => {
+        this.current = current
+        this.delayedShowHint()
+      },
+      'move:make': () => this.delayedShowHint(),
+      'timer:stopped': () => this.clearHintTimer()
     })
-    this.listenTo(d, `move:make`, () => this.delayedShowHint())
-    this.listenTo(d, `timer:stopped`, () => this.clearHintTimer())
   }
 
   clearHintTimer() {
@@ -52,7 +50,7 @@ export default class PuzzleHint extends Backbone.View {
     this.buttonEl.classList.remove(`invisible`)
     this.moveEl.textContent = ``
     this.timeout = setTimeout(() => {
-      d.trigger(`move:too_slow`)
+      dispatch(`move:too_slow`)
       setTimeout(() => this.showHint(), hintDelay)
     }, comboDroppedAfterMs)
   }

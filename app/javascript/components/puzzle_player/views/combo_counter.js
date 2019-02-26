@@ -3,7 +3,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { subscribe } from '../../../store'
 
 export default class ComboCounter extends Backbone.View {
 
@@ -14,17 +14,15 @@ export default class ComboCounter extends Backbone.View {
   initialize() {
     this.counter = 0
     this.counterEl = this.el.querySelector(`.counter`)
-    this.listenForEvents()
-  }
-
-  listenForEvents() {
-    this.listenTo(d, `move:success`, () => {
-      this.counter += 1
-      this.el.classList.remove(`invisible`)
-      this.setCounter(this.counter)
+    subscribe({
+      'move:success': () => {
+        this.counter += 1
+        this.el.classList.remove(`invisible`)
+        this.setCounter(this.counter)
+      },
+      'move:fail': () => this.droppedCombo(),
+      'move:too_slow': () => this.droppedCombo(),
     })
-    this.listenTo(d, `move:fail`, () => this.droppedCombo())
-    this.listenTo(d, `move:too_slow`, () => this.droppedCombo())
   }
 
   setCounter(counter) {

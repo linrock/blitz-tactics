@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { dispatch, subscribe } from '../../../store'
 
 export default class SetDifficulty extends Backbone.View {
 
@@ -15,7 +15,9 @@ export default class SetDifficulty extends Backbone.View {
   }
 
   initialize() {
-    this.listenTo(d, `difficulty:set`, difficulty => this.highlight(difficulty))
+    subscribe({
+      'difficulty:set': difficulty => this.highlight(difficulty)
+    })
   }
 
   highlight(difficulty) {
@@ -31,6 +33,6 @@ export default class SetDifficulty extends Backbone.View {
     if (el.classList.toString().includes(`selected`)) {
       return
     }
-    d.trigger(`difficulty:selected`, el.dataset.difficulty)
+    dispatch(`difficulty:selected`, el.dataset.difficulty)
   }
 }

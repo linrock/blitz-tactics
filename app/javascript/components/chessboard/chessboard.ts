@@ -8,8 +8,7 @@ import { FEN, ChessMove } from '../../types'
 import { makeDraggable, makeDroppable } from './concerns/drag_and_drop'
 import PointAndClick from './concerns/point_and_click'
 import virtualPiece from './concerns/pieces'
-import Listener from '../../listener'
-import d from '../../dispatcher'
+import { dispatch, subscribe } from '../../store'
 
 interface HighlightedSquares {
   [squareId: string]: false | {
@@ -47,7 +46,7 @@ export default class Chessboard {
   }
 
   private listenToEvents(): void {
-    new Listener({
+    subscribe({
       'fen:set': fen => {
         this.clearHighlights()
         this.renderFen(fen)
@@ -58,9 +57,9 @@ export default class Chessboard {
         this.clearHighlights()
         this.cjs.load(this.fen)
         const moveObj = this.cjs.move(move)
-        d.trigger(`fen:set`, this.cjs.fen())
+        dispatch(`fen:set`, this.cjs.fen())
         if (moveObj && highlight) {
-          d.trigger(`move:highlight`, moveObj)
+          dispatch(`move:highlight`, moveObj)
         }
       },
 
@@ -108,12 +107,12 @@ export default class Chessboard {
          (color === `b` && from[1] === `2` && to[1] === `1`))) {
       const validMoves: Array<ChessMove> = this.cjs.moves({ verbose: true })
       if (_.find(validMoves, m => m.from === from && m.to === to)) {
-        d.trigger(`move:promotion`, { fen: this.fen, move })
+        dispatch(`move:promotion`, { fen: this.fen, move })
       }
     } else {
       const m: ChessMove = new Chess(this.fen).move(move)
       if (m) {
-        d.trigger(`move:try`, m)
+        dispatch(`move:try`, m)
       }
     }
   }

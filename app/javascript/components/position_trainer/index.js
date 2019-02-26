@@ -6,7 +6,7 @@ import InteractiveBoard from '../interactive_board'
 import Instructions from './views/instructions'
 import Actions from './views/actions'
 import { uciToMove, getConfig } from '../../utils'
-import d from '../../dispatcher'
+import { dispatch, subscribe } from '../../store'
 
 const SEARCH_DEPTH = 15
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
@@ -18,12 +18,12 @@ export default class PositionTrainer extends Backbone.View {
     new InteractiveBoard
     this.listenForEvents()
     if (this.computerColor === "w") {
-      d.trigger("board:flip")
+      dispatch("board:flip")
     }
     this.depth = getConfig("depth") || SEARCH_DEPTH
     this.engine = new StockfishEngine
     this.setDebugHelpers()
-    d.trigger("fen:set", this.initialFen)
+    dispatch("fen:set", this.initialFen)
     new Instructions({ fen: this.initialFen })
     new Actions()
   }
@@ -48,26 +48,28 @@ export default class PositionTrainer extends Backbone.View {
   }
 
   listenForEvents() {
-    this.listenTo(d, "position:reset", () => {
-      d.trigger("fen:set", this.initialFen)
-    })
+    subscribe({
+      "position:reset": () => {
+        dispatch("fen:set", this.initialFen)
+      },
 
-    this.listenTo(d, "fen:set", fen => {
-      this.currentFen = fen
-      this.engine.analyze(fen, { depth: this.depth, multipv: 1 }).then(output => {
-        const { fen, state } = output
-        const computerMove = state.evaluation.best
-        if (fen !== this.currentFen) {
-          return
-        }
-        if (this.isComputersTurn(fen)) {
-          d.trigger("move:try", uciToMove(computerMove))
-        }
-      })
-      this.notifyIfGameOver(fen)
-    })
+      "fen:set": fen => {
+        this.currentFen = fen
+        this.engine.analyze(fen, { depth: this.depth, multipv: 1 }).then(output => {
+          const { fen, state } = output
+          const computerMove = state.evaluation.best
+          if (fen !== this.currentFen) {
+            return
+          }
+          if (this.isComputersTurn(fen)) {
+            dispatch("move:try", uciToMove(computerMove))
+          }
+        })
+        this.notifyIfGameOver(fen)
+      },
 
-    this.listenTo(d, "move:try", move => d.trigger("move:make", move))
+      "move:try": move => dispatch("move:make", move),
+    })
   }
 
   notifyIfGameOver(fen) {
@@ -84,6 +86,6 @@ export default class PositionTrainer extends Backbone.View {
     } else {
       result = "0-1"
     }
-    setTimeout(() => d.trigger("game:over", result), 500)
+    setTimeout(() => dispatch("game:over", result), 500)
   }
 }

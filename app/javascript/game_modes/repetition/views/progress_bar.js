@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { subscribe } from '../../../store'
 
 // How close you are to the next round
 //
@@ -13,13 +13,11 @@ export default class ProgressBar extends Backbone.View {
   initialize() {
     this.progressEl = this.el.querySelector(`.progress`)
     this.complete = false
-    this.listenForEvents()
-  }
-
-  listenForEvents() {
-    this.listenTo(d, `progress:update`, (percent) => {
-      if (!this.complete) {
-        this.updateProgress(percent)
+    subscribe({
+      'progress:update': percent => {
+        if (!this.complete) {
+          this.updateProgress(percent)
+        }
       }
     })
   }

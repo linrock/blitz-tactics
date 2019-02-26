@@ -2,8 +2,7 @@ import PuzzlePlayer from '../../components/puzzle_player'
 import Sidebar from './views/sidebar'
 import Modal from './views/modal'
 import { ratedPuzzleAttempted } from '../../api/requests'
-import Listener from '../../listener'
-import d from '../../dispatcher'
+import { dispatch, subscribe } from '../../store'
 import { moveToUci } from '../../utils'
 
 const apiPath = `/rated/puzzles`
@@ -23,11 +22,11 @@ export default class Rated {
       const elapsedTimeMs = +new Date() - t0
       const uciMoves = moveSequence.slice(1).map(m => moveToUci(m))
       ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs).then(data => {
-        d.trigger(`rated_puzzle:attempted`, data)
+        dispatch(`rated_puzzle:attempted`, data)
       })
     }
 
-    new Listener({
+    subscribe({
       'puzzle:loaded': current => {
         const puzzle = current.puzzle
         puzzleId = puzzle.id
@@ -51,14 +50,14 @@ export default class Rated {
       'move:fail': move => {
         if (!gameStarted) {
           gameStarted = true
-          d.trigger(`puzzles:next`)
+          dispatch(`puzzles:next`)
           moveSequence = []
           return
         }
         moveSequence.push(move)
         attemptPuzzle(puzzleId, moveSequence)
         moveSequence = []
-        d.trigger(`puzzles:next`)
+        dispatch(`puzzles:next`)
       },
 
       'puzzle:solved': () => {
@@ -75,7 +74,7 @@ export default class Rated {
         const { i, n, lastPuzzleId } = status
         console.log(`${i} of ${n}`)
         if (i + fetchThreshold > n) {
-          d.trigger(`source:changed:add`, `${apiPath}?next=true`)
+          dispatch(`source:changed:add`, `${apiPath}?next=true`)
         }
       }
     })

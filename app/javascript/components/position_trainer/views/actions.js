@@ -1,6 +1,6 @@
 // action buttons under the board - reset position
 
-import d from '../../../dispatcher'
+import { dispatch } from '../../../store'
 
 export default class Actions extends Backbone.View {
 
@@ -15,6 +15,6 @@ export default class Actions extends Backbone.View {
   }
 
   _resetPosition() {
-    d.trigger(`position:reset`)
+    dispatch(`position:reset`)
   }
 }

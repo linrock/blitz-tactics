@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { subscribe } from '../../../store'
 
 export default class Complete extends Backbone.View {
 
@@ -13,10 +13,12 @@ export default class Complete extends Backbone.View {
     this.highScoreEl = this.el.querySelector(`.haste-complete`)
     this.highScoresEl = this.el.querySelector(`.recent-high-scores`)
     this.highScoresListEl = this.highScoresEl.querySelector(`.list`)
-    this.listenTo(d, `haste:complete`, data => {
-      this.timerEl.style = `display: none`
-      this.showPersonalBest(data)
-      this.showHighScores(data.high_scores)
+    subscribe({
+      'haste:complete': data => {
+        this.timerEl.style = `display: none`
+        this.showPersonalBest(data)
+        this.showHighScores(data.high_scores)
+      }
     })
   }
 

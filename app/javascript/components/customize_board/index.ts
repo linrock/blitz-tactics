@@ -3,7 +3,7 @@ import SimpleColorPicker from 'simple-color-picker'
 
 import Chessboard from '../chessboard/chessboard'
 import BoardStyles from './board_styles'
-import d from '../../dispatcher'
+import { dispatch } from '../../store'
 
 const defaultColors = {
   light: '#F3E4CF',
@@ -37,8 +37,8 @@ export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
 
   initialize() {
     new Chessboard()
-    d.trigger(`fen:set`, `1Q6/8/8/8/8/2K5/k7/8 b - - 13 62`)
-    d.trigger(`move:highlight`, { from: `a3`, to: `a2` })
+    dispatch(`fen:set`, `1Q6/8/8/8/8/2K5/k7/8 b - - 13 62`)
+    dispatch(`move:highlight`, { from: `a3`, to: `a2` })
     setTimeout(() => {
       document.getElementById(`b8`).setAttribute('data-selected', '1')
     }, 500)

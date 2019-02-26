@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { subscribe, subscribeOnce } from '../../../store'
 
 export default class NoMoreLeft extends Backbone.View {
 
@@ -9,13 +9,15 @@ export default class NoMoreLeft extends Backbone.View {
   }
 
   initialize() {
-    this.listenTo(d, `puzzles:complete`, () => {
-      this.el.classList.remove(`invisible`)
-      setTimeout(() => {
-        this.listenToOnce(d, `difficulty:set`, () => {
-          this.el.classList.add(`invisible`)
-        })
-      }, 1000)
+    subscribe({
+      'puzzles:complete': () => {
+        this.el.classList.remove(`invisible`)
+        setTimeout(() => {
+          subscribeOnce(`difficulty:set`, () => {
+            this.el.classList.add(`invisible`)
+          })
+        }, 1000)
+      }
     })
   }
 }

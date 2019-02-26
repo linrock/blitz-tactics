@@ -1,7 +1,7 @@
 // instructions above the board for what to do in this position
 
 import { getConfig } from '../../../utils'
-import d from '../../../dispatcher'
+import { subscribe } from '../../../store'
 
 export default class Instructions extends Backbone.View {
 
@@ -12,7 +12,11 @@ export default class Instructions extends Backbone.View {
   initialize(options = {}) {
     this.initialFen = options.fen
     this.showInstructions()
-    this.listenForEvents()
+    subscribe({
+      'position:reset': () => this.showInstructions(),
+      'game:over': result => this.gameOverMan(result),
+      'move:try': () => this.el.classList.add("invisible"),
+    })
   }
 
   get toMove() {
@@ -53,17 +57,5 @@ export default class Instructions extends Backbone.View {
     }
     this.el.textContent = text
     this.el.classList.remove(`invisible`)
-  }
-
-  listenForEvents() {
-    this.listenTo(d, "position:reset", () => {
-      this.showInstructions()
-    })
-    this.listenTo(d, "game:over", (result) => {
-      this.gameOverMan(result)
-    })
-    this.listenTo(d, "move:try", () => {
-      this.el.classList.add("invisible")
-    })
   }
 }

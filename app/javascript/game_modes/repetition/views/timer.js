@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { dispatch, subscribe } from '../../../store'
 
 const updateInterval = 50
 
@@ -13,16 +13,14 @@ export default class Timer extends Backbone.View {
   }
 
   initialize() {
-    this.listenForEvents()
     this.timerEl = this.el.querySelector(`.timer`)
     this.lapsEl = this.el.querySelector(`.laps`)
     this.timer = false
-  }
-
-  listenForEvents() {
-    this.listenTo(d, `puzzles:start`, () => this.startTimer())
-    this.listenTo(d, `puzzles:next`, () => this.startTimer())
-    this.listenTo(d, `puzzles:lap`, () => this.nextLap())
+    subscribe({
+      'puzzles:start': () => this.startTimer(),
+      'puzzles:next': () => this.startTimer(),
+      'puzzles:lap': () => this.nextLap(),
+    })
   }
 
   elapsedTimeMs() {
@@ -74,6 +72,6 @@ export default class Timer extends Backbone.View {
   }
 
   notify() {
-    d.trigger(`round:complete`, this.elapsedTimeMs())
+    dispatch(`round:complete`, this.elapsedTimeMs())
   }
 }

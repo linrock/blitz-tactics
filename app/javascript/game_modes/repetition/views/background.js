@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { subscribe } from '../../../store'
 
 export default class Background extends Backbone.View {
 
@@ -9,12 +9,8 @@ export default class Background extends Backbone.View {
   }
 
   initialize() {
-    this.listenForEvents()
-  }
-
-  listenForEvents() {
-    this.listenTo(d, `level:unlocked`, () => {
-      this.el.classList.add(`unlocked`)
+    subscribe({
+      'level:unlocked': () => this.el.classList.add(`unlocked`)
     })
   }
 }

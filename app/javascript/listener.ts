@@ -11,10 +11,6 @@ export default class Listener {
   private readonly listener: Backbone.Events = _.clone(Backbone.Events)
 
   constructor(eventMap: EventMap) {
-    this.listenToEvents(eventMap)
-  }
-
-  private listenToEvents(eventMap: EventMap) {
     Object.entries(eventMap).forEach(row => {
       const event: string = row[0]
       const handler: Backbone.EventHandler = row[1]

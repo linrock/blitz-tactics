@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { subscribe } from '../../../store'
 
 export default class CountdownComplete extends Backbone.View {
 
@@ -11,8 +11,8 @@ export default class CountdownComplete extends Backbone.View {
   initialize() {
     this.timerEl = this.el.querySelector(`.timers`)
     this.highScoreEl = this.el.querySelector(`.countdown-complete`)
-    this.listenTo(d, `countdown:complete`, data => {
-      this.showPersonalBest(data)
+    subscribe({
+      'countdown:complete': data => this.showPersonalBest(data)
     })
   }
 

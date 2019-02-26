@@ -5,8 +5,7 @@ import Progress from './views/progress'
 import Modal from './views/modal'
 import SpeedrunComplete from './views/speedrun_complete'
 import { speedrunCompleted } from '../../api/requests'
-import Listener from '../../listener.ts'
-import d from '../../dispatcher.ts'
+import { dispatch, subscribe } from '../../store'
 
 const apiPath = `/speedrun/puzzles`
 
@@ -20,9 +19,9 @@ export default class Speedrun {
 
     let levelName
 
-    new Listener({
+    subscribe({
       'level:selected': name => {
-        d.trigger(`source:changed`, `${apiPath}?name=${name}`)
+        dispatch(`source:changed`, `${apiPath}?name=${name}`)
       },
 
       'config:init': data => {
@@ -31,7 +30,7 @@ export default class Speedrun {
 
       'timer:stopped': elapsedTimeMs => {
         speedrunCompleted(levelName, elapsedTimeMs).then(data => {
-          d.trigger(`speedrun:complete`, data)
+          dispatch(`speedrun:complete`, data)
         })
       }
     })

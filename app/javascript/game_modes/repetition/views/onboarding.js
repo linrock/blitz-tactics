@@ -2,7 +2,7 @@
 
 import Backbone from 'backbone'
 
-import d from '../../../dispatcher'
+import { subscribe } from '../../../store'
 
 export default class Onboarding extends Backbone.View {
 
@@ -14,8 +14,8 @@ export default class Onboarding extends Backbone.View {
     if (!this.el) {
       return
     }
-    this.listenTo(d, `puzzles:start`, () => {
-      this.el.classList.add(`invisible`)
+    subscribe({
+      'puzzles:start': () => this.el.classList.add(`invisible`)
     })
   }
 }
