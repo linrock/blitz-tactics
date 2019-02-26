@@ -12,6 +12,11 @@ class UserRating < ActiveRecord::Base
   validates :rating_deviation, presence: true
   validates :rating_volatility, presence: true
 
+  # for display on the homepage
+  def rating_string
+    new_record? ? 'Unrated' : rating.round
+  end
+
   private
 
   def initialize_glicko2_rating

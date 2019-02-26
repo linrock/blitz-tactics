@@ -8,6 +8,7 @@ class PagesController < ApplicationController
     @countdown_level = CountdownLevel.todays_level
     @countdown_puzzle = @countdown_level.first_puzzle
     @haste_puzzle = HastePuzzle.random
+    @rated_puzzle = RatedPuzzle.order('rating ASC').take(10).shuffle.first
     @scoreboard = Scoreboard.new
 
     # user-specific
@@ -16,6 +17,7 @@ class PagesController < ApplicationController
     @best_speedrun_time = @user.best_speedrun_time(@speedrun_level)
     @repetition_level = @user.highest_repetition_level_unlocked
     @countdown_level_score = @user.best_countdown_score(@countdown_level)
+    @user_rating = @user.user_rating.rating_string
   end
 
   def positions
