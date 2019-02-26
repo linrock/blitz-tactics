@@ -83,11 +83,9 @@
                   initial_move: @rated_puzzle.initial_move_uci
                 }) %>
             <div class="under-mini-board">
-              <% if user_signed_in? %>
-                <div class="your-best-times">
-                  Your rating: <%= @user_rating %>
-                </div>
-              <% end %>
+              <div class="your-best-times">
+                Your rating: <%= @user_rating %>
+              </div>
             </div>
           </div>
 
@@ -231,7 +229,8 @@
           <div class="timestamp">Feb 26</div>
           <div class="text">
             Rated mode is now in beta. Expect a rating reset in
-            the future after puzzle ratings stabilize. More features to come.
+            the future after puzzle ratings stabilize and tweaks
+            are made to the rating system. More features to come.
           </div>
         </div>
 
