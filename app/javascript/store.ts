@@ -1,28 +1,27 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import d from './dispatcher'
-
 interface EventMap {
   [event: string]: Backbone.EventHandler
 }
 
+const dispatcher = _.clone(Backbone.Events)
 const listener = _.clone(Backbone.Events)
 
 const dispatch = (eventName: string, ...data) => {
-  d.trigger(eventName, ...data)
+  dispatcher.trigger(eventName, ...data)
 }
 
 const subscribe = (eventMap: EventMap) => {
   Object.entries(eventMap).forEach(row => {
     const eventName: string = row[0]
     const handler: Backbone.EventHandler = row[1]
-    listener.listenTo(d, eventName, handler)
+    listener.listenTo(dispatcher, eventName, handler)
   })
 }
 
 const subscribeOnce = (eventName: string, callback: Function) => {
-  listener.listenToOnce(d, eventName, callback)
+  listener.listenToOnce(dispatcher, eventName, callback)
 }
 
 export {
