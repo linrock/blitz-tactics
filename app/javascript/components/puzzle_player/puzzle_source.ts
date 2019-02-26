@@ -7,8 +7,7 @@ import Backbone from 'backbone'
 import { ChessMove } from '../../types'
 import { uciToMove, moveToUci, shuffle } from '../../utils'
 import { fetchPuzzles } from '../../api/requests'
-import Listener from '../../listener'
-import { dispatch } from '../../store'
+import { dispatch, subscribe } from '../../store'
 
 // source:changed
 // puzzles:fetched
@@ -100,7 +99,7 @@ export default class PuzzleSource<PuzzleSourceInterface> {
     this.loopPuzzles = options.loopPuzzles
     this.mode = options.mode
     this.fetchPuzzles(options.source)
-    this.listenToEvents()
+    this.listenForEvents()
   }
 
   private fetchPuzzles(source) {
@@ -114,8 +113,8 @@ export default class PuzzleSource<PuzzleSourceInterface> {
     fetchPuzzles(source).then(data => dispatch(`puzzles:added`, data.puzzles))
   }
 
-  private listenToEvents() {
-    new Listener({
+  private listenForEvents() {
+    subscribe({
       'source:changed': path => this.fetchPuzzles(path),
       'source:changed:add': path => this.fetchAndAddPuzzles(path),
       'puzzles:fetched': puzzles => {

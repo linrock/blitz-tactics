@@ -3,7 +3,7 @@ import ComboCounter from './views/combo_counter'
 import Instructions from './views/instructions'
 import PuzzleHint from './views/puzzle_hint'
 import PuzzleSource from './puzzle_source'
-import Listener from '../../listener'
+import { subscribe } from '../../store'
 import { trackEvent } from '../../utils'
 
 export default class PuzzlePlayer {
@@ -20,7 +20,7 @@ export default class PuzzlePlayer {
       new PuzzleHint
     }
 
-    new Listener({
+    subscribe({
       'puzzle:solved': puzzle => {
         trackEvent(`puzzle solved`, window.location.pathname, puzzle.id)
       }

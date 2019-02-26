@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 
-import Listener from '../../../listener'
+import { subscribe } from '../../../store'
 
 const perfectTiming = 2500
 const greatTiming = 5000
@@ -17,11 +17,7 @@ export default class MoveStatus extends Backbone.View<Backbone.Model> {
 
   initialize() {
     this.timeSinceSuccess = Date.now()
-    this.listenForEvents()
-  }
-
-  listenForEvents() {
-    new Listener({
+    subscribe({
       'move:success': () => this.renderSuccess(),
       'move:fail': () => this.renderFailure(),
       'move:almost': () => this.renderAlmost(),

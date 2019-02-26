@@ -5,8 +5,7 @@ import Progress from './views/progress'
 import Modal from './views/modal'
 import Complete from './views/complete'
 import { hasteRoundCompleted } from '../../api/requests'
-import Listener from '../../listener'
-import { dispatch } from '../../store'
+import { dispatch, subscribe } from '../../store'
 
 const apiPath = `/haste/puzzles`
 
@@ -20,7 +19,7 @@ export default class Haste {
 
     let levelName
 
-    new Listener({
+    subscribe({
       'config:init': data => {
         levelName = data.level_name
       },

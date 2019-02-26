@@ -1,8 +1,7 @@
 import Backbone from 'backbone'
 
 import { toggleSound } from '../api/requests'
-import Listener from '../listener'
-import { dispatch } from '../store'
+import { dispatch, subscribe } from '../store'
 
 const theme = `sfx`
 const audioMap = {
@@ -30,7 +29,7 @@ export default class SoundPlayer extends Backbone.View {
     if (this.playSounds) {
       this.loadSounds()
     }
-    new Listener({
+    subscribe({
       'sound:enabled': enabled => {
         const el = this.volumeIconEl.querySelector(`use`)
         if (enabled) {
@@ -53,7 +52,7 @@ export default class SoundPlayer extends Backbone.View {
     Object.keys(audioMap).forEach(event => {
       eventMap[event] = () => this.playSound(event)
     })
-    new Listener(eventMap)
+    subscribe(eventMap)
     this.soundsLoaded = true
   }
 

@@ -1,7 +1,7 @@
 // Point and click pieces to select and move them
 
 import { ChessMove } from '../../../types'
-import Listener from '../../../listener'
+import { subscribe } from '../../../store'
 import Chessboard from '../chessboard'
 
 export default class PointAndClick {
@@ -27,7 +27,7 @@ export default class PointAndClick {
         }
       })
     })
-    new Listener({
+    subscribe({
       'move:try': () => this.clearSelected(),
       'move:make': () => this.clearSelected()
     })
