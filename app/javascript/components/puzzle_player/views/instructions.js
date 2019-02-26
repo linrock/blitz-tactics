@@ -2,7 +2,7 @@
 
 import Backbone from 'backbone'
 
-import { subscribe } from '../../../store'
+import { subscribe, subscribeOnce } from '../../../store'
 
 export default class Instructions extends Backbone.View {
 
@@ -11,15 +11,17 @@ export default class Instructions extends Backbone.View {
   }
 
   initialize() {
-    subscribe({
-      'puzzles:start': () => this.remove(),
-      'move:too_slow': () => this.el.classList.add(`smaller`),
-      'puzzle:loaded': () => this.el.classList.remove(`invisible`),
-      'board:flipped': isFlipped => {
-        if (isFlipped) {
-          this.el.textContent = `Black to move`
-        }
-      },
+    subscribeOnce('move:too_slow', () => {
+      this.el.classList.add(`smaller`)
     })
+    subscribeOnce('puzzle:loaded', () => {
+      this.el.classList.remove(`invisible`)
+    })
+    subscribeOnce('board:flipped', isFlipped => {
+      if (isFlipped) {
+        this.el.textContent = `Black to move`
+      }
+    })
+    subscribeOnce('puzzles:start', () => this.remove())
   }
 }
