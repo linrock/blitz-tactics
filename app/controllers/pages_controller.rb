@@ -17,7 +17,7 @@ class PagesController < ApplicationController
     @best_speedrun_time = @user.best_speedrun_time(@speedrun_level)
     @repetition_level = @user.highest_repetition_level_unlocked
     @countdown_level_score = @user.best_countdown_score(@countdown_level)
-    @user_rating = @user.user_rating.rating_string
+    @user_rating = @user.user_rating&.rating_string || "Unrated"
   end
 
   def positions
