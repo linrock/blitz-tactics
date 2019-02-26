@@ -110,7 +110,13 @@ class RatingUpdater
   end
 
   def init_user_rating(user)
-    user.user_rating || user.create_user_rating
+    user_rating = user.user_rating
+    if user_rating.nil?
+      return user.create_user_rating!
+    elsif user_rating.new_record?
+      user_rating.save!
+    end
+    user_rating
   end
 
   def logger
