@@ -4,7 +4,7 @@ import { subscribe, subscribeOnce } from '../../../store'
 
 export default class Instructions {
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.instructions`)
   }
 

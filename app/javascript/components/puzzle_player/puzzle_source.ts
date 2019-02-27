@@ -8,6 +8,7 @@ import { ChessMove } from '../../types'
 import { uciToMove, moveToUci, shuffle } from '../../utils'
 import { fetchPuzzles } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
+import { PuzzleSourceOptions } from './index'
 
 // source:changed
 // puzzles:fetched
@@ -69,14 +70,7 @@ class Puzzles {
   }
 }
 
-interface PuzzleOptions {
-  shuffle?: boolean,
-  loopPuzzles?: boolean,
-  mode?: string,
-  source?: string,
-}
-
-interface PuzzleState {
+export interface PuzzleState {
   boardState?: object,
   puzzle?: Puzzle,
 }
@@ -91,7 +85,7 @@ export default class PuzzleSource<PuzzleSourceInterface> {
   private mode: string
 
   // options - shuffle, loopPuzzles, source
-  constructor(options: PuzzleOptions = {}) {
+  constructor(options: PuzzleSourceOptions = {}) {
     this.i = 0
     this.current = {}
     this.puzzles = new Puzzles()

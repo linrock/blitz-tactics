@@ -1,32 +1,38 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
+import { PuzzleState } from '../puzzle_source'
 import { dispatch, subscribe } from '../../../store'
+import { UciMove } from '../../../types'
 
 const comboDroppedAfterMs = 7000
 const hintDelay = 750
 
 // Solution/hint that shows up after some time
 //
-export default class PuzzleHint extends Backbone.View {
+export default class PuzzleHint extends Backbone.View<Backbone.Model> {
+  private moveEl: HTMLElement
+  private buttonEl: HTMLElement
+  private current: PuzzleState
+  private timeout = 0
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.puzzle-hint`)
   }
 
-  get events() {
+  events(): Backbone.EventsHash {
     return {
       "mousedown .hint-trigger" : `_showHint`,
       "touchstart .hint-trigger" : `_showHint`
     }
   }
 
-  initialize() {
-    this.timeout = false
+  constructor() {
+    super()
     this.moveEl = this.el.querySelector(`.move`)
     this.buttonEl = this.el.querySelector(`.hint-trigger`)
     subscribe({
-      'puzzle:loaded': current => {
+      'puzzle:loaded': (current: PuzzleState) => {
         this.current = current
         this.delayedShowHint()
       },
@@ -35,13 +41,13 @@ export default class PuzzleHint extends Backbone.View {
     })
   }
 
-  clearHintTimer() {
+  private clearHintTimer() {
     if (this.timeout) {
       clearTimeout(this.timeout)
     }
   }
 
-  delayedShowHint() {
+  private delayedShowHint() {
     this.clearHintTimer()
     if (!this.el) {
       return
@@ -55,9 +61,9 @@ export default class PuzzleHint extends Backbone.View {
     }, comboDroppedAfterMs)
   }
 
-  showHint() {
+  private showHint() {
     const hints = []
-    _.each(_.keys(this.current.boardState), move => {
+    _.each(_.keys(this.current.boardState), (move: UciMove) => {
       if (this.current.boardState[move] !== `retry`) {
         hints.push(move)
       }
@@ -67,7 +73,7 @@ export default class PuzzleHint extends Backbone.View {
     this.moveEl.textContent = _.sample(hints)
   }
 
-  _showHint() {
+  private _showHint() {
     this.buttonEl.classList.add(`invisible`)
   }
 }

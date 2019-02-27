@@ -6,8 +6,21 @@ import PuzzleSource from './puzzle_source'
 import { subscribe } from '../../store'
 import { trackEvent } from '../../utils'
 
+export interface PuzzleSourceOptions {
+  shuffle?: boolean,
+  loopPuzzles?: boolean,
+  mode?: string,
+  source?: string,
+}
+
+interface PuzzlePlayerOptions extends PuzzleSourceOptions {
+  noHint?: boolean,
+  noCounter?: boolean,
+  noCombo?: boolean,
+}
+
 export default class PuzzlePlayer {
-  constructor(options = {}) {
+  constructor(options: PuzzlePlayerOptions = {}) {
     new PuzzleSource(options)
 
     // views
