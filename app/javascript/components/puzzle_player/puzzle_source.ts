@@ -4,7 +4,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import { ChessMove } from '../../types'
+import { ChessMove, Puzzle } from '../../types'
 import { uciToMove, moveToUci, shuffle } from '../../utils'
 import { fetchPuzzles } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
@@ -23,22 +23,10 @@ import { PuzzleSourceOptions } from './index'
 
 const responseDelay = 0
 
-interface InitialMove {
-  san: string,
-  uci: string,
-}
-
-type Puzzle = {
-  id: number
-  fen: string
-  lines: object
-  initialMove: InitialMove
-}
-
 // de-duplicates puzzles
 class Puzzles {
-  puzzleList: Array<Puzzle> = []
-  puzzleSet: Set<number> = new Set()
+  private puzzleList: Array<Puzzle> = []
+  private puzzleSet: Set<number> = new Set()
 
   addPuzzles(puzzles: Array<Puzzle>) {
     puzzles.forEach(puzzle => {
@@ -61,7 +49,7 @@ class Puzzles {
     return this.puzzleList.length
   }
 
-  puzzleAt(index): Puzzle {
+  puzzleAt(index: number): Puzzle {
     return this.puzzleList[index]
   }
 
