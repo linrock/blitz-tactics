@@ -8,7 +8,7 @@ import { uciToMove, getConfig } from '../../utils'
 import { dispatch, subscribe } from '../../store'
 
 const SEARCH_DEPTH = 15
-const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+const START_FEN = `rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1`
 
 
 export default class PositionTrainer {
@@ -16,24 +16,24 @@ export default class PositionTrainer {
   constructor() {
     new InteractiveBoard
     this.listenForEvents()
-    if (this.computerColor === "w") {
-      dispatch("board:flip")
+    if (this.computerColor === `w`) {
+      dispatch(`board:flip`)
     }
-    this.depth = getConfig("depth") || SEARCH_DEPTH
+    this.depth = getConfig(`depth`) || SEARCH_DEPTH
     this.engine = new StockfishEngine
     this.setDebugHelpers()
-    dispatch("fen:set", this.initialFen)
+    dispatch(`fen:set`, this.initialFen)
     new Instructions({ fen: this.initialFen })
     new Actions()
   }
 
   get initialFen() {
-    let fen = getConfig("fen") || START_FEN
+    let fen = getConfig(`fen`) || START_FEN
     return fen.length === 4 ? `${fen} - -` : fen
   }
 
   get computerColor() {
-    return this.initialFen.indexOf("w") > 0 ? "b" : "w"
+    return this.initialFen.indexOf(`w`) > 0 ? `b` : `w`
   }
 
   setDebugHelpers() {
@@ -48,26 +48,30 @@ export default class PositionTrainer {
 
   listenForEvents() {
     subscribe({
-      "position:reset": () => {
-        dispatch("fen:set", this.initialFen)
+      'position:reset': () => {
+        dispatch(`fen:set`, this.initialFen)
       },
 
-      "fen:set": fen => {
+      'fen:set': fen => {
         this.currentFen = fen
-        this.engine.analyze(fen, { depth: this.depth, multipv: 1 }).then(output => {
+        const analysisOptions = {
+          depth: this.depth,
+          multipv: 1
+        }
+        this.engine.analyze(fen, analysisOptions).then(output => {
           const { fen, state } = output
           const computerMove = state.evaluation.best
           if (fen !== this.currentFen) {
             return
           }
           if (this.isComputersTurn(fen)) {
-            dispatch("move:try", uciToMove(computerMove))
+            dispatch(`move:make`, uciToMove(computerMove), { opponent: true })
           }
         })
         this.notifyIfGameOver(fen)
       },
 
-      "move:try": move => dispatch("move:make", move),
+      'move:try': move => dispatch(`move:make`, move),
     })
   }
 
@@ -79,12 +83,12 @@ export default class PositionTrainer {
     }
     let result
     if (c.in_draw()) {
-      result = "1/2-1/2"
-    } else if (c.turn() === "b") {
-      result = "1-0"
+      result = `1/2-1/2`
+    } else if (c.turn() === `b`) {
+      result = `1-0`
     } else {
-      result = "0-1"
+      result = `0-1`
     }
-    setTimeout(() => dispatch("game:over", result), 500)
+    setTimeout(() => dispatch(`game:over`, result), 500)
   }
 }
