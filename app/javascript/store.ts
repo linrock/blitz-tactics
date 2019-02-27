@@ -20,8 +20,8 @@ const subscribe = (eventMap: EventMap) => {
   })
 }
 
-const subscribeOnce = (eventName: string, callback: Function) => {
-  listener.listenToOnce(dispatcher, eventName, callback)
+const subscribeOnce = (eventName: string, cb: Backbone.EventHandler) => {
+  listener.listenToOnce(dispatcher, eventName, cb)
 }
 
 export {
