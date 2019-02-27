@@ -1,4 +1,3 @@
-import Backbone from 'backbone'
 import Chess from 'chess.js'
 
 import StockfishEngine from '../../workers/stockfish_engine'
@@ -12,9 +11,9 @@ const SEARCH_DEPTH = 15
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 
-export default class PositionTrainer extends Backbone.View {
+export default class PositionTrainer {
 
-  initialize() {
+  constructor() {
     new InteractiveBoard
     this.listenForEvents()
     if (this.computerColor === "w") {

@@ -1,16 +1,14 @@
 // instructions that fade out after you start
 
-import Backbone from 'backbone'
-
 import { subscribeOnce } from '../../../store'
 
-export default class Sidebar extends Backbone.View {
+export default class Sidebar {
 
   get el() {
     return document.querySelector(`.countdown-sidebar`)
   }
 
-  initialize() {
+  constructor() {
     subscribeOnce(`move:try`, () => {
       this.el.querySelector(`.make-a-move`).remove()
       this.el.querySelector(`.timers`).style = ``

@@ -1,14 +1,12 @@
-import Backbone from 'backbone'
-
 import { subscribe, subscribeOnce } from '../../../store'
 
-export default class NoMoreLeft extends Backbone.View {
+export default class NoMoreLeft {
 
   get el() {
     return document.querySelector(`.no-more-left`)
   }
 
-  initialize() {
+  constructor() {
     subscribe({
       'puzzles:complete': () => {
         this.el.classList.remove(`invisible`)

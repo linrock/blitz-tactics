@@ -1,18 +1,16 @@
-import Backbone from 'backbone'
+// bar under main header showing how close you are to the next level
 
 import { subscribe } from '../../../store'
 
-// How close you are to the next round
-//
-export default class ProgressBar extends Backbone.View {
+export default class ProgressBar {
+  complete = false
 
   get el() {
     return document.querySelector(`.progress-bar`)
   }
 
-  initialize() {
+  constructor() {
     this.progressEl = this.el.querySelector(`.progress`)
-    this.complete = false
     subscribe({
       'progress:update': percent => {
         if (!this.complete) {

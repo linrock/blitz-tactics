@@ -1,6 +1,5 @@
 import PuzzlePlayer from '../../components/puzzle_player'
 import Sidebar from './views/sidebar'
-import Modal from './views/modal'
 import { ratedPuzzleAttempted } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
 import { moveToUci } from '../../utils'
@@ -11,7 +10,6 @@ const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain
 export default class Rated {
   constructor() {
     new Sidebar
-    new Modal
 
     let gameStarted = false
     let puzzleId

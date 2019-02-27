@@ -1,14 +1,12 @@
-import Backbone from 'backbone'
-
 import { subscribe } from '../../../store'
 
-export default class CountdownComplete extends Backbone.View {
+export default class CountdownComplete {
 
   get el() {
     return document.querySelector(`.countdown-mode`)
   }
 
-  initialize() {
+  constructor() {
     this.timerEl = this.el.querySelector(`.timers`)
     this.highScoreEl = this.el.querySelector(`.countdown-complete`)
     subscribe({

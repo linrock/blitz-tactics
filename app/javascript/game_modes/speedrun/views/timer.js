@@ -1,6 +1,3 @@
-import _ from 'underscore'
-import Backbone from 'backbone'
-
 import { dispatch, subscribe, subscribeOnce } from '../../../store'
 import { formattedTime } from '../../../utils.ts'
 
@@ -8,18 +5,14 @@ const updateInterval = 37
 
 // Amount of time spent so far
 //
-export default class Timer extends Backbone.View {
+export default class Timer {
+  timerInterval = false
 
   get el() {
     return document.querySelector(`.current-run .timer`)
   }
 
-  initialize() {
-    this.listenForEvents()
-    this.timerInterval = false
-  }
-
-  listenForEvents() {
+  constructor() {
     subscribeOnce(`move:try`, () => this.startTimer())
     subscribe({
       'puzzles:complete': () => this.notifyCompletion()
@@ -33,7 +26,10 @@ export default class Timer extends Backbone.View {
   startTimer() {
     this.el.classList.remove(`stopped`)
     this.startTime = Date.now()
-    this.timerInterval = setInterval(() => this.displayElapsedTime(), updateInterval)
+    this.timerInterval = setInterval(
+      () => this.displayElapsedTime(),
+      updateInterval
+    )
   }
 
   stopTimer() {
@@ -48,6 +44,6 @@ export default class Timer extends Backbone.View {
 
   notifyCompletion() {
     this.stopTimer()
-    dispatch("timer:stopped", this.elapsedTimeMilliseconds())
+    dispatch(`timer:stopped`, this.elapsedTimeMilliseconds())
   }
 }

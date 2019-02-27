@@ -3,13 +3,13 @@
 import { getConfig } from '../../../utils'
 import { subscribe } from '../../../store'
 
-export default class Instructions extends Backbone.View {
+export default class Instructions {
 
   get el() {
     return document.querySelector(`.instructions`)
   }
 
-  initialize(options = {}) {
+  constructor(options = {}) {
     this.initialFen = options.fen
     this.showInstructions()
     subscribe({

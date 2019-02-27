@@ -1,15 +1,13 @@
-import Backbone from 'backbone'
-
 import { subscribe } from '../../../store'
 import { formattedTime } from '../../../utils.ts'
 
-export default class SpeedrunComplete extends Backbone.View {
+export default class SpeedrunComplete {
 
   get el() {
     return document.querySelector(`.speedrun-mode`)
   }
 
-  initialize() {
+  constructor() {
     this.bestTimeEl = this.el.querySelector(`.personal-best`)
     this.playAgainEl = this.el.querySelector(`.blue-button`)
     subscribe({

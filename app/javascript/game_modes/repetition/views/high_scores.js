@@ -1,16 +1,14 @@
-import Backbone from 'backbone'
-
 import { subscribe } from '../../../store'
 
 // Fastest 5 player round times in the sidebar
 
-export default class HighScores extends Backbone.View {
+export default class HighScores {
 
   get el() {
     return document.querySelector(`.high-scores`)
   }
 
-  initialize() {
+  constructor() {
     this.scoresEl = this.el.querySelector(`.scores`)
     if (this.scoresEl.innerText.length > 0) {
       this.showHighScores()

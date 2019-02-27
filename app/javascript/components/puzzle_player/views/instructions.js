@@ -1,16 +1,14 @@
 // white to move
 
-import Backbone from 'backbone'
-
 import { subscribe, subscribeOnce } from '../../../store'
 
-export default class Instructions extends Backbone.View {
+export default class Instructions {
 
   get el() {
     return document.querySelector(`.instructions`)
   }
 
-  initialize() {
+  constructor() {
     subscribeOnce('move:too_slow', () => {
       this.el.classList.add(`smaller`)
     })
@@ -22,6 +20,6 @@ export default class Instructions extends Backbone.View {
         this.el.textContent = `Black to move`
       }
     })
-    subscribeOnce('puzzles:start', () => this.remove())
+    subscribeOnce('puzzles:start', () => this.el.remove())
   }
 }

@@ -1,16 +1,14 @@
 // tells user of their progress in the current level
 
-import Backbone from 'backbone'
-
 import { subscribe } from '../../../store'
 
-export default class Progress extends Backbone.View {
+export default class Progress {
 
   get el() {
     return document.querySelector(`.current-run .description`)
   }
 
-  initialize() {
+  constructor() {
     subscribe({
       'puzzles:fetched': puzzles => {
         this.updateProgress(0, puzzles.length)

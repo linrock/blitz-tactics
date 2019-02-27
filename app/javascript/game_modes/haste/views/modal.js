@@ -1,16 +1,14 @@
 // fades out the board when the level is complete
 
-import Backbone from 'backbone'
-
 import { subscribe } from '../../../store'
 
-export default class Modal extends Backbone.View {
+export default class Modal {
 
   get el() {
     return document.querySelector(`.board-modal-container`)
   }
 
-  initialize() {
+  constructor() {
     subscribe({
       'timer:stopped': () => {
         this.el.style = ``

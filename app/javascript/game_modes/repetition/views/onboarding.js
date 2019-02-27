@@ -1,16 +1,14 @@
 // onboarding message on first level of repetition mode
 
-import Backbone from 'backbone'
-
 import { subscribe } from '../../../store'
 
-export default class Onboarding extends Backbone.View {
+export default class Onboarding {
 
   get el() {
     return document.querySelector(`.onboarding`)
   }
 
-  initialize() {
+  constructor() {
     if (!this.el) {
       return
     }

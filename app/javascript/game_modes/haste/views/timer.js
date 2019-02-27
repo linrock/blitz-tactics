@@ -1,6 +1,3 @@
-import _ from 'underscore'
-import Backbone from 'backbone'
-
 import { dispatch, subscribe, subscribeOnce } from '../../../store'
 import { formattedTimeSeconds } from '../../../utils'
 
@@ -12,21 +9,17 @@ const penaltyMs = 30000       // lose this much time per mistake
 
 // Amount of time spent so far
 //
-export default class Timer extends Backbone.View {
+export default class Timer {
 
   get el() {
     return document.querySelector(`.current-progress .timer`)
   }
 
-  initialize() {
+  constructor() {
     this.initialTimeMs = parseInt(this.el.textContent[0]) * 60 * 1000 + 500
     this.timeModifierMs = 0
     this.comboSize = 0
     this.timerInterval = false
-    this.listenForEvents()
-  }
-
-  listenForEvents() {
     subscribeOnce('move:try', () => this.startTimer())
     subscribe({
       'move:success': () => this.incrementCombo(),

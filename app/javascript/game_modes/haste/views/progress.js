@@ -1,29 +1,23 @@
 // tells user of their progress in the current level
 
-import Backbone from 'backbone'
-
 import { dispatch, subscribe } from '../../../store'
 
-export default class Progress extends Backbone.View {
+export default class Progress {
+  nSolved = 0
 
   get el() {
     return document.querySelector(`.current-progress .n-solved`)
   }
 
-  initialize() {
-    this.nSolved = 0
+  constructor() {
     subscribe({
       'puzzles:status': ({ i }) => {
         this.nSolved = i + 1
-        this.updateProgress()
+        this.el.textContent = `${this.nSolved} puzzles solved`
       },
       'timer:stopped': () => {
         dispatch(`timer:complete`, this.nSolved)
       }
     })
-  }
-
-  updateProgress() {
-    this.el.textContent = `${this.nSolved} puzzles solved`
   }
 }

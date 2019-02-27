@@ -1,17 +1,14 @@
 // Indicates # of successful moves in a row
 
-import _ from 'underscore'
-import Backbone from 'backbone'
-
 import { subscribe } from '../../../store'
 
-export default class ComboCounter extends Backbone.View {
+export default class ComboCounter {
 
   get el() {
     return document.querySelector(`.combo-counter`)
   }
 
-  initialize() {
+  constructor() {
     this.counter = 0
     this.counterEl = this.el.querySelector(`.counter`)
     subscribe({

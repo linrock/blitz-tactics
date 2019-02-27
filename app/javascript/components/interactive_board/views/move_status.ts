@@ -1,5 +1,3 @@
-import Backbone from 'backbone'
-
 import { subscribe } from '../../../store'
 
 const perfectTiming = 2500
@@ -8,14 +6,14 @@ const greatTiming = 5000
 // Encouragement when successful, 
 // discouragement when making a wrong move
 //
-export default class MoveStatus extends Backbone.View<Backbone.Model> {
+export default class MoveStatus {
   private timeSinceSuccess: number
 
   get el() {
     return document.querySelector(`.move-status`)
   }
 
-  initialize() {
+  constructor() {
     this.timeSinceSuccess = Date.now()
     subscribe({
       'move:success': () => this.renderSuccess(),

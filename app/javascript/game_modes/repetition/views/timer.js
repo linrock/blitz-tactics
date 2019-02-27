@@ -1,21 +1,19 @@
-import Backbone from 'backbone'
-
 import { dispatch, subscribe } from '../../../store'
 
 const updateInterval = 50
 
 // Amount of time spent on this round so far
 //
-export default class Timer extends Backbone.View {
+export default class Timer {
+  timer = false
 
   get el() {
     return document.querySelector(`.times`)
   }
 
-  initialize() {
+  constructor() {
     this.timerEl = this.el.querySelector(`.timer`)
     this.lapsEl = this.el.querySelector(`.laps`)
-    this.timer = false
     subscribe({
       'puzzles:start': () => this.startTimer(),
       'puzzles:next': () => this.startTimer(),

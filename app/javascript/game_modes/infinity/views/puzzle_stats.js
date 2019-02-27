@@ -1,14 +1,12 @@
-import Backbone from 'backbone'
-
 import { subscribe } from '../../../store'
 
-export default class PuzzleStats extends Backbone.View {
+export default class PuzzleStats {
 
   get el() {
     return document.querySelector(`.stats`)
   }
 
-  initialize() {
+  constructor() {
     this.nPuzzlesEl = this.el.querySelector(`span`)
     subscribe({
       'puzzles_solved:changed': n => {

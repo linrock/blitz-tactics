@@ -1,14 +1,14 @@
-import Backbone from 'backbone'
+// show your current high scores at the end of a haste run
 
 import { subscribe } from '../../../store'
 
-export default class Complete extends Backbone.View {
+export default class Complete {
 
   get el() {
     return document.querySelector(`.haste-mode`)
   }
 
-  initialize() {
+  constructor() {
     this.timerEl = this.el.querySelector(`.timers`)
     this.highScoreEl = this.el.querySelector(`.haste-complete`)
     this.highScoresEl = this.el.querySelector(`.recent-high-scores`)
