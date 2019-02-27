@@ -5,10 +5,11 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 
 import { ChessMove, Puzzle } from '../../types'
-import { uciToMove, moveToUci, shuffle } from '../../utils'
+import { uciToMove, moveToUci } from '../../utils'
 import { fetchPuzzles } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
 import { PuzzleSourceOptions } from './index'
+import Puzzles from './puzzles'
 
 // source:changed
 // puzzles:fetched
@@ -23,41 +24,6 @@ import { PuzzleSourceOptions } from './index'
 
 const responseDelay = 0
 
-// de-duplicates puzzles
-class Puzzles {
-  private puzzleList: Array<Puzzle> = []
-  private puzzleSet: Set<number> = new Set()
-
-  addPuzzles(puzzles: Array<Puzzle>) {
-    puzzles.forEach(puzzle => {
-      if (!this.puzzleSet.has(puzzle.id)) {
-        this.puzzleSet.add(puzzle.id)
-        this.puzzleList.push(puzzle)
-      }
-    })
-  }
-
-  shuffle() {
-    let shuffled = shuffle(this.puzzleList)
-    while (this.lastPuzzle().fen === shuffled[0].fen) {
-      shuffled = shuffle(this.puzzleList)
-    }
-    this.puzzleList = shuffled
-  }
-
-  count(): number {
-    return this.puzzleList.length
-  }
-
-  puzzleAt(index: number): Puzzle {
-    return this.puzzleList[index]
-  }
-
-  lastPuzzle(): Puzzle {
-    return this.puzzleAt(this.count() - 1)
-  }
-}
-
 export interface PuzzleState {
   boardState?: object,
   puzzle?: Puzzle,
@@ -69,33 +35,15 @@ export default class PuzzleSource<PuzzleSourceInterface> {
   private started = false
   private shuffle = false
   private loopPuzzles = false
-  private current: PuzzleState
+  private current: PuzzleState = {}
   private mode: string
 
   // options - shuffle, loopPuzzles, source
   constructor(options: PuzzleSourceOptions = {}) {
-    this.i = 0
-    this.current = {}
-    this.puzzles = new Puzzles()
     this.shuffle = options.shuffle
     this.loopPuzzles = options.loopPuzzles
     this.mode = options.mode
     this.fetchPuzzles(options.source)
-    this.listenForEvents()
-  }
-
-  private fetchPuzzles(source) {
-    fetchPuzzles(source).then(data => {
-      dispatch(`puzzles:fetched`, data.puzzles)
-      dispatch(`config:init`, data)
-    })
-  }
-
-  private fetchAndAddPuzzles(source) {
-    fetchPuzzles(source).then(data => dispatch(`puzzles:added`, data.puzzles))
-  }
-
-  private listenForEvents() {
     subscribe({
       'source:changed': path => this.fetchPuzzles(path),
       'source:changed:add': path => this.fetchAndAddPuzzles(path),
@@ -116,6 +64,17 @@ export default class PuzzleSource<PuzzleSourceInterface> {
       },
       'move:try': move => this.tryUserMove(move),
     })
+  }
+
+  private fetchPuzzles(source) {
+    fetchPuzzles(source).then(data => {
+      dispatch(`puzzles:fetched`, data.puzzles)
+      dispatch(`config:init`, data)
+    })
+  }
+
+  private fetchAndAddPuzzles(source) {
+    fetchPuzzles(source).then(data => dispatch(`puzzles:added`, data.puzzles))
   }
 
   private addPuzzles(puzzles) {
