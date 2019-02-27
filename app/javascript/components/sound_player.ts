@@ -4,10 +4,17 @@ import { toggleSound } from '../api/requests'
 import { dispatch, subscribe } from '../store'
 
 const theme = `sfx`
-const audioMap = {
-  'move:sound': new Audio(`/sounds/${theme}/Move.mp3`),
-  'move:fail': new Audio(`/sounds/${theme}/Check.mp3`),
-  'puzzle:solved': new Audio(`/sounds/${theme}/Capture.mp3`),
+const supportsAudio = !!(<any>window).Audio
+
+let audioMap
+if (supportsAudio) {
+  audioMap = {
+    'move:sound': new Audio(`/sounds/${theme}/Move.mp3`),
+    'move:fail': new Audio(`/sounds/${theme}/Check.mp3`),
+    'puzzle:solved': new Audio(`/sounds/${theme}/Capture.mp3`),
+  }
+} else {
+  audioMap = {}
 }
 
 export default class SoundPlayer extends Backbone.View<Backbone.Model> {
@@ -30,7 +37,7 @@ export default class SoundPlayer extends Backbone.View<Backbone.Model> {
     super()
     this.volumeIconEl = this.el.querySelector(`.volume-toggle`)
     this.soundEnabled = this.volumeIconEl.dataset.enabled == `true`
-    this.playSounds = this.soundEnabled && !!(<any>window).Audio
+    this.playSounds = this.soundEnabled && supportsAudio
     if (this.playSounds) {
       this.loadSounds()
     }
@@ -52,7 +59,7 @@ export default class SoundPlayer extends Backbone.View<Backbone.Model> {
     if (this.soundsLoaded) {
       return
     }
-    Object.values(audioMap).forEach(audio => audio.load())
+    Object.values(audioMap).forEach((audio: HTMLAudioElement) => audio.load())
     const eventMap = {}
     Object.keys(audioMap).forEach(event => {
       eventMap[event] = () => this.playSound(event)
