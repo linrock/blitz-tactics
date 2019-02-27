@@ -10,9 +10,13 @@ const audioMap = {
   'puzzle:solved': new Audio(`/sounds/${theme}/Capture.mp3`),
 }
 
-export default class SoundPlayer extends Backbone.View {
+export default class SoundPlayer extends Backbone.View<Backbone.Model> {
+  private volumeIconEl: HTMLElement
+  private soundEnabled = false
+  private soundsLoaded = false
+  private playSounds = false
 
-  get events() {
+  events(): Backbone.EventsHash {
     return {
       "click .volume-toggle": "_toggleVolume",
     }
@@ -22,10 +26,11 @@ export default class SoundPlayer extends Backbone.View {
     return document.querySelector(`.main-header`)
   }
 
-  initialize() {
+  constructor() {
+    super()
     this.volumeIconEl = this.el.querySelector(`.volume-toggle`)
     this.soundEnabled = this.volumeIconEl.dataset.enabled == `true`
-    this.playSounds = this.soundEnabled && !!window.Audio
+    this.playSounds = this.soundEnabled && !!(<any>window).Audio
     if (this.playSounds) {
       this.loadSounds()
     }
@@ -43,7 +48,7 @@ export default class SoundPlayer extends Backbone.View {
     })
   }
 
-  loadSounds() {
+  private loadSounds() {
     if (this.soundsLoaded) {
       return
     }
@@ -56,13 +61,13 @@ export default class SoundPlayer extends Backbone.View {
     this.soundsLoaded = true
   }
 
-  playSound(type) {
+  private playSound(type) {
     if (this.soundEnabled && audioMap[type].readyState >= 2) {
       audioMap[type].play()
     }
   }
 
-  _toggleVolume() {
+  private _toggleVolume() {
     this.soundEnabled = !this.soundEnabled
     dispatch(`sound:enabled`, this.soundEnabled)
   }
