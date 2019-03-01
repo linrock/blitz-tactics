@@ -44,6 +44,39 @@
         <% end %>
       </div>
 
+      <h2>Recent high scores</h2>
+      <div class="recent-scores scores">
+        <div class="game-mode-scores">
+          <h3>Highest ratings</h3>
+          <% @scoreboard.recent_high_rated.each do |user, rating| %>
+            <div class="user-score">
+              <%= user_link user %>
+              <div class="score"><%= rating %></div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="game-mode-scores">
+          <h3>Highest haste scores</h3>
+          <% @scoreboard.top_haste_scores_recent.each do |user, count| %>
+            <div class="user-score">
+              <%= user_link user %>
+              <div class="score"><%= count %></div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="game-mode-scores">
+          <h3>Repetition levels completed</h3>
+          <% @scoreboard.top_repetition_recent.each do |user, count| %>
+            <div class="user-score">
+              <%= user_link user %>
+              <div class="score"><%= count %></div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
       <h2>All-time high scores</h2>
       <div class="recent-scores scores">
         <div class="game-mode-scores">
