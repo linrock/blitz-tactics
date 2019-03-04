@@ -5,9 +5,6 @@ section.puzzle-attempts
     - @puzzle_attempts.each do |attempt|
       .puzzle-attempt
         ruby:
-          options = {
-            fen: attempt.rated_puzzle.fen,
-            initial_move: attempt.rated_puzzle.initial_move_uci
-          }
-        = homepage_miniboard_link "/rated/attempts/#{attempt.id}", options
+          puzzle = attempt.rated_puzzle
+        = homepage_miniboard_link "/rated/attempts/#{attempt.id}", puzzle
         = attempt.outcome

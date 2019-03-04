@@ -9,10 +9,7 @@
           <h4 class="game-mode-description">
             Combos gain time. Mistakes lose time. New puzzles each run.
           </h4>
-          <%= homepage_miniboard_link("/haste", {
-                fen: @haste_puzzle.fen,
-                initial_move: @haste_puzzle.initial_move_uci,
-              }) %>
+          <%= homepage_miniboard_link("/haste", @haste_puzzle) %>
           <div class="under-mini-board">
             <% if user_signed_in? %>
               <div class="your-best-times">
@@ -31,14 +28,12 @@
           <h4 class="game-mode-description">
             Solve puzzles before time runs out. New level each day.
           </h4>
-          <%= homepage_miniboard_link("/countdown", {
-                fen: @countdown_puzzle.fen,
-                initial_move: @countdown_puzzle.initial_move_uci
-              }) %>
+          <%= homepage_miniboard_link("/countdown", @countdown_puzzle) %>
           <div class="under-mini-board">
             <% if user_signed_in? %>
               <div class="your-best-times">
-                Best score today: <span class="best-time"><%= @countdown_level_score %></span>
+                Best score today:
+                <span class="best-time"><%= @countdown_level_score %></span>
               </div>
             <% end %>
 
@@ -53,10 +48,7 @@
           <h4 class="game-mode-description">
             Solve a sequence of puzzles as quickly as you can.
           </h4>
-          <%= homepage_miniboard_link("/speedrun", {
-                fen: @speedrun_puzzle.fen,
-                initial_move: @speedrun_puzzle.initial_move_uci
-              }) %>
+          <%= homepage_miniboard_link("/speedrun", @speedrun_puzzle) %>
           <div class="under-mini-board speedrun">
             <% if user_signed_in? %>
               <div class="your-best-times">
@@ -78,10 +70,7 @@
             <h4 class="game-mode-description">
               Solve puzzles quickly to gain more rating points.
             </h4>
-            <%= homepage_miniboard_link("/rated", {
-                  fen: @rated_puzzle.fen,
-                  initial_move: @rated_puzzle.initial_move_uci
-                }) %>
+            <%= homepage_miniboard_link("/rated", @rated_puzzle) %>
             <div class="under-mini-board">
               <div class="your-best-times">
                 Your rating: <%= @user_rating %>
@@ -95,13 +84,12 @@
               Play through endless puzzles.
               Set your own difficulty.
             </h4>
-            <%= homepage_miniboard_link("/infinity", {
-                  fen: @infinity_puzzle.fen,
-                  initial_move: @infinity_puzzle.initial_move_uci,
-                }) %>
+            <%= homepage_miniboard_link("/infinity", @infinity_puzzle) %>
             <div class="under-mini-board">
               <% if user_signed_in? %>
-                You've solved <%= current_user.num_infinity_puzzles_solved %> puzzles
+                You've solved
+                <%= current_user.num_infinity_puzzles_solved %>
+                puzzles
               <% else %>
                 <a href="/users/sign_up">Sign up</a> to track your progress
               <% end %>
@@ -115,10 +103,10 @@
           <h4 class="game-mode-description">
             Quickly solve puzzles without mistakes to unlock the next level.
           </h4>
-          <%= homepage_miniboard_link(@repetition_level.path, {
-                fen: @repetition_level.first_puzzle.fen,
-                initial_move: @repetition_level.first_puzzle.initial_move_uci
-              }) %>
+          <%= homepage_miniboard_link(
+                @repetition_level.path,
+                @repetition_level.first_puzzle
+              ) %>
           <div class="under-mini-board">
             <%= @repetition_level.display_name %>
           </div>

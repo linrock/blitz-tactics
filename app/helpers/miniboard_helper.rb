@@ -25,12 +25,14 @@ module MiniboardHelper
   end
 
   # homepage miniboards are rotated if the first move is by white
-  def homepage_miniboard_link(path, options)
-    locals = options.merge({
-      flip: options[:fen].include?(" w "),
+  def homepage_miniboard_link(path, puzzle)
+    options = {
+      fen: puzzle.fen,
+      initial_move: puzzle.initial_move_uci,
+      flip: puzzle.fen.include?(" w "),
       path: path,
-    })
-    render partial: "static/snippets/miniboard_link", locals: locals
+    }
+    render partial: "static/snippets/miniboard_link", locals: options
   end
 
   # for static routes defined in position_routes.txt
