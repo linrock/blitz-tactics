@@ -187,6 +187,7 @@ CREATE TABLE public.completed_rounds (
 --
 
 CREATE SEQUENCE public.completed_rounds_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -415,6 +416,7 @@ CREATE TABLE public.level_attempts (
 --
 
 CREATE SEQUENCE public.level_attempts_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -451,6 +453,7 @@ CREATE TABLE public.levels (
 --
 
 CREATE SEQUENCE public.levels_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -487,6 +490,7 @@ CREATE TABLE public.positions (
 --
 
 CREATE SEQUENCE public.positions_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -862,6 +866,7 @@ CREATE TABLE public.users (
 --
 
 CREATE SEQUENCE public.users_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1197,6 +1202,14 @@ ALTER TABLE ONLY public.repetition_puzzles
 
 
 --
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
 -- Name: solved_infinity_puzzles solved_infinity_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1466,13 +1479,6 @@ CREATE UNIQUE INDEX index_users_on_lowercase_username ON public.users USING btre
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
-
-
---
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING btree (version);
 
 
 --
