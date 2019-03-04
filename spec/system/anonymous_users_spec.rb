@@ -15,6 +15,7 @@ describe "Anoymous users", type: :system do
   it "has no js errors on /countdown " do
     visit "/countdown"
     expect(page).to have_text("White to move")
+    expect(page).to have_css('.chessboard .piece')
     errors = page.driver.browser.manage.logs.get(:browser)
     expect(errors.select {|e| e.level == "SEVERE" }.length).to eq(0)
   end
@@ -22,6 +23,7 @@ describe "Anoymous users", type: :system do
   it "has no js errors on /speedrun " do
     visit "/speedrun"
     expect(page).to have_text("White to move")
+    expect(page).to have_css('.chessboard .piece')
     errors = page.driver.browser.manage.logs.get(:browser)
     expect(errors.select {|e| e.level == "SEVERE" }.length).to eq(0)
   end
@@ -29,6 +31,7 @@ describe "Anoymous users", type: :system do
   it "has no js errors on /level-1 " do
     visit "/level-1"
     expect(page).to have_text("White to move")
+    expect(page).to have_css('.chessboard .piece')
     errors = page.driver.browser.manage.logs.get(:browser)
     expect(errors.select {|e| e.level == "SEVERE" }.length).to eq(0)
   end
@@ -36,6 +39,7 @@ describe "Anoymous users", type: :system do
   it "has no js errors on /haste " do
     visit "/haste"
     expect(page).to have_text("Make a move to start the timer")
+    expect(page).to have_css('.chessboard .piece')
     errors = page.driver.browser.manage.logs.get(:browser)
     expect(errors.select {|e| e.level == "SEVERE" }.length).to eq(0)
   end
@@ -43,6 +47,7 @@ describe "Anoymous users", type: :system do
   it "has no js errors on /infinity " do
     visit "/infinity"
     expect(page).to have_text("White to move")
+    expect(page).to have_css('.chessboard .piece')
     errors = page.driver.browser.manage.logs.get(:browser)
     expect(errors.select {|e| e.level == "SEVERE" }.length).to eq(0)
   end
