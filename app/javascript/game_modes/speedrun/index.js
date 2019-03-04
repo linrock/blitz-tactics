@@ -9,36 +9,32 @@ import { dispatch, subscribe } from '../../store'
 
 const apiPath = `/speedrun/puzzles`
 
-export default class Speedrun {
-  constructor() {
-    new Sidebar
-    new Timer
-    new Modal
-    new Progress
-    new SpeedrunComplete
+export default function SpeedrunMode() {
+  new Sidebar
+  new Timer
+  new Modal
+  new Progress
+  new SpeedrunComplete
 
-    let levelName
+  let levelName
 
-    subscribe({
-      'level:selected': name => {
-        dispatch(`source:changed`, `${apiPath}?name=${name}`)
-      },
+  subscribe({
+    'config:init': data => levelName = data.level_name,
 
-      'config:init': data => {
-        levelName = data.level_name
-      },
+    'level:selected': name => {
+      dispatch(`source:changed`, `${apiPath}?name=${name}`)
+    },
 
-      'timer:stopped': elapsedTimeMs => {
-        speedrunCompleted(levelName, elapsedTimeMs).then(data => {
-          dispatch(`speedrun:complete`, data)
-        })
-      }
-    })
+    'timer:stopped': elapsedTimeMs => {
+      speedrunCompleted(levelName, elapsedTimeMs).then(data => {
+        dispatch(`speedrun:complete`, data)
+      })
+    }
+  })
 
-    new PuzzlePlayer({
-      shuffle: false,
-      loopPuzzles: false,
-      source: apiPath,
-    })
-  }
+  new PuzzlePlayer({
+    shuffle: false,
+    loopPuzzles: false,
+    source: apiPath,
+  })
 }

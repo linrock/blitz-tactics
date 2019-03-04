@@ -12,56 +12,54 @@ import {
 } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
 
-export default class RepetitionMode {
-  constructor() {
-    new Background
-    new LevelIndicator
-    new Onboarding
-    new ProgressBar
-    new HighScores
-    new Timer
+export default function RepetitionMode() {
+  new Background
+  new LevelIndicator
+  new Onboarding
+  new ProgressBar
+  new HighScores
+  new Timer
 
-    this.level = new LevelStatus()
-    const levelPath = document.querySelector(".repetition-mode").dataset.level
+  const level = new LevelStatus()
+  const levelPath = document.querySelector(".repetition-mode").dataset.level
 
-    new PuzzlePlayer({
-      shuffle: true,
-      loopPuzzles: true,
-      source: `${window.location.pathname}/puzzles.json`
-    })
+  new PuzzlePlayer({
+    shuffle: true,
+    loopPuzzles: true,
+    source: `${window.location.pathname}/puzzles.json`
+  })
 
-    subscribe({
-      // level and round completion events
-      'round:complete': elapsedTimeMs => {
-        repetitionLevelAttempted(levelPath, elapsedTimeMs)
-      },
+  subscribe({
+    // level and round completion events
+    'round:complete': elapsedTimeMs => {
+      repetitionLevelAttempted(levelPath, elapsedTimeMs)
+    },
 
-      // level progress events
-      'puzzles:fetched': puzzles => {
-        this.level.setNumPuzzles(puzzles.length)
-      },
+    // level progress events
+    'puzzles:fetched': puzzles => {
+      level.setNumPuzzles(puzzles.length)
+    },
 
-      'puzzles:next': () => {
-        this.level.nextPuzzle()
-        dispatch(`progress:update`, this.level.getProgress())
-        if (!this.level.completed && this.level.nextLevelUnlocked()) {
-          this.level.completed = true
-          repetitionLevelCompleted(levelPath).then(data => {
-            dispatch(`level:high_scores`, data.high_scores)
-            dispatch(`level:unlocked`, data.next.href)
-          })
-        }
-      },
+    'puzzles:next': () => {
+      level.nextPuzzle()
+      dispatch(`progress:update`, level.getProgress())
+      if (!level.completed && level.nextLevelUnlocked()) {
+        level.completed = true
+        repetitionLevelCompleted(levelPath).then(data => {
+          dispatch(`level:high_scores`, data.high_scores)
+          dispatch(`level:unlocked`, data.next.href)
+        })
+      }
+    },
 
-      'move:fail': () => {
-        this.level.resetProgress()
-        dispatch(`progress:update`, 0)
-      },
+    'move:fail': () => {
+      level.resetProgress()
+      dispatch(`progress:update`, 0)
+    },
 
-      'move:too_slow': () => {
-        this.level.resetProgress()
-        dispatch(`progress:update`, 0)
-      },
-    })
-  }
+    'move:too_slow': () => {
+      level.resetProgress()
+      dispatch(`progress:update`, 0)
+    },
+  })
 }

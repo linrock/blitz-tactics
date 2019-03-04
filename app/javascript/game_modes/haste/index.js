@@ -9,33 +9,25 @@ import { dispatch, subscribe } from '../../store'
 
 const apiPath = `/haste/puzzles`
 
-export default class Haste {
-  constructor() {
-    new Sidebar
-    new Timer
-    new Progress
-    new Modal
-    new Complete
+export default function HasteMode() {
+  new Sidebar
+  new Timer
+  new Progress
+  new Modal
+  new Complete
 
-    let levelName
+  subscribe({
+    'timer:complete': score => {
+      hasteRoundCompleted(score).then(data => {
+        dispatch(`haste:complete`, data)
+      })
+    }
+  })
 
-    subscribe({
-      'config:init': data => {
-        levelName = data.level_name
-      },
-
-      'timer:complete': score => {
-        hasteRoundCompleted(score).then(data => {
-          dispatch(`haste:complete`, data)
-        })
-      }
-    })
-
-    new PuzzlePlayer({
-      shuffle: false,
-      loopPuzzles: false,
-      noHint: true,
-      source: apiPath,
-    })
-  }
+  new PuzzlePlayer({
+    shuffle: false,
+    loopPuzzles: false,
+    noHint: true,
+    source: apiPath,
+  })
 }
