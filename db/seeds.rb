@@ -33,4 +33,4 @@ RatedPuzzle.create(
   rating: 1500,
   rating_deviation: 350,
   rating_volatility: 0.06,
-)
+) rescue nil
