@@ -20,14 +20,14 @@ describe "Anoymous users", type: :system do
 
   it "has no js errors on /countdown " do
     visit "/countdown"
-    expect(page).to have_text("White to move")
+    expect(page.text).to match(/(White|Black) to move/)
     expect_no_js_errors(page)
     expect(page).to have_css('.chessboard .piece')
   end
 
   it "has no js errors on /speedrun " do
     visit "/speedrun"
-    expect(page).to have_text("White to move")
+    expect(page.text).to match(/(White|Black) to move/)
     expect_no_js_errors(page)
     expect(page).to have_css('.chessboard .piece')
   end
@@ -48,7 +48,7 @@ describe "Anoymous users", type: :system do
 
   it "has no js errors on /infinity " do
     visit "/infinity"
-    expect(page).to have_text("White to move")
+    expect(page.text).to match(/(White|Black) to move/)
     expect_no_js_errors(page)
     expect(page).to have_css('.chessboard .piece')
   end

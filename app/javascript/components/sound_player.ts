@@ -70,7 +70,7 @@ export default class SoundPlayer extends Backbone.View<Backbone.Model> {
 
   private playSound(type) {
     if (this.soundEnabled && audioMap[type].readyState >= 2) {
-      audioMap[type].play()
+      audioMap[type].play().catch(e => {})
     }
   }
 
