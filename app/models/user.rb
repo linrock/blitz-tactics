@@ -72,6 +72,10 @@ class User < ActiveRecord::Base
     completed_haste_rounds.personal_best(date)
   end
 
+  def num_haste_rounds_completed
+    @num_haste_rounds_completed ||= completed_haste_rounds.count
+  end
+
   # countdown mode methods
 
   def num_countdowns_completed
