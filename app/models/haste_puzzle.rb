@@ -17,9 +17,11 @@ class HastePuzzle < ActiveRecord::Base
   # random set of puzzles with increasing difficulty
   def self.random_level(n)
     colors = COLORS.shuffle.cycle
-    (0..10).flat_map do |difficulty|
+    puzzles = (0..8).flat_map do |difficulty|
       unscoped.where(color: colors.next, difficulty: difficulty)
-        .order(Arel.sql('RANDOM()')).limit(n/10).to_a
+        .order(Arel.sql('RANDOM()')).limit(7).to_a
     end
+    puzzles + unscoped.where(color: colors.next, difficulty: 9)
+      .order(Arel.sql('RANDOM()')).limit(n - 63).to_a
   end
 end
