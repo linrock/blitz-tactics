@@ -9,7 +9,7 @@ class GameModes::HasteController < ApplicationController
   # json endpoint for fetching puzzles on initial pageload
   def puzzles
     render json: {
-      puzzles: HastePuzzle.random_level(70)
+      puzzles: HastePuzzle.random_level(100)
     }
   end
 
