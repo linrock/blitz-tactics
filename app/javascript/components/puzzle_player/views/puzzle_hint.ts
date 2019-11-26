@@ -5,7 +5,7 @@ import { PuzzleState } from '../puzzle_source'
 import { dispatch, subscribe } from '../../../store'
 import { UciMove } from '../../../types'
 
-const comboDroppedAfterMs = 7000
+const comboDroppedAfterMs = 7_000
 const hintDelay = 750
 
 // Solution/hint that shows up after some time
@@ -55,7 +55,7 @@ export default class PuzzleHint extends Backbone.View<Backbone.Model> {
     this.el.classList.add(`invisible`)
     this.buttonEl.classList.remove(`invisible`)
     this.moveEl.textContent = ``
-    this.timeout = setTimeout(() => {
+    this.timeout = window.setTimeout(() => {
       dispatch(`move:too_slow`)
       setTimeout(() => this.showHint(), hintDelay)
     }, comboDroppedAfterMs)
