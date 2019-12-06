@@ -45,7 +45,7 @@ GEM
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     arel (9.0.0)
-    bcrypt (3.1.12)
+    bcrypt (3.1.13)
     bindex (0.5.0)
     bootsnap (1.3.2)
       msgpack (~> 1.0)
@@ -90,10 +90,10 @@ GEM
     concurrent-ruby (1.1.5)
     crass (1.0.5)
     dalli (2.7.9)
-    devise (4.4.3)
+    devise (4.7.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0, < 6.0)
+      railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
     diff-lcs (1.3)
@@ -135,7 +135,7 @@ GEM
     minitest (5.13.0)
     msgpack (1.2.4)
     nio4r (2.3.1)
-    nokogiri (1.10.5)
+    nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
     pg (1.1.3)
@@ -178,9 +178,9 @@ GEM
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
     regexp_parser (1.3.0)
-    responders (2.4.0)
-      actionpack (>= 4.2.0, < 5.3)
-      railties (>= 4.2.0, < 5.3)
+    responders (3.0.0)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -232,8 +232,8 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.1.20)
       execjs (>= 0.3.0, < 3)
-    warden (1.2.7)
-      rack (>= 1.0)
+    warden (1.2.8)
+      rack (>= 2.0.6)
     web-console (3.6.2)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -258,7 +258,7 @@ DEPENDENCIES
   capybara
   capybara-selenium
   dalli
-  devise (~> 4.3)
+  devise (~> 4.7)
   dotenv-rails
   eye
   glicko2

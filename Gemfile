@@ -12,7 +12,7 @@ gem 'dalli'
 
 gem 'dotenv-rails'
 gem 'bootsnap', require: false
-gem 'devise', '~> 4.3'
+gem 'devise', '~> 4.7'
 gem 'slim'
 gem 'bugsnag'
 gem 'glicko2'
