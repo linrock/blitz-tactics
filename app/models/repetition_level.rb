@@ -12,6 +12,17 @@ class RepetitionLevel < ActiveRecord::Base
     find_by(number: number)
   end
 
+  # Exports all repetition levels to data files in data/repetition/*.json
+  def self.export_all_levels
+    all.each do |level|
+      filename = "level-#{level.number}.json"
+      puts "Exporting #{filename}"
+      file_path = Rails.root.join("data/repetition/#{filename}")
+      level_json = level.repetition_puzzles.map(&:as_json).to_json
+      `echo '#{level_json}' | jq . > #{file_path}`
+    end
+  end
+
   def first_level?
     number == 1
   end
