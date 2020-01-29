@@ -18,7 +18,9 @@ class RepetitionLevel < ActiveRecord::Base
       filename = "level-#{level.number}.json"
       puts "Exporting #{filename}"
       file_path = Rails.root.join("data/repetition/#{filename}")
-      level_json = level.repetition_puzzles.map(&:as_json).to_json
+      level_json = level.repetition_puzzles.map do |p|
+        p.as_json({ lichess_puzzle_id: true })
+      end.to_json
       `echo '#{level_json}' | jq . > #{file_path}`
     end
   end

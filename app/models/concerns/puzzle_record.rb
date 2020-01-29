@@ -31,7 +31,11 @@ module PuzzleRecord
     end
 
     def as_json(options = {})
-      data.merge(id: id)
+      if options[:lichess_puzzle_id]
+        data.merge(id: data["id"])
+      else
+        data.merge(id: id)
+      end
     end
 
     private
