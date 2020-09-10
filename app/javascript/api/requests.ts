@@ -1,14 +1,15 @@
 import client from './client'
+import { Puzzle } from '../types'
 
-export function updateLevel(levelSlug, data) {
+export function updateLevel(levelSlug: string, data) {
   return client.put(`/${levelSlug}`, data).then(resp => resp.data)
 }
 
-export function infinityPuzzleSolved(puzzle) {
+export function infinityPuzzleSolved(puzzle: Puzzle) {
   return client.post(`/infinity/puzzles`, { puzzle }).then(resp => resp.data)
 }
 
-export function repetitionLevelAttempted(levelPath, elapsedTimeMs) {
+export function repetitionLevelAttempted(levelPath: string, elapsedTimeMs: number) {
   const params = {
     round: {
       elapsed_time_ms: elapsedTimeMs
@@ -17,11 +18,11 @@ export function repetitionLevelAttempted(levelPath, elapsedTimeMs) {
   return client.post(`${levelPath}/attempt`, params)
 }
 
-export function repetitionLevelCompleted(levelPath) {
+export function repetitionLevelCompleted(levelPath: string) {
   return client.post(`${levelPath}/complete`).then(resp => resp.data)
 }
 
-export function speedrunCompleted(levelName, elapsedTimeMs) {
+export function speedrunCompleted(levelName: string, elapsedTimeMs: number) {
   const params = {
     speedrun: {
       level_name: levelName,
@@ -31,7 +32,7 @@ export function speedrunCompleted(levelName, elapsedTimeMs) {
   return client.post(`/speedrun`, params).then(resp => resp.data)
 }
 
-export function countdownCompleted(levelName, score) {
+export function countdownCompleted(levelName: string, score: number) {
   const params = {
     countdown: {
       level_name: levelName,
@@ -41,7 +42,7 @@ export function countdownCompleted(levelName, score) {
   return client.post(`/countdown`, params).then(resp => resp.data)
 }
 
-export function hasteRoundCompleted(score) {
+export function hasteRoundCompleted(score: number) {
   const params = {
     haste: {
       score,
@@ -61,11 +62,11 @@ export function ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs) {
   return client.post(`/rated/attempts`, params).then(resp => resp.data)
 }
 
-export function fetchPuzzles(source) {
+export function fetchPuzzles(source: string) {
   return client.get(source).then(resp => resp.data)
 }
 
-export function toggleSound(enabled) {
+export function toggleSound(enabled: boolean) {
   const params = {
     settings: {
       sound_enabled: enabled,
