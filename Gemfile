@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.7.1'
 
-gem 'rails', '5.2.2'
+gem 'rails', '5.2.4'
 gem 'puma', '~> 3.12'
 gem 'eye', require: false
 
