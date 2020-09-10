@@ -38,6 +38,12 @@ module PuzzleRecord
       end
     end
 
+    # a way to uniquely-identify puzzles based on the moves in the puzzle
+    def calculate_puzzle_hash
+      puzzle_data = data.slice("fen", "initialMove", "lines")
+      Digest::MD5.hexdigest puzzle_data.to_json
+    end
+
     private
 
     def check_data_fields
@@ -56,8 +62,7 @@ module PuzzleRecord
     end
 
     def calculate_and_set_puzzle_hash
-      puzzle_data = data.slice("fen", "initialMove", "lines")
-      self.puzzle_hash = Digest::MD5.hexdigest puzzle_data.to_json
+      self.puzzle_hash = calculate_puzzle_hash
     end
   end
 end
