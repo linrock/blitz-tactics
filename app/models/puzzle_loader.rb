@@ -24,6 +24,7 @@ class PuzzleLoader
   private
 
   def self.create_countdown_puzzles_from_json_files
+    puts "#{CountdownLevel.count} countdown levels in db. Creating countdown levels..."
     num_checked = 0
     num_created = 0
     Dir.glob(Rails.root.join(COUNTDOWN_PUZZLE_SOURCE)).each do |filename|
@@ -31,7 +32,7 @@ class PuzzleLoader
       if CountdownLevel.find_by(name: level_name)
         # puts "Countdown level #{level_name} already exists. Ignoring #{filename}"
       else
-        # puts "Loading countdown level #{level_name} from #{filename}"
+        puts "Creating countdown level #{level_name} from #{filename}"
         level = CountdownLevel.create!(name: level_name)
         open(filename, "r") do |f|
           countdown_puzzle_list = JSON.parse(f.read)
@@ -47,6 +48,7 @@ class PuzzleLoader
   end
 
   def self.create_speedrun_puzzles_from_json_files
+    puts "#{SpeedrunLevel.count} speedrun levels in db. Creating speedrun levels..."
     num_checked = 0
     num_created = 0
     Dir.glob(Rails.root.join(SPEEDRUN_PUZZLE_SOURCE)).each do |filename|
@@ -54,7 +56,7 @@ class PuzzleLoader
       if SpeedrunLevel.find_by(name: level_name)
         # puts "Speedrun level #{level_name} already exists. Ignoring #{filename}"
       else
-        # puts "Creating speedrun level #{level_name} from #{filename}"
+        puts "Creating speedrun level #{level_name} from #{filename}"
         level = SpeedrunLevel.create!(name: level_name)
         open(filename, "r") do |f|
           speedrun_puzzle_list = JSON.parse(f.read)
@@ -70,13 +72,23 @@ class PuzzleLoader
   end
 
   def self.create_haste_puzzles_from_json_file
+    puts "#{HastePuzzle.count} haste puzzles in db. Creating haste puzzles..."
     num_checked = 0
     num_created = 0
     open(Rails.root.join(HASTE_PUZZLE_SOURCE)) do |f|
       haste_puzzle_list = JSON.parse(f.read)
       haste_puzzle_list.each do |puzzle|
-        if HastePuzzle.create(data: puzzle)
-          num_created += 1
+        begin
+          # TODO fix haste puzzle importer
+          if HastePuzzle.create!(
+            data: puzzle,
+            color: puzzle["color"],
+            difficulty: 0,
+          )
+            num_created += 1
+          end
+        rescue
+          # Puzzle is already created. Do nothing
         end
         num_checked += 1
       end
@@ -85,19 +97,28 @@ class PuzzleLoader
   end
 
   def self.create_rated_puzzles_from_json_file
-    # TODO get this working
-    Puts "Creating rated puzzles"
+    puts "#{RatedPuzzle.count} rated puzzles in db. Creating rated puzzles..."
     num_checked = 0
     num_created = 0
     open(Rails.root.join(RATED_PUZZLE_SOURCE)) do |f|
       rated_puzzle_list = JSON.parse(f.read)
       rated_puzzle_list.each do |puzzle|
         begin
-          if RatedPuzzle.create(data: puzzle)
+          # TODO move this puzzle initialization code
+          if RatedPuzzle.create(
+            data: puzzle,
+            color: puzzle["color"],
+            initial_rating: 1500,
+            initial_rating_deviation: 350,
+            initial_rating_volatility: 0.06,
+            rating: 1500,
+            rating_deviation: 350,
+            rating_volatility: 0.06
+          )
             num_created += 1
           end
         rescue
-          puts "Error while creating RatedPuzzle"
+          # Puzzle is already created. Do nothing
         end
         num_checked += 1
       end
@@ -106,6 +127,7 @@ class PuzzleLoader
   end
 
   def self.create_repetition_puzzles_from_json_files
+    puts "#{RepetitionLevel.count} repetition levels in db. Creating repetition levels..."
     num_checked = 0
     num_created = 0
     Dir.glob(Rails.root.join(REPETITION_PUZZLE_SOURCE)).sort.each do |filename|
