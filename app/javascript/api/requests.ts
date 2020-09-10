@@ -51,7 +51,7 @@ export function hasteRoundCompleted(score: number) {
   return client.post(`/haste`, params).then(resp => resp.data)
 }
 
-export function ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs) {
+export function ratedPuzzleAttempted(puzzleId: number, uciMoves, elapsedTimeMs: number) {
   const params = {
     puzzle_attempt: {
       id: puzzleId,

@@ -1,3 +1,6 @@
+// Represents data structures used in the JS part of the codebase
+// These are reflections of the data format used to persist the puzzles
+
 export type FEN = string
 
 export type UciMove = string
@@ -10,13 +13,17 @@ export type ChessMove = { // used by chess.js
 
 interface InitialMove {
   san: string,
-  uci: string,
+  uci: UciMove,
+}
+
+interface PuzzleLines {
+  [uciMove: string]: PuzzleLines | "win"
 }
 
 // fields for all puzzles fetched from the server
 export type Puzzle = {
   id: number
-  fen: string
-  lines: object
+  fen: FEN
+  lines: PuzzleLines
   initialMove: InitialMove
 }
