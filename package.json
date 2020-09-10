@@ -2,6 +2,8 @@
   "scripts": {
     "dev": "./bin/webpack-dev-server",
     "tsc": "./node_modules/.bin/tsc --noEmit",
+    "eye:load": "eye l eye.rb",
+    "eye:info": "eye i",
     "puzzles:load": "rails runner 'PuzzleLoader.create_puzzles'"
   },
   "dependencies": {
