@@ -9,6 +9,7 @@ class CountdownLevel < ActiveRecord::Base
     today.strftime "%b %-d, %Y"
   end
 
+  # format of name (today.to_s): "2020-09-10"
   def self.todays_level
     find_by(name: today.to_s)
   end

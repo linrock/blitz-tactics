@@ -1,7 +1,8 @@
 {
   "scripts": {
     "dev": "./bin/webpack-dev-server",
-    "tsc": "./node_modules/.bin/tsc --noEmit"
+    "tsc": "./node_modules/.bin/tsc --noEmit",
+    "puzzles:load": "rails runner 'PuzzleLoader.create_puzzles'"
   },
   "dependencies": {
     "@rails/webpacker": "^4.2.0",
