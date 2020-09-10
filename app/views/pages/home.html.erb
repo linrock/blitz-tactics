@@ -78,23 +78,25 @@
             </div>
           </div>
 
-          <div class="mode infinity">
-            <h3><a href="/infinity">Infinity</a></h3>
-            <h4 class="game-mode-description">
-              Play through endless puzzles.
-              Set your own difficulty.
-            </h4>
-            <%= homepage_miniboard_link("/infinity", @infinity_puzzle) %>
-            <div class="under-mini-board">
-              <% if user_signed_in? %>
-                You've solved
-                <%= current_user.num_infinity_puzzles_solved %>
-                puzzles
-              <% else %>
-                <a href="/users/sign_up">Sign up</a> to track your progress
-              <% end %>
+          <% if @infinity_puzzle %>
+            <div class="mode infinity">
+              <h3><a href="/infinity">Infinity</a></h3>
+              <h4 class="game-mode-description">
+                Play through endless puzzles.
+                Set your own difficulty.
+              </h4>
+              <%= homepage_miniboard_link("/infinity", @infinity_puzzle) %>
+              <div class="under-mini-board">
+                <% if user_signed_in? %>
+                  You've solved
+                  <%= current_user.num_infinity_puzzles_solved %>
+                  puzzles
+                <% else %>
+                  <a href="/users/sign_up">Sign up</a> to track your progress
+                <% end %>
+              </div>
             </div>
-          </div>
+          <% end %>
       <% rescue %>
       <% end %>
 
