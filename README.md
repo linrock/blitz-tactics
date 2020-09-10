@@ -12,6 +12,7 @@ Solve every puzzle quickly and precisely to unlock the next level.
   <br><br>
 </div>
 
+
 ## Special thanks
 
 * [chess.js](https://github.com/jhlywa/chess.js) - javascript library used for the chessboard
@@ -21,4 +22,4 @@ Solve every puzzle quickly and precisely to unlock the next level.
 
 ## License
 
-MIT License
+MIT
