@@ -2,19 +2,23 @@
 
 COUNTDOWN_PUZZLE_SOURCE = "data/countdowns/countdown-*.json"
 SPEEDRUN_PUZZLE_SOURCE = "data/speedruns/speedrun-*.json"
-HASTE_PUZZLE_SOURCE = "data/haste/puzzles.json"
-RATED_PUZZLE_SOURCE = "data/rated/puzzles.json"
 REPETITION_PUZZLE_SOURCE = "data/repetition/level-*.json"
 
-# Loads .json puzzle data files into the database
+HASTE_PUZZLE_SOURCE = "data/haste/puzzles.json"
+RATED_PUZZLE_SOURCE = "data/rated/puzzles.json"
+
+# Loads .json puzzle data files into the database from all puzzles in ./data dir
 class PuzzleLoader
 
   def self.create_puzzles
+    # game modes where puzzles are spread across many files
     create_countdown_puzzles_from_json_files
     create_speedrun_puzzles_from_json_files
-    create_haste_puzzles_from_json_files
-    create_rated_puzzles_from_json_files
     create_repetition_puzzles_from_json_files
+
+    # game modes where puzzles are stored in a single file
+    create_haste_puzzles_from_json_file
+    create_rated_puzzles_from_json_file
   end
 
   private
@@ -65,30 +69,61 @@ class PuzzleLoader
     puts "Created #{num_created} speedrun levels out of #{num_checked} .json files"
   end
 
-  def self.create_haste_puzzles_from_json_files
-    # TODO
+  def self.create_haste_puzzles_from_json_file
+    num_checked = 0
+    num_created = 0
     open(Rails.root.join(HASTE_PUZZLE_SOURCE)) do |f|
       haste_puzzle_list = JSON.parse(f.read)
-      puts "Found #{haste_puzzle_list.length} haste puzzles in .json file"
+      haste_puzzle_list.each do |puzzle|
+        if HastePuzzle.create(data: puzzle)
+          num_created += 1
+        end
+        num_checked += 1
+      end
+      puts "Created #{num_created} haste puzzles out of #{num_checked} .json files"
     end
   end
 
-  def self.create_rated_puzzles_from_json_files
-    # TODO
+  def self.create_rated_puzzles_from_json_file
+    # TODO get this working
+    Puts "Creating rated puzzles"
+    num_checked = 0
+    num_created = 0
     open(Rails.root.join(RATED_PUZZLE_SOURCE)) do |f|
       rated_puzzle_list = JSON.parse(f.read)
-      puts "Found #{rated_puzzle_list.length} rated puzzles in .json file"
+      rated_puzzle_list.each do |puzzle|
+        begin
+          if RatedPuzzle.create(data: puzzle)
+            num_created += 1
+          end
+        rescue
+          puts "Error while creating RatedPuzzle"
+        end
+        num_checked += 1
+      end
+      puts "Created #{num_created} rated puzzles out of #{num_checked} puzzles in .json file"
     end
   end
 
   def self.create_repetition_puzzles_from_json_files
-    # TODO
     num_checked = 0
     num_created = 0
-    Dir.glob(Rails.root.join(REPETITION_PUZZLE_SOURCE)).each do |filename|
-      level_name = filename[/level-([\d]+).json/, 1]
-      RepetitionLevel.find_by(name: level_name)
-      num_checked += 1
+    Dir.glob(Rails.root.join(REPETITION_PUZZLE_SOURCE)).sort.each do |filename|
+      level_number = filename[/level-([\d]+).json/, 1].to_i
+      puts "Level number: #{level_number}"
+      if RepetitionLevel.exists?(number: level_number)
+        level = RepetitionLevel.number(level_number)
+      else
+        level = RepetitionLevel.create!(number: level_number)
+        num_created += 1
+      end
+      open(filename) do |f|
+        repetition_level_puzzle_list = JSON.parse(f.read)
+        repetition_level_puzzle_list.each do |puzzle|
+          level.repetition_puzzles.create(data: puzzle)
+        end
+        num_checked += 1
+      end
     end
     puts "Created #{num_created} repetition levels out of #{num_checked} .json files"
   end
