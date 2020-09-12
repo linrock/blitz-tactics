@@ -1,20 +1,19 @@
-# Loads puzzles from .json files in the /data dir
-
-COUNTDOWN_PUZZLE_SOURCE = "data/countdowns/countdown-*.json"
-SPEEDRUN_PUZZLE_SOURCE = "data/speedruns/speedrun-*.json"
-REPETITION_PUZZLE_SOURCE = "data/repetition/level-*.json"
-
-HASTE_PUZZLE_SOURCE = "data/haste/puzzles.json"
-RATED_PUZZLE_SOURCE = "data/rated/puzzles.json"
-
-# Loads .json puzzle data files into the database from all puzzles in ./data dir
+# Loads puzzles from .json data files in the ./data dir into the DB
 class PuzzleLoader
+  COUNTDOWN_PUZZLE_SOURCE = "data/countdowns/countdown-*.json"
+  SPEEDRUN_PUZZLE_SOURCE = "data/speedruns/speedrun-*.json"
+  REPETITION_PUZZLE_SOURCE = "data/repetition/level-*.json"
+  INFINITY_PUZZLE_SOURCE = "data/infinity/difficulty-*.json"
+
+  HASTE_PUZZLE_SOURCE = "data/haste/puzzles.json"
+  RATED_PUZZLE_SOURCE = "data/rated/puzzles.json"
 
   def self.create_puzzles
     # game modes where puzzles are spread across many files
     create_countdown_puzzles_from_json_files
     create_speedrun_puzzles_from_json_files
     create_repetition_puzzles_from_json_files
+    create_infinity_puzzles_from_json_files
 
     # game modes where puzzles are stored in a single file
     create_haste_puzzles_from_json_file
@@ -148,5 +147,21 @@ class PuzzleLoader
       end
     end
     puts "Created #{num_created} repetition levels out of #{num_checked} .json files"
+  end
+
+  def self.create_infinity_puzzles_from_json_files
+    puts "Importing infinity puzzles..."
+    Dir.glob(Rails.root.join(INFINITY_PUZZLE_SOURCE)).each do |filename|
+      level_difficulty = filename[/difficulty-([a-z]+)\.json/, 1]
+      infinity_level = InfinityLevel.send(level_difficulty)
+      puzzle_count = infinity_level.infinity_puzzles.count
+      puts "#{puzzle_count} #{level_difficulty} infinity puzzles in db"
+      open(filename) do |f|
+        puzzle_list = JSON.parse(f.read)
+        puzzle_list.each do |puzzle|
+          infinity_level.infinity_puzzles.create(data: puzzle)
+        end
+      end
+    end
   end
 end
