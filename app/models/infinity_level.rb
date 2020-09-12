@@ -22,11 +22,11 @@ class InfinityLevel < ActiveRecord::Base
   end
 
   def first_puzzle
-    infinity_puzzles.first
+    infinity_puzzles.order('id ASC').first
   end
 
   def last_puzzle
-    infinity_puzzles.last
+    infinity_puzzles.order('id DESC').last
   end
 
   def random_puzzle_id
