@@ -26,7 +26,7 @@ class PuzzleLoader
     puts "#{CountdownLevel.count} countdown levels in db. Creating countdown levels..."
     num_checked = 0
     num_created = 0
-    Dir.glob(Rails.root.join(COUNTDOWN_PUZZLE_SOURCE)).each do |filename|
+    Dir.glob(Rails.root.join(COUNTDOWN_PUZZLE_SOURCE)).sort.each do |filename|
       level_name = filename[/countdown-([\d\-]+).json/, 1]
       if CountdownLevel.find_by(name: level_name)
         # puts "Countdown level #{level_name} already exists. Ignoring #{filename}"
@@ -50,7 +50,7 @@ class PuzzleLoader
     puts "#{SpeedrunLevel.count} speedrun levels in db. Creating speedrun levels..."
     num_checked = 0
     num_created = 0
-    Dir.glob(Rails.root.join(SPEEDRUN_PUZZLE_SOURCE)).each do |filename|
+    Dir.glob(Rails.root.join(SPEEDRUN_PUZZLE_SOURCE)).sort.each do |filename|
       level_name = filename[/speedrun-([\d\-]+).json/, 1]
       if SpeedrunLevel.find_by(name: level_name)
         # puts "Speedrun level #{level_name} already exists. Ignoring #{filename}"
