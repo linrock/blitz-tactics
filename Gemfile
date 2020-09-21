@@ -21,7 +21,6 @@ gem 'glicko2'
 gem 'sprockets', '< 4'
 gem 'uglifier', '>= 1.3.0'
 gem 'tilt', '~> 2.0'
-gem 'stylus', '~> 1.0.2'
 gem 'webpacker', '>= 4.0'
 
 group :development do
