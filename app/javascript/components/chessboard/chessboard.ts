@@ -4,11 +4,13 @@ import _ from 'underscore'
 import m from 'mithril'
 import Chess from 'chess.js'
 
+import { dispatch, subscribe } from '../../store'
 import { FEN, ChessMove } from '../../types'
 import { makeDraggable, makeDroppable } from './concerns/drag_and_drop'
 import PointAndClick from './concerns/point_and_click'
 import virtualPiece from './concerns/pieces'
-import { dispatch, subscribe } from '../../store'
+
+import './chessboard.sass'
 
 interface HighlightedSquares {
   [squareId: string]: false | {

@@ -7,6 +7,8 @@ import Actions from './views/actions'
 import { uciToMove, getConfig } from '../../utils'
 import { dispatch, subscribe } from '../../store'
 
+import './style.sass'
+
 const SEARCH_DEPTH = 15
 const START_FEN = `rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1`
 

@@ -6,6 +6,8 @@ import PuzzleSource from './puzzle_source'
 import { subscribe } from '../../store'
 import { trackEvent } from '../../utils'
 
+import './style.sass'
+
 export interface PuzzleSourceOptions {
   shuffle?: boolean,
   loopPuzzles?: boolean,

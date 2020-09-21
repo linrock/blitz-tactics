@@ -4,6 +4,8 @@ import Chessboard from '../chessboard/chessboard'
 import MoveStatus from './views/move_status'
 import PiecePromotionModal from './views/piece_promotion_modal'
 
+import './promo_modal.sass'
+
 interface BoardOptions {
   noCombo?: boolean
 }

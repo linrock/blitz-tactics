@@ -5,6 +5,9 @@ import Chessboard from '../chessboard/chessboard'
 import BoardStyles from './board_styles'
 import { dispatch } from '../../store'
 
+import '../../../../vendor/assets/stylesheets/simple-color-picker.css'
+import './style.sass'
+
 const defaultColors = {
   light: '#F3E4CF',
   dark: '#CEB3A2',

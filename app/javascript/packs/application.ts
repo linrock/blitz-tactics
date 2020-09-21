@@ -4,6 +4,7 @@ import SoundPlayer from '../components/sound_player'
 import MiniChessboard from '../components/chessboard/mini_chessboard'
 import routes from '../routes'
 
+import '../../../vendor/assets/stylesheets/reset.css'
 import '../stylesheets/application.sass'
 import '../stylesheets/main_header.sass'
 import '../stylesheets/responsive.sass'

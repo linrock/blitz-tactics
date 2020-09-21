@@ -5,6 +5,8 @@ import virtualPiece from './concerns/pieces'
 import { FEN, UciMove } from '../../types'
 import { uciToMove } from '../../utils'
 
+import './mini_chessboard.sass'
+
 interface MiniChessboardOptions {
   el: HTMLElement
   fen: FEN
