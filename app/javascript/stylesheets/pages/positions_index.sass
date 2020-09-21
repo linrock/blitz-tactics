@@ -1,0 +1,116 @@
+// The /positions page
+
+@import "../_colors"
+@import "../_variables"
+
+.positions-index 
+  padding-right: 0
+  margin: 50px auto 100px
+
+  h2 
+    margin-bottom: 5px
+
+  a 
+    color: inherit
+
+    &:hover 
+      color: white
+
+  .button 
+    font-size: 15px
+    padding: 6px 18px 7px
+    border: 0
+    border-radius: 3px
+    background: $blue-button-bg
+    color: white
+    display: inline-block
+    font-family: $main-font
+    line-height: 20px
+    text-decoration: none
+    transition: opacity 0.25s ease
+
+    &:hover 
+      background: #51B7FF
+      cursor: pointer
+
+  .description, .small-instructions 
+    color: #B5B5B5
+
+  .description 
+    line-height: 22px
+    margin-bottom: 30px
+    width: 590px
+
+  .small-instructions 
+    font-size: 12px
+    margin-bottom: 8px
+    opacity: 0.7
+
+  .positions 
+    overflow: hidden
+    margin-bottom: 25px
+
+  .examples 
+    overflow: hidden
+    margin-bottom: 25px
+
+  .more-button 
+    margin: 5px auto 45px
+    margin-left: 200px
+
+  .miniboard-link
+    float: left
+    text-align: center
+    margin-bottom: 20px
+
+    a 
+      color: inherit
+      text-decoration: none
+
+      &:hover .position-name 
+        text-decoration: underline
+
+    .position-name 
+      line-height: 22px
+      font-size: 15px
+      position: relative
+      top: -2px
+      display: inline-block
+      max-width: 185px
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
+      word-wrap: normal
+    
+  .mini-chessboard 
+    margin: 15px
+
+  .new-position 
+    margin: 50px 0
+
+    .text-input 
+      font-size: 16px
+      padding: 6px 14px
+      border: 0
+      border-radius: 2px
+
+    .fen-input 
+      width: 420px
+
+    .name-input 
+      margin-top: 10px
+      width: 420px
+
+    .play-to 
+      margin-left: 20px
+
+    .position-goal 
+      font-size: 14px
+
+    .submit 
+      margin-top: 12px
+
+    .error-message 
+      color: #F954AE
+      margin-left: 15px
+      transition: opacity 0.25s ease
