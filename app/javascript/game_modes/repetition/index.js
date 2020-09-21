@@ -12,6 +12,9 @@ import {
 } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
 
+import './style.sass'
+import './responsive.sass'
+
 export default function RepetitionMode() {
   new Background
   new LevelIndicator

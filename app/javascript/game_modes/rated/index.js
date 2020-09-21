@@ -4,6 +4,9 @@ import { ratedPuzzleAttempted } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
 import { moveToUci } from '../../utils'
 
+import './style.sass'
+import './responsive.sass'
+
 const apiPath = `/rated/puzzles`
 const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain
 

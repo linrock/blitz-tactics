@@ -7,6 +7,9 @@ import Complete from './views/complete'
 import { hasteRoundCompleted } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
 
+import './style.sass'
+import './responsive.sass'
+
 const apiPath = `/haste/puzzles`
 
 export default function HasteMode() {

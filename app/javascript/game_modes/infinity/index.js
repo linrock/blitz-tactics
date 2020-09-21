@@ -5,6 +5,9 @@ import SetDifficulty from './views/set_difficulty'
 import { infinityPuzzleSolved } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
 
+import './style.sass'
+import './responsive.sass'
+
 const apiPath = `/infinity/puzzles`
 const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain
 

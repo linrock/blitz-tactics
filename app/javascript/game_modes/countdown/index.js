@@ -7,6 +7,9 @@ import CountdownComplete from './views/countdown_complete'
 import { countdownCompleted } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
 
+import './style.sass'
+import './responsive.sass'
+
 const apiPath = `/countdown/puzzles`
 
 export default function CountdownMode() {

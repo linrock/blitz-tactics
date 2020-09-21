@@ -7,6 +7,9 @@ import SpeedrunComplete from './views/speedrun_complete'
 import { speedrunCompleted } from '../../api/requests'
 import { dispatch, subscribe } from '../../store'
 
+import './style.sass'
+import './responsive.sass'
+
 const apiPath = `/speedrun/puzzles`
 
 export default function SpeedrunMode() {
