@@ -4,6 +4,18 @@ import SoundPlayer from '../components/sound_player'
 import MiniChessboard from '../components/chessboard/mini_chessboard'
 import routes from '../routes'
 
+import '../stylesheets/application.sass'
+import '../stylesheets/main_header.sass'
+import '../stylesheets/responsive.sass'
+import '../stylesheets/pages/about.sass'
+import '../stylesheets/pages/homepage.sass'
+import '../stylesheets/pages/not_found.sass'
+import '../stylesheets/pages/positions_index.sass'
+import '../stylesheets/pages/puzzle_attempts.sass'
+import '../stylesheets/pages/registration.sass'
+import '../stylesheets/pages/scoreboard.sass'
+import '../stylesheets/pages/user_profile.sass'
+
 interface BlitzConfig {
   levelPath?: string
   position?: object
