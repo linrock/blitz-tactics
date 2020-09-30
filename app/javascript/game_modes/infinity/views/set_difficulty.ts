@@ -1,20 +1,20 @@
 import Backbone from 'backbone'
 
-import { dispatch, subscribe } from '../../../store'
+import { dispatch, subscribe } from '@blitz/store'
 
-export default class SetDifficulty extends Backbone.View {
+export default class SetDifficulty extends Backbone.View<Backbone.Model> {
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.difficulties`)
   }
 
-  get events() {
+  events(): Backbone.EventsHash {
     return {
       'click [data-difficulty]': `_selectDifficulty`
     }
   }
 
-  initialize() {
+  public initialize() {
     subscribe({
       'difficulty:set': difficulty => this.highlight(difficulty)
     })

@@ -1,8 +1,8 @@
-import { subscribe, subscribeOnce } from '../../../store'
+import { subscribe, subscribeOnce } from '@blitz/store'
 
 export default class NoMoreLeft {
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.no-more-left`)
   }
 

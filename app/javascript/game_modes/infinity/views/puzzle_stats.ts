@@ -1,6 +1,7 @@
-import { subscribe } from '../../../store'
+import { subscribe } from '@blitz/store'
 
 export default class PuzzleStats {
+  private nPuzzlesEl: HTMLElement
 
   get el() {
     return document.querySelector(`.stats`)
@@ -9,8 +10,8 @@ export default class PuzzleStats {
   constructor() {
     this.nPuzzlesEl = this.el.querySelector(`span`)
     subscribe({
-      'puzzles_solved:changed': n => {
-        this.nPuzzlesEl.textContent = n || 0
+      'puzzles_solved:changed': (n: number) => {
+        this.nPuzzlesEl.textContent = String(n || 0)
         this.el.classList.remove(`invisible`)
       }
     })

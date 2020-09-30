@@ -8,6 +8,18 @@ import { dispatch, subscribe } from '../../store'
 import './style.sass'
 import './responsive.sass'
 
+type PuzzleDifficulty = 'easy' | 'medium' | 'hard' | 'insane'
+
+interface InfinityModeConfig {
+  difficulty?: PuzzleDifficulty
+  numSolved?: number
+}
+
+export interface InfinityPuzzleSolved {
+  puzzle_id: number,
+  difficulty: PuzzleDifficulty
+}
+
 const apiPath = `/infinity/puzzles`
 const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain
 
@@ -16,7 +28,7 @@ export default function InfinityMode() {
   new SetDifficulty
   new NoMoreLeft
 
-  const config = {}
+  const config: InfinityModeConfig = {}
 
   subscribe({
     'difficulty:selected': difficulty => {

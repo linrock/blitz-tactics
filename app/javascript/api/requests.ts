@@ -1,11 +1,11 @@
 import client from './client'
-import { Puzzle } from '../types'
+import { InfinityPuzzleSolved } from '../game_modes/infinity'
 
 export function updateLevel(levelSlug: string, data) {
   return client.put(`/${levelSlug}`, data).then(resp => resp.data)
 }
 
-export function infinityPuzzleSolved(puzzle: Puzzle) {
+export function infinityPuzzleSolved(puzzle: InfinityPuzzleSolved) {
   return client.post(`/infinity/puzzles`, { puzzle }).then(resp => resp.data)
 }
 
