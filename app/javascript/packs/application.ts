@@ -30,6 +30,7 @@ document.addEventListener(`DOMContentLoaded`, () => {
   // initialize route components/views
   const route = routes[`${controller}#${action}`]
   if (typeof route !== `undefined`) {
+    // @ts-ignore. TODO fix this
     new route
   }
 

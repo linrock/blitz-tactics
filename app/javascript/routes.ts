@@ -9,7 +9,7 @@ import PositionTrainer from './components/position_trainer'
 import CustomizeBoard from './components/customize_board'
 
 interface RouteMap {
-  [routeKey: string]: { new(): void }
+  [routeKey: string]: { new(): void } | (() => void)
 }
 
 const routes: RouteMap = {

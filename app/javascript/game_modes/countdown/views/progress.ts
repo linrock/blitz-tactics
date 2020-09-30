@@ -1,11 +1,11 @@
 // tells user of their progress in the current level
 
-import { dispatch, subscribe } from '../../../store'
+import { dispatch, subscribe } from '@blitz/store'
 
 export default class Progress {
-  nSolved = 0
+  private nSolved = 0
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.current-countdown .description`)
   }
 
@@ -21,7 +21,7 @@ export default class Progress {
     })
   }
 
-  updateProgress() {
+  private updateProgress(): void {
     this.el.textContent = `${this.nSolved} puzzles solved`
   }
 }

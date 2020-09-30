@@ -1,5 +1,5 @@
-import { dispatch, subscribe, subscribeOnce } from '../../../store'
-import { formattedTimeSeconds } from '../../../utils'
+import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
+import { formattedTimeSeconds } from '@blitz/utils'
 
 const updateInterval = 100   // timer updates this frequently
 const penaltyMs = 30000      // lose this much time per mistake
@@ -7,15 +7,17 @@ const penaltyMs = 30000      // lose this much time per mistake
 // Amount of time spent so far
 //
 export default class Timer {
+  private initialTimeMs: number
+  private lostTimeMs = 0
+  private startTime: number
+  private timerInterval: number
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.current-countdown .timer`)
   }
 
   constructor() {
     this.initialTimeMs = parseInt(this.el.textContent[0]) * 60 * 1000 + 500
-    this.lostTimeMs = 0
-    this.timerInterval = false
     subscribeOnce(`move:try`, () => this.startTimer())
     subscribe({
       'move:fail': () => this.loseTime(),
@@ -36,6 +38,7 @@ export default class Timer {
   startTimer() {
     this.el.classList.remove(`stopped`)
     this.startTime = Date.now()
+    // @ts-ignore TODO fix setInterval type
     this.timerInterval = setInterval(() => {
       const timeLeft = this.timeLeftMilliseconds()
       if (timeLeft <= 0) {

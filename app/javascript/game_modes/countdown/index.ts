@@ -1,11 +1,12 @@
-import PuzzlePlayer from '../../components/puzzle_player'
+import { countdownCompleted } from '@blitz/api/requests'
+import PuzzlePlayer from '@blitz/components/puzzle_player'
+import { dispatch, subscribe } from '@blitz/store'
+
 import Sidebar from './views/sidebar'
 import Timer from './views/timer'
 import Progress from './views/progress'
 import Modal from './views/modal'
 import CountdownComplete from './views/countdown_complete'
-import { countdownCompleted } from '../../api/requests'
-import { dispatch, subscribe } from '../../store'
 
 import './style.sass'
 import './responsive.sass'
