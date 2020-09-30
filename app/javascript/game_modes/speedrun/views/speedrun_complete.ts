@@ -1,7 +1,9 @@
-import { subscribe } from '../../../store'
-import { formattedTime } from '../../../utils.ts'
+import { subscribe } from '@blitz/store'
+import { formattedTime } from '@blitz/utils'
 
 export default class SpeedrunComplete {
+  private bestTimeEl: HTMLElement
+  private playAgainEl: HTMLElement
 
   get el() {
     return document.querySelector(`.speedrun-mode`)
@@ -18,7 +20,7 @@ export default class SpeedrunComplete {
     })
   }
 
-  renderPersonalBest(bestTime) {
+  private renderPersonalBest(bestTime: string) {
     if (!bestTime) {
       return
     }
@@ -28,7 +30,7 @@ export default class SpeedrunComplete {
     this.bestTimeEl.classList.remove(`invisible`)
   }
 
-  showPlayAgain() {
+  private showPlayAgain() {
     this.playAgainEl.style.display = `block`
     this.playAgainEl.classList.remove(`invisible`)
   }

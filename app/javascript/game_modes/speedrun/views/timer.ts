@@ -1,12 +1,13 @@
-import { dispatch, subscribe, subscribeOnce } from '../../../store'
-import { formattedTime } from '../../../utils.ts'
+import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
+import { formattedTime } from '@blitz/utils'
 
 const updateInterval = 37
 
 // Amount of time spent so far
 //
 export default class Timer {
-  timerInterval = false
+  private startTime: number
+  private timerInterval: number
 
   get el() {
     return document.querySelector(`.current-run .timer`)
@@ -19,30 +20,30 @@ export default class Timer {
     })
   }
 
-  elapsedTimeMilliseconds() {
+  private elapsedTimeMilliseconds(): number {
     return Date.now() - this.startTime
   }
 
-  startTimer() {
+  private startTimer() {
     this.el.classList.remove(`stopped`)
     this.startTime = Date.now()
-    this.timerInterval = setInterval(
+    this.timerInterval = window.setInterval(
       () => this.displayElapsedTime(),
       updateInterval
     )
   }
 
-  stopTimer() {
+  private stopTimer() {
     this.el.classList.add(`complete`)
     clearInterval(this.timerInterval)
     this.displayElapsedTime()
   }
 
-  displayElapsedTime() {
+  private displayElapsedTime() {
     this.el.textContent = formattedTime(this.elapsedTimeMilliseconds())
   }
 
-  notifyCompletion() {
+  private notifyCompletion() {
     this.stopTimer()
     dispatch(`timer:stopped`, this.elapsedTimeMilliseconds())
   }

@@ -12,7 +12,6 @@ class GameModes::RatedController < ApplicationController
   def puzzles
     puzzles = RatedPuzzle.for_user(current_user)
     unless params[:next].present?
-      # TODO should show a rated puzzle, not a repetition puzzle
       puzzles = [RepetitionLevel.number(1).first_puzzle] + puzzles
     end
     render json: {

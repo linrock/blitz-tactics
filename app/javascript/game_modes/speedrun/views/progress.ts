@@ -1,10 +1,10 @@
 // tells user of their progress in the current level
 
-import { subscribe } from '../../../store'
+import { subscribe } from '@blitz/store'
 
 export default class Progress {
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.current-run .description`)
   }
 
@@ -19,7 +19,7 @@ export default class Progress {
     })
   }
 
-  updateProgress(i, n) {
+  private updateProgress(i: number, n: number) {
     this.el.textContent = `${i} of ${n} solved`
   }
 }

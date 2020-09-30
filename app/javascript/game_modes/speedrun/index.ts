@@ -1,11 +1,12 @@
-import PuzzlePlayer from '../../components/puzzle_player'
-import Sidebar from './views/sidebar'
-import Timer from './views/timer'
-import Progress from './views/progress'
+import { speedrunCompleted } from '@blitz/api/requests'
+import PuzzlePlayer from '@blitz/components/puzzle_player'
+import { dispatch, subscribe } from '@blitz/store'
+
 import Modal from './views/modal'
+import Progress from './views/progress'
+import Sidebar from './views/sidebar'
 import SpeedrunComplete from './views/speedrun_complete'
-import { speedrunCompleted } from '../../api/requests'
-import { dispatch, subscribe } from '../../store'
+import Timer from './views/timer'
 
 import './style.sass'
 import './responsive.sass'
