@@ -4,6 +4,7 @@ import SoundPlayer from '@blitz/components/sound_player'
 import MiniChessboard from '@blitz/components/chessboard/mini_chessboard'
 import routes from '@blitz/routes'
 
+// TODO go back to using sprockets for component-independent CSS
 import '../stylesheets/main_header.sass'
 import '../stylesheets/responsive.sass'
 import '../stylesheets/pages/about.sass'
@@ -35,12 +36,13 @@ document.addEventListener(`DOMContentLoaded`, () => {
   }
 
   // initialize all mini chessboards
-  [].forEach.call(document.querySelectorAll(`.mini-chessboard`), el => {
-    let { fen, initialMove, flip, options } = el.dataset
+  [].forEach.call(document.querySelectorAll(`.mini-chessboard`), (el: HTMLElement) => {
+    const { fen, initialMove, flip, options } = el.dataset
+    let optionsJson = {}
     if (options) {
-      options = JSON.parse(options)
+      optionsJson = JSON.parse(options)
     }
-    new MiniChessboard({ el, fen, flip: flip === `true`, initialMove, ...options })
+    new MiniChessboard({ el, fen, flip: flip === `true`, initialMove, ...optionsJson })
   })
 
   // initialize global views/components
