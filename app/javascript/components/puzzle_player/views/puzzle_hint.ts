@@ -1,9 +1,9 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
+import { dispatch, subscribe } from '@blitz/store'
+import { UciMove } from '@blitz/types'
 import { PuzzleState } from '../puzzle_source'
-import { dispatch, subscribe } from '../../../store'
-import { UciMove } from '../../../types'
 
 const comboDroppedAfterMs = 7_000
 const hintDelay = 750
@@ -16,6 +16,7 @@ export default class PuzzleHint extends Backbone.View<Backbone.Model> {
   private current: PuzzleState
   private timeout = 0
 
+  // @ts-ignore
   get el(): HTMLElement {
     return document.querySelector(`.puzzle-hint`)
   }

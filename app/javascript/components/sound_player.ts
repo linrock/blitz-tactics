@@ -29,7 +29,8 @@ export default class SoundPlayer extends Backbone.View<Backbone.Model> {
     }
   }
 
-  get el() {
+  // @ts-ignore
+  get el(): HTMLElement {
     return document.querySelector(`.main-header`)
   }
 
