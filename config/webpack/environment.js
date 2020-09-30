@@ -1,8 +1,10 @@
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
 const { environment } = require('@rails/webpacker')
+const path = require('path');
 
 environment.config.resolve.alias = {
-  jquery: 'backbone.native'
+  'jquery': 'backbone.native',
+  '@blitz': path.resolve(__dirname, '../../app/javascript'),
 }
 
 environment.loaders.append('typescript', {

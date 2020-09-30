@@ -1,8 +1,8 @@
 import FastClick from 'fastclick'
 
-import SoundPlayer from '../components/sound_player'
-import MiniChessboard from '../components/chessboard/mini_chessboard'
-import routes from '../routes'
+import SoundPlayer from '@blitz/components/sound_player'
+import MiniChessboard from '@blitz/components/chessboard/mini_chessboard'
+import routes from '@blitz/routes'
 
 import '../stylesheets/main_header.sass'
 import '../stylesheets/responsive.sass'
