@@ -1,12 +1,9 @@
 import Backbone from 'backbone'
 
 import { dispatch, subscribe } from '@blitz/store'
+import { InfinityPuzzleDifficulty } from '../index'
 
-export default class SetDifficulty extends Backbone.View<Backbone.Model> {
-
-  get el(): HTMLElement {
-    return document.querySelector(`.difficulties`)
-  }
+export default class SetDifficulty extends Backbone.View {
 
   events(): Backbone.EventsHash {
     return {
@@ -15,12 +12,13 @@ export default class SetDifficulty extends Backbone.View<Backbone.Model> {
   }
 
   public initialize() {
+    this.el = document.querySelector(`.difficulties`)
     subscribe({
       'difficulty:set': difficulty => this.highlight(difficulty)
     })
   }
 
-  highlight(difficulty) {
+  highlight(difficulty: InfinityPuzzleDifficulty) {
     const selectedEl = this.el.querySelector(`.selected`)
     if (selectedEl) {
       selectedEl.classList.remove(`selected`)

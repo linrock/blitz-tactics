@@ -1,23 +1,24 @@
-import PuzzlePlayer from '../../components/puzzle_player'
+import { infinityPuzzleSolved } from '@blitz/api/requests'
+import PuzzlePlayer from '@blitz/components/puzzle_player'
+import { dispatch, subscribe } from '@blitz/store'
+
 import NoMoreLeft from './views/no_more_left'
 import PuzzleStats from './views/puzzle_stats'
 import SetDifficulty from './views/set_difficulty'
-import { infinityPuzzleSolved } from '../../api/requests'
-import { dispatch, subscribe } from '../../store'
 
 import './style.sass'
 import './responsive.sass'
 
-type PuzzleDifficulty = 'easy' | 'medium' | 'hard' | 'insane'
+export type InfinityPuzzleDifficulty = 'easy' | 'medium' | 'hard' | 'insane'
 
 interface InfinityModeConfig {
-  difficulty?: PuzzleDifficulty
+  difficulty?: InfinityPuzzleDifficulty
   numSolved?: number
 }
 
 export interface InfinityPuzzleSolved {
   puzzle_id: number,
-  difficulty: PuzzleDifficulty
+  difficulty: InfinityPuzzleDifficulty
 }
 
 const apiPath = `/infinity/puzzles`
