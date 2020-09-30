@@ -1,8 +1,9 @@
-import PuzzlePlayer from '../../components/puzzle_player'
+import PuzzlePlayer from '@blitz/components/puzzle_player'
+import { ratedPuzzleAttempted } from '@blitz/api/requests'
+import { dispatch, subscribe } from '@blitz/store'
+import { moveToUci } from '@blitz/utils'
+
 import Sidebar from './views/sidebar'
-import { ratedPuzzleAttempted } from '../../api/requests'
-import { dispatch, subscribe } from '../../store'
-import { moveToUci } from '../../utils'
 
 import './style.sass'
 import './responsive.sass'
@@ -14,11 +15,11 @@ export default function RatedMode() {
   new Sidebar
 
   let gameStarted = false
-  let puzzleId
+  let puzzleId: number
   let moveSequence = []
-  let t0
+  let t0: number
 
-  const attemptPuzzle = (puzzleId, moveSequence) => {
+  const attemptPuzzle = (puzzleId: number, moveSequence: any[]) => {
     const elapsedTimeMs = +new Date() - t0
     const uciMoves = moveSequence.slice(1).map(m => moveToUci(m))
     ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs).then(data => {

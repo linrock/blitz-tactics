@@ -4,15 +4,21 @@
 
 import Backbone from 'backbone'
 
-import { dispatch, subscribe, subscribeOnce } from '../../../store'
+import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 
 export default class Sidebar extends Backbone.View {
+  private instructionsEl: HTMLElement
+  private playerRatingEl: HTMLElement
+  private nPuzzlesEl: HTMLElement
+  private movesAttemptedEl: HTMLElement
 
+  // @ts-ignore
   get el() {
     return document.querySelector(`.rated-sidebar`)
   }
 
-  get events() {
+  // @ts-ignore
+  get events(): Backbone.EventsHash {
     return {
       'click .start-button': () => dispatch(`puzzles:next`)
     }
@@ -25,12 +31,12 @@ export default class Sidebar extends Backbone.View {
     this.movesAttemptedEl = this.el.querySelector(`.moves-attempted`)
     subscribeOnce(`puzzles:next`, () => {
       this.instructionsEl.remove()
-      this.movesAttemptedEl.style = ``
+      this.movesAttemptedEl.style.display = ``
     })
     subscribe({
       'rated_puzzle:attempted': data => {
         this.playerRatingEl.textContent =
-          Math.round(data.rated_puzzle_attempt.post_user_rating)
+          String(Math.round(data.rated_puzzle_attempt.post_user_rating))
         this.nPuzzlesEl.textContent =
           data.user_rating.rated_puzzle_attempts_count
       },
@@ -45,13 +51,13 @@ export default class Sidebar extends Backbone.View {
     })
   }
 
-  addMoveAttempt(moveSan, className) {
+  private addMoveAttempt(moveSan: string, className: string) {
     const el = this.moveAttemptEl(moveSan, className)
     this.movesAttemptedEl.prepend(el)
     setTimeout(() => el.classList.remove(`invisible`), 0)
   }
 
-  moveAttemptEl(moveSan, className) {
+  private moveAttemptEl(moveSan: string, className: string): HTMLDivElement {
     const moveEl = document.createElement(`div`)
     moveEl.classList.add(`move-attempt`)
     moveEl.classList.add(`invisible`)
