@@ -1,8 +1,10 @@
-import { subscribe } from '../../../store'
+import { subscribe } from '@blitz/store'
 
 // Level name, next level, etc.
 //
 export default class LevelIndicator {
+  private levelNameEl: HTMLElement
+  private nextStageEl: HTMLElement
 
   get el() {
     return document.querySelector(`.under-board`)

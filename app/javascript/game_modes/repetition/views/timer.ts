@@ -1,11 +1,14 @@
-import { dispatch, subscribe } from '../../../store'
+import { dispatch, subscribe } from '@blitz/store'
 
 const updateInterval = 50
 
 // Amount of time spent on this round so far
 //
 export default class Timer {
-  timer = false
+  private timer?: number
+  private startTime: number
+  private timerEl: HTMLElement
+  private lapsEl: HTMLElement
 
   get el() {
     return document.querySelector(`.times`)
@@ -21,27 +24,27 @@ export default class Timer {
     })
   }
 
-  elapsedTimeMs() {
+  private elapsedTimeMs(): number {
     return ~~(Date.now() - this.startTime)
   }
 
-  formattedTime(integer) {
+  private formattedTime(integer: number): string {
     const minutes = ~~( integer / 60 )
     const seconds = integer % 60
     return `${minutes}:${("0" + seconds).slice(-2)}`
   }
 
-  formattedElapsedTime() {
+  private formattedElapsedTime(): string {
     return this.formattedTime(~~(this.elapsedTimeMs() / 1000))
   }
 
-  startTimer() {
+  private startTimer() {
     if (this.startTime || this.timer) {
       return
     }
     let lastElapsed
     this.startTime = Date.now()
-    this.timer = setInterval(() => {
+    this.timer = window.setInterval(() => {
       const elapsed = this.formattedElapsedTime()
       if (elapsed !== lastElapsed) {
         lastElapsed = elapsed
@@ -50,14 +53,14 @@ export default class Timer {
     }, updateInterval)
   }
 
-  stopTimer() {
+  private stopTimer() {
     if (this.timer) {
       clearInterval(this.timer)
-      this.timer = false
+      this.timer = undefined
     }
   }
 
-  nextLap() {
+  private nextLap() {
     if (this.elapsedTimeMs() === 0) {
       return
     }
@@ -65,11 +68,11 @@ export default class Timer {
     const lastLap =`<div>${this.formattedElapsedTime()}</div>`
     this.lapsEl.innerHTML = lastLap + this.lapsEl.innerHTML
     this.notify()
-    this.startTime = false
+    this.startTime = 0
     this.startTimer()
   }
 
-  notify() {
+  private notify() {
     dispatch(`round:complete`, this.elapsedTimeMs())
   }
 }

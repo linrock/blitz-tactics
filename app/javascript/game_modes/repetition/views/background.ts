@@ -1,8 +1,8 @@
-import { subscribe } from '../../../store'
+import { subscribe } from '@blitz/store'
 
 export default class Background {
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`body`)
   }
 

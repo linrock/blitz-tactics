@@ -1,8 +1,9 @@
-import { subscribe } from '../../../store'
+import { subscribe } from '@blitz/store'
 
 // Fastest 5 player round times in the sidebar
 
 export default class HighScores {
+  private scoresEl: HTMLElement
 
   get el() {
     return document.querySelector(`.high-scores`)
@@ -18,7 +19,7 @@ export default class HighScores {
     })
   }
 
-  template(playerName, time) {
+  private template(playerName: string, time: number): string {
     return `
       <div class="high-score">
         <div class="time">${time}</div>
@@ -29,11 +30,11 @@ export default class HighScores {
     `
   }
 
-  showHighScores() {
+  private showHighScores() {
     this.el.classList.remove(`invisible`)
   }
 
-  renderScores(scores) {
+  private renderScores(scores: [string, number][]) {
     let html = ``
     scores.forEach(([playerName, time]) => {
       html += this.template(playerName, time)

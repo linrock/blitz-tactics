@@ -1,4 +1,10 @@
-import PuzzlePlayer from '../../components/puzzle_player'
+import {
+  repetitionLevelAttempted,
+  repetitionLevelCompleted
+} from '@blitz/api/requests'
+import PuzzlePlayer from '@blitz/components/puzzle_player'
+import { dispatch, subscribe } from '@blitz/store'
+
 import Background from './views/background'
 import LevelIndicator from './views/level_indicator'
 import Onboarding from './views/onboarding'
@@ -6,11 +12,6 @@ import ProgressBar from './views/progress_bar'
 import Timer from './views/timer'
 import HighScores from './views/high_scores'
 import LevelStatus from './models/level_status'
-import {
-  repetitionLevelAttempted,
-  repetitionLevelCompleted
-} from '../../api/requests'
-import { dispatch, subscribe } from '../../store'
 
 import './style.sass'
 import './responsive.sass'
@@ -24,7 +25,8 @@ export default function RepetitionMode() {
   new Timer
 
   const level = new LevelStatus()
-  const levelPath = document.querySelector(".repetition-mode").dataset.level
+  const levelPath = (document.querySelector('.repetition-mode') as HTMLElement)
+    .dataset.level
 
   new PuzzlePlayer({
     shuffle: true,
