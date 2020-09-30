@@ -5,6 +5,8 @@ export type FEN = string
 
 export type UciMove = string
 
+export type MoveColor = 'w' | 'b'
+
 export type ChessMove = { // used by chess.js
   from: string
   to: string

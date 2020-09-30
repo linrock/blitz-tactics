@@ -1,19 +1,23 @@
 import Chess from 'chess.js'
 
-import StockfishEngine from '../../workers/stockfish_engine'
+import { dispatch, subscribe } from '@blitz/store'
+import { FEN, MoveColor } from '@blitz/types'
+import { uciToMove, getConfig } from '@blitz/utils'
+import StockfishEngine from '@blitz/workers/stockfish_engine'
+
 import InteractiveBoard from '../interactive_board'
 import Instructions from './views/instructions'
 import Actions from './views/actions'
-import { uciToMove, getConfig } from '../../utils'
-import { dispatch, subscribe } from '../../store'
 
 import './style.sass'
 
 const SEARCH_DEPTH = 15
-const START_FEN = `rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1`
-
+const START_FEN: FEN = `rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1`
 
 export default class PositionTrainer {
+  private depth: number
+  private engine: StockfishEngine
+  private currentFen: FEN
 
   constructor() {
     new InteractiveBoard
@@ -21,7 +25,7 @@ export default class PositionTrainer {
     if (this.computerColor === `w`) {
       dispatch(`board:flip`)
     }
-    this.depth = getConfig(`depth`) || SEARCH_DEPTH
+    this.depth = parseInt(getConfig(`depth`), 10) || SEARCH_DEPTH
     this.engine = new StockfishEngine
     this.setDebugHelpers()
     dispatch(`fen:set`, this.initialFen)
@@ -29,28 +33,29 @@ export default class PositionTrainer {
     new Actions()
   }
 
-  get initialFen() {
+  private get initialFen(): FEN {
     let fen = getConfig(`fen`) || START_FEN
     return fen.length === 4 ? `${fen} - -` : fen
   }
 
-  get computerColor() {
+  private get computerColor(): MoveColor {
     return this.initialFen.indexOf(`w`) > 0 ? `b` : `w`
   }
 
-  setDebugHelpers() {
-    window.analyzeFen = (fen, depth) => {
+  private setDebugHelpers() {
+    (window as any).analyzeFen = (fen: FEN, depth: number) => {
       this.engine.analyze(fen, { multipv: 1, depth })
     }
   }
 
-  isComputersTurn(fen) {
+  private isComputersTurn(fen: FEN): boolean {
     return fen.indexOf(` ${this.computerColor} `) > 0
   }
 
-  listenForEvents() {
+  private listenForEvents() {
     subscribe({
       'position:reset': () => {
+        console.log('wtf')
         dispatch(`fen:set`, this.initialFen)
       },
 
@@ -77,7 +82,7 @@ export default class PositionTrainer {
     })
   }
 
-  notifyIfGameOver(fen) {
+  private notifyIfGameOver(fen: FEN) {
     let c = new Chess
     c.load(fen)
     if (!c.game_over()) {

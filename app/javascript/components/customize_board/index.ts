@@ -21,6 +21,11 @@ const boardStyles = new BoardStyles()
 export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
   private colorPicker: any
 
+  // @ts-ignore
+  get el() {
+    return document.querySelector('.customize-board')
+  }
+
   private get styleEl(): HTMLElement {
     return this.el.querySelector(`style`)
   }
@@ -35,7 +40,6 @@ export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
   }
 
   initialize() {
-    this.el = document.querySelector('.customize-board')
     new Chessboard()
     dispatch(`fen:set`, `1Q6/8/8/8/8/2K5/k7/8 b - - 13 62`)
     dispatch(`move:highlight`, { from: `a3`, to: `a2` })

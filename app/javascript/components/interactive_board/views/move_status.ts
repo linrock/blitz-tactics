@@ -1,4 +1,4 @@
-import { subscribe } from '../../../store'
+import { subscribe } from '@blitz/store'
 
 const perfectTiming = 2500
 const greatTiming = 5000

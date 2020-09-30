@@ -1,20 +1,23 @@
 // action buttons under the board - reset position
 
-import { dispatch } from '../../../store'
+import Backbone from 'backbone'
+
+import { dispatch } from '@blitz/store'
 
 export default class Actions extends Backbone.View {
 
+  // @ts-ignore
   get el() {
-    return `.actions`
+    return document.querySelector('.actions')
   }
 
-  get events() {
+  events(): Backbone.EventsHash {
     return {
       'click .restart' : `_resetPosition`
     }
   }
 
-  _resetPosition() {
+  private _resetPosition() {
     dispatch(`position:reset`)
   }
 }

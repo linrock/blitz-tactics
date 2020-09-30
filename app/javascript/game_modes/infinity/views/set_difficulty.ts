@@ -5,6 +5,11 @@ import { InfinityPuzzleDifficulty } from '../index'
 
 export default class SetDifficulty extends Backbone.View {
 
+  // @ts-ignore
+  get el() {
+    return document.querySelector(`.difficulties`)
+  }
+
   events(): Backbone.EventsHash {
     return {
       'click [data-difficulty]': `_selectDifficulty`
@@ -12,7 +17,6 @@ export default class SetDifficulty extends Backbone.View {
   }
 
   public initialize() {
-    this.el = document.querySelector(`.difficulties`)
     subscribe({
       'difficulty:set': difficulty => this.highlight(difficulty)
     })
