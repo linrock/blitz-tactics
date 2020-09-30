@@ -34,17 +34,17 @@ export default class PiecePromotionModal extends Backbone.View<Backbone.Model> {
     })
   }
 
-  show() {
+  private show() {
     this.el.style.display = `block`
     Mousetrap.bind(`esc`, () => this.hide())
   }
 
-  hide() {
+  private hide() {
     this.el.style.display = `none`
     Mousetrap.unbind(`esc`)
   }
 
-  _selectPiece(e, childElement: HTMLElement) {
+  private _selectPiece(e, childElement: HTMLElement) {
     const chosenPiece = childElement.dataset.piece
     const move: ChessMove = Object.assign({}, this.moveIntent, {
       promotion: chosenPiece

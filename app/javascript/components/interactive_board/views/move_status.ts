@@ -22,7 +22,7 @@ export default class MoveStatus {
     })
   }
 
-  renderSuccess() {
+  private renderSuccess() {
     const time = Date.now()
     const tDiff = time - this.timeSinceSuccess
     if (tDiff < perfectTiming) {
@@ -35,27 +35,27 @@ export default class MoveStatus {
     this.timeSinceSuccess = time
   }
 
-  renderFailure() {
+  private renderFailure() {
     this.renderFadingMessage(`<div class="fail">Try Again</div>`)
   }
 
-  renderAlmost() {
+  private renderAlmost() {
     this.renderFadingMessage(`<div class="almost">Almost</div>`)
   }
 
-  renderPerfect() {
+  private renderPerfect() {
     this.renderFadingMessage(`<div class="perfect">Perfect!</div>`)
   }
 
-  renderGreat() {
+  private renderGreat() {
     this.renderFadingMessage(`<div class="great">Great!</div>`)
   }
 
-  renderGood() {
+  private renderGood() {
     this.renderFadingMessage(`<div class="good">Good!</div>`)
   }
 
-  renderFadingMessage(html) {
+  private renderFadingMessage(html: string) {
     this.el.classList.remove(`fade-out`)
     this.el.innerHTML = html
     setTimeout(() => this.el.classList.add(`fade-out`), 50)

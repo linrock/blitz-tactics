@@ -1,9 +1,9 @@
 import Backbone from 'backbone'
 import SimpleColorPicker from 'simple-color-picker'
 
+import { dispatch } from '@blitz/store'
 import Chessboard from '../chessboard/chessboard'
 import BoardStyles from './board_styles'
-import { dispatch } from '../../store'
 
 import '../../../../vendor/assets/stylesheets/simple-color-picker.css'
 import './style.sass'

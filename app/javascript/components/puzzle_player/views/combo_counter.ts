@@ -1,6 +1,6 @@
 // Indicates # of successful moves in a row
 
-import { subscribe } from '../../../store'
+import { subscribe } from '@blitz/store'
 
 export default class ComboCounter {
   private counter = 0

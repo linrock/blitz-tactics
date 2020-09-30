@@ -2,12 +2,11 @@
 // and emits move events (move:success, move:almost, move:fail)
 
 import _ from 'underscore'
-import Backbone from 'backbone'
 
-import { ChessMove, Puzzle } from '../../types'
-import { uciToMove, moveToUci } from '../../utils'
-import { fetchPuzzles } from '../../api/requests'
-import { dispatch, subscribe } from '../../store'
+import { fetchPuzzles } from '@blitz/api/requests'
+import { dispatch, subscribe } from '@blitz/store'
+import { ChessMove, Puzzle } from '@blitz/types'
+import { uciToMove, moveToUci } from '@blitz/utils'
 import { PuzzleSourceOptions } from './index'
 import Puzzles from './puzzles'
 
