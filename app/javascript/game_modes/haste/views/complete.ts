@@ -1,10 +1,17 @@
 // show your current high scores at the end of a haste run
 
-import { subscribe } from '../../../store'
+import { subscribe } from '@blitz/store'
+
+/** Player name + player high score */
+type HighScore = [string, number]
 
 export default class Complete {
+  private timerEl: HTMLElement
+  private highScoreEl: HTMLElement
+  private highScoresEl: HTMLElement
+  private highScoresListEl: HTMLElement
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.haste-mode`)
   }
 
@@ -15,14 +22,14 @@ export default class Complete {
     this.highScoresListEl = this.highScoresEl.querySelector(`.list`)
     subscribe({
       'haste:complete': data => {
-        this.timerEl.style = `display: none`
+        this.timerEl.style.display = `none`
         this.showPersonalBest(data)
         this.showHighScores(data.high_scores)
       }
     })
   }
 
-  highScoreTemplate(playerName, score) {
+  private highScoreTemplate(playerName: string, score: number): string {
     return `
       <div class="high-score">
         <div class="score">${score}</div>
@@ -31,14 +38,14 @@ export default class Complete {
     `
   }
 
-  showPersonalBest({ score, best }) {
-    this.highScoreEl.style = ``
+  private showPersonalBest({ score, best }) {
+    this.highScoreEl.style.display = ``
     this.highScoreEl.querySelector(`.your-score .score`).textContent = score
     this.highScoreEl.querySelector(`.high-score .score`).textContent = best
     this.highScoreEl.classList.remove(`invisible`)
   }
 
-  showHighScores(scores) {
+  private showHighScores(scores: HighScore[]) {
     if (!scores || scores.length < 3) {
       return
     }
@@ -47,6 +54,6 @@ export default class Complete {
       html += this.highScoreTemplate(playerName, score)
     })
     this.highScoresListEl.innerHTML = html
-    this.highScoresEl.style = ``
+    this.highScoresEl.style.display = ``
   }
 }

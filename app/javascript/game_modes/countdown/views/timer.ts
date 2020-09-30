@@ -25,21 +25,20 @@ export default class Timer {
     })
   }
 
-  timeLeftMilliseconds() {
+  private timeLeftMilliseconds(): number {
     return this.initialTimeMs - (Date.now() - this.startTime) - this.lostTimeMs
   }
 
-  loseTime() {
+  private loseTime() {
     this.lostTimeMs += penaltyMs
     this.el.classList.add(`penalized`)
     setTimeout(() => this.el.classList.remove(`penalized`), 200)
   }
 
-  startTimer() {
+  private startTimer() {
     this.el.classList.remove(`stopped`)
     this.startTime = Date.now()
-    // @ts-ignore TODO fix setInterval type
-    this.timerInterval = setInterval(() => {
+    this.timerInterval = window.setInterval(() => {
       const timeLeft = this.timeLeftMilliseconds()
       if (timeLeft <= 0) {
         this.stopTimer()
@@ -50,17 +49,17 @@ export default class Timer {
     }, updateInterval)
   }
 
-  stopTimer() {
+  private stopTimer() {
     this.el.classList.add(`stopped`)
     clearInterval(this.timerInterval)
     this.displayTimeLeft(`0:00`)
   }
 
-  displayTimeLeft(timeLeftText) {
+  private displayTimeLeft(timeLeftText: string) {
     this.el.textContent = timeLeftText
   }
 
-  notifyCompletion() {
+  private notifyCompletion() {
     dispatch("timer:stopped")
   }
 }
