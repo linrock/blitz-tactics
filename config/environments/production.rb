@@ -68,6 +68,12 @@ Rails.application.configure do
     host: "blitztactics.com"
   }
 
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+    api_key: ENV['MAILGUN_API_KEY'],
+    domain: 'blitztactics.com',
+  }
+
   # config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
