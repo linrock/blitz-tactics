@@ -3,6 +3,8 @@ import { dispatch } from '@blitz/store'
 import { FEN, UciMove } from '@blitz/types'
 import { uciToMove } from '@blitz/utils'
 
+import './style.sass'
+
 // The `puzzle_data` field in the puzzle data expected from the page
 interface PuzzleMovesData {
   fen: FEN,

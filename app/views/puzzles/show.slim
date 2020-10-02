@@ -1,14 +1,19 @@
 .container
-  h2
-    | Puzzle #{@puzzle.puzzle_id}
-  div
-    a(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
-      | View on Lichess
+  .left
+    .instructions.invisible= @puzzle.instructions
+    = render partial: "puzzle_player/board_area"
+    .actions
+      button.button.restart Reset position
 
-  = render partial: "puzzle_player/board_area"
+  .right
+    h2
+      | Puzzle #{@puzzle.puzzle_id}
+    div
+      a.source(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
+        | View on Lichess
 
-  .fen= @puzzle.puzzle_data["fen"]
-  div= @puzzle.metadata
+    .fen= @puzzle.puzzle_data["fen"]
+    div= @puzzle.metadata
 
 script#puzzle-data(type="application/json")
   = @puzzle.to_json.html_safe

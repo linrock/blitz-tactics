@@ -146,6 +146,10 @@ class Puzzle < ActiveRecord::Base
     end
   end
 
+  def instructions
+    "White to play"
+  end
+
   private
 
   # Hack for matching puzzle ids with lichess puzzle ids

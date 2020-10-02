@@ -21,6 +21,7 @@ interface PuzzlePlayerOptions extends PuzzleSourceOptions {
   noCombo?: boolean,
 }
 
+/** The puzzle player used in the various game modes */
 export default class PuzzlePlayer {
   constructor(options: PuzzlePlayerOptions = {}) {
     new PuzzleSource(options)
