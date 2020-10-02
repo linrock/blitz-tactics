@@ -1410,7 +1410,7 @@ CREATE INDEX index_positions_on_user_id ON public.positions USING btree (user_id
 -- Name: index_puzzles_on_puzzle_data_hash; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_puzzles_on_puzzle_data_hash ON public.puzzles USING btree (puzzle_data_hash);
+CREATE INDEX index_puzzles_on_puzzle_data_hash ON public.puzzles USING btree (puzzle_data_hash);
 
 
 --
