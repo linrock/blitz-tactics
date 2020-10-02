@@ -5,8 +5,9 @@ import CountdownMode from './game_modes/countdown'
 import HasteMode from './game_modes/haste'
 import RatedMode from './game_modes/rated'
 
-import PositionTrainer from './components/position_trainer'
 import CustomizeBoard from './components/customize_board'
+import PositionTrainer from './components/position_trainer'
+import PuzzlePage from './components/puzzle_page'
 
 interface RouteMap {
   [routeKey: string]: { new(): void } | (() => void)
@@ -20,6 +21,9 @@ const routes: RouteMap = {
   "game_modes/infinity#index": InfinityMode,
   "game_modes/repetition#index": RepetitionMode,
   "game_modes/rated#index": RatedMode,
+
+  // puzzle pages
+  "puzzles#show": PuzzlePage,
 
   // position trainers
   "pages#position": PositionTrainer,

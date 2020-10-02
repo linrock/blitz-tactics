@@ -5,5 +5,10 @@
     a(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
       | View on Lichess
 
+  = render partial: "puzzle_player/board_area"
+
   .fen= @puzzle.puzzle_data["fen"]
   div= @puzzle.metadata
+
+script#puzzle-data(type="application/json")
+  = @puzzle.to_json.html_safe

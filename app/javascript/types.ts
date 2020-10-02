@@ -29,3 +29,10 @@ export type Puzzle = {
   lines: PuzzleLines
   initialMove: InitialMove
 }
+
+// For bootstrapping the page with JS data and query params
+export interface BlitzConfig {
+  levelPath?: string
+  position?: object
+  loggedIn?: boolean
+}

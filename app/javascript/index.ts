@@ -5,12 +5,7 @@ import FastClick from 'fastclick'
 import SoundPlayer from '@blitz/components/sound_player'
 import MiniChessboard from '@blitz/components/chessboard/mini_chessboard'
 import routes from '@blitz/routes'
-
-interface BlitzConfig {
-  levelPath?: string
-  position?: object
-  loggedIn?: boolean
-}
+import { BlitzConfig } from '@blitz/types'
 
 const blitz: BlitzConfig = {};
 (<any>window).blitz = blitz
