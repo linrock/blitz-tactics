@@ -1,6 +1,6 @@
-declare var blitz: any
-
 import { UciMove, ChessMove, BlitzConfig } from './types'
+
+declare var blitz: BlitzConfig
 
 export const uciToMove = (uci: UciMove): ChessMove => {
   const m: ChessMove = {

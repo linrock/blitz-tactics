@@ -3,6 +3,7 @@ import { dispatch } from '@blitz/store'
 import { FEN, UciMove } from '@blitz/types'
 import { uciToMove } from '@blitz/utils'
 
+// The `puzzle_data` field in the puzzle data expected from the page
 interface PuzzleMovesData {
   fen: FEN,
   initial_move: {
@@ -12,6 +13,7 @@ interface PuzzleMovesData {
   lines: any,
 }
 
+// This is expected to be rendered in the page upon pageload
 interface PuzzleData {
   id: number,
   metadata: any,

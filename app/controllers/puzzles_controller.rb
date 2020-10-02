@@ -3,6 +3,7 @@
 class PuzzlesController < ApplicationController
 
   def index
+    @puzzles = Puzzle.order('id DESC').limit(9)
   end
 
   def show

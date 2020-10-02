@@ -35,6 +35,14 @@ module MiniboardHelper
     render partial: "static/snippets/miniboard_link", locals: options
   end
 
+  def linked_puzzle_miniboard(fen, puzzle_id)
+    render partial: "static/snippets/miniboard_link", locals: {
+      fen: fen,
+      flip: fen.include?(" b "),
+      path: "/p/#{puzzle_id}"
+    }
+  end
+
   # for static routes defined in position_routes.txt
   def linked_miniboard_route(path)
     route = StaticRoutes.new.route_map[path]
