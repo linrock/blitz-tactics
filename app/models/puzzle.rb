@@ -30,7 +30,7 @@ class Puzzle < ActiveRecord::Base
 
   # Populate puzzles database from Lichess puzzles and try to map them
   # 1-to-1 with lichess puzzle ids
-  def self.populate_from_lichess_puzzle_json_file(
+  def self.populate_from_lichess_puzzle_json_files(
     json_puzzle_files = Dir.glob(Rails.root.join("data/lichess/[0-9]*.json"))
   )
     if Puzzle.count > 0
@@ -45,7 +45,7 @@ class Puzzle < ActiveRecord::Base
     end
     sorted_json_puzzle_filenames.each do |json_puzzle_file|
       puzzle_json_data = JSON.parse(open(json_puzzle_file).read)
-      puts puzzle_json_data
+      # puts puzzle_json_data
       lichess_puzzle_id = puzzle_json_data["metadata"]["id"]
       if upcoming_lichess_puzzle_id == lichess_puzzle_id
         # Do nothing. We expected to see this lichess puzzle id
@@ -63,21 +63,23 @@ class Puzzle < ActiveRecord::Base
           upcoming_lichess_puzzle_id += 1
         end
       end
-      puts "Lichess puzzle: #{lichess_puzzle_id}"
       # By now, the upcoming JSON data is from the expected lichess
       # puzzle id.
-      created_puzzle = Puzzle.create!({
-        puzzle_id: lichess_puzzle_id,
-        puzzle_data: puzzle_json_data["puzzle_data"],
-        metadata: puzzle_json_data["metadata"].merge({
-          "source": "lichess"
-        }),
-        puzzle_data_hash: Puzzle.data_hash(puzzle_json_data)
-      })
-      upcoming_lichess_puzzle_id = lichess_puzzle_id + 1
-      if Puzzle.order('id DESC').first.id != lichess_puzzle_id
-        puts "Error matching puzzle ids with lichess puzzle ids"
-        return
+      ActiveRecord::Base.logger.silence do
+        created_puzzle = Puzzle.create!({
+          puzzle_id: lichess_puzzle_id,
+          puzzle_data: puzzle_json_data["puzzle_data"],
+          metadata: puzzle_json_data["metadata"].merge({
+            "source": "lichess"
+          }),
+          puzzle_data_hash: Puzzle.data_hash(puzzle_json_data)
+        })
+        puts "Created puzzle from Lichess puzzle #{lichess_puzzle_id}"
+        upcoming_lichess_puzzle_id = lichess_puzzle_id + 1
+        if Puzzle.order('id DESC').first.id != lichess_puzzle_id
+          puts "Error matching puzzle ids with lichess puzzle ids"
+          return
+        end
       end
     end
     if sorted_json_puzzle_filenames == Puzzle.count
