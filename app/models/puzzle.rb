@@ -1,3 +1,10 @@
+# Represents a chess puzzle. Puzzles can be viewed online from their
+# corresponding link based on their puzzle_id:
+# https://blitztactics.com/p/:puzzle_id
+#
+#  puzzle_data:
+#    { "fen": FEN, "initial_move": (string | null), "lines": { [uci_move: "lines"] } }
+
 class Puzzle < ActiveRecord::Base
   # Each puzzle is uniquely hashed based on their puzzle data
   validates :puzzle_data_hash, presence: true

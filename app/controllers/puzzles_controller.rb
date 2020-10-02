@@ -7,6 +7,9 @@ class PuzzlesController < ApplicationController
 
   def show
     @puzzle = Puzzle.find_by_puzzle_id(params[:puzzle_id])
+    unless @puzzle
+      render "not_found" and return
+    end
   end
 
   def edit

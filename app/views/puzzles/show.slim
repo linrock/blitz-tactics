@@ -1,0 +1,9 @@
+.container
+  h2
+    | Puzzle #{@puzzle.puzzle_id}
+  div
+    a(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
+      | View on Lichess
+
+  .fen= @puzzle.puzzle_data["fen"]
+  div= @puzzle.metadata

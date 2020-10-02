@@ -1,4 +1,5 @@
 # Loads puzzles from .json data files in the ./data dir into the DB
+#
 class PuzzleLoader
   COUNTDOWN_PUZZLE_SOURCE = "data/countdowns/countdown-*.json"
   SPEEDRUN_PUZZLE_SOURCE = "data/speedruns/speedrun-*.json"
