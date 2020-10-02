@@ -20,8 +20,8 @@ SET default_table_access_method = heap;
 CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -490,6 +490,41 @@ CREATE SEQUENCE public.positions_id_seq
 --
 
 ALTER SEQUENCE public.positions_id_seq OWNED BY public.positions.id;
+
+
+--
+-- Name: puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.puzzles (
+    id bigint NOT NULL,
+    puzzle_id character varying NOT NULL,
+    puzzle_data jsonb DEFAULT '{}'::jsonb NOT NULL,
+    metadata jsonb DEFAULT '{}'::jsonb NOT NULL,
+    notes text,
+    puzzle_data_hash character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.puzzles_id_seq OWNED BY public.puzzles.id;
 
 
 --
@@ -967,6 +1002,13 @@ ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.po
 
 
 --
+-- Name: puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzles ALTER COLUMN id SET DEFAULT nextval('public.puzzles_id_seq'::regclass);
+
+
+--
 -- Name: rated_puzzle_attempts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1154,6 +1196,14 @@ ALTER TABLE ONLY public.levels
 
 ALTER TABLE ONLY public.positions
     ADD CONSTRAINT positions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: puzzles puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzles
+    ADD CONSTRAINT puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -1357,6 +1407,20 @@ CREATE INDEX index_positions_on_user_id ON public.positions USING btree (user_id
 
 
 --
+-- Name: index_puzzles_on_puzzle_data_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_puzzles_on_puzzle_data_hash ON public.puzzles USING btree (puzzle_data_hash);
+
+
+--
+-- Name: index_puzzles_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_puzzles_on_puzzle_id ON public.puzzles USING btree (puzzle_id);
+
+
+--
 -- Name: index_rated_puzzle_attempts_on_rated_puzzle_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1507,6 +1571,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190220052623'),
 ('20190221152057'),
 ('20190221152105'),
-('20190221152109');
+('20190221152109'),
+('20201002022940');
 
 
