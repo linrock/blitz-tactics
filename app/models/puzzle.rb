@@ -46,7 +46,7 @@ class Puzzle < ActiveRecord::Base
     sorted_json_puzzle_filenames.each do |json_puzzle_file|
       puzzle_json_data = JSON.parse(open(json_puzzle_file).read)
       puts puzzle_json_data
-      lichess_puzzle_id = puzzle_json_data["puzzle"]["id"]
+      lichess_puzzle_id = puzzle_json_data["metadata"]["id"]
       if upcoming_lichess_puzzle_id == lichess_puzzle_id
         # Do nothing. We expected to see this lichess puzzle id
       elsif upcoming_lichess_puzzle_id < lichess_puzzle_id 
@@ -68,16 +68,11 @@ class Puzzle < ActiveRecord::Base
       # puzzle id.
       created_puzzle = Puzzle.create!({
         puzzle_id: lichess_puzzle_id,
-        puzzle_data: {
-          fen: puzzle_json_data["puzzle"]["fen"],
-          initial_move: puzzle_json_data["puzzle"]["initialMove"],
-          lines: puzzle_json_data["puzzle"]["lines"]
-        },
-        metadata: {
-          source: "lichess",
-          lichess_puzzle_id: lichess_puzzle_id
-        },
-        puzzle_data_hash: Puzzle.data_hash(puzzle_json_data),
+        puzzle_data: puzzle_json_data["puzzle_data"],
+        metadata: puzzle_json_data["metadata"].merge({
+          "source": "lichess"
+        }),
+        puzzle_data_hash: Puzzle.data_hash(puzzle_json_data)
       })
       upcoming_lichess_puzzle_id = lichess_puzzle_id + 1
       if Puzzle.order('id DESC').first.id != lichess_puzzle_id

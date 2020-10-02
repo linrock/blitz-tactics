@@ -4,7 +4,8 @@
     "tsc": "./node_modules/.bin/tsc --noEmit",
     "eye:load": "eye l eye.rb",
     "eye:info": "eye i",
-    "puzzles:load": "rails runner 'PuzzleLoader.create_puzzles'"
+    "puzzles:load": "rails runner 'PuzzleLoader.create_puzzles'",
+    "puzzles:load:lichess": "rails runner 'Puzzle.populate_from_lichess_puzzle_json_files'"
   },
   "dependencies": {
     "@rails/webpacker": "5.2.1",
