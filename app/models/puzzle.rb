@@ -28,6 +28,26 @@ class Puzzle < ActiveRecord::Base
     })
   end
 
+  # Check to see if the lichess puzzles were loaded as expected
+  def self.verify_db_lichess_puzzles
+    if Puzzle.count != 125262
+      puts "Expected #{125262} puzzles. Got #{Puzzle.count}"
+      return false
+    end
+    first_lichess_puzzle_id = Puzzle.order('id ASC').first.puzzle_id
+    last_lichess_puzzle_id = Puzzle.order('id ASC').last.puzzle_id
+    if first_lichess_puzzle_id != "1"
+      puts "Didn't expect #{first_lichess_puzzle_id} to be the first puzzle"
+      return false
+    end
+    if last_lichess_puzzle_id !=  "125272"
+      puts "Didn't expect #{last_lichess_puzzle_id} to be the last puzzle"
+      return false
+    end
+    puts "Found #{Puzzle.count} puzzles out of #{125262} expected"
+    return true
+  end
+
   # Populate puzzles database from Lichess puzzles and try to map them
   # 1-to-1 with lichess puzzle ids
   def self.populate_from_lichess_puzzle_json_files(
