@@ -47,6 +47,12 @@ Rails.application.routes.draw do
   get '/scoreboard'              => 'pages#scoreboard'
   get '/about'                   => 'pages#about'
 
+  # puzzle pages
+  get '/puzzles'                 => 'puzzles#index'
+  get '/p/:puzzle_id'            => 'puzzles#show'
+  get '/p/:puzzle_id/edit'       => 'puzzles#edit'
+  put '/p/:puzzle_id'            => 'puzzles#update'
+
   # pre-defined position trainer routes
   static_routes = StaticRoutes.new
   static_routes.route_map!
