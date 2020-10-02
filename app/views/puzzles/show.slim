@@ -12,8 +12,14 @@
       a.source(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
         | View on Lichess
 
-    .fen= @puzzle.puzzle_data["fen"]
-    div= @puzzle.metadata
+    .puzzle-info
+      .fen= @puzzle.puzzle_data["fen"]
+
+      table
+        - @puzzle.metadata.each do |k, v|
+          tr
+            td= k
+            td= v.to_s
 
 script#puzzle-data(type="application/json")
   = @puzzle.to_json.html_safe

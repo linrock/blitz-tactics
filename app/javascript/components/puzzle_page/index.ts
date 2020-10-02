@@ -28,7 +28,10 @@ const newChessboardFromPuzzleMovesData = (puzzleMovesData: PuzzleMovesData) => {
   if (puzzleMovesData.initial_move) {
     const uciMove = uciToMove(puzzleMovesData.initial_move.uci)
     console.log(`trying move: ${JSON.stringify(uciMove)}`)
-    setTimeout(() => dispatch('move:make', uciMove, { opponent: true }), 500)
+    setTimeout(() => {
+      dispatch('move:make', uciMove, { opponent: true });
+      (document.querySelector('.instructions') as HTMLDivElement).classList.remove('invisible')
+    }, 500);
   }
 }
 

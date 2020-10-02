@@ -147,7 +147,7 @@ class Puzzle < ActiveRecord::Base
   end
 
   def instructions
-    "White to play"
+    "White to move"
   end
 
   private
