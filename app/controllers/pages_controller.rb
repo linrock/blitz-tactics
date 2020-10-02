@@ -18,6 +18,8 @@ class PagesController < ApplicationController
     @repetition_level = @user.highest_repetition_level_unlocked
     @countdown_level_score = @user.best_countdown_score(@countdown_level)
     @user_rating = @user.user_rating&.rating_string || "Unrated"
+
+    render "/home"
   end
 
   def positions
