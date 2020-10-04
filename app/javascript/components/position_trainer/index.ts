@@ -11,6 +11,8 @@ import Actions from './views/actions'
 
 import './style.sass'
 
+type GameResult = '1-0' | '0-1' | '1/2-1/2'
+
 const SEARCH_DEPTH = 15
 const START_FEN: FEN = `rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1`
 
@@ -55,7 +57,6 @@ export default class PositionTrainer {
   private listenForEvents() {
     subscribe({
       'position:reset': () => {
-        console.log('wtf')
         dispatch(`fen:set`, this.initialFen)
       },
 
@@ -88,7 +89,7 @@ export default class PositionTrainer {
     if (!c.game_over()) {
       return
     }
-    let result
+    let result: GameResult
     if (c.in_draw()) {
       result = `1/2-1/2`
     } else if (c.turn() === `b`) {

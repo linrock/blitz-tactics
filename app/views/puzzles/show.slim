@@ -1,7 +1,8 @@
 .container
   .left
-    .instructions.invisible= @puzzle.instructions
-    = render partial: "puzzle_player/board_area"
+    .board-area-container
+      = render partial: "puzzle_player/above_board"
+      = render partial: "puzzle_player/board_area"
     .actions
       button.button.restart Reset position
 
