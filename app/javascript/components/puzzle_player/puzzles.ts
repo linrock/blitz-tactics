@@ -1,7 +1,7 @@
 // de-duplicates puzzles
 
-import { shuffle } from '../../utils'
-import { Puzzle } from '../../types'
+import { Puzzle } from '@blitz/types'
+import { shuffle } from '@blitz/utils'
 
 export default class Puzzles {
   private puzzleList: Array<Puzzle> = []

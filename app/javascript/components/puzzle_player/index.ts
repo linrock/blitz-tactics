@@ -1,10 +1,12 @@
+import { subscribe } from '@blitz/store'
+import { trackEvent } from '@blitz/utils'
 import InteractiveBoard from '../interactive_board'
 import ComboCounter from './views/combo_counter'
 import Instructions from './views/instructions'
 import PuzzleHint from './views/puzzle_hint'
 import PuzzleSource from './puzzle_source'
-import { subscribe } from '../../store'
-import { trackEvent } from '../../utils'
+
+import './style.sass'
 
 export interface PuzzleSourceOptions {
   shuffle?: boolean,

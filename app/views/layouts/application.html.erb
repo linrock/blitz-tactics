@@ -6,12 +6,17 @@
   <meta name="keywords" content="chess tactics server, chess puzzles, tactics trainer, chess tactics trainer">
   <meta name="viewport" content="width=700, user-scalable=yes">
 
-  <%= javascript_pack_tag 'application', defer: true %>
+  <%# Using 2 stylesheets here because webpacker is loading styles out-of-order %>
   <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= stylesheet_pack_tag 'application', media: 'all' %>
+
+  <%= javascript_pack_tag 'application', defer: true %>
+
   <% unless Rails.env.test? %>
     <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Open+Sans|Orbitron' %>
   <% end %>
-  <%= favicon_link_tag    'favicon.ico' %>
+
+  <%= favicon_link_tag 'favicon.ico' %>
   <%= csrf_meta_tags %>
 </head>
 

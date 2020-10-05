@@ -1,5 +1,5 @@
-import _ from 'underscore'
 import Backbone from 'backbone'
+import _ from 'underscore'
 
 interface EventMap {
   [event: string]: Backbone.EventHandler

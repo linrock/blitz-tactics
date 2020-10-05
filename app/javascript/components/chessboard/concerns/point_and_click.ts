@@ -1,7 +1,7 @@
 // Point and click pieces to select and move them
 
-import { ChessMove } from '../../../types'
-import { subscribe } from '../../../store'
+import { subscribe } from '@blitz/store'
+import { ChessMove } from '@blitz/types'
 import Chessboard from '../chessboard'
 
 export default class PointAndClick {

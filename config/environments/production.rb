@@ -1,6 +1,6 @@
 Rails.application.configure do
   # Verifies that versions and hashed value of the package contents in the project's package.json
-config.webpacker.check_yarn_integrity = false
+  config.webpacker.check_yarn_integrity = false
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -63,6 +63,17 @@ config.webpacker.check_yarn_integrity = false
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "blitz_tactics_#{Rails.env}"
+
+  config.action_mailer.default_url_options = {
+    host: "blitztactics.com"
+  }
+
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+    api_key: ENV['MAILGUN_API_KEY'],
+    domain: 'blitztactics.com',
+  }
+
   # config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.

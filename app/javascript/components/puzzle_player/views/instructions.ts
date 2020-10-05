@@ -1,6 +1,6 @@
 // white to move
 
-import { subscribe, subscribeOnce } from '../../../store'
+import { subscribeOnce } from '@blitz/store'
 
 export default class Instructions {
 

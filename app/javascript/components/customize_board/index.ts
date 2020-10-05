@@ -1,9 +1,12 @@
 import Backbone from 'backbone'
 import SimpleColorPicker from 'simple-color-picker'
 
+import { dispatch } from '@blitz/store'
 import Chessboard from '../chessboard/chessboard'
 import BoardStyles from './board_styles'
-import { dispatch } from '../../store'
+
+import '../../../../vendor/assets/stylesheets/simple-color-picker.css'
+import './style.sass'
 
 const defaultColors = {
   light: '#F3E4CF',
@@ -18,7 +21,8 @@ const boardStyles = new BoardStyles()
 export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
   private colorPicker: any
 
-  get el(): HTMLElement {
+  // @ts-ignore
+  get el() {
     return document.querySelector('.customize-board')
   }
 

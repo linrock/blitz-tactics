@@ -2,8 +2,8 @@ import Backbone from 'backbone'
 import Mousetrap from 'mousetrap'
 import Chess from 'chess.js'
 
-import { FEN, ChessMove } from '../../../types'
-import { dispatch, subscribe } from '../../../store'
+import { dispatch, subscribe } from '@blitz/store'
+import { FEN, ChessMove } from '@blitz/types'
 
 // When you make a pawn move that requires pawn promotion,
 // this is what shows up
@@ -13,6 +13,7 @@ export default class PiecePromotionModal extends Backbone.View<Backbone.Model> {
   private moveIntent: ChessMove
   private readonly cjs = new Chess
 
+  // @ts-ignore
   get el(): HTMLElement {
     return document.querySelector(`.piece-promotion-modal-container`)
   }
@@ -33,17 +34,17 @@ export default class PiecePromotionModal extends Backbone.View<Backbone.Model> {
     })
   }
 
-  show() {
+  private show() {
     this.el.style.display = `block`
     Mousetrap.bind(`esc`, () => this.hide())
   }
 
-  hide() {
+  private hide() {
     this.el.style.display = `none`
     Mousetrap.unbind(`esc`)
   }
 
-  _selectPiece(e, childElement) {
+  private _selectPiece(e, childElement: HTMLElement) {
     const chosenPiece = childElement.dataset.piece
     const move: ChessMove = Object.assign({}, this.moveIntent, {
       promotion: chosenPiece
