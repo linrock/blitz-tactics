@@ -22,7 +22,6 @@ class GameModes::SpeedrunController < ApplicationController
     @puzzles = Puzzle.where(id: lichess_puzzle_ids).sort_by do |p|
       lichess_puzzle_ids.index(p.id)
     end
-    render "puzzles/index"
   end
 
   # user has completed a speedrun
