@@ -59,8 +59,7 @@ const newChessboardFromPuzzleMovesData = (puzzleMovesData: PuzzleMovesData) => {
       } else if (attempt === `retry`) {
         dispatch(`move:almost`, move)
         return
-      }
-      if (!attempt) {
+      } else if (!attempt) {
         dispatch(`move:fail`, move)
         return
       }

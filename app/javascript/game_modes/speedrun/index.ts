@@ -11,7 +11,7 @@ import Timer from './views/timer'
 import './style.sass'
 import './responsive.sass'
 
-const apiPath = `/speedrun/puzzles`
+const apiPath = `/speedrun/puzzles.json`
 
 export default function SpeedrunMode() {
   new Sidebar

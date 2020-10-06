@@ -11,7 +11,7 @@ import CountdownComplete from './views/countdown_complete'
 import './style.sass'
 import './responsive.sass'
 
-const apiPath = `/countdown/puzzles`
+const apiPath = `/countdown/puzzles.json`
 
 export default function CountdownMode() {
   new Sidebar

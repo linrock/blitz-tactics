@@ -10,12 +10,13 @@ Rails.application.routes.draw do
 
   # speedrun mode
   get '/speedrun'                => 'game_modes/speedrun#index'
+  get '/speedrun/puzzles.json'   => 'game_modes/speedrun#puzzles_json'
   get '/speedrun/puzzles'        => 'game_modes/speedrun#puzzles'
   post '/speedrun'               => 'game_modes/speedrun#complete'
 
   # countdown mode
   get '/countdown'               => 'game_modes/countdown#index'
-  get '/countdown/puzzles'       => 'game_modes/countdown#puzzles'
+  get '/countdown/puzzles.json'  => 'game_modes/countdown#puzzles_json'
   post '/countdown'              => 'game_modes/countdown#complete'
 
   # haste mode

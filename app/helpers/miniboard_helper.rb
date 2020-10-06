@@ -35,10 +35,15 @@ module MiniboardHelper
     render partial: "static/snippets/miniboard_link", locals: options
   end
 
-  def linked_puzzle_miniboard(fen, puzzle_id)
+  # given a Puzzle model, render a miniboard
+  def linked_puzzle_miniboard(puzzle)
+    initial_fen = puzzle.puzzle_data["initial_fen"]
+    initial_move_uci = puzzle.puzzle_data["initial_move_uci"]
+    puzzle_id = puzzle.puzzle_id
     render partial: "static/snippets/miniboard_link", locals: {
-      fen: fen,
-      flip: fen.include?(" b "),
+      fen: initial_fen,
+      initial_move: initial_move_uci,
+      flip: initial_fen.include?(" w "),
       path: "/p/#{puzzle_id}"
     }
   end
