@@ -1,18 +1,16 @@
 import InteractiveBoard from '@blitz/components/interactive_board'
-import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
-import { FEN, UciMove } from '@blitz/types'
+import { dispatch, subscribe } from '@blitz/store'
+import { FEN, PuzzleLines, UciMove } from '@blitz/types'
 import { moveToUci, uciToMove } from '@blitz/utils'
 
 import './style.sass'
 
 // The `puzzle_data` field in the puzzle data expected from the page
 interface PuzzleMovesData {
-  fen: FEN,
-  initial_move: {
-    uci: UciMove,
-    san: string,
-  },
-  lines: any,
+  initial_fen: FEN,
+  initial_move_san: string,
+  initial_move_uci: UciMove,
+  lines: PuzzleLines,
 }
 
 // This is expected to be rendered in the page upon pageload
@@ -24,9 +22,9 @@ interface PuzzleData {
 
 const resetPosition = (puzzleMovesData: PuzzleMovesData) => {
   // Initialize the board position. Make initial opponent move if there is one
-  dispatch('fen:set', puzzleMovesData.fen)
-  if (puzzleMovesData.initial_move) {
-    const uciMove = uciToMove(puzzleMovesData.initial_move.uci)
+  dispatch('fen:set', puzzleMovesData.initial_fen)
+  if (puzzleMovesData.initial_move_uci) {
+    const uciMove = uciToMove(puzzleMovesData.initial_move_uci)
     console.log(`trying move: ${JSON.stringify(uciMove)}`)
     setTimeout(() => {
       dispatch('move:make', uciMove, { opponent: true });
@@ -70,7 +68,8 @@ const newChessboardFromPuzzleMovesData = (puzzleMovesData: PuzzleMovesData) => {
       dispatch(`move:success`)
       const response = Object.keys(attempt)[0]
       const responseMove = uciToMove(response)
-      if (attempt[response] === `win`) {
+      const puzzleLines: PuzzleLines | 'win' | 'retry' = attempt[response]
+      if (puzzleLines === `win`) {
         console.log('win!')
         dispatch(`puzzle:solved`)
         dispatch(`move:make`, responseMove, { opponent: true })
@@ -78,7 +77,7 @@ const newChessboardFromPuzzleMovesData = (puzzleMovesData: PuzzleMovesData) => {
         dispatch(`move:sound`, move)
         setTimeout(() => {
           dispatch(`move:make`, responseMove, { opponent: true })
-          puzzleStateLines = attempt[response]
+          puzzleStateLines = puzzleLines as PuzzleLines
         }, 0)
       }
     },

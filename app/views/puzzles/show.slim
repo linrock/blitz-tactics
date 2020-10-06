@@ -14,7 +14,7 @@
         | View on Lichess
 
     .puzzle-info
-      .fen= @puzzle.puzzle_data["fen"]
+      .fen= @puzzle.puzzle_data["puzzle_fen"]
 
       table
         - @puzzle.metadata.each do |k, v|

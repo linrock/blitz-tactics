@@ -18,8 +18,8 @@ interface InitialMove {
   uci: UciMove,
 }
 
-interface PuzzleLines {
-  [uciMove: string]: PuzzleLines | "win"
+export interface PuzzleLines {
+  [uciMove: string]: PuzzleLines | "win" | "retry"
 }
 
 // fields for all puzzles fetched from the server
