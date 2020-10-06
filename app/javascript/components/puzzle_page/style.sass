@@ -20,7 +20,8 @@ body[data-controller=puzzles][data-action=show]
     height: $small-board-size
 
   .right 
-    margin: 103px 20px 0 37px
+    margin: 103px 0 0 37px
+    width: 100%
 
     h2 
       margin-bottom: 20px
@@ -43,12 +44,17 @@ body[data-controller=puzzles][data-action=show]
 
     .fen
       margin: 10px 0
+      width: 100%
 
     .puzzle-info
       margin-top: 20px
 
-      td
-        padding-right: 25px
+      .metadata
+        margin-top: 20px
+        line-height: 1.3em
+
+        td
+          padding-right: 25px
 
   .actions 
     margin-top: 30px

@@ -91,10 +91,13 @@ const newChessboardFromPuzzleMovesData = (puzzleMovesData: PuzzleMovesData) => {
 }
 
 export default () => {
-  console.log("Initializing puzzle page")
   const puzzleJsonDataEl: HTMLScriptElement = document.querySelector("#puzzle-data")
-  const puzzleData: PuzzleData = JSON.parse(puzzleJsonDataEl.innerText)
-  console.dir(puzzleData)
+  const fenEl: HTMLInputElement = document.querySelector('.fen')
 
+  // Select FEN input upon click
+  fenEl.addEventListener('click', (event) => (event.target as HTMLInputElement).select())
+
+  const puzzleData: PuzzleData = JSON.parse(puzzleJsonDataEl.innerText)
+  // console.dir(puzzleData)
   newChessboardFromPuzzleMovesData(puzzleData.puzzle_data)
 }

@@ -14,9 +14,9 @@
 
     .puzzle-info
       div Puzzle FEN
-      .fen= @puzzle.puzzle_data["puzzle_fen"]
+      input.fen(type="text" readonly="readonly" value="#{@puzzle.puzzle_data["puzzle_fen"]}")
 
-      table
+      table.metadata
         - @puzzle.metadata.each do |k, v|
           tr
             td= k
