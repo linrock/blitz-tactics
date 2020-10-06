@@ -19,7 +19,9 @@ class GameModes::SpeedrunController < ApplicationController
   def puzzles
     speedrun_level = SpeedrunLevel.todays_level
     lichess_puzzle_ids = speedrun_level.puzzles.map { |p| p.data["id"] }
-    @puzzles = Puzzle.where(id: lichess_puzzle_ids)
+    @puzzles = Puzzle.where(id: lichess_puzzle_ids).sort_by do |p|
+      lichess_puzzle_ids.index(p.id)
+    end
     render "puzzles/index"
   end
 
