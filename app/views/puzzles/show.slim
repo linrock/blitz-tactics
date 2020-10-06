@@ -10,9 +10,10 @@
     h2 Puzzle #{@puzzle.puzzle_id}
     div
       a.source(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
-        | View on Lichess
+        | View puzzle on Lichess
 
     .puzzle-info
+      div Puzzle FEN
       .fen= @puzzle.puzzle_data["puzzle_fen"]
 
       table
