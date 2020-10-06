@@ -50,6 +50,8 @@ const newChessboardFromPuzzleMovesData = (puzzleMovesData: PuzzleMovesData) => {
   subscribe({
     // Handle whenever the player tries a move
     'move:try': move => {
+      // Always hide the instructions (White to move) after the player make a move
+      instructionsEl.classList.add('invisible')
       const attempt = puzzleStateLines[moveToUci(move)]
       if (attempt === `win`) {
         dispatch(`move:success`)
@@ -81,9 +83,6 @@ const newChessboardFromPuzzleMovesData = (puzzleMovesData: PuzzleMovesData) => {
       }
     },
   })
-
-  // Hide the instructions (White to move) after the player makes the first move
-  subscribeOnce('move:try', () => instructionsEl.remove())
 
   resetPosition(initialPuzzleState)
 
