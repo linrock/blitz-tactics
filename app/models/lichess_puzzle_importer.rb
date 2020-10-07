@@ -17,7 +17,7 @@ module LichessPuzzleImporter
       puts "Didn't expect #{first_lichess_puzzle_id} to be the first puzzle"
       return false
     end
-    if last_lichess_puzzle_id != NUM_LICHESS_PUZZLES.to_s
+    if last_lichess_puzzle_id != "125272"
       puts "Didn't expect #{last_lichess_puzzle_id} to be the last puzzle"
       return false
     end
