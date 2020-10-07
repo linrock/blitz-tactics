@@ -20,7 +20,7 @@ export default function SpeedrunMode() {
   new Progress
   new SpeedrunComplete
 
-  let levelName
+  let levelName: string
 
   subscribe({
     'config:init': data => levelName = data.level_name,

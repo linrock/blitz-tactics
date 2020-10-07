@@ -13,7 +13,7 @@ export type ChessMove = { // used by chess.js
   promotion?: string
 }
 
-interface InitialMove {
+export interface InitialMove {
   san: string,
   uci: UciMove,
 }

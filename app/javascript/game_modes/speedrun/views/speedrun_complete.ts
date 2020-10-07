@@ -6,7 +6,7 @@ export default class SpeedrunComplete {
   private playAgainEl: HTMLElement
   private viewPuzzlesEl: HTMLElement
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.speedrun-mode`)
   }
 

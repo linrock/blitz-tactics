@@ -9,7 +9,7 @@ export default class Timer {
   private startTime: number
   private timerInterval: number
 
-  get el() {
+  get el(): HTMLElement {
     return document.querySelector(`.current-run .timer`)
   }
 

@@ -5,7 +5,7 @@ import _ from 'underscore'
 
 import { fetchPuzzles } from '@blitz/api/requests'
 import { dispatch, subscribe } from '@blitz/store'
-import { ChessMove, Puzzle } from '@blitz/types'
+import { ChessMove, InitialMove, Puzzle } from '@blitz/types'
 import { uciToMove, moveToUci } from '@blitz/utils'
 import { PuzzleSourceOptions } from './index'
 import Puzzles from './puzzles'
@@ -65,14 +65,14 @@ export default class PuzzleSource<PuzzleSourceInterface> {
     })
   }
 
-  private fetchPuzzles(source) {
+  private fetchPuzzles(source: string) {
     fetchPuzzles(source).then(data => {
       dispatch(`puzzles:fetched`, data.puzzles)
       dispatch(`config:init`, data)
     })
   }
 
-  private fetchAndAddPuzzles(source) {
+  private fetchAndAddPuzzles(source: string) {
     fetchPuzzles(source).then(data => dispatch(`puzzles:added`, data.puzzles))
   }
 
@@ -104,11 +104,11 @@ export default class PuzzleSource<PuzzleSourceInterface> {
   }
 
   // should make this one type of move
-  private getInitialMoveSan(move): string|ChessMove {
+  private getInitialMoveSan(move: InitialMove): string | ChessMove {
     if (move.san) {
       return move.san
     } else {
-      return move.uci ? uciToMove(move.uci) : uciToMove(move)
+      return move.uci ? uciToMove(move.uci) : uciToMove(move as any) // TODO
     }
   }
 
