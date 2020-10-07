@@ -2,5 +2,7 @@
   = "#{@puzzles.count} puzzles"
 
   .puzzles
-    - @puzzles.each do |puzzle|
-      = linked_puzzle_miniboard(puzzle)
+    - @puzzles.each_with_index do |puzzle, i|
+      div
+        = linked_puzzle_miniboard(puzzle)
+        .puzzle-num= i + 1
