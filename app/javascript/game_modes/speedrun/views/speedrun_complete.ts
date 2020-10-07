@@ -4,6 +4,7 @@ import { formattedTime } from '@blitz/utils'
 export default class SpeedrunComplete {
   private bestTimeEl: HTMLElement
   private playAgainEl: HTMLElement
+  private viewPuzzlesEl: HTMLElement
 
   get el() {
     return document.querySelector(`.speedrun-mode`)
@@ -12,10 +13,14 @@ export default class SpeedrunComplete {
   constructor() {
     this.bestTimeEl = this.el.querySelector(`.personal-best`)
     this.playAgainEl = this.el.querySelector(`.blue-button`)
+    this.viewPuzzlesEl = this.el.querySelector(`.view-puzzles`)
     subscribe({
       'speedrun:complete': data => {
         this.renderPersonalBest(data.best)
-        this.showPlayAgain()
+        this.playAgainEl.style.display = `block`
+        this.playAgainEl.classList.remove(`invisible`)
+        this.viewPuzzlesEl.style.display = `block`
+        this.viewPuzzlesEl.classList.remove(`invisible`)
       }
     })
   }
@@ -28,10 +33,5 @@ export default class SpeedrunComplete {
     this.bestTimeEl.querySelector(`.timer`).textContent = formattedBestTime
     this.bestTimeEl.style.display = `block`
     this.bestTimeEl.classList.remove(`invisible`)
-  }
-
-  private showPlayAgain() {
-    this.playAgainEl.style.display = `block`
-    this.playAgainEl.classList.remove(`invisible`)
   }
 }
