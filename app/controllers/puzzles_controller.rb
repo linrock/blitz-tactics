@@ -3,7 +3,12 @@
 class PuzzlesController < ApplicationController
 
   def index
-    @puzzles = Puzzle.order('id DESC').limit(9)
+    if params[:puzzle_ids]
+      puzzle_ids = params[:puzzle_ids].split(',').take(100)
+      @puzzles = Puzzle.find_by_sorted(puzzle_ids)
+    else
+      @puzzles = Puzzle.order('id DESC').limit(9)
+    end
   end
 
   def show

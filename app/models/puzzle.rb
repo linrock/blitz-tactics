@@ -22,6 +22,11 @@ class Puzzle < ActiveRecord::Base
     Puzzle.find_by(puzzle_id: puzzle_id)
   end
 
+  # Sorts puzzles by the order in which they show up in puzzle_ids
+  def self.find_by_sorted(puzzle_ids)
+    Puzzle.where(id: puzzle_ids.map(&:to_i)).sort_by { |p| puzzle_ids.index(p.id) }
+  end
+
   # Generate a unique for the puzzle based on the input puzzle data
   def self.data_hash(puzzle_data)
     Digest::MD5.hexdigest(puzzle_data.to_json)[0..8]

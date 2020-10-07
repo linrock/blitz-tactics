@@ -19,9 +19,7 @@ class GameModes::SpeedrunController < ApplicationController
   def puzzles
     speedrun_level = SpeedrunLevel.todays_level
     lichess_puzzle_ids = speedrun_level.puzzles.map { |p| p.data["id"] }
-    @puzzles = Puzzle.where(id: lichess_puzzle_ids).sort_by do |p|
-      lichess_puzzle_ids.index(p.id)
-    end
+    @puzzles = Puzzle.find_by_sorted(lichess_puzzle_ids)
   end
 
   # user has completed a speedrun

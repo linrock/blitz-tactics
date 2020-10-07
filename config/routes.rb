@@ -50,6 +50,7 @@ Rails.application.routes.draw do
 
   # puzzle pages
   get '/puzzles'                 => 'puzzles#index'
+  get '/puzzles/:puzzle_ids'     => 'puzzles#index'
   get '/p/:puzzle_id'            => 'puzzles#show'
   get '/p/:puzzle_id/edit'       => 'puzzles#edit'
   put '/p/:puzzle_id'            => 'puzzles#update'
