@@ -79,11 +79,10 @@ class PuzzleLoader
       haste_puzzle_list = JSON.parse(f.read)
       haste_puzzle_list.each do |puzzle|
         begin
-          # TODO fix haste puzzle importer
           if HastePuzzle.create!(
             data: puzzle,
             color: puzzle["color"],
-            difficulty: 0,
+            difficulty: puzzle["difficulty"],
           )
             num_created += 1
           end
