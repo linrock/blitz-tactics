@@ -1,0 +1,21 @@
+- content_for(:title) { "Speedrun mode" }
+
+section.speedrun-mode
+  .container
+    .board-area-container
+      = render partial: "puzzle_player/above_board"
+      = render partial: "puzzle_player/board_area"
+    aside.speedrun-sidebar
+      .timers(style="display: none")
+        .current-run
+          .timer.stopped 0:00.0
+          .description
+
+        .personal-best.invisible(style="display: none")
+          .timer
+          .description Personal best
+
+        a.blue-button.invisible(href="/speedrun" style="display: none")
+          | Play again
+
+      .make-a-move Make a move to start the timer
