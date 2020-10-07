@@ -20,6 +20,6 @@ export default class Instructions {
         this.el.textContent = `Black to move`
       }
     })
-    subscribeOnce('puzzles:start', () => this.el.remove())
+    subscribeOnce('puzzles:start', () => this.el.classList.add('invisible'))
   }
 }
