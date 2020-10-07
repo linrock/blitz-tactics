@@ -10,6 +10,8 @@ export default class Complete {
   private highScoreEl: HTMLElement
   private highScoresEl: HTMLElement
   private highScoresListEl: HTMLElement
+  private viewPuzzlesEl: HTMLLinkElement
+  private puzzleIdsSeen: number[] = []
 
   get el(): HTMLElement {
     return document.querySelector(`.haste-mode`)
@@ -20,11 +22,16 @@ export default class Complete {
     this.highScoreEl = this.el.querySelector(`.haste-complete`)
     this.highScoresEl = this.el.querySelector(`.recent-high-scores`)
     this.highScoresListEl = this.highScoresEl.querySelector(`.list`)
+    this.viewPuzzlesEl = this.el.querySelector(`.view-puzzles`)
     subscribe({
       'haste:complete': data => {
         this.timerEl.style.display = `none`
+        this.viewPuzzlesEl.href = `/puzzles/${this.puzzleIdsSeen.join(',')}`
         this.showPersonalBest(data)
         this.showHighScores(data.high_scores)
+      },
+      'puzzle:loaded': data => {
+        this.puzzleIdsSeen.push(data.puzzle.id)
       }
     })
   }
