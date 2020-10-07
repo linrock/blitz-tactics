@@ -24,7 +24,8 @@ class Puzzle < ActiveRecord::Base
 
   # Sorts puzzles by the order in which they show up in puzzle_ids
   def self.find_by_sorted(puzzle_ids)
-    Puzzle.where(id: puzzle_ids.map(&:to_i)).sort_by { |p| puzzle_ids.index(p.id) }
+    puzzle_ids = puzzle_ids.map(&:to_i)
+    Puzzle.where(id: puzzle_ids).sort_by { |p| puzzle_ids.index(p.id) }
   end
 
   # Generate a unique for the puzzle based on the input puzzle data
