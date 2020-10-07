@@ -41,6 +41,7 @@ const newChessboardFromPuzzleMovesData = (puzzleMovesData: PuzzleMovesData) => {
   new InteractiveBoard
   const initialPuzzleState = Object.assign({}, puzzleMovesData)
   let puzzleStateLines = Object.assign({}, puzzleMovesData.lines)
+  dispatch(`board:flipped`, !!puzzleMovesData.initial_fen.match(/ w /))
 
   const instructionsEl: HTMLElement = document.querySelector('.instructions')
   const resetPositionEl: HTMLElement = document.querySelector('.button.restart')
