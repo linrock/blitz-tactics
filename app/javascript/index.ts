@@ -22,12 +22,16 @@ document.addEventListener(`DOMContentLoaded`, () => {
 
   // initialize all mini chessboards
   [].forEach.call(document.querySelectorAll(`.mini-chessboard`), (el: HTMLElement) => {
-    const { fen, initialMove, flip, options } = el.dataset
+    const { fen, initialMove, initialMoveSan, flip, options } = el.dataset
     let optionsJson = {}
     if (options) {
       optionsJson = JSON.parse(options)
     }
-    new MiniChessboard({ el, fen, flip: flip === `true`, initialMove, ...optionsJson })
+    new MiniChessboard({
+      el, fen, flip: flip === `true`,
+      initialMove, initialMoveSan,
+      ...optionsJson
+    })
   })
 
   // initialize global views/components

@@ -24,10 +24,10 @@ const resetPosition = (puzzleMovesData: PuzzleMovesData) => {
   // Initialize the board position. Make initial opponent move if there is one
   dispatch('fen:set', puzzleMovesData.initial_fen)
   if (puzzleMovesData.initial_move_uci) {
-    const uciMove = uciToMove(puzzleMovesData.initial_move_uci)
-    console.log(`trying move: ${JSON.stringify(uciMove)}`)
+    const sanMove = puzzleMovesData.initial_move_san
+    console.log(`initial opponent move: ${(sanMove)}`)
     setTimeout(() => {
-      dispatch('move:make', uciMove, { opponent: true });
+      dispatch('move:make', sanMove, { opponent: true });
       const instructionsEl: HTMLDivElement = document.querySelector('.instructions')
       if (instructionsEl) {
         instructionsEl.classList.remove('invisible')

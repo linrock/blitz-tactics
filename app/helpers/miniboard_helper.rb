@@ -37,12 +37,13 @@ module MiniboardHelper
 
   # given a Puzzle model, render a miniboard
   def linked_puzzle_miniboard(puzzle)
+    # TODO some puzzles have invalid UCI moves (ex. 66211)
     initial_fen = puzzle.puzzle_data["initial_fen"]
-    initial_move_uci = puzzle.puzzle_data["initial_move_uci"]
+    initial_move_san = puzzle.puzzle_data["initial_move_san"]
     puzzle_id = puzzle.puzzle_id
     render partial: "static/snippets/miniboard_link", locals: {
       fen: initial_fen,
-      initial_move: initial_move_uci,
+      initial_move_san: initial_move_san,
       flip: initial_fen.include?(" w "),
       path: "/p/#{puzzle_id}"
     }

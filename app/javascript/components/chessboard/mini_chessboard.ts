@@ -12,6 +12,7 @@ interface MiniChessboardOptions {
   fen: FEN
   flip?: boolean
   initialMove?: UciMove
+  initialMoveSan?: string
 }
 
 const polarities = [`light`, `dark`]
@@ -34,9 +35,17 @@ export default class MiniChessboard {
       this.columns.reverse()
     }
     this.renderFen(options.fen)
+    // TODO DRY
     if (options.initialMove) {
       setTimeout(() => {
         const { from, to } = this.cjs.move(uciToMove(options.initialMove))
+        this.highlightSquare(from, `move-from`)
+        this.highlightSquare(to, `move-to`)
+        this.renderFen(this.cjs.fen())
+      }, 1000)
+    } else if (options.initialMoveSan) {
+      setTimeout(() => {
+        const { from, to } = this.cjs.move(options.initialMoveSan)
         this.highlightSquare(from, `move-from`)
         this.highlightSquare(to, `move-to`)
         this.renderFen(this.cjs.fen())
