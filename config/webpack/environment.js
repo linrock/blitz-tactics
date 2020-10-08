@@ -19,6 +19,11 @@ environment.loaders.append('typescript', {
   ]
 })
 
+environment.loaders.append('pug', {
+  test: /\.pug$/,
+  loader: 'pug-plain-loader'
+})
+
 environment.plugins.prepend('VueLoaderPlugin', new VueLoaderPlugin())
 environment.loaders.prepend('vue', vue)
 module.exports = environment
