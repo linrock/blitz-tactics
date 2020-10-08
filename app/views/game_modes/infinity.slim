@@ -1,0 +1,26 @@
+- content_for(:title) { "Infinity mode" }
+
+section.infinity-mode
+  .container
+    = render partial: "puzzle_player/above_board"
+
+    .board-container
+      = render partial: "puzzle_player/board_area"
+
+      aside.infinity-sidebar
+        .difficulties
+          .sidebar-label Difficulty
+          .easy(data-difficulty="easy") Easy
+          .medium(data-difficulty="medium") Medium
+          .hard(data-difficulty="hard") Hard
+          .insane(data-difficulty="insane") Insane
+
+        .stats.invisible
+          .sidebar-label You have solved
+          .n-puzzles
+            span>
+            | puzzles
+
+        .no-more-left.invisible
+          | You did it! You solved all the puzzles in this level.
+            Chooose another difficulty to continue.
