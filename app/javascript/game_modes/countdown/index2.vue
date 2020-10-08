@@ -3,7 +3,7 @@
     <div class="timers" :style="{ display: started ? '' : 'none'}">
       <div class="current-countdown">
         <div class="timer stopped" ref="timer">5:00</div>
-        <div class="description">0 puzzles solved</div>
+        <div class="description">{{ nPuzzlesSolved }} puzzles solved</div>
       </div>
     </div>
 
@@ -33,7 +33,6 @@
   import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 
   import Timer from './views/timer'
-  import Progress from './views/progress'
   import Modal from './views/modal'
   import CountdownComplete from './views/countdown_complete'
 
@@ -41,13 +40,14 @@
     data() {
       return {
         started: false,
+        nPuzzlesSolved: 0,
       }
     },
+
     mounted() {
       console.log('mounted!');
 
       new Timer(this.$refs.timer)
-      new Progress
       new Modal
       new CountdownComplete
 
@@ -55,7 +55,12 @@
 
       subscribe({
         'config:init': data => levelName = data.level_name,
-
+        'puzzles:status': ({ i }) => {
+          this.nPuzzlesSolved = i + 1
+        },
+        'timer:stopped': () => {
+          dispatch(`timer:complete`, this.nPuzzlesSolved)
+        },
         'timer:complete': score => {
           countdownCompleted(levelName, score).then(data => {
             dispatch(`countdown:complete`, data)
