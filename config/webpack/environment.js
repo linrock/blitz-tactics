@@ -1,5 +1,7 @@
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
 const { environment } = require('@rails/webpacker')
+const { VueLoaderPlugin } = require('vue-loader')
+const vue = require('./loaders/vue')
 const path = require('path');
 
 environment.config.resolve.alias = {
@@ -12,9 +14,11 @@ environment.loaders.append('typescript', {
   use: [
     {
       loader: 'ts-loader',
-      options: PnpWebpackPlugin.tsLoaderOptions()
+      options: PnpWebpackPlugin.tsLoaderOptions(),
     }
   ]
 })
 
+environment.plugins.prepend('VueLoaderPlugin', new VueLoaderPlugin())
+environment.loaders.prepend('vue', vue)
 module.exports = environment
