@@ -28,7 +28,7 @@ export interface PuzzleState {
   puzzle?: Puzzle,
 }
 
-export default class PuzzleSource<PuzzleSourceInterface> {
+export default class PuzzleSource {
   private i = 0
   private puzzles = new Puzzles()
   private started = false

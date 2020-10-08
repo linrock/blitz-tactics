@@ -10,5 +10,4 @@ export default function CountdownMode() {
     render: h => h(Countdown)
   }).$mount()
   document.querySelector('.countdown-mode .container').appendChild(app.$el)
-  console.log(app)
 }

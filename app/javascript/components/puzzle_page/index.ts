@@ -23,7 +23,7 @@ interface PuzzleData {
 const resetPosition = (puzzleMovesData: PuzzleMovesData) => {
   // Initialize the board position. Make initial opponent move if there is one
   dispatch('fen:set', puzzleMovesData.initial_fen)
-  if (puzzleMovesData.initial_move_uci) {
+  if (puzzleMovesData.initial_move_san) {
     const sanMove = puzzleMovesData.initial_move_san
     console.log(`initial opponent move: ${(sanMove)}`)
     setTimeout(() => {
