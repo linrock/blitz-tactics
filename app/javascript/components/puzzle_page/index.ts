@@ -36,8 +36,18 @@ const resetPosition = (puzzleMovesData: PuzzleMovesData) => {
   }
 }
 
-/** Initialize an interactive chessboard for this one puzzle */
-const newChessboardFromPuzzleMovesData = (puzzleMovesData: PuzzleMovesData) => {
+export default () => {
+  const puzzleJsonDataEl: HTMLScriptElement = document.querySelector("#puzzle-data")
+  const fenEl: HTMLInputElement = document.querySelector('.fen')
+
+  // Select FEN input upon click for convenient copying
+  fenEl.addEventListener('click', (event) => (event.target as HTMLInputElement).select())
+
+  const puzzleData: PuzzleData = JSON.parse(puzzleJsonDataEl.innerText)
+  // console.dir(puzzleData)
+
+  // Initialize an interactive chessboard for this one puzzle
+  const puzzleMovesData: PuzzleMovesData = puzzleData.puzzle_data
   new InteractiveBoard
   const initialPuzzleState = Object.assign({}, puzzleMovesData)
   let puzzleStateLines = Object.assign({}, puzzleMovesData.lines)
@@ -89,16 +99,4 @@ const newChessboardFromPuzzleMovesData = (puzzleMovesData: PuzzleMovesData) => {
     resetPosition(initialPuzzleState)
     puzzleStateLines = Object.assign({}, initialPuzzleState.lines)
   })
-}
-
-export default () => {
-  const puzzleJsonDataEl: HTMLScriptElement = document.querySelector("#puzzle-data")
-  const fenEl: HTMLInputElement = document.querySelector('.fen')
-
-  // Select FEN input upon click
-  fenEl.addEventListener('click', (event) => (event.target as HTMLInputElement).select())
-
-  const puzzleData: PuzzleData = JSON.parse(puzzleJsonDataEl.innerText)
-  // console.dir(puzzleData)
-  newChessboardFromPuzzleMovesData(puzzleData.puzzle_data)
 }
