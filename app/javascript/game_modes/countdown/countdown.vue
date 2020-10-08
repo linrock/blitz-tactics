@@ -1,30 +1,23 @@
-<template>
-  <aside class="countdown-sidebar" ref="sidebar">
-    <div class="timers" :style="{ display: (isStarted && !isEnded) ? '' : 'none'}">
-      <div class="current-countdown">
-        <timer />
-        <div class="description">{{ nPuzzlesSolved }} puzzles solved</div>
-      </div>
-    </div>
+<template lang="pug">
+  aside.countdown-sidebar
+    .timers(:style="{ display: (isStarted && !isEnded) ? '' : 'none'}")
+      .current-countdown
+        timer
+        .description {{ nPuzzlesSolved }} puzzles solved
 
-    <div class="countdown-complete" v-if="isEnded">
-      <div class="score-container your-score">
-        <div class="label">Your score</div>
-        <div class="score">{{ score }}</div>
-      </div>
+    .countdown-complete(v-if="isEnded")
+      .score-container.your-score
+        .label Your score
+        .score {{ score }}
 
-      <div class="score-container high-score">
-        <div class="label">High score</div>
-        <div class="score">{{ highScore }}</div>
-      </div>
+      .score-container.high-score
+        .label High score
+        .score {{ highScore }}
 
-      <a href="/countdown" class="blue-button">Play again</a>
-    </div>
+      a.blue-button(href="/countdown") Play again
 
-    <div class="make-a-move" v-if="!isStarted">
-      Make a move to start the timer
-    </div>
-  </aside>
+    .make-a-move(v-if="!isStarted") Make a move to start the timer
+
 </template>
 
 <script>

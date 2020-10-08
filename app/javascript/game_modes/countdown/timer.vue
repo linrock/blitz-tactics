@@ -1,7 +1,7 @@
-<template>
-  <div class="timer" :class="{ penalized: isPenalized, stopped: !hasStarted }">
-    {{ formattedTimeLeft }}
-  </div>
+<template lang="pug">
+  .timer(:class="{ penalized: isPenalized, stopped: !hasStarted }")
+    | {{ formattedTimeLeft }}
+
 </template>
 
 <script>
