@@ -12,8 +12,6 @@ const initialTimeMin = 5     // start with this many minutes on the clock
 const updateInterval = 100   // timer updates this frequently
 const penaltyMs = 30000      // lose this much time per mistake
 
-let timerInterval
-
 export default {
   data() {
     return {
@@ -32,23 +30,20 @@ export default {
       return this.initialTimeMs - (this.nowTime - this.startTime) - this.lostTimeMs
     },
     formattedTimeLeft() {
-      if (this.hasEnded) {
-        return '0:00'
-      }
-      return formattedTimeSeconds(this.timeLeftMilliseconds)
+      return this.hasEnded ? '0:00' : formattedTimeSeconds(this.timeLeftMilliseconds)
     }
   },
 
   mounted() {
-    subscribeOnce(`move:try`, () => {
+    subscribeOnce('move:try', () => {
       const now = Date.now()
       this.hasStarted = true
       this.startTime = now
       this.nowTime = now
-      timerInterval = window.setInterval(() => {
+      const timerInterval = window.setInterval(() => {
         this.nowTime = Date.now()
         if (this.timeLeftMilliseconds <= 0) {
-          this.hasEnded = false
+          this.hasEnded = true
           clearInterval(timerInterval)
           dispatch('timer:stopped')
         }
@@ -61,6 +56,7 @@ export default {
         this.isPenalized = true
         setTimeout(() => this.isPenalized = false, 200)
       },
+      // TODO is this needed?
       'puzzles:complete': () => {
         dispatch('timer:stopped')
       }
