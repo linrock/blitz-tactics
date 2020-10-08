@@ -7,16 +7,14 @@ const penaltyMs = 30000      // lose this much time per mistake
 // Amount of time spent so far
 //
 export default class Timer {
+  private el: HTMLElement
   private initialTimeMs: number
   private lostTimeMs = 0
   private startTime: number
   private timerInterval: number
 
-  get el(): HTMLElement {
-    return document.querySelector(`.current-countdown .timer`)
-  }
-
-  constructor() {
+  constructor(el: HTMLElement) {
+    this.el = el
     this.initialTimeMs = parseInt(this.el.textContent[0]) * 60 * 1000 + 500
     subscribeOnce(`move:try`, () => this.startTimer())
     subscribe({

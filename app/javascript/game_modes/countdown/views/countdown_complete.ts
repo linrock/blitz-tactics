@@ -9,14 +9,14 @@ export default class CountdownComplete {
   }
 
   constructor() {
-    this.timerEl = this.el.querySelector(`.timers`)
-    this.highScoreEl = this.el.querySelector(`.countdown-complete`)
     subscribe({
       'countdown:complete': data => this.showPersonalBest(data)
     })
   }
 
   private showPersonalBest({ score, best }) {
+    this.timerEl = this.el.querySelector(`.timers`)
+    this.highScoreEl = this.el.querySelector(`.countdown-complete`)
     this.timerEl.style.display = `none`
     this.highScoreEl.style.display = ``
     this.highScoreEl.querySelector(`.your-score .score`).textContent = score
