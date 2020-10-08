@@ -20,7 +20,7 @@
 
 </template>
 
-<script>
+<script lang="ts">
   import { countdownCompleted } from '@blitz/api/requests'
   import PuzzlePlayer from '@blitz/components/puzzle_player'
   import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
@@ -41,7 +41,7 @@
     mounted() {
       console.log('mounted!');
 
-      let levelName
+      let levelName: string
 
       subscribe({
         'config:init': data => levelName = data.level_name,
@@ -50,7 +50,7 @@
         },
         'timer:stopped': () => {
           // Cover the board with a dark transluscent overlay after the game ends
-          const boardOverlayEl = document.querySelector(`.board-modal-container`)
+          const boardOverlayEl: HTMLElement = document.querySelector(`.board-modal-container`)
           boardOverlayEl.style.display = ``
           boardOverlayEl.classList.remove(`invisible`)
           dispatch(`timer:complete`, this.nPuzzlesSolved)

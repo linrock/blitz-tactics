@@ -4,7 +4,7 @@
 
 </template>
 
-<script>
+<script lang="ts">
 import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 import { formattedTimeSeconds } from '@blitz/utils'
 
@@ -26,10 +26,10 @@ export default {
   },
 
   computed: {
-    timeLeftMilliseconds() {
+    timeLeftMilliseconds(): number {
       return this.initialTimeMs - (this.nowTime - this.startTime) - this.lostTimeMs
     },
-    formattedTimeLeft() {
+    formattedTimeLeft(): string {
       return this.hasEnded ? '0:00' : formattedTimeSeconds(this.timeLeftMilliseconds)
     }
   },
