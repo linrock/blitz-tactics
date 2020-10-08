@@ -2,7 +2,7 @@
   <aside class="countdown-sidebar" ref="sidebar">
     <div class="timers" :style="{ display: (isStarted && !isEnded) ? '' : 'none'}">
       <div class="current-countdown">
-        <div class="timer stopped" ref="timer">5:00</div>
+        <timer />
         <div class="description">{{ nPuzzlesSolved }} puzzles solved</div>
       </div>
     </div>
@@ -32,7 +32,7 @@
   import PuzzlePlayer from '@blitz/components/puzzle_player'
   import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 
-  import Timer from './views/timer'
+  import Timer from './timer'
 
   export default {
     data() {
@@ -49,7 +49,6 @@
       console.log('mounted!');
 
       let levelName
-      new Timer(this.$refs.timer)
 
       subscribe({
         'config:init': data => levelName = data.level_name,
@@ -84,6 +83,10 @@
         noHint: true,
         source: '/countdown/puzzles.json',
       })
+    },
+
+    components: {
+      Timer
     }
   }
 </script>
