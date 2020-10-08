@@ -14,7 +14,9 @@ environment.loaders.append('typescript', {
   use: [
     {
       loader: 'ts-loader',
-      options: PnpWebpackPlugin.tsLoaderOptions(),
+      options: PnpWebpackPlugin.tsLoaderOptions({
+        appendTsSuffixTo: [/\.vue$/]
+      }),
     }
   ]
 })
