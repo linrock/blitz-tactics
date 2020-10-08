@@ -1,27 +1,27 @@
 <template>
   <aside class="countdown-sidebar" ref="sidebar">
-    <div class="timers" :style="{ display: started ? '' : 'none'}">
+    <div class="timers" :style="{ display: (isStarted && !isEnded) ? '' : 'none'}">
       <div class="current-countdown">
         <div class="timer stopped" ref="timer">5:00</div>
         <div class="description">{{ nPuzzlesSolved }} puzzles solved</div>
       </div>
     </div>
 
-    <div class="countdown-complete invisible" style="display: none">
+    <div class="countdown-complete" v-if="isEnded">
       <div class="score-container your-score">
         <div class="label">Your score</div>
-        <div class="score"></div>
+        <div class="score">{{ score }}</div>
       </div>
 
       <div class="score-container high-score">
         <div class="label">High score</div>
-        <div class="score"></div>
+        <div class="score">{{ highScore }}</div>
       </div>
 
       <a href="/countdown" class="blue-button">Play again</a>
     </div>
 
-    <div class="make-a-move" v-if="!started">
+    <div class="make-a-move" v-if="!isStarted">
       Make a move to start the timer
     </div>
   </aside>
@@ -33,25 +33,23 @@
   import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 
   import Timer from './views/timer'
-  import Modal from './views/modal'
-  import CountdownComplete from './views/countdown_complete'
 
   export default {
     data() {
       return {
-        started: false,
+        isStarted: false,
+        isEnded: false,
         nPuzzlesSolved: 0,
+        score: 0,
+        highScore: 0,
       }
     },
 
     mounted() {
       console.log('mounted!');
 
-      new Timer(this.$refs.timer)
-      new Modal
-      new CountdownComplete
-
       let levelName
+      new Timer(this.$refs.timer)
 
       subscribe({
         'config:init': data => levelName = data.level_name,
@@ -59,17 +57,24 @@
           this.nPuzzlesSolved = i + 1
         },
         'timer:stopped': () => {
+          // Cover the board with a dark transluscent overlay after the game ends
+          const boardOverlayEl = document.querySelector(`.board-modal-container`)
+          boardOverlayEl.style.display = ``
+          boardOverlayEl.classList.remove(`invisible`)
           dispatch(`timer:complete`, this.nPuzzlesSolved)
         },
         'timer:complete': score => {
           countdownCompleted(levelName, score).then(data => {
-            dispatch(`countdown:complete`, data)
+            const { score, best } = data
+            this.score = score
+            this.highScore = best
+            this.isEnded = true
           })
-        }
+        },
       })
 
       subscribeOnce(`move:try`, () => {
-        this.started = true;
+        this.isStarted = true;
       })
 
       new PuzzlePlayer({
