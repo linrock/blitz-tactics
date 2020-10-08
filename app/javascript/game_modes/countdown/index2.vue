@@ -1,6 +1,6 @@
 <template>
   <aside class="countdown-sidebar" ref="sidebar">
-    <div class="timers" style="display: none">
+    <div class="timers" :style="{ display: started ? '' : 'none'}">
       <div class="current-countdown">
         <div class="timer stopped" ref="timer">5:00</div>
         <div class="description">0 puzzles solved</div>
@@ -21,7 +21,7 @@
       <a href="/countdown" class="blue-button">Play again</a>
     </div>
 
-    <div class="make-a-move">
+    <div class="make-a-move" v-if="!started">
       Make a move to start the timer
     </div>
   </aside>
@@ -30,22 +30,22 @@
 <script>
   import { countdownCompleted } from '@blitz/api/requests'
   import PuzzlePlayer from '@blitz/components/puzzle_player'
-  import { dispatch, subscribe } from '@blitz/store'
+  import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 
-  import Sidebar from './views/sidebar'
   import Timer from './views/timer'
   import Progress from './views/progress'
   import Modal from './views/modal'
   import CountdownComplete from './views/countdown_complete'
 
   export default {
+    data() {
+      return {
+        started: false,
+      }
+    },
     mounted() {
       console.log('mounted!');
 
-      console.dir(this.$refs.sidebar);
-      console.dir(this.$refs.timer);
-
-      new Sidebar
       new Timer(this.$refs.timer)
       new Progress
       new Modal
@@ -61,6 +61,10 @@
             dispatch(`countdown:complete`, data)
           })
         }
+      })
+
+      subscribeOnce(`move:try`, () => {
+        this.started = true;
       })
 
       new PuzzlePlayer({
