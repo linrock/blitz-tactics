@@ -25,7 +25,7 @@
   import PuzzlePlayer from '@blitz/components/puzzle_player'
   import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 
-  import Timer from './timer'
+  import Timer from './timer.vue'
 
   export default {
     data() {

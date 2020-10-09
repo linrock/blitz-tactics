@@ -10,6 +10,10 @@
   .board-container 
     display: flex
 
+  .vue-app-mount
+    width: 100%
+    display: flex
+
   .board-area, .chessboard
     width: $board-size
     height: $board-size
@@ -31,11 +35,12 @@
     margin-bottom: 20px
 
   .difficulties 
-    [data-difficulty] 
+    [data-difficulty], .difficulty
       opacity: 0.3
       padding: 5px 0
       user-select: none
       transition: all 0.2s ease
+      text-transform: capitalize
 
       &:not(.selected):hover
         cursor: pointer
