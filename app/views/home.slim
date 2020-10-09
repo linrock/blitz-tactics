@@ -14,7 +14,7 @@ section.homepage
             - if user_signed_in?
               .your-best-times
                 | Best score today:
-                span.best-time= @haste_best_score
+                span.best-time<= @haste_best_score
             .daily-level
               | New puzzles each run
 
@@ -28,7 +28,7 @@ section.homepage
             - if user_signed_in?
               .your-best-times
                 | Best score today:
-                span.best-time= @countdown_level_score
+                span.best-time<= @countdown_level_score
 
             .daily-level
               .next-day
@@ -44,7 +44,7 @@ section.homepage
             - if user_signed_in?
               .your-best-times
                 | Best time today:
-                span.best-time= @best_speedrun_time
+                span.best-time<= @best_speedrun_time
 
             .daily-level
               .next-day
@@ -60,8 +60,7 @@ section.homepage
             = homepage_miniboard_link("/rated", @rated_puzzle)
             .under-mini-board
               .your-best-times
-                | Your rating:
-                = @user_rating
+                | Your rating: #{@user_rating}
         - rescue
 
         - if @infinity_puzzle
@@ -74,9 +73,7 @@ section.homepage
             = homepage_miniboard_link("/infinity", @infinity_puzzle)
             .under-mini-board
               - if user_signed_in?
-                | You've solved
-                = current_user.num_infinity_puzzles_solved
-                | puzzles
+                | You've solved #{current_user.num_infinity_puzzles_solved} puzzles
               - else
                 a>(href="/users/sign_up") Sign up
                 | to track your progress
