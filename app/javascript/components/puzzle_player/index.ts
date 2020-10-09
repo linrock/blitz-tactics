@@ -4,16 +4,9 @@ import InteractiveBoard from '../interactive_board'
 import ComboCounter from './views/combo_counter'
 import Instructions from './views/instructions'
 import PuzzleHint from './views/puzzle_hint'
-import PuzzleSource from './puzzle_source'
+import PuzzleSource, { PuzzleSourceOptions } from './puzzle_source'
 
 import './style.sass'
-
-export interface PuzzleSourceOptions {
-  shuffle?: boolean,
-  loopPuzzles?: boolean,
-  mode?: string,
-  source?: string,
-}
 
 interface PuzzlePlayerOptions extends PuzzleSourceOptions {
   noHint?: boolean,

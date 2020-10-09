@@ -1,13 +1,10 @@
 // fetches puzzles from the server, handles player moves,
 // and emits move events (move:success, move:almost, move:fail)
 
-import _ from 'underscore'
-
 import { fetchPuzzles } from '@blitz/api/requests'
 import { dispatch, subscribe } from '@blitz/store'
 import { ChessMove, InitialMove, Puzzle } from '@blitz/types'
 import { uciToMove, moveToUci } from '@blitz/utils'
-import { PuzzleSourceOptions } from './index'
 import Puzzles from './puzzles'
 
 // source:changed
@@ -28,6 +25,13 @@ export interface PuzzleState {
   puzzle?: Puzzle,
 }
 
+export interface PuzzleSourceOptions {
+  shuffle?: boolean,
+  loopPuzzles?: boolean,
+  mode?: string,
+  source?: string,
+}
+
 export default class PuzzleSource {
   private i = 0
   private puzzles = new Puzzles()
@@ -37,7 +41,7 @@ export default class PuzzleSource {
   private current: PuzzleState = {}
   private mode: string
 
-  // options - shuffle, loopPuzzles, source
+  // options - shuffle, loopPuzzles, source, mode
   constructor(options: PuzzleSourceOptions = {}) {
     this.shuffle = options.shuffle
     this.loopPuzzles = options.loopPuzzles
@@ -152,7 +156,7 @@ export default class PuzzleSource {
       dispatch(`move:almost`, move)
       return
     }
-    const response = _.keys(attempt)[0]
+    const response = attempt ? Object.keys(attempt)[0] : null
     if (!response) {
       dispatch(`move:fail`, move)
       return
