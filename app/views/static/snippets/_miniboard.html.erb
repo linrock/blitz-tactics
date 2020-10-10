@@ -6,11 +6,12 @@
 <div class="mini-chessboard"
      data-fen="<%= fen %>"
      data-flip="<%= flip %>"
-     <% if initial_move_san %>
-       data-initial-move-san="<%= initial_move_san %>"
-     <% elsif initial_move %>
-       data-initial-move="<%= initial_move %>">
-     <% end %>>
+   <% if initial_move_san %>
+     data-initial-move-san="<%= initial_move_san %>"
+   <% elsif initial_move %>
+     data-initial-move="<%= initial_move %>"
+   <% end %>
+>
   <% polarity = %w( light dark ).cycle %>
   <% rows = (1..8).to_a.reverse %>
   <% cols = ('a'..'h').to_a %>
