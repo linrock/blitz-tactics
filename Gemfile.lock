@@ -163,7 +163,8 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (4.0.6)
-    puma (3.12.6)
+    puma (4.3.6)
+      nio4r (~> 2.0)
     rack (2.2.3)
     rack-proxy (0.6.5)
       rack
@@ -306,7 +307,7 @@ DEPENDENCIES
   mailgun-ruby
   pg (~> 1.0)
   pry
-  puma (~> 3.12)
+  puma (~> 4.3)
   rails (= 6.0.3.3)
   rspec
   rspec-rails
