@@ -5,20 +5,4 @@ section.speedrun-mode
     .board-area-container
       = render partial: "puzzle_player/above_board"
       = render partial: "puzzle_player/board_area"
-    aside.speedrun-sidebar
-      .timers(style="display: none")
-        .current-run
-          .timer.stopped 0:00.0
-          .description
-
-        .personal-best.invisible(style="display: none")
-          .timer
-          .description Personal best
-
-        a.dark-button.view-puzzles.invisible(href="/speedrun/puzzles" style="display: none")
-          | View puzzles
-
-        a.blue-button.invisible(href="/speedrun" style="display: none")
-          | Play again
-
-      .make-a-move Make a move to start the timer
+    .vue-app-mount
