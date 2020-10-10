@@ -2,18 +2,19 @@
   aside.speedrun-sidebar
     .timers(:style="{ display: hasStarted ? '' : 'none' }")
       .current-run
-        .timer.stopped 0:00.0
+        timer
         .description {{ puzzleIdx }} of {{ numPuzzles }} solved
 
-      .personal-best.invisible(style="display: none")
-        .timer
-        .description Personal best
+      template(v-if="hasCompleted")
+        .personal-best
+          .timer {{ formattedBestTime }}
+          .description Personal best
 
-      a.dark-button.view-puzzles.invisible(href="/speedrun/puzzles" style="display: none")
-        | View puzzles
+        a.dark-button.view-puzzles(href="/speedrun/puzzles")
+          | View puzzles
 
-      a.blue-button.invisible(href="/speedrun" style="display: none")
-        | Play again
+        a.blue-button.invisible(href="/speedrun")
+          | Play again
 
     template(v-if="!hasStarted")
       .make-a-move Make a move to start the timer
@@ -24,9 +25,9 @@
   import { speedrunCompleted } from '@blitz/api/requests'
   import PuzzlePlayer from '@blitz/components/puzzle_player'
   import { dispatch, subscribe } from '@blitz/store'
+  import { formattedTime } from '@blitz/utils'
 
-  import SpeedrunComplete from './views/speedrun_complete'
-  import Timer from './views/timer'
+  import Timer from './timer.vue'
 
   const apiPath = `/speedrun/puzzles.json`
 
@@ -34,19 +35,23 @@
     data() {
       return {
         hasStarted: false,
+        hasCompleted: false,
+        lebelName: null,
         numPuzzles: 0,
         puzzleIdx: 0,
+        bestTime: 0,
+      }
+    },
+
+    computed: {
+      formattedBestTime() {
+        return formattedTime(parseInt(this.bestTime, 0))
       }
     },
 
     mounted() {
-      new Timer
-      new SpeedrunComplete
-
-      let levelName: string
-
       subscribe({
-        'config:init': data => levelName = data.level_name,
+        'config:init': data => this.levelName = data.level_name,
 
         'level:selected': name => {
           dispatch(`source:changed`, `${apiPath}?name=${name}`)
@@ -56,8 +61,9 @@
           const boardOverlayEl: HTMLElement = document.querySelector(`.board-modal-container`)
           boardOverlayEl.style.display = ``
           boardOverlayEl.classList.remove(`invisible`)
-          speedrunCompleted(levelName, elapsedTimeMs).then(data => {
-            dispatch(`speedrun:complete`, data)
+          speedrunCompleted(this.levelName, elapsedTimeMs).then(data => {
+            this.bestTime = data.best
+            this.hasCompleted = true
           })
         },
 
@@ -81,6 +87,10 @@
         loopPuzzles: false,
         source: apiPath,
       })
+    },
+
+    components: {
+      Timer,
     }
   }
 </script>
