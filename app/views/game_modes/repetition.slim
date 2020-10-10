@@ -1,0 +1,54 @@
+- content_for(:title) { "#{@level.display_name} | Repetition mode" }
+
+section.repetition-mode(data-level="#{@level.path}")
+  = render partial: "puzzle_player/progress_bar"
+  .main
+    .board-area-container
+      = render partial: "puzzle_player/above_board"
+      = render partial: "puzzle_player/board_area"
+      .under-board
+        label.level-name
+          - if @level
+            = @level.display_name
+          - elsif (title = local_assigns[:title])
+            = title
+
+        - if !user_signed_in? && @level.id == 1
+          .onboarding Solve puzzles quickly and accurately to unlock the next level
+
+        - if (next_level = @level&.next_level)
+          - if !user_signed_in? && @level.id == 1
+            .next-stage.invisible.container.anonymous
+              .left
+                | You've unlocked the next level!
+                .small
+                  | Sign up to save your progress, or continue to Level #{next_level.number}
+              .right
+                a.blue-button(href="#{https_registration_url}") Sign up
+                a.blue-button(href="#{next_level.path}")
+                  | Level #{next_level.number}
+                  svg(style="height: 12px")
+                    use(xlink:href="#chevron-right")
+          - else
+            .next-stage.invisible.container
+              .left You've unlocked the next level!
+              .right
+                a.blue-button(href="#{next_level.path}")
+                  | Level #{next_level.number}
+                  svg(style="height: 12px")
+                    use(xlink:href="#chevron-right")
+
+    aside.sidebar
+      .times
+        .timer
+        .laps
+          - @formatted_round_times.each do |time_elapsed|
+            div= time_elapsed
+
+      .high-scores.invisible
+        h2 Fastest rounds
+        .scores
+          - @high_scores.each do |user, time|
+            .high-score
+              .time= time
+              .player= user_link(user)
