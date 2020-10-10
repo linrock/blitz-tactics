@@ -8,7 +8,6 @@
   import { formattedTime } from '@blitz/utils'
 
   const updateInterval = 37
-  let timerInterval: number
 
   export default {
     data() {
@@ -31,6 +30,8 @@
     },
 
     mounted() {
+      let timerInterval: number
+
       subscribeOnce(`move:try`, () => {
         this.startTime = Date.now()
         timerInterval = window.setInterval(() => this.nowTime = Date.now(), updateInterval)

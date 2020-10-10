@@ -9,12 +9,8 @@
         .personal-best
           .timer {{ formattedBestTime }}
           .description Personal best
-
-        a.dark-button.view-puzzles(href="/speedrun/puzzles")
-          | View puzzles
-
-        a.blue-button.invisible(href="/speedrun")
-          | Play again
+        a.dark-button.view-puzzles(href="/speedrun/puzzles") View puzzles
+        a.blue-button.invisible(href="/speedrun") Play again
 
     template(v-if="!hasStarted")
       .make-a-move Make a move to start the timer
