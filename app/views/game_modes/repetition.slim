@@ -17,26 +17,19 @@ section.repetition-mode(data-level="#{@level.path}")
           .onboarding Solve puzzles quickly and accurately to unlock the next level
 
         - if (next_level = @level&.next_level)
-          - if !user_signed_in? && @level.id == 1
-            .next-stage.invisible.container.anonymous
-              .left
-                | You've unlocked the next level!
+          .next-stage.invisible.container(class="#{user_signed_in? ? '' : 'anonymous'}")
+            .left
+              | You've unlocked the next level!
+              - if !user_signed_in?
                 .small
                   | Sign up to save your progress, or continue to Level #{next_level.number}
-              .right
+            .right
+              - if !user_signed_in?
                 a.blue-button(href="#{https_registration_url}") Sign up
-                a.blue-button(href="#{next_level.path}")
-                  | Level #{next_level.number}
-                  svg(style="height: 12px")
-                    use(xlink:href="#chevron-right")
-          - else
-            .next-stage.invisible.container
-              .left You've unlocked the next level!
-              .right
-                a.blue-button(href="#{next_level.path}")
-                  | Level #{next_level.number}
-                  svg(style="height: 12px")
-                    use(xlink:href="#chevron-right")
+              a.blue-button(href="#{next_level.path}")
+                | Level #{next_level.number}
+                svg(style="height: 12px")
+                  use(xlink:href="#chevron-right")
 
     aside.sidebar
       .times
