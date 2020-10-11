@@ -1,9 +1,11 @@
+import Vue from 'vue'
+
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import { ratedPuzzleAttempted } from '@blitz/api/requests'
 import { dispatch, subscribe } from '@blitz/store'
 import { moveToUci } from '@blitz/utils'
 
-import Sidebar from './views/sidebar'
+import SidebarVue from './sidebar.vue'
 
 import './style.sass'
 import './responsive.sass'
@@ -12,7 +14,10 @@ const apiPath = `/rated/puzzles`
 const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain
 
 export default function RatedMode() {
-  new Sidebar
+  const app = new Vue({
+    render: h => h(SidebarVue)
+  }).$mount()
+  document.querySelector('.rated-mode .vue-app-mount').appendChild(app.$el)
 
   let gameStarted = false
   let puzzleId: number
