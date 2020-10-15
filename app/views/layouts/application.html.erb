@@ -23,7 +23,7 @@
 <body data-controller="<%= params[:controller] %>" data-action="<%= params[:action] %>">
   <%= render partial: "layouts/main_header" %>
   <%= yield %>
-  <%= render partial: "static/snippets/chess_piece_svgs" %>
+  <%= render partial: "static/snippets/preload_svgs" %>
   <%= render partial: "static/snippets/google_analytics" %>
   <% if current_user&.user_chessboard && params[:controller] != 'users' %>
     <style type="text/css">
