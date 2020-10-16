@@ -1,6 +1,10 @@
-declare var require: any
+import '@interactjs/actions/index.prod'
+import '@interactjs/auto-start/index.prod'
+import '@interactjs/inertia/index.prod'
+import '@interactjs/modifiers/index.prod'
+// import '@interactjs/dev-tools'
 
-const interact = require('interactjs')
+import interact from '@interactjs/interact/index.prod'
 
 import { ChessMove } from '@blitz/types'
 
