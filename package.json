@@ -9,6 +9,12 @@
     "puzzles:verify:lichess": "rails runner 'LichessPuzzleImporter.verify_db_lichess_puzzles'"
   },
   "dependencies": {
+    "@interactjs/actions": "^1.10.0",
+    "@interactjs/auto-start": "^1.10.0",
+    "@interactjs/dev-tools": "^1.10.0",
+    "@interactjs/inertia": "^1.10.0",
+    "@interactjs/interact": "^1.10.0",
+    "@interactjs/modifiers": "^1.10.0",
     "@rails/webpacker": "5.2.1",
     "@types/backbone": "^1.4.5",
     "@vue/compiler-sfc": "^3.0.1",
@@ -17,7 +23,6 @@
     "backbone.native": "^1.0.0",
     "chess.js": "^0.11.0",
     "fastclick": "^1.0.6",
-    "interactjs": "^1.10.0",
     "mithril": "^1.1.6",
     "mousetrap": "^1.6.2",
     "postcss-cssnext": "^3.1.0",

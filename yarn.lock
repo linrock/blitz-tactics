@@ -881,10 +881,82 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
+"@interactjs/actions@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@interactjs/actions/-/actions-1.10.0.tgz#6ac1f6152b0722c45bd68a09c18ffe4c3e5a331e"
+  integrity sha512-Bg+e7SoyoFpLwPXFWw/WcMGDgj2ScSNKxvHhwKLjX7PNIk38p7skL8kGN4wQ3pvtBjb+uS4RpGym1QTLlGpa1g==
+  optionalDependencies:
+    "@interactjs/interact" "1.10.0"
+
+"@interactjs/auto-start@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@interactjs/auto-start/-/auto-start-1.10.0.tgz#0b7dd2fead7d656ff11a5a05a7c0977dd4d66617"
+  integrity sha512-9XlcR8Mj3OffmsMGX2Hv2LiE+e9MmsP1Wd2Cht8G9YM9bwWpzzeS/M0IlCA565sRWNkk3sLlNtDatX7MlcIpFA==
+  optionalDependencies:
+    "@interactjs/interact" "1.10.0"
+
+"@interactjs/core@1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@interactjs/core/-/core-1.10.0.tgz#6d8dff5ef8736c39db3f7d9aec28d7cd502797a0"
+  integrity sha512-K5RD7SU6wT/R2uPqdT8R8VzQUBNsl6EYB4uNYWItavkNQNskRDZlAAYv5sMLU87mfC8SdfOhgn0sca9/zNAPmg==
+
+"@interactjs/dev-tools@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@interactjs/dev-tools/-/dev-tools-1.10.0.tgz#56c3a56b777f7731eff02c05a6594aa44fb5cb19"
+  integrity sha512-9UglCImXIqCqWzE9BNAYV+AyxmFKGZpm/hZTL8KZJa74czGE4hDQXiTjvZtJ/M+tb3mrho90iWnxpHurT8o2/w==
+  dependencies:
+    "@interactjs/utils" "1.10.0"
+  optionalDependencies:
+    "@interactjs/interact" "1.10.0"
+
+"@interactjs/inertia@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@interactjs/inertia/-/inertia-1.10.0.tgz#0a72f27cccf2437cf212c2dfc9e7f5fba32faeef"
+  integrity sha512-2v3482YtmB7VV+AwAK9+23ZsjoSQtnHz3wwTJxqHqstyWQ6UEGkEU7uTACeFY/tvYaHJbA5WES5EH9zm3Ipeiw==
+  dependencies:
+    "@interactjs/offset" "1.10.0"
+  optionalDependencies:
+    "@interactjs/interact" "1.10.0"
+
+"@interactjs/interact@1.10.0", "@interactjs/interact@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@interactjs/interact/-/interact-1.10.0.tgz#66e98ce789065e178be28b0213ddfb38427111d8"
+  integrity sha512-FLJTQ8JJE6O2BQlO6DH3Hbb1L7KIXkz+0TBlFR5TXD/j2qYj0D4r6wBaV3QYs3QG5TWx+uoV88vNx1afAZd8mA==
+  dependencies:
+    "@interactjs/core" "1.10.0"
+    "@interactjs/types" "1.10.0"
+    "@interactjs/utils" "1.10.0"
+
+"@interactjs/modifiers@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@interactjs/modifiers/-/modifiers-1.10.0.tgz#2f9badbc8668e6da221aa87701fec29f8ddb3b01"
+  integrity sha512-mvdqvOXQ+6GYDjnaEBOEA66he9WXEFACcyOnPxT6TVgDwGkm9oe0a0rmMADhdJBJObEik8cT2wOSIdbgsReivw==
+  dependencies:
+    "@interactjs/snappers" "1.10.0"
+  optionalDependencies:
+    "@interactjs/interact" "1.10.0"
+
+"@interactjs/offset@1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@interactjs/offset/-/offset-1.10.0.tgz#f3b921f1689c4e892892788fc7fc118b38f207f2"
+  integrity sha512-8L905RRd8BExLZlskctVJL6naft3ZWEUH1w/IHQlVU+CLevMJm/RYJ/KmenshlE+T8yVRN1gcL9bMeoJzQ/w8g==
+  optionalDependencies:
+    "@interactjs/interact" "1.10.0"
+
+"@interactjs/snappers@1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@interactjs/snappers/-/snappers-1.10.0.tgz#bb49a9327fe37a70f410bae98b41394591ed9eb0"
+  integrity sha512-3zoYCE/kMwprnXc/keGhvYJrH84IYdYlEkyrqEo143SOTHzcMzEp4dydS4eC/TXtfLP7s3V++mlBtWoYzZsEJg==
+
 "@interactjs/types@1.10.0":
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/@interactjs/types/-/types-1.10.0.tgz#c2232ed3ba503891349912fa74aa05aa467403e9"
   integrity sha512-TB4uHd++aXqiWHQNzERcP8cxOLHCd+b3fq0XoV7Ydnappoq25R8iIrrB8Yb2FqVkZXnj1SIFYnzpol1SYHFIMQ==
+
+"@interactjs/utils@1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@interactjs/utils/-/utils-1.10.0.tgz#072c6f19d8fb82675b1a777e62a1c2e92836e652"
+  integrity sha512-31fWBAAofCrKfDqEVxkSL1rA/DoHuK3JKB9N17g4ObiWmuO9st1e7ALvrp5Ys8vbZTryQgJk1Gn40zlLd/2sJA==
 
 "@npmcli/move-file@^1.0.1":
   version "1.0.1"
@@ -4049,13 +4121,6 @@ ini@^1.3.4, ini@^1.3.5:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
   integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
-
-interactjs@^1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/interactjs/-/interactjs-1.10.0.tgz#0fafd725b1fddfc9671cacd98c4f92ceae73a197"
-  integrity sha512-dblDEizs758xETNVoSSxcZiwrP0DmFeNKILeDfhmO13LQRIsnSvbJFEYerEBVeH5m9qsOyYeMgBTafA+ZKkyBg==
-  dependencies:
-    "@interactjs/types" "1.10.0"
 
 internal-ip@^4.3.0:
   version "4.3.0"
