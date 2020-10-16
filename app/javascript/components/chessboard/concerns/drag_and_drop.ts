@@ -1,7 +1,8 @@
-import '@interactjs/actions/index.prod'
+import '@interactjs/actions/drag/index.prod'
+import '@interactjs/actions/drop/index.prod'
 import '@interactjs/auto-start/index.prod'
-import '@interactjs/inertia/index.prod'
-import '@interactjs/modifiers/index.prod'
+// import '@interactjs/inertia/index.prod'
+// import '@interactjs/modifiers/index.prod'
 // import '@interactjs/dev-tools'
 
 import interact from '@interactjs/interact/index.prod'
