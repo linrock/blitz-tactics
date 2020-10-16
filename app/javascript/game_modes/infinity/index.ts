@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 
 import Infinity from './infinity.vue'
 
@@ -13,8 +13,6 @@ export interface InfinityPuzzleSolved {
 }
 
 export default function InfinityMode() {
-  const app = new Vue({
-    render: h => h(Infinity)
-  }).$mount()
-  document.querySelector('.infinity-mode .vue-app-mount').appendChild(app.$el)
+  const app = createApp(Infinity)
+  app.mount('.infinity-mode .vue-app-mount')
 }

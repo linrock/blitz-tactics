@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 
 import './style.sass'
 import './responsive.sass'
@@ -6,8 +6,6 @@ import './responsive.sass'
 import Countdown from './countdown.vue'
 
 export default function CountdownMode() {
-  const app = new Vue({
-    render: h => h(Countdown)
-  }).$mount()
-  document.querySelector('.countdown-mode .container').appendChild(app.$el)
+  const app = createApp(Countdown)
+  app.mount('.countdown-mode .container')
 }

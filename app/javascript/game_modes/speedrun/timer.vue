@@ -1,5 +1,5 @@
 <template lang="pug">
-  .timer(:class="{ stopped: startTime === 0 }") {{ formattedElapsedTime }}
+.timer(:class="{ stopped: startTime === 0 }") {{ formattedElapsedTime }}
 
 </template>
 

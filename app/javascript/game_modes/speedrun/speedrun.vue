@@ -1,19 +1,19 @@
 <template lang="pug">
-  aside.speedrun-sidebar
-    .timers(:style="{ display: hasStarted ? '' : 'none' }")
-      .current-run
-        timer
-        .description {{ puzzleIdx }} of {{ numPuzzles }} solved
+aside.speedrun-sidebar
+  .timers(:style="{ display: hasStarted ? '' : 'none' }")
+    .current-run
+      timer
+      .description {{ puzzleIdx }} of {{ numPuzzles }} solved
 
-      template(v-if="hasCompleted")
-        .personal-best
-          .timer {{ formattedBestTime }}
-          .description Personal best
-        a.dark-button.view-puzzles(href="/speedrun/puzzles") View puzzles
-        a.blue-button.invisible(href="/speedrun") Play again
+    template(v-if="hasCompleted")
+      .personal-best
+        .timer {{ formattedBestTime }}
+        .description Personal best
+      a.dark-button.view-puzzles(href="/speedrun/puzzles") View puzzles
+      a.blue-button.invisible(href="/speedrun") Play again
 
-    template(v-if="!hasStarted")
-      .make-a-move Make a move to start the timer
+  template(v-if="!hasStarted")
+    .make-a-move Make a move to start the timer
 
 </template>
 

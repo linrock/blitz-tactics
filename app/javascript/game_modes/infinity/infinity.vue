@@ -1,20 +1,20 @@
 <template lang="pug">
-  aside.infinity-sidebar
-    .difficulties
-      .sidebar-label Difficulty
-      template(v-for="difficulty in difficulties")
-        .difficulty(
-          :class="[difficulty, { selected: currentDifficulty === difficulty }]"
-          @click="chooseDifficulty(difficulty)"
-        ) {{ difficulty }}
+aside.infinity-sidebar
+  .difficulties
+    .sidebar-label Difficulty
+    template(v-for="difficulty in difficulties")
+      .difficulty(
+        :class="[difficulty, { selected: currentDifficulty === difficulty }]"
+        @click="chooseDifficulty(difficulty)"
+      ) {{ difficulty }}
 
-    .stats(:class="{ invisible: nPuzzlesSolved === 0 }")
-      .sidebar-label You have solved
-      .n-puzzles {{ nPuzzlesSolved }} puzzles
+  .stats(:class="{ invisible: nPuzzlesSolved === 0 }")
+    .sidebar-label You have solved
+    .n-puzzles {{ nPuzzlesSolved }} puzzles
 
-    .no-more-left(:class="{ invisible: !noMoreLeft }")
-      | You did it! You solved all the puzzles in this level.
-      | Chooose another difficulty to continue.
+  .no-more-left(:class="{ invisible: !noMoreLeft }")
+    | You did it! You solved all the puzzles in this level.
+    | Chooose another difficulty to continue.
   
 </template>
 

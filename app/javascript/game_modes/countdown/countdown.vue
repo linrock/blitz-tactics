@@ -1,22 +1,22 @@
 <template lang="pug">
-  aside.countdown-sidebar
-    .timers(:style="{ display: (isStarted && !isEnded) ? '' : 'none'}")
-      .current-countdown
-        timer
-        .description {{ nPuzzlesSolved }} puzzles solved
+aside.countdown-sidebar
+  .timers(:style="{ display: (isStarted && !isEnded) ? '' : 'none'}")
+    .current-countdown
+      timer
+      .description {{ nPuzzlesSolved }} puzzles solved
 
-    .countdown-complete(v-if="isEnded")
-      .score-container.your-score
-        .label Your score
-        .score {{ score }}
+  .countdown-complete(v-if="isEnded")
+    .score-container.your-score
+      .label Your score
+      .score {{ score }}
 
-      .score-container.high-score
-        .label High score
-        .score {{ highScore }}
+    .score-container.high-score
+      .label High score
+      .score {{ highScore }}
 
-      a.blue-button(href="/countdown") Play again
+    a.blue-button(href="/countdown") Play again
 
-    .make-a-move(v-if="!isStarted") Make a move to start the timer
+  .make-a-move(v-if="!isStarted") Make a move to start the timer
 
 </template>
 

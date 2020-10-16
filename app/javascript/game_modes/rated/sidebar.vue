@@ -1,26 +1,26 @@
 <template lang="pug">
-  aside.rated-sidebar
-    .current-status
-      .your-rating
-        .label Your rating
-        .player-rating {{ playerRating }}
-      .puzzles-seen
-        .label Puzzles seen
-        .n-puzzles {{ numPuzzlesSeen }}
+aside.rated-sidebar
+  .current-status
+    .your-rating
+      .label Your rating
+      .player-rating {{ playerRating }}
+    .puzzles-seen
+      .label Puzzles seen
+      .n-puzzles {{ numPuzzlesSeen }}
 
-    .moves-attempted(v-if="hasStarted")
-      transition-group(name="player-move" tag="div")
-        .move-attempt(v-for="move in playerMoves" :key="move.i" :class="move.type")
-          svg(viewBox="0 0 45 45")
-            use(:xlink:href="move.type === 'fail' ? '#x-mark' : '#check-mark'" width="100%" height="100%")
-          .move-san {{ move.moveSan }}
-      .moves-shadow
+  .moves-attempted(v-if="hasStarted")
+    transition-group(name="player-move" tag="div")
+      .move-attempt(v-for="move in playerMoves" :key="move.i" :class="move.type")
+        svg(viewBox="0 0 45 45")
+          use(:xlink:href="move.type === 'fail' ? '#x-mark' : '#check-mark'" width="100%" height="100%")
+        .move-san {{ move.moveSan }}
+    .moves-shadow
 
-    .instructions(v-if="!hasStarted")
-      ul
-        li Solve puzzles quickly to gain more rating points
-        li Click start or make a move to begin
-      button.blue-button.start-button(@click="nextPuzzle") Start
+  .instructions(v-if="!hasStarted")
+    ul
+      li Solve puzzles quickly to gain more rating points
+      li Click start or make a move to begin
+    button.blue-button.start-button(@click="nextPuzzle") Start
 
 </template>
 
