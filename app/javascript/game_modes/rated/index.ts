@@ -14,8 +14,7 @@ const apiPath = `/rated/puzzles`
 const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain
 
 export default function RatedMode() {
-  const app = createApp(SidebarVue)
-  app.mount('.rated-mode .vue-app-mount')
+  createApp(SidebarVue).mount('.rated-mode .vue-app-mount')
 
   let gameStarted = false
   let puzzleId: number

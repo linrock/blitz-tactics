@@ -6,6 +6,5 @@ import './style.sass'
 import './responsive.sass'
 
 export default function SpeedrunMode() {
-  const app = createApp(Speedrun)
-  app.mount('.speedrun-mode .vue-app-mount')
+  createApp(Speedrun).mount('.speedrun-mode .vue-app-mount')
 }

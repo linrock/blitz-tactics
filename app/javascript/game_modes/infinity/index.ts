@@ -13,6 +13,5 @@ export interface InfinityPuzzleSolved {
 }
 
 export default function InfinityMode() {
-  const app = createApp(Infinity)
-  app.mount('.infinity-mode .vue-app-mount')
+  createApp(Infinity).mount('.infinity-mode .vue-app-mount')
 }
