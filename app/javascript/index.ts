@@ -2,10 +2,10 @@
 
 import FastClick from 'fastclick'
 
-import SoundPlayer from '@blitz/components/sound_player'
-import MiniChessboard from '@blitz/components/chessboard/mini_chessboard'
-import routes from '@blitz/routes'
-import { BlitzConfig } from '@blitz/types'
+import SoundPlayer from './components/sound_player'
+import MiniChessboard from './components/chessboard/mini_chessboard'
+import routes from './routes'
+import { BlitzConfig } from './types'
 
 const blitz: BlitzConfig = {};
 (<any>window).blitz = blitz
