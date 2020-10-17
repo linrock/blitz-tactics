@@ -5,27 +5,4 @@ section.haste-mode
     .board-area-container
       = render partial: "puzzle_player/above_board"
       = render partial: "puzzle_player/board_area"
-
-    aside.haste-sidebar
-      .timers(style="display: none")
-        .current-progress
-          .timer.stopped 3:00
-          .n-solved 0 puzzles solved
-
-      .haste-complete.invisible(style="display: none")
-        .score-container.your-score
-          .label Your score
-          .score
-
-        .score-container.high-score
-          .label Your high score today
-          .score
-
-        .score-container.recent-high-scores(style="display: none")
-          .label Past 24 hours
-          .list
-
-        a.view-puzzles.dark-button(href="javascript:") View puzzles
-        a.blue-button(href="/haste") Play again
-
-      .make-a-move Make a move to start the timer
+    .vue-app-mount

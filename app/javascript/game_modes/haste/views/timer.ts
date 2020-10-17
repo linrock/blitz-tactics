@@ -10,14 +10,18 @@ const penaltyMs = 30000       // lose this much time per mistake
 // Amount of time spent so far
 //
 export default class Timer {
-  private initialTimeMs: number
+  private initialTimeMs = 0
   private timeModifierMs = 0
   private startTime: number
   private comboSize = 0
   private timerInterval: number
 
   get el() {
-    return document.querySelector(`.current-progress .timer`)
+    const el = document.querySelector(`.current-progress .timer`);
+    if (!el) {
+      throw "Couldn't find el"
+    }
+    return el
   }
 
   constructor() {
