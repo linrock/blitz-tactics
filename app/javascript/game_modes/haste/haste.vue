@@ -2,7 +2,7 @@
 aside.haste-sidebar
   .timers(:style="`display: ${(hasStarted && !hasFinished) ? '' : 'none'}`")
     .current-progress
-      .timer.stopped 3:00
+      timer
       .n-solved {{ numPuzzlesSolved }} puzzles solved
 
   .haste-complete(v-if="hasFinished")
@@ -33,7 +33,7 @@ import { hasteRoundCompleted } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 
-import Timer from './views/timer'
+import Timer from './timer.vue'
 
 export default {
   data() {
@@ -86,8 +86,10 @@ export default {
       noHint: true,
       source: '/haste/puzzles',
     })
+  },
 
-    new Timer
-  }
+  components: {
+    Timer,
+  },
 }
 </script>
