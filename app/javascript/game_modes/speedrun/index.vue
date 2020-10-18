@@ -25,6 +25,9 @@ aside.speedrun-sidebar
 
   import Timer from './timer.vue'
 
+  import './style.sass'
+  import './responsive.sass'
+
   const apiPath = `/speedrun/puzzles.json`
 
   export default {

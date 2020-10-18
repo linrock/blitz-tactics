@@ -35,6 +35,9 @@ import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 
 import Timer from './timer.vue'
 
+import './style.sass'
+import './responsive.sass'
+
 export default {
   data() {
     return {

@@ -27,6 +27,9 @@ aside.countdown-sidebar
 
   import Timer from './timer.vue'
 
+  import './style.sass'
+  import './responsive.sass'
+
   export default {
     data() {
       return {
