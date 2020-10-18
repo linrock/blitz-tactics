@@ -14,7 +14,7 @@ aside.haste-sidebar
       .label Your high score today
       .score {{ highScore }}
 
-    .score-container.recent-high-scores
+    .score-container.recent-high-scores(v-if="highScores.length >= 3")
       .label Past 24 hours
       .list
         .high-score(v-for="[playerName, score] in highScores")
