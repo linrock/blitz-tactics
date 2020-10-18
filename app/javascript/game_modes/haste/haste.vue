@@ -63,7 +63,7 @@ export default {
         this.numPuzzlesSolved = i + 1
       },
       'timer:stopped': async () => {
-        // Overlay over the board area after the round completes
+        // Show an overlay over the board area after the round completes
         const el: HTMLElement = document.querySelector(`.board-modal-container`)
         el.style.display = ``
         el.classList.remove(`invisible`)

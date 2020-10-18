@@ -21,17 +21,17 @@ export const moveToUci = (move: ChessMove): UciMove => {
   }
 }
 
-export const shuffle = (original: Array<any>): Array<any> => {
-  const array = original.slice(0)
-  let counter = array.length
+export const shuffle = (originalArray: any[]): any[] => {
+  const shuffledArray = originalArray.slice(0)
+  let counter = shuffledArray.length
   while (counter > 0) {
     let index = Math.floor(Math.random() * counter)
     counter--
-    let temp = array[counter]
-    array[counter] = array[index]
-    array[index] = temp
+    let temp = shuffledArray[counter]
+    shuffledArray[counter] = shuffledArray[index]
+    shuffledArray[index] = temp
   }
-  return array
+  return shuffledArray
 }
 
 export const getQueryParam = (param: string): string => {
