@@ -6,7 +6,9 @@ class SolvedInfinityPuzzle < ActiveRecord::Base
 
   validates :difficulty, inclusion: InfinityLevel::DIFFICULTIES
 
-  default_scope { order(updated_at: :asc) } # last = latest solved
+  scope :most_recent_last, -> do # last = latest solved
+    order(updated_at: :asc)
+  end
 
   scope :with_difficulty, -> (difficulty) do
     where(difficulty: difficulty)
