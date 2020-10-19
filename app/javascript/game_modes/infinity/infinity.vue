@@ -25,7 +25,7 @@ aside.infinity-sidebar
 
   import { InfinityPuzzleDifficulty } from './index'
 
-  const apiPath = `/infinity/puzzles`
+  const apiPath = `/infinity/puzzles.json`
   const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain
   const difficulties = ['easy', 'medium', 'hard', 'insane'] as InfinityPuzzleDifficulty[]
 

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   # infinity mode
   get '/infinity'                => 'game_modes/infinity#index'
+  get '/infinity/puzzles.json'   => 'game_modes/infinity#puzzles_json'
   get '/infinity/puzzles'        => 'game_modes/infinity#puzzles'
   post '/infinity/puzzles'       => 'game_modes/infinity#puzzle_solved'
 
