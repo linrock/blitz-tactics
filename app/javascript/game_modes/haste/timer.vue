@@ -39,23 +39,25 @@ export default {
     },
   },
 
-  methods: {
-    gameHasEnded() {
+  mounted() {
+    let timerInterval
+    const gameHasEnded = () => {
       this.hasEnded = true
+      if (typeof timerInterval !== 'undefined') {
+        clearInterval(timerInterval)
+        timerInterval = undefined
+      }
       dispatch('timer:stopped')
     }
-  },
-
-  mounted() {
     subscribeOnce('move:try', () => {
       // start the timer after the first player move
       const now = Date.now()
       this.startTime = now
       this.nowTime = now
-      const timerInterval = window.setInterval(() => {
+      timerInterval = window.setInterval(() => {
         this.nowTime = Date.now()
         if (this.timeLeftMilliseconds <= 0) {
-          this.gameHasEnded()
+          gameHasEnded()
         }
       }, updateIntervalMs)
       this.hasStarted = true
@@ -79,7 +81,10 @@ export default {
         this.isPenalized = true
         setTimeout(() => this.isPenalized = false, 250)
       },
-      'puzzles:complete': () => this.gameHasEnded(),
+      'puzzles:complete': () => {
+        // this happens when all the haste puzzles in a round have been completed
+        gameHasEnded()
+      },
     })
   }
 }
