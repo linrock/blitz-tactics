@@ -8,11 +8,14 @@ aside.infinity-sidebar
         @click="chooseDifficulty(difficulty)"
       ) {{ difficulty }}
 
-  .stats(:class="{ invisible: nPuzzlesSolved === 0 }")
+  .stats(:class="{ invisible: !nPuzzlesSolved }")
     .sidebar-label You have solved
     .n-puzzles {{ nPuzzlesSolved }} puzzles
 
-  .no-more-left(:class="{ invisible: !noMoreLeft }")
+  .recent-puzzles
+    a.dark-button(href="/infinity/puzzles") Recent puzzles
+
+  .no-more-left(v-if="noMoreLeft")
     | You did it! You solved all the puzzles in this level.
     | Chooose another difficulty to continue.
   
