@@ -17,13 +17,17 @@ class GameModes::InfinityController < ApplicationController
 
   # shows a list of puzzles you've seen recently
   def puzzles
-    solved_puzzle_ids = @user.solved_infinity_puzzles.
-      order('id DESC').limit(30).
-      includes(:infinity_puzzle).
-      map do |solved|
-        solved.infinity_puzzle.data['id']
-      end
-    @puzzles = Puzzle.find_by_sorted(solved_puzzle_ids)
+    if current_user
+      solved_puzzle_ids = @user.solved_infinity_puzzles.
+        order('id DESC').limit(30).
+        includes(:infinity_puzzle).
+        map do |solved|
+          solved.infinity_puzzle.data['id']
+        end
+      @puzzles = Puzzle.find_by_sorted(solved_puzzle_ids)
+    else
+      @puzzles = []
+    end
   end
 
   # notifying server of status updates in infinity mode
