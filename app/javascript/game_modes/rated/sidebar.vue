@@ -22,6 +22,8 @@ aside.rated-sidebar
       li Click start or make a move to begin
     button.blue-button.start-button(@click="nextPuzzle") Start
 
+  a.dark-button.recent-puzzles-btn(href="/rated/puzzles") Recent puzzles
+
 </template>
 
 <script lang="ts">

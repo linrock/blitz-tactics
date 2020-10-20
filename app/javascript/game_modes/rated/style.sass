@@ -1,4 +1,5 @@
 @import "../../../assets/stylesheets/_colors"
+@import "../../../assets/stylesheets/_variables"
 
 .rated-mode
   $board-size: 500px
@@ -9,6 +10,27 @@
 
   .vue-app-mount
     display: flex
+    width: 100%
+
+  // TODO DRY with other dark buttons (.button class)
+  .dark-button
+    font-size: 14px
+    padding: 8px 12px
+    border: 0
+    border-radius: 3px
+    background: black
+    color: white
+    display: inline-block
+    font-family: $main-font
+    line-height: 22px
+    text-decoration: none
+    text-align: center
+    transition: opacity 0.25s ease
+    width: 100%
+
+    &:hover
+      background: #51B7FF
+      cursor: pointer
 
   .above-board
     width: $board-size
@@ -39,6 +61,7 @@
     margin-left: 30px
     display: flex
     flex-direction: column
+    width: 100%
 
     .your-rating .label
       margin-bottom: 10px
@@ -97,6 +120,9 @@
         svg
           width: 14px
           margin-right: 8px
+
+  .recent-puzzles-btn
+    margin-top: auto
 
   aside .instructions
     display: flex
