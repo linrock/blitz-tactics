@@ -17,7 +17,7 @@ if (supportsAudio) {
   audioMap = {}
 }
 
-export default class SoundPlayer extends Backbone.View<Backbone.Model> {
+export default class SoundPlayer extends Backbone.View {
   private volumeIconEl: HTMLElement
   private soundEnabled = false
   private soundsLoaded = false

@@ -8,7 +8,7 @@ import { FEN, ChessMove } from '@blitz/types'
 // When you make a pawn move that requires pawn promotion,
 // this is what shows up
 //
-export default class PiecePromotionModal extends Backbone.View<Backbone.Model> {
+export default class PiecePromotionModal extends Backbone.View {
   private fen: FEN
   private moveIntent: ChessMove
   private readonly cjs = new Chess

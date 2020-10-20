@@ -10,7 +10,7 @@ const hintDelay = 750
 
 // Solution/hint that shows up after some time
 //
-export default class PuzzleHint extends Backbone.View<Backbone.Model> {
+export default class PuzzleHint extends Backbone.View {
   private moveEl: HTMLElement
   private buttonEl: HTMLElement
   private current: PuzzleState
