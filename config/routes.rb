@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   # rated puzzles mode
   get '/rated'                   => 'game_modes/rated#index'
+  get '/rated/puzzles.json'      => 'game_modes/rated#puzzles_json'
   get '/rated/puzzles'           => 'game_modes/rated#puzzles'
 
   get '/rated/attempts'          => 'game_modes/rated#puzzle_attempts_list'

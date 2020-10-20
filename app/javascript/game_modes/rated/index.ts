@@ -10,7 +10,7 @@ import SidebarVue from './sidebar.vue'
 import './style.sass'
 import './responsive.sass'
 
-const apiPath = `/rated/puzzles`
+const apiPath = `/rated/puzzles.json`
 const fetchThreshold = 5 // fetch more puzzles when this # puzzles remain
 
 export default function RatedMode() {
