@@ -12,7 +12,7 @@ import PositionTrainer from './components/position_trainer'
 import PuzzlePage from './components/puzzle_page'
 
 interface RouteMap {
-  [routeKey: string]: { new(): void } | (() => void)
+  [routeKey: string]: () => void
 }
 
 const routes: RouteMap = {
@@ -26,19 +26,19 @@ const routes: RouteMap = {
   "game_modes/haste#index": () => {
     createApp(HasteMode).mount('.haste-mode .vue-app-mount')
   },
-  "game_modes/infinity#index": InfinityMode,
-  "game_modes/repetition#index": RepetitionMode,
-  "game_modes/rated#index": RatedMode,
+  "game_modes/infinity#index": () => InfinityMode(),
+  "game_modes/repetition#index": () => RepetitionMode(),
+  "game_modes/rated#index": () => RatedMode(),
 
-  // puzzle pages
-  "puzzles#show": PuzzlePage,
+  // individual puzzle pages
+  "puzzles#show": () => PuzzlePage(),
 
   // position trainers
-  "pages#position": PositionTrainer,
-  "pages#defined_position": PositionTrainer,
+  "pages#position": () => new PositionTrainer,
+  "pages#defined_position": () => new PositionTrainer,
 
   // user profile
-  "users#customize_board": CustomizeBoard,
+  "users#customize_board": () => new CustomizeBoard,
 }
 
 export default routes

@@ -14,11 +14,7 @@ document.addEventListener(`DOMContentLoaded`, () => {
   const { controller, action } = document.querySelector(`body`).dataset
 
   // initialize route components/views
-  const route = routes[`${controller}#${action}`]
-  if (typeof route !== `undefined`) {
-    // @ts-ignore. TODO fix this
-    new route
-  }
+  routes[`${controller}#${action}`]?.();
 
   // initialize all mini chessboards
   [].forEach.call(document.querySelectorAll(`.mini-chessboard`), (el: HTMLElement) => {
