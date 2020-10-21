@@ -493,6 +493,39 @@ ALTER SEQUENCE public.positions_id_seq OWNED BY public.positions.id;
 
 
 --
+-- Name: puzzle_reports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.puzzle_reports (
+    id bigint NOT NULL,
+    puzzle_id integer NOT NULL,
+    user_id integer NOT NULL,
+    message character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: puzzle_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.puzzle_reports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: puzzle_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.puzzle_reports_id_seq OWNED BY public.puzzle_reports.id;
+
+
+--
 -- Name: puzzles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1002,6 +1035,13 @@ ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.po
 
 
 --
+-- Name: puzzle_reports id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzle_reports ALTER COLUMN id SET DEFAULT nextval('public.puzzle_reports_id_seq'::regclass);
+
+
+--
 -- Name: puzzles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1196,6 +1236,14 @@ ALTER TABLE ONLY public.levels
 
 ALTER TABLE ONLY public.positions
     ADD CONSTRAINT positions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: puzzle_reports puzzle_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzle_reports
+    ADD CONSTRAINT puzzle_reports_pkey PRIMARY KEY (id);
 
 
 --
@@ -1407,6 +1455,20 @@ CREATE INDEX index_positions_on_user_id ON public.positions USING btree (user_id
 
 
 --
+-- Name: index_puzzle_reports_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_puzzle_reports_on_puzzle_id ON public.puzzle_reports USING btree (puzzle_id);
+
+
+--
+-- Name: index_puzzle_reports_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_puzzle_reports_on_user_id ON public.puzzle_reports USING btree (user_id);
+
+
+--
 -- Name: index_puzzles_on_puzzle_data_hash; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1572,6 +1634,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190221152057'),
 ('20190221152105'),
 ('20190221152109'),
-('20201002022940');
+('20201002022940'),
+('20201021035332');
 
 
