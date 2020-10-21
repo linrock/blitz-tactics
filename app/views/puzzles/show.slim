@@ -28,8 +28,8 @@
       = hidden_field_tag :authenticity_token, form_authenticity_token
       = hidden_field_tag "puzzle_report[puzzle_id]", @puzzle.puzzle_id
       textarea.puzzle-report-message(name="puzzle_report[message]" placeholder="Why are you reporting this puzzle?")
-      input(type="submit" value="Submit report")
-      input(type="button" value="Cancel")
+      input.cancel-puzzle-report.dark-button.small(type="button" value="Cancel")
+      input.dark-button.small(type="submit" value="Submit report")
 
 script#puzzle-data(type="application/json")
   = @puzzle.to_json.html_safe
