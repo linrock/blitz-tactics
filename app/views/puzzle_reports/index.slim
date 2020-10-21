@@ -1,0 +1,5 @@
+.container
+  - @puzzle_reports.each do |puzzle_report|
+    .summary(style="margin-bottom: 10px")
+      a.puzzle-link(href="/p/#{puzzle_report.puzzle_id}") Puzzle #{puzzle_report.puzzle_id}
+      .message= puzzle_report.message

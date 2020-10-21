@@ -57,6 +57,10 @@ Rails.application.routes.draw do
   get '/p/:puzzle_id/edit'       => 'puzzles#edit'
   put '/p/:puzzle_id'            => 'puzzles#update'
 
+  # puzzle reports
+  get '/puzzle_reports'          => 'puzzle_reports#index'
+  post '/puzzle_reports'         => 'puzzle_reports#create'
+
   # pre-defined position trainer routes
   static_routes = StaticRoutes.new
   static_routes.route_map!

@@ -22,5 +22,8 @@
             td= k
             td= v.to_s
 
+    .report-puzzle
+      a.dark-button(href="/puzzle_reports/new?puzzle_id=#{@puzzle.puzzle_id}") Report puzzle
+
 script#puzzle-data(type="application/json")
   = @puzzle.to_json.html_safe
