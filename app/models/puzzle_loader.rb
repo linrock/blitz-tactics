@@ -75,7 +75,7 @@ class PuzzleLoader
     puts "#{HastePuzzle.count} haste puzzles in db. Creating haste puzzles..."
     num_checked = 0
     num_created = 0
-    open(Rails.root.join(HASTE_PUZZLE_SOURCE)) do |f|
+    open(Rails.root.join(HASTE_PUZZLE_SOURCE), 'r') do |f|
       haste_puzzle_list = JSON.parse(f.read)
       haste_puzzle_list.each do |puzzle|
         begin
@@ -91,7 +91,7 @@ class PuzzleLoader
         end
         num_checked += 1
       end
-      puts "Created #{num_created} haste puzzles out of #{num_checked} .json files"
+      puts "Created #{num_created} haste puzzles out of #{num_checked} puzzles in .json file"
     end
   end
 
