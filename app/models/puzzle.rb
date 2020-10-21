@@ -10,6 +10,8 @@
 #      "lines": { [uci_move: "lines"] } }
 
 class Puzzle < ActiveRecord::Base
+  has_many :puzzle_reports
+
   # Each puzzle is uniquely hashed based on their puzzle data
   validates :puzzle_data_hash, presence: true
   # Puzzle data consists of - initial_fen, initial_move_san, initial_move_uci, puzzle_fen, lines

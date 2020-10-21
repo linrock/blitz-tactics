@@ -13,6 +13,9 @@ class PuzzlesController < ApplicationController
 
   def show
     @puzzle = Puzzle.find_by_puzzle_id(params[:puzzle_id])
+    if current_user
+      @has_reported_puzzle = @puzzle.puzzle_reports.exists?(user_id: current_user.id)
+    end
     unless @puzzle
       render "not_found" and return
     end

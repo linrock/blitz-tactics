@@ -44,22 +44,24 @@ export default () => {
   fenEl.addEventListener('click', (event) => (event.target as HTMLInputElement).select())
 
   const reportPuzzleBtnEl: HTMLElement = document.querySelector('.report-puzzle')
-  reportPuzzleBtnEl.addEventListener('click', () => {
-    reportPuzzleBtnEl.style.display = 'none'
+  if (reportPuzzleBtnEl) {
+    reportPuzzleBtnEl.addEventListener('click', () => {
+      reportPuzzleBtnEl.style.display = 'none'
 
-    console.log('report puzzle clicked')
-    const reportPuzzleFormEl: HTMLElement = document.querySelector('.puzzle-report-form')
-    reportPuzzleFormEl.style.display = 'block'
+      console.log('report puzzle clicked')
+      const reportPuzzleFormEl: HTMLElement = document.querySelector('.puzzle-report-form')
+      reportPuzzleFormEl.style.display = 'block'
 
-    const reportPuzzleTextareaEl = reportPuzzleFormEl.querySelector('textarea')
-    reportPuzzleTextareaEl.focus()
+      const reportPuzzleTextareaEl = reportPuzzleFormEl.querySelector('textarea')
+      reportPuzzleTextareaEl.focus()
 
-    document.querySelector('.cancel-puzzle-report').addEventListener('click', () => {
-      reportPuzzleFormEl.style.display = 'none'
-      reportPuzzleTextareaEl.value = ''
-      reportPuzzleBtnEl.style.display = ''
+      document.querySelector('.cancel-puzzle-report').addEventListener('click', () => {
+        reportPuzzleFormEl.style.display = 'none'
+        reportPuzzleTextareaEl.value = ''
+        reportPuzzleBtnEl.style.display = ''
+      })
     })
-  })
+  }
 
   const puzzleData: PuzzleData = JSON.parse(puzzleJsonDataEl.innerText)
   // console.dir(puzzleData)
