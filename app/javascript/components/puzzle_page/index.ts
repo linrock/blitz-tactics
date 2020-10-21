@@ -43,6 +43,13 @@ export default () => {
   // Select FEN input upon click for convenient copying
   fenEl.addEventListener('click', (event) => (event.target as HTMLInputElement).select())
 
+  const reportPuzzleBtnEl: HTMLElement = document.querySelector('.report-puzzle')
+  reportPuzzleBtnEl.addEventListener('click', () => {
+    console.log('report puzzle clicked')
+    const reportPuzzleFormEl: HTMLElement = document.querySelector('.puzzle-report-form')
+    reportPuzzleFormEl.style.display = 'block'
+  })
+
   const puzzleData: PuzzleData = JSON.parse(puzzleJsonDataEl.innerText)
   // console.dir(puzzleData)
 

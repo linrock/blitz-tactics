@@ -17,13 +17,19 @@
       input.fen(type="text" readonly="readonly" value="#{@puzzle.puzzle_data["puzzle_fen"]}")
 
       table.metadata
-        - @puzzle.metadata.each do |k, v|
+        - @puzzle.metadata.each do |field_name, field_value|
           tr
-            td= k
-            td= v.to_s
+            td= field_name
+            td= field_value.to_s
 
-    .report-puzzle
-      a.dark-button(href="/puzzle_reports/new?puzzle_id=#{@puzzle.puzzle_id}") Report puzzle
+    a.dark-button.report-puzzle Report puzzle
+
+    form.puzzle-report-form(action="/puzzle_reports" method="POST")
+      = hidden_field_tag :authenticity_token, form_authenticity_token
+      = hidden_field_tag "puzzle_report[puzzle_id]", @puzzle.puzzle_id
+      textarea.puzzle-report-message(name="puzzle_report[message]" placeholder="Why are you reporting this puzzle?")
+      input(type="submit" value="Submit report")
+      input(type="button" value="Cancel")
 
 script#puzzle-data(type="application/json")
   = @puzzle.to_json.html_safe
