@@ -99,6 +99,22 @@
         </div>
       <% end %>
 
+      <% if @user.user_rating&.rated_puzzle_attempts&.count.to_i > 0 %>
+        <div class="training-mode-stats">
+          <h3 class="game-mode-name"><a href="/rated">Rated</a></h3>
+          <div class="stats-rows">
+            <div class="stats-row">
+              <div class="label">Rating</div>
+              <div class="count"><%= @user.user_rating&.rating.round %></div>
+            </div>
+            <div class="stats-row">
+              <div class="label">Puzzles seen</div>
+              <div class="count"><%= @user.user_rating&.rated_puzzle_attempts&.count %></div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
       <% if @user.num_repetition_levels_completed > 0 %>
         <div class="training-mode-stats">
           <h3 class="game-mode-name"><a href="/repetition">Repetition</a></h3>
