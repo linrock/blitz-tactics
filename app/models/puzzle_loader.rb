@@ -59,7 +59,6 @@ class PuzzleLoader
     end
     puts "Created #{num_levels_created} countdown levels out of #{num_levels_checked} .json files"
     puts "Created #{num_puzzles_created} countdown puzzles"
-
   end
 
   def self.create_speedrun_puzzles_from_json_files
@@ -180,6 +179,7 @@ class PuzzleLoader
 
   def self.create_infinity_puzzles_from_json_files
     puts "Importing infinity puzzles..."
+    num_created = 0
     Dir.glob(Rails.root.join(INFINITY_PUZZLE_SOURCE)).each do |filename|
       level_difficulty = filename[/difficulty-([a-z]+)\.json/, 1]
       infinity_level = InfinityLevel.send(level_difficulty)
@@ -188,9 +188,14 @@ class PuzzleLoader
       open(filename) do |f|
         puzzle_list = JSON.parse(f.read)
         puzzle_list.each do |puzzle|
-          infinity_level.infinity_puzzles.create(data: puzzle)
+          begin
+            infinity_level.infinity_puzzles.create!(data: puzzle)
+            num_created += 1
+          rescue
+          end
         end
       end
     end
+    puts "Created #{num_created} infinity puzzles"
   end
 end
