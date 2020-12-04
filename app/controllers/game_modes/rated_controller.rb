@@ -23,7 +23,7 @@ class GameModes::RatedController < ApplicationController
   def puzzles
     puzzle_ids = current_user.user_rating.
       rated_puzzle_attempts.order('id DESC').limit(30).
-      includes(:rated_puzzle).map(&:rated_puzzle).map {|p| p.data["id"] }
+      includes(:rated_puzzle).map(&:rated_puzzle).compact.map {|p| p.data["id"] }
     @puzzles = Puzzle.find_by_sorted(puzzle_ids)
   end
 
