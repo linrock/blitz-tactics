@@ -20,6 +20,8 @@ interface PuzzleData {
   puzzle_data: PuzzleMovesData,
 }
 
+let originalInstructions: string;
+
 const resetPosition = (puzzleMovesData: PuzzleMovesData) => {
   // Initialize the board position. Make initial opponent move if there is one
   dispatch('fen:set', puzzleMovesData.initial_fen)
@@ -30,6 +32,7 @@ const resetPosition = (puzzleMovesData: PuzzleMovesData) => {
       dispatch('move:make', sanMove, { opponent: true });
       const instructionsEl: HTMLDivElement = document.querySelector('.instructions')
       if (instructionsEl) {
+        instructionsEl.textContent = originalInstructions;
         instructionsEl.classList.remove('invisible')
       }
     }, 500);
@@ -76,6 +79,8 @@ export default () => {
   const instructionsEl: HTMLElement = document.querySelector('.instructions')
   const resetPositionEl: HTMLElement = document.querySelector('.button.restart')
 
+  originalInstructions = instructionsEl.textContent
+
   subscribe({
     // Handle whenever the player tries a move
     'move:try': move => {
@@ -102,7 +107,8 @@ export default () => {
       if (puzzleLines === `win`) {
         console.log('win!')
         dispatch(`puzzle:solved`)
-        dispatch(`move:make`, responseMove, { opponent: true })
+        instructionsEl.textContent = 'Puzzle solved!'
+        instructionsEl.classList.remove('invisible')
       } else {
         dispatch(`move:sound`, move)
         setTimeout(() => {
