@@ -25,32 +25,48 @@ class PuzzleLoader
 
   def self.create_countdown_puzzles_from_json_files
     puts "#{CountdownLevel.count} countdown levels in db. Creating countdown levels..."
-    num_checked = 0
-    num_created = 0
+    num_levels_checked = 0
+    num_levels_created = 0
+    num_puzzles_created = 0
     Dir.glob(Rails.root.join(COUNTDOWN_PUZZLE_SOURCE)).sort.each do |filename|
       level_name = filename[/countdown-([\d\-]+).json/, 1]
-      if CountdownLevel.find_by(name: level_name)
+      level = CountdownLevel.find_by(name: level_name)
+      if level
         # puts "Countdown level #{level_name} already exists. Ignoring #{filename}"
       else
         puts "Creating countdown level #{level_name} from #{filename}"
         level = CountdownLevel.create!(name: level_name)
-        open(filename, "r") do |f|
-          countdown_puzzle_list = JSON.parse(f.read)
-          countdown_puzzle_list.each do |puzzle_data|
-            level.countdown_puzzles.create!(data: puzzle_data)
-          end
-        end
-        num_created += 1
+        num_levels_created += 1
       end
-      num_checked += 1
+      countdown_puzzle_list = open(filename, "r") { |f| JSON.parse(f.read) }
+
+      existing_puzzle_hashes = Set.new(level.countdown_puzzles.map(&:puzzle_hash))
+      json_puzzle_hashes = Set.new(countdown_puzzle_list.map {|puzzle_data|
+        countdown_puzzle = level.countdown_puzzles.new(data: puzzle_data)
+        countdown_puzzle.calculate_puzzle_hash
+      })
+
+      # If the .json data file doesn't match what's in the db,
+      # prefer the puzzles from the .json data
+      if existing_puzzle_hashes != json_puzzle_hashes
+        level.countdown_puzzles.destroy_all
+        countdown_puzzle_list.each do |puzzle_data|
+          level.countdown_puzzles.create!(data: puzzle_data)
+          num_puzzles_created += 1
+        end
+      end
+      num_levels_checked += 1
     end
-    puts "Created #{num_created} countdown levels out of #{num_checked} .json files"
+    puts "Created #{num_levels_created} countdown levels out of #{num_levels_checked} .json files"
+    puts "Created #{num_puzzles_created} countdown puzzles"
+
   end
 
   def self.create_speedrun_puzzles_from_json_files
     puts "#{SpeedrunLevel.count} speedrun levels in db. Creating speedrun levels..."
     num_levels_checked = 0
     num_levels_created = 0
+    num_puzzles_created = 0
     Dir.glob(Rails.root.join(SPEEDRUN_PUZZLE_SOURCE)).sort.each do |filename|
       level_name = filename[/speedrun-([\d\-]+).json/, 1]
       level = SpeedrunLevel.find_by(name: level_name)
