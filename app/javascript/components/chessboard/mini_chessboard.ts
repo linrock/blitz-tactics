@@ -35,19 +35,18 @@ export default class MiniChessboard {
       this.columns.reverse()
     }
     this.renderFen(options.fen)
-    // TODO DRY
-    if (options.initialMove) {
+    // figure out what move to make to finish setting up the board
+    const move = options.initialMove ? uciToMove(options.initialMove) : options.initialMoveSan
+    if (move) {
+      // make the move on the miniboard after a delay
       setTimeout(() => {
-        const { from, to } = this.cjs.move(uciToMove(options.initialMove))
-        this.highlightSquare(from, `move-from`)
-        this.highlightSquare(to, `move-to`)
-        this.renderFen(this.cjs.fen())
-      }, 1000)
-    } else if (options.initialMoveSan) {
-      setTimeout(() => {
-        const { from, to } = this.cjs.move(options.initialMoveSan)
-        this.highlightSquare(from, `move-from`)
-        this.highlightSquare(to, `move-to`)
+        try {
+          const { from, to } = this.cjs.move(move)
+          this.highlightSquare(from, `move-from`)
+          this.highlightSquare(to, `move-to`)
+        } catch {
+          throw new Error(`Failed to make move ${JSON.stringify(move)} from '${options.fen}'`)
+        }
         this.renderFen(this.cjs.fen())
       }, 1000)
     }
