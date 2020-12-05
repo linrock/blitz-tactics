@@ -1,4 +1,6 @@
 import Bugsnag from '@bugsnag/js'
 
-const apiKey = document.querySelector("#bugsnag-api-key").innerHTML
-Bugsnag.start({ apiKey });
+const bugsnagOptions = JSON.parse(
+  document.querySelector("#bugsnag-options-json").innerHTML
+)
+Bugsnag.start(bugsnagOptions);
