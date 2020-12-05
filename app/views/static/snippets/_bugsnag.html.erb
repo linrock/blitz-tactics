@@ -1,0 +1,4 @@
+<% if ENV["BUGSNAG_KEY"].present? %>
+  <template id="bugsnag-api-key"><%= ENV["BUGSNAG_KEY"] %></template>
+  <%= javascript_pack_tag 'bugsnag', async: true %>
+<% end %>

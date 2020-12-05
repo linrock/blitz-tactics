@@ -9,6 +9,7 @@
     "puzzles:verify:lichess": "rails runner 'LichessPuzzleImporter.verify_db_lichess_puzzles'"
   },
   "dependencies": {
+    "@bugsnag/js": "^7.5.3",
     "@interactjs/actions": "^1.10.0",
     "@interactjs/auto-start": "^1.10.0",
     "@interactjs/dev-tools": "^1.10.0",

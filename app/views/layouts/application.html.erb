@@ -24,11 +24,12 @@
   <%= render partial: "layouts/main_header" %>
   <%= yield %>
   <%= render partial: "static/snippets/preload_svgs" %>
-  <%= render partial: "static/snippets/google_analytics" %>
   <% if current_user&.user_chessboard && params[:controller] != 'users' %>
     <style type="text/css">
       <%= current_user.user_chessboard.to_css %>
     </style>
   <% end %>
+  <%= render partial: "static/snippets/google_analytics" %>
+  <%= render partial: "static/snippets/bugsnag" %>
 </body>
 </html>
