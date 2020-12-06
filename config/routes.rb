@@ -25,6 +25,11 @@ Rails.application.routes.draw do
   get '/haste/puzzles'           => 'game_modes/haste#puzzles'
   post '/haste'                  => 'game_modes/haste#complete'
 
+  # threes mode
+  get '/threes'                  => 'game_modes/threes#index'
+  get '/threes/puzzles'          => 'game_modes/threes#puzzles'
+  post '/threes'                 => 'game_modes/threes#complete'
+
   # repetition mode
   get '/repetition'              => 'game_modes/repetition#index'
   get '/level-:number'           => 'game_modes/repetition#index'

@@ -1,0 +1,8 @@
+- content_for(:title) { "Threes mode" }
+
+section.threes-mode
+  .container
+    .board-area-container
+      = render partial: "puzzle_player/above_board"
+      = render partial: "puzzle_player/board_area"
+    .vue-app-mount
