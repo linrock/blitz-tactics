@@ -26,6 +26,10 @@ module PuzzleRecord
       initial_move["uci"]
     end
 
+    def initial_move_san
+      initial_move["san"]
+    end
+
     def lines
       data["lines"]
     end
