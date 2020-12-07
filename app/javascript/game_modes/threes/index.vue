@@ -1,6 +1,6 @@
 <template lang="pug">
 aside.haste-sidebar
-  .timers(:style="`display: ${(hasStarted && !hasFinished) ? '' : 'none'}`")
+  .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
     .current-progress
       timer
       .n-solved {{ numPuzzlesSolved }} puzzles solved
