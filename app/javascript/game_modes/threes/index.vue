@@ -1,5 +1,5 @@
 <template lang="pug">
-aside.haste-sidebar
+aside.threes-sidebar
   .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
     .current-progress
       timer
@@ -7,7 +7,7 @@ aside.haste-sidebar
       .n-hints {{ numHints }} hints
       .n-lives {{ numLives }} lives
 
-  .haste-complete(v-if="hasFinished")
+  .threes-complete(v-if="hasFinished")
     .score-container.your-score
       .label Your score
       .score {{ yourScore }}
@@ -18,7 +18,10 @@ aside.haste-sidebar
 
     .puzzles-failed(v-if="puzzleIdsFailed.length > 0")
       div(v-for="puzzleId in puzzleIdsFailed")
-        a(:href="`/p/${puzzleId}`" target="_blank") Puzzle {{ puzzleId }}
+        a(:href="`/p/${puzzleId}`" target="_blank")
+          svg(viewBox="0 0 45 45")
+            use(xlink:href="#x-mark" width="100%" height="100%")
+          | Puzzle {{ puzzleId }}
 
     .score-container.recent-high-scores(v-if="highScores.length >= 3")
       .label Past 24 hours
