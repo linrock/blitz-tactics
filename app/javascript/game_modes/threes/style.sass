@@ -57,10 +57,8 @@
       opacity: 0.7
 
     .timers
-      height: 100%
       display: flex
       flex-direction: column
-      align-items: center
       justify-content: space-evenly
 
       .timer
@@ -80,12 +78,21 @@
         &.complete
           color: #ffff00
 
-      .n-solved
+  .threes-status
+    height: 52px
+
+    .n-solved
+      .label
         font-size: 16px
-        line-height: 22px
-        height: 44px
-        margin-left: 1px
-        opacity: 0.7
+        opacity: 0.3
+
+      .score
+        font-size: 32px
+        margin-top: 15px
+
+  .current-progress
+    .n-remaining
+      padding: 8px 0
 
   // shows up in the sidebar after a level is complete
   .threes-complete

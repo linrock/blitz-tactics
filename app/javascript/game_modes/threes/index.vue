@@ -3,9 +3,15 @@ aside.threes-sidebar
   .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
     .current-progress
       timer
-      .n-solved {{ numPuzzlesSolved }} puzzles solved
-      .n-hints {{ numHints }} hints
-      .n-lives {{ numLives }} lives
+      .n-remaining.n-lives {{ numLives }} lives
+      .n-remaining.n-hints {{ numHints }} hints
+
+  .threes-status
+    .make-a-move(v-if="!hasStarted")
+      | Make a move to start the game
+    .n-solved(v-else-if="hasStarted && !hasFinished")
+      .label Score
+      .score {{ numPuzzlesSolved }}
 
   .threes-complete(v-if="hasFinished")
     .score-container.your-score
@@ -32,8 +38,6 @@ aside.threes-sidebar
 
     a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
     a.blue-button(href="/threes") Play again
-
-  .make-a-move(v-if="!hasStarted") Make a move to start the game
 
 </template>
 
