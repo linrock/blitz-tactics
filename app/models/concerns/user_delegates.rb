@@ -14,6 +14,7 @@ module UserDelegates
     delegate :best_countdown_score, to: :user_countdown_levels
 
     delegate :best_haste_score, to: :user_haste_rounds
+    delegate :best_threes_score, to: :user_threes_rounds
 
     delegate :highest_repetition_level_unlocked, to: :user_repetition_levels
 
@@ -33,6 +34,10 @@ module UserDelegates
 
     def user_haste_rounds
       UserHasteRounds.new(self)
+    end
+
+    def user_threes_rounds
+      UserThreesRounds.new(self)
     end
 
     def user_repetition_levels

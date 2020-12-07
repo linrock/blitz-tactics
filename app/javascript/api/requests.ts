@@ -51,6 +51,15 @@ export function hasteRoundCompleted(score: number) {
   return client.post(`/haste`, params).then(resp => resp.data)
 }
 
+export function threesRoundCompleted(score: number) {
+  const params = {
+    threes: {
+      score,
+    }
+  }
+  return client.post(`/threes`, params).then(resp => resp.data)
+}
+
 export function ratedPuzzleAttempted(puzzleId: number, uciMoves, elapsedTimeMs: number) {
   const params = {
     puzzle_attempt: {

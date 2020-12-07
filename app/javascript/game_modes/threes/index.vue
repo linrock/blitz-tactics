@@ -4,6 +4,8 @@ aside.haste-sidebar
     .current-progress
       timer
       .n-solved {{ numPuzzlesSolved }} puzzles solved
+      .n-hints {{ numHints }} hints
+      .n-lives {{ numLives }} lives
 
   .haste-complete(v-if="hasFinished")
     .score-container.your-score
@@ -24,12 +26,12 @@ aside.haste-sidebar
     a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
     a.blue-button(href="/haste") Play again
 
-  .make-a-move(v-if="!hasStarted") Make a move to start the timer
+  .make-a-move(v-if="!hasStarted") Make a move to start the game
 
 </template>
 
 <script lang="ts">
-import { hasteRoundCompleted } from '@blitz/api/requests'
+import { threesRoundCompleted } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 
@@ -44,20 +46,35 @@ export default {
       hasStarted: false,
       hasFinished: false,
       numPuzzlesSolved: 0,
-      puzzleIdsSeen: [] as number[],
+      numHints: 3,
+      numLives: 3,
       yourScore: 0,
       highScore: 0,
+      puzzleIdsSeen: [] as number[],
       highScores: [] as [string, number][],
     }
   },
 
   computed: {
-    viewPuzzlesLink() {
+    viewPuzzlesLink(): string {
       return `/puzzles/${this.puzzleIdsSeen.join(',')}`
     }
   },
 
   mounted() {
+    const gameOver = async () => {
+      // Show an overlay over the board area after the round completes
+      const el: HTMLElement = document.querySelector(`.board-modal-container`)
+      el.style.display = ``
+      el.classList.remove(`invisible`)
+      // Notify the server that the round has finished. Show high scores
+      const data = await threesRoundCompleted(this.numPuzzlesSolved)
+      this.yourScore = data.score
+      this.highScore = data.best
+      this.highScores = data.high_scores
+      this.hasFinished = true
+      dispatch('timer:stop')
+    }
     subscribe({
       'puzzle:loaded': data => {
         this.puzzleIdsSeen.push(data.puzzle.id)
@@ -65,17 +82,18 @@ export default {
       'puzzles:status': ({ i }) => {
         this.numPuzzlesSolved = i + 1
       },
-      'timer:stopped': async () => {
-        // Show an overlay over the board area after the round completes
-        const el: HTMLElement = document.querySelector(`.board-modal-container`)
-        el.style.display = ``
-        el.classList.remove(`invisible`)
-        // Notify the server that the round has finished. Show high scores
-        const data = await hasteRoundCompleted(this.numPuzzlesSolved)
-        this.yourScore = data.score
-        this.highScore = data.best
-        this.highScores = data.high_scores
-        this.hasFinished = true
+      'timer:stopped': () => {
+        gameOver();
+      },
+      'move:fail': () => {
+        this.numLives -= 1
+        if (this.numLives > 0) {
+          // move on to the next puzzle after a mistake
+          dispatch('puzzles:next')
+        } else {
+          // if not enough lives, the game is over
+          gameOver();
+        }
       }
     })
 

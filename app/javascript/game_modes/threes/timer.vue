@@ -1,5 +1,5 @@
 <template lang="pug">
-.timer(:class="{ stopped: !hasStarted && !hasEnded, penalized: isPenalized, rewarded: isRewarded }")
+.timer(:class="{ stopped: !hasStarted && !hasEnded, rewarded: isRewarded }")
   | {{ formattedTimeSeconds }}
 </template>
 
@@ -9,10 +9,8 @@ import { formattedTimeSeconds } from '@blitz/utils'
 
 const initialTimeMin = 3      // number of minutes on the clock initially
 const updateIntervalMs = 100  // timer updates this frequently
-const rewardThreshold = 10    // combo this many moves to gain time
-const rewardMs = 7000         // gain this much time at the reward threshold
-const comboRewardMs = 3000    // gain this much more time for maintaining combo
-const penaltyMs = 30000       // lose this much time per mistake
+const rewardThreshold = 3     // combo this many puzzles to gain a time reward
+const comboRewardMs = 3_000   // gain this much more time for puzzle combos
 
 export default {
   data() {
@@ -24,7 +22,6 @@ export default {
       startTime: 0,
       nowTime: 0,
       comboSize: 0,
-      isPenalized: false,
       isRewarded: false,
     }
   },
@@ -63,26 +60,25 @@ export default {
       this.hasStarted = true
     })
     subscribe({
-      'move:success': () => {
-        // gain time with higher combos
-        this.comboSize += 1
-        if (this.comboSize % rewardThreshold !== 0) {
-          return
-        }
-        this.timeModifierMs += rewardMs
-        this.timeModifierMs += (comboRewardMs * (this.comboSize / rewardThreshold - 1))
-        this.isRewarded = true
-        setTimeout(() => this.isRewarded = false, 250)
+      'timer:stop': () => {
+        gameHasEnded();
       },
       'move:fail': () => {
-        // lose time when making mistakes
+        // reset the puzzle combo when making mistakes
         this.comboSize = 0
-        this.timeModifierMs -= penaltyMs
-        this.isPenalized = true
-        setTimeout(() => this.isPenalized = false, 250)
+      },
+      'puzzle:solved': () => {
+        // increment puzzle combo and give a reward past a threshold
+        this.comboSize += 1
+        if (this.comboSize > 0 && this.comboSize % rewardThreshold === 0) {
+          console.log(`combo size: ${this.comboSize}. give a reward!`)
+          this.isRewarded = true
+          this.timeModifierMs += comboRewardMs
+          setTimeout(() => this.isRewarded = false, 250)
+        }
       },
       'puzzles:complete': () => {
-        // this happens when all the haste puzzles in a round have been completed
+        // this happens when all the threes puzzles in a round have been completed
         gameHasEnded()
       },
     })
