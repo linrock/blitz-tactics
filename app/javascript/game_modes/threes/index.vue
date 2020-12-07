@@ -28,7 +28,7 @@ aside.haste-sidebar
           .player-name {{ playerName }}
 
     a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
-    a.blue-button(href="/haste") Play again
+    a.blue-button(href="/threes") Play again
 
   .make-a-move(v-if="!hasStarted") Make a move to start the game
 
@@ -49,6 +49,7 @@ export default {
     return {
       hasStarted: false,
       hasFinished: false,
+      ignoreNextPuzzleScore: false,
       numPuzzlesSolved: 0,
       numHints: 3,
       numLives: 3,
@@ -87,7 +88,11 @@ export default {
         this.puzzleIdsSeen.push(this.currentPuzzleId)
       },
       'puzzles:status': ({ i }) => {
-        this.numPuzzlesSolved = i + 1
+        if (this.ignoreNextPuzzleScore) {
+          this.ignoreNextPuzzleScore = false
+        } else {
+          this.numPuzzlesSolved += 1
+        }
       },
       'timer:stopped': () => {
         gameOver();
@@ -97,6 +102,7 @@ export default {
         this.puzzleIdsFailed.push(this.currentPuzzleId)
         if (this.numLives > 0) {
           // move on to the next puzzle after a mistake
+          this.ignoreNextPuzzleScore = true
           dispatch('puzzles:next')
         } else {
           // if not enough lives, the game is over
