@@ -16,6 +16,10 @@ aside.haste-sidebar
       .label Your high score today
       .score {{ highScore }}
 
+    .puzzles-failed(v-if="puzzleIdsFailed.length > 0")
+      div(v-for="puzzleId in puzzleIdsFailed")
+        a(:href="`/p/${puzzleId}`" target="_blank") Puzzle {{ puzzleId }}
+
     .score-container.recent-high-scores(v-if="highScores.length >= 3")
       .label Past 24 hours
       .list
@@ -50,7 +54,9 @@ export default {
       numLives: 3,
       yourScore: 0,
       highScore: 0,
+      currentPuzzleId: 0,
       puzzleIdsSeen: [] as number[],
+      puzzleIdsFailed: [] as number[],
       highScores: [] as [string, number][],
     }
   },
@@ -77,7 +83,8 @@ export default {
     }
     subscribe({
       'puzzle:loaded': data => {
-        this.puzzleIdsSeen.push(data.puzzle.id)
+        this.currentPuzzleId = data.puzzle.id
+        this.puzzleIdsSeen.push(this.currentPuzzleId)
       },
       'puzzles:status': ({ i }) => {
         this.numPuzzlesSolved = i + 1
@@ -87,6 +94,7 @@ export default {
       },
       'move:fail': () => {
         this.numLives -= 1
+        this.puzzleIdsFailed.push(this.currentPuzzleId)
         if (this.numLives > 0) {
           // move on to the next puzzle after a mistake
           dispatch('puzzles:next')

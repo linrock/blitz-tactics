@@ -1,4 +1,4 @@
-# for presenting countdown info for users and nil users
+# for presenting haste info for users and nil users
 
 class UserHasteRounds
 

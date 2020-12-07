@@ -8,7 +8,7 @@ import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 import { formattedTimeSeconds } from '@blitz/utils'
 
 const initialTimeMin = 3      // number of minutes on the clock initially
-const updateIntervalMs = 100  // timer updates this frequently
+const updateIntervalMs = 33   // timer updates this frequently
 const rewardThreshold = 3     // combo this many puzzles to gain a time reward
 const comboRewardMs = 3_000   // gain this much more time for puzzle combos
 

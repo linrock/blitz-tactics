@@ -1,4 +1,4 @@
-# for presenting countdown info for users and nil users
+# for presenting threes rounds info for users and nil users
 
 class UserThreesRounds
 
