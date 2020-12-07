@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :completed_speedruns
   has_many :completed_countdown_levels
   has_many :completed_haste_rounds
+  has_many :completed_threes_rounds
   has_many :completed_repetition_rounds
   has_many :completed_repetition_levels
   has_many :positions
