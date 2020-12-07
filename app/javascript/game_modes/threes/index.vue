@@ -70,6 +70,9 @@ export default {
 
   mounted() {
     const gameOver = async () => {
+      if (this.hasFinished) {
+        return
+      }
       // Show an overlay over the board area after the round completes
       const el: HTMLElement = document.querySelector(`.board-modal-container`)
       el.style.display = ``
