@@ -223,6 +223,38 @@ ALTER SEQUENCE public.completed_speedruns_id_seq OWNED BY public.completed_speed
 
 
 --
+-- Name: completed_threes_rounds; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_threes_rounds (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    score integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_threes_rounds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_threes_rounds_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_threes_rounds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_threes_rounds_id_seq OWNED BY public.completed_threes_rounds.id;
+
+
+--
 -- Name: countdown_levels; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -979,6 +1011,13 @@ ALTER TABLE ONLY public.completed_speedruns ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: completed_threes_rounds id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_threes_rounds ALTER COLUMN id SET DEFAULT nextval('public.completed_threes_rounds_id_seq'::regclass);
+
+
+--
 -- Name: countdown_levels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1175,6 +1214,14 @@ ALTER TABLE ONLY public.completed_speedruns
 
 
 --
+-- Name: completed_threes_rounds completed_threes_rounds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_threes_rounds
+    ADD CONSTRAINT completed_threes_rounds_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: countdown_levels countdown_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1368,6 +1415,20 @@ CREATE INDEX index_completed_haste_rounds_on_user_id ON public.completed_haste_r
 --
 
 CREATE INDEX index_completed_speedruns_on_user_id_and_speedrun_level_id ON public.completed_speedruns USING btree (user_id, speedrun_level_id);
+
+
+--
+-- Name: index_completed_threes_rounds_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_threes_rounds_on_created_at ON public.completed_threes_rounds USING btree (created_at);
+
+
+--
+-- Name: index_completed_threes_rounds_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_threes_rounds_on_user_id ON public.completed_threes_rounds USING btree (user_id);
 
 
 --
@@ -1635,6 +1696,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190221152105'),
 ('20190221152109'),
 ('20201002022940'),
-('20201021035332');
+('20201021035332'),
+('20201207014332');
 
 
