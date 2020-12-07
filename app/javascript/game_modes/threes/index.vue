@@ -108,6 +108,9 @@ export default {
         gameOver();
       },
       'move:fail': () => {
+        if (this.numLives <= 0) {
+          return
+        }
         this.numLives -= 1
         this.puzzleIdsFailed.push(this.currentPuzzleId)
         if (this.numLives > 0) {
@@ -129,7 +132,7 @@ export default {
       shuffle: false,
       loopPuzzles: false,
       noHint: true,
-      source: '/haste/puzzles',
+      source: '/threes/puzzles',
     })
   },
 

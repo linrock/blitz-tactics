@@ -18,6 +18,22 @@ section.homepage
             .daily-level
               | New puzzles each run
 
+        .mode.threes
+          h3
+            a(href="/threes") Threes
+          h4.game-mode-description
+            | Three minutes, three lives,
+            br
+            | three hints
+          = homepage_miniboard_link("/threes", @rated_puzzle)
+          .under-mini-board
+            - if user_signed_in?
+              .your-best-times
+                | Best score today:
+                span.best-time<= @haste_best_score
+            .daily-level
+              | New puzzles each run
+
         .mode.countdown
           h3
             a(href="/countdown") Countdown
@@ -49,23 +65,6 @@ section.homepage
             .daily-level
               .next-day
                 | Next speedrun in #{@hours_until_tomorrow} hours
-
-      .game-modes
-        .mode.threes
-          - begin
-            h3
-              a(href="/threes") Threes
-            h4.game-mode-description
-              | 3 lives, 3 hints, 3 minutes
-            = homepage_miniboard_link("/threes", @rated_puzzle)
-            .under-mini-board
-              - if user_signed_in?
-                .your-best-times
-                  | Best score today:
-                  span.best-time<= @haste_best_score
-              .daily-level
-                | New puzzles each run
-          - rescue
 
       .game-modes
         - begin

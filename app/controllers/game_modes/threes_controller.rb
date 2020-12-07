@@ -9,7 +9,8 @@ class GameModes::ThreesController < ApplicationController
   # json endpoint for fetching puzzles on initial pageload
   def puzzles
     render json: {
-      puzzles: ThreesPuzzle.random_level(100).as_json(lichess_puzzle_id: true)
+      # This uses the same puzzle pool as Haste mode
+      puzzles: HastePuzzle.random_level(100).as_json(lichess_puzzle_id: true)
     }
   end
 
