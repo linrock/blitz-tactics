@@ -63,7 +63,7 @@
 
       .timer
         font-size: 40px
-        transition: all 0.25s ease
+        transition: opacity 0.25s ease, color 0.25s ease
         margin-bottom: 20px
 
         &.stopped
@@ -78,17 +78,17 @@
         &.complete
           color: #ffff00
 
-  .threes-status
-    height: 52px
+  .hints
+    height: 24px
 
-    .current-score
-      .label
-        font-size: 16px
-        opacity: 0.3
+  .current-score
+    .label
+      font-size: 16px
+      opacity: 0.3
 
-      .score
-        font-size: 32px
-        margin-top: 15px
+    .score
+      font-size: 32px
+      margin-top: 15px
 
   .current-progress
     .n-remaining

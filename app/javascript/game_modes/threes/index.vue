@@ -6,17 +6,17 @@ aside.threes-sidebar
       .n-remaining.n-lives {{ numLives }} lives
       .n-remaining.n-hints {{ numHints }} hints
 
-  .threes-status
-    .make-a-move(v-if="!hasStarted")
-      | Make a move to start the game
-    .game-is-running(v-else-if="hasStarted && !hasFinished")
-      .hints
-        div(v-if="moveHint") Hint: {{ moveHint }}
-        div(v-else)
-          a.dark-button(@click="viewHint") Use hint
-      .current-score
-        .label Score
-        .score {{ numPuzzlesSolved }}
+  .make-a-move(v-if="!hasStarted")
+    | Make a move to start the game
+
+  .hints(v-if="hasStarted && !hasFinished")
+    div(v-if="moveHint") Hint: {{ moveHint }}
+    div(v-else-if="numHints > 0")
+      a.dark-button(@click="viewHint") Use hint
+
+  .current-score(v-if="hasStarted && !hasFinished")
+    .label Score
+    .score {{ numPuzzlesSolved }}
 
   // when the game has finished
   .threes-complete(v-if="hasFinished")
@@ -107,6 +107,7 @@ export default {
         this.puzzleIdsSeen.push(this.currentPuzzleId)
       },
       'puzzle:hint': hint => {
+        this.numHints -= 1
         const halfHint = Math.random() < 0.5 ? hint.slice(0, 2) : hint.slice(2, 4)
         this.moveHint = halfHint
       },
@@ -135,6 +136,9 @@ export default {
           // if not enough lives, the game is over
           gameOver()
         }
+      },
+      'move:try': () => {
+        this.moveHint = null
       }
     })
 
