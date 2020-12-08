@@ -9,9 +9,11 @@
     margin: 30px 0 50px
 
   .game-modes-container
-    .game-modes
-      display: flex
-      justify-content: center
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-evenly
+    margin: 0 auto
+    width: 980px
 
   .mode 
     text-align: center
@@ -154,3 +156,7 @@
       .text
         width: 380px
         opacity: 0.7
+
+@media (max-aspect-ratio: 11/16)
+  .homepage .game-modes-container
+    width: 600px
