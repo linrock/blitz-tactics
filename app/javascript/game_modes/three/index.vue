@@ -3,8 +3,9 @@ aside.three-sidebar
   .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
     timer
     .n-remaining.n-lives(:class=`{ penalized: isLosingLife }`)
-      | {{ numLives }} {{ numLives > 1 ? 'lives' : 'life left' }}
-    .n-remaining.n-hints {{ numHints }} hints
+      | {{ numLives }} {{ numLives === 1 ? 'life left' : 'lives' }}
+    .n-remaining.n-hints
+      | {{ numHints }} {{ numHints === 1 ? 'hint' : 'hints' }}
 
   // shown before the game starts
   .make-a-move(v-if="!hasStarted")
