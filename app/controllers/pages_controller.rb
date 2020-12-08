@@ -14,6 +14,7 @@ class PagesController < ApplicationController
     # user-specific
     @infinity_puzzle = @user.next_infinity_puzzle
     @haste_best_score = @user.best_haste_score(Date.today)
+    @three_best_score = @user.best_three_score(Date.today)
     @best_speedrun_time = @user.best_speedrun_time(@speedrun_level)
     @repetition_level = @user.highest_repetition_level_unlocked
     @countdown_level_score = @user.best_countdown_score(@countdown_level)
