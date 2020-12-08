@@ -3,7 +3,8 @@ aside.threes-sidebar
   .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
     .current-progress
       timer
-      .n-remaining.n-lives {{ numLives }} lives
+      .n-remaining.n-lives(:class=`{ penalized: isLosingLife }`)
+        | {{ numLives }} {{ numLives > 1 ? 'lives' : 'life left' }}
       .n-remaining.n-hints {{ numHints }} hints
 
   .make-a-move(v-if="!hasStarted")
@@ -63,6 +64,7 @@ export default {
       hasStarted: false,
       hasFinished: false,
       isShowingHint: false,
+      isLosingLife: false,
       ignoreNextPuzzleScore: false,
       moveHint: null,
       numPuzzlesSolved: 0,
@@ -131,6 +133,8 @@ export default {
         if (this.numLives > 0) {
           // move on to the next puzzle after a mistake
           this.ignoreNextPuzzleScore = true
+          this.isLosingLife = true
+          setTimeout(() => this.isLosingLife = false, 500)
           dispatch('puzzles:next')
         } else {
           // if not enough lives, the game is over

@@ -3,6 +3,15 @@
 .threes-mode
   $board-size: 500px
 
+  .rewarded
+    color: #34FF00
+
+  .penalized
+    color: red
+
+  .complete
+    color: #ffff00
+
   .container
     display: flex
 
@@ -56,6 +65,9 @@
       line-height: 26px
       opacity: 0.7
 
+    .n-remaining
+      transition: color 0.25s ease
+
     .timers
       display: flex
       flex-direction: column
@@ -68,15 +80,6 @@
 
         &.stopped
           opacity: 0.3
-
-        &.rewarded
-          color: #34FF00
-
-        &.penalized
-          color: red
-
-        &.complete
-          color: #ffff00
 
   .hints
     height: 24px
