@@ -19,12 +19,12 @@ section.homepage
 
     .mode.threes
       h3
-        a(href="/threes") Threes
+        a(href="/three") Three
       h4.game-mode-description
         | Three minutes, three lives,
         br
         | three hints
-      = homepage_miniboard_link("/threes", @rated_puzzle)
+      = homepage_miniboard_link("/three", @rated_puzzle)
       .under-mini-board
         - if user_signed_in?
           .your-best-times
@@ -83,8 +83,7 @@ section.homepage
         h3
           a(href="/infinity") Infinity
         h4.game-mode-description
-          | Play through endless puzzles.
-          | Set your own difficulty.
+          | Play through endless puzzles. Set your own difficulty.
         = homepage_miniboard_link("/infinity", @infinity_puzzle)
         .under-mini-board
           - if user_signed_in?

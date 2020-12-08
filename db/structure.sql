@@ -223,10 +223,10 @@ ALTER SEQUENCE public.completed_speedruns_id_seq OWNED BY public.completed_speed
 
 
 --
--- Name: completed_threes_rounds; Type: TABLE; Schema: public; Owner: -
+-- Name: completed_three_rounds; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.completed_threes_rounds (
+CREATE TABLE public.completed_three_rounds (
     id bigint NOT NULL,
     user_id integer NOT NULL,
     score integer NOT NULL,
@@ -236,10 +236,10 @@ CREATE TABLE public.completed_threes_rounds (
 
 
 --
--- Name: completed_threes_rounds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: completed_three_rounds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.completed_threes_rounds_id_seq
+CREATE SEQUENCE public.completed_three_rounds_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -248,10 +248,10 @@ CREATE SEQUENCE public.completed_threes_rounds_id_seq
 
 
 --
--- Name: completed_threes_rounds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: completed_three_rounds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.completed_threes_rounds_id_seq OWNED BY public.completed_threes_rounds.id;
+ALTER SEQUENCE public.completed_three_rounds_id_seq OWNED BY public.completed_three_rounds.id;
 
 
 --
@@ -1011,10 +1011,10 @@ ALTER TABLE ONLY public.completed_speedruns ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
--- Name: completed_threes_rounds id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: completed_three_rounds id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.completed_threes_rounds ALTER COLUMN id SET DEFAULT nextval('public.completed_threes_rounds_id_seq'::regclass);
+ALTER TABLE ONLY public.completed_three_rounds ALTER COLUMN id SET DEFAULT nextval('public.completed_three_rounds_id_seq'::regclass);
 
 
 --
@@ -1214,11 +1214,11 @@ ALTER TABLE ONLY public.completed_speedruns
 
 
 --
--- Name: completed_threes_rounds completed_threes_rounds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: completed_three_rounds completed_three_rounds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.completed_threes_rounds
-    ADD CONSTRAINT completed_threes_rounds_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.completed_three_rounds
+    ADD CONSTRAINT completed_three_rounds_pkey PRIMARY KEY (id);
 
 
 --
@@ -1418,17 +1418,17 @@ CREATE INDEX index_completed_speedruns_on_user_id_and_speedrun_level_id ON publi
 
 
 --
--- Name: index_completed_threes_rounds_on_created_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_completed_three_rounds_on_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_completed_threes_rounds_on_created_at ON public.completed_threes_rounds USING btree (created_at);
+CREATE INDEX index_completed_three_rounds_on_created_at ON public.completed_three_rounds USING btree (created_at);
 
 
 --
--- Name: index_completed_threes_rounds_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_completed_three_rounds_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_completed_threes_rounds_on_user_id ON public.completed_threes_rounds USING btree (user_id);
+CREATE INDEX index_completed_three_rounds_on_user_id ON public.completed_three_rounds USING btree (user_id);
 
 
 --

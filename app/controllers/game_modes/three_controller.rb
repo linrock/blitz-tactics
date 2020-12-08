@@ -1,9 +1,9 @@
 # threes mode puzzles
 
-class GameModes::ThreesController < ApplicationController
+class GameModes::ThreeController < ApplicationController
 
   def index
-    render "game_modes/threes"
+    render "game_modes/three"
   end
 
   # json endpoint for fetching puzzles on initial pageload
@@ -14,21 +14,21 @@ class GameModes::ThreesController < ApplicationController
     }
   end
 
-  # player has completed a threes round
+  # player has completed a three round
   def complete
-    score = completed_threes_round_params[:score].to_i
+    score = completed_three_round_params[:score].to_i
     if user_signed_in?
       if score > 0
-        current_user.completed_threes_rounds.create!(score: score)
+        current_user.completed_three_rounds.create!(score: score)
       end
-      best = current_user.best_threes_score(Date.today)
+      best = current_user.best_three_score(Date.today)
     else
       best = score
     end
     render json: {
       score: score,
       best: best,
-      high_scores: CompletedThreesRound.high_scores(24.hours.ago).map do |user, score|
+      high_scores: CompletedThreeRound.high_scores(24.hours.ago).map do |user, score|
         [user.username, score]
       end
     }
@@ -36,7 +36,7 @@ class GameModes::ThreesController < ApplicationController
 
   private
 
-  def completed_threes_round_params
-    params.require(:threes).permit(:score)
+  def completed_three_round_params
+    params.require(:three).permit(:score)
   end
 end

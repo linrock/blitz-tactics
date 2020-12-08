@@ -1,6 +1,6 @@
 # tracks the score from completing a set of threes puzzles
 
-class CompletedThreesRound < ActiveRecord::Base
+class CompletedThreeRound < ActiveRecord::Base
   belongs_to :user
 
   validates :score, presence: true, numericality: { greater_than: 0 }

@@ -1,5 +1,5 @@
 <template lang="pug">
-aside.threes-sidebar
+aside.three-sidebar
   .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
     .current-progress
       timer
@@ -20,7 +20,7 @@ aside.threes-sidebar
     .score {{ numPuzzlesSolved }}
 
   // when the game has finished
-  .threes-complete(v-if="hasFinished")
+  .three-complete(v-if="hasFinished")
     .score-container.your-score
       .label Your score
       .score {{ yourScore }}
@@ -44,12 +44,12 @@ aside.threes-sidebar
           .player-name {{ playerName }}
 
     a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
-    a.blue-button(href="/threes") Play again
+    a.blue-button(href="/three") Play again
 
 </template>
 
 <script lang="ts">
-import { threesRoundCompleted } from '@blitz/api/requests'
+import { threeRoundCompleted } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 
@@ -95,7 +95,7 @@ export default {
       el.style.display = ``
       el.classList.remove(`invisible`)
       // Notify the server that the round has finished. Show high scores
-      const data = await threesRoundCompleted(this.numPuzzlesSolved)
+      const data = await threeRoundCompleted(this.numPuzzlesSolved)
       this.yourScore = data.score
       this.highScore = data.best
       this.highScores = data.high_scores
@@ -154,7 +154,7 @@ export default {
       shuffle: false,
       loopPuzzles: false,
       noHint: true,
-      source: '/threes/puzzles',
+      source: '/three/puzzles',
     })
   },
 

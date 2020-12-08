@@ -5,7 +5,7 @@ import RepetitionMode from './game_modes/repetition'
 import SpeedrunMode from './game_modes/speedrun/index.vue'
 import CountdownMode from './game_modes/countdown/index.vue'
 import HasteMode from './game_modes/haste/index.vue'
-import ThreesMode from './game_modes/threes/index.vue'
+import ThreeMode from './game_modes/three/index.vue'
 import RatedMode from './game_modes/rated'
 
 import CustomizeBoard from './components/customize_board'
@@ -27,8 +27,8 @@ const routes: RouteMap = {
   "game_modes/haste#index": () => {
     createApp(HasteMode).mount('.haste-mode .vue-app-mount')
   },
-  "game_modes/threes#index": () => {
-    createApp(ThreesMode).mount('.threes-mode .vue-app-mount')
+  "game_modes/three#index": () => {
+    createApp(ThreeMode).mount('.three-mode .vue-app-mount')
   },
   "game_modes/infinity#index": () => InfinityMode(),
   "game_modes/repetition#index": () => RepetitionMode(),
