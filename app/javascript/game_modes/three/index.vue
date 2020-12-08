@@ -1,15 +1,16 @@
 <template lang="pug">
 aside.three-sidebar
   .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
-    .current-progress
-      timer
-      .n-remaining.n-lives(:class=`{ penalized: isLosingLife }`)
-        | {{ numLives }} {{ numLives > 1 ? 'lives' : 'life left' }}
-      .n-remaining.n-hints {{ numHints }} hints
+    timer
+    .n-remaining.n-lives(:class=`{ penalized: isLosingLife }`)
+      | {{ numLives }} {{ numLives > 1 ? 'lives' : 'life left' }}
+    .n-remaining.n-hints {{ numHints }} hints
 
+  // shown before the game starts
   .make-a-move(v-if="!hasStarted")
     | Make a move to start the game
 
+  // shown during the game
   .hints(v-if="hasStarted && !hasFinished")
     div(v-if="moveHint") Hint: {{ moveHint }}
     div(v-else-if="numHints > 0")
@@ -17,9 +18,9 @@ aside.three-sidebar
 
   .current-score(v-if="hasStarted && !hasFinished")
     .label Score
-    .score {{ numPuzzlesSolved }}
+    .score(:class=`{ rewarded: isGainingScore }`) {{ numPuzzlesSolved }}
 
-  // when the game has finished
+  // shown when the game has finished
   .three-complete(v-if="hasFinished")
     .score-container.your-score
       .label Your score
@@ -65,6 +66,7 @@ export default {
       hasFinished: false,
       isShowingHint: false,
       isLosingLife: false,
+      isGainingScore: false,
       ignoreNextPuzzleScore: false,
       moveHint: null,
       numPuzzlesSolved: 0,
@@ -114,11 +116,15 @@ export default {
         this.moveHint = halfHint
       },
       'puzzles:status': ({ i }) => {
-        // triggered when a puzzle gets loaded
+        // triggered when a puzzle gets loaded onto the board
         if (this.ignoreNextPuzzleScore) {
+          // happens after a mistake
           this.ignoreNextPuzzleScore = false
         } else {
+          // happens after solving a puzzle
           this.numPuzzlesSolved += 1
+          this.isGainingScore = true
+          setTimeout(() => this.isGainingScore = false, 300)
         }
       },
       'timer:stopped': () => {
