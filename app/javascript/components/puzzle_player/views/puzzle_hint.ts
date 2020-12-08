@@ -38,8 +38,18 @@ export default class PuzzleHint extends Backbone.View {
         this.delayedShowHint()
       },
       'move:make': () => this.delayedShowHint(),
-      'timer:stopped': () => this.clearHintTimer()
+      'timer:stopped': () => this.clearHintTimer(),
     })
+  }
+
+  private getRandomHint(): string {
+    const hints: string[] = []
+    _.each(_.keys(this.current.boardState), (move: UciMove) => {
+      if (this.current.boardState[move] !== `retry`) {
+        hints.push(move)
+      }
+    })
+    return _.sample(hints)
   }
 
   private clearHintTimer() {
@@ -63,15 +73,9 @@ export default class PuzzleHint extends Backbone.View {
   }
 
   private showHint() {
-    const hints = []
-    _.each(_.keys(this.current.boardState), (move: UciMove) => {
-      if (this.current.boardState[move] !== `retry`) {
-        hints.push(move)
-      }
-    })
     this.el.classList.remove(`invisible`)
     this.buttonEl.classList.remove(`invisible`)
-    this.moveEl.textContent = _.sample(hints)
+    this.moveEl.textContent = this.getRandomHint()
   }
 
   private _showHint() {

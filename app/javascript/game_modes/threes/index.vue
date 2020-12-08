@@ -9,10 +9,16 @@ aside.threes-sidebar
   .threes-status
     .make-a-move(v-if="!hasStarted")
       | Make a move to start the game
-    .n-solved(v-else-if="hasStarted && !hasFinished")
-      .label Score
-      .score {{ numPuzzlesSolved }}
+    .game-is-running(v-else-if="hasStarted && !hasFinished")
+      .hints
+        div(v-if="moveHint") Hint: {{ moveHint }}
+        div(v-else)
+          a.dark-button(@click="viewHint") Use hint
+      .current-score
+        .label Score
+        .score {{ numPuzzlesSolved }}
 
+  // when the game has finished
   .threes-complete(v-if="hasFinished")
     .score-container.your-score
       .label Your score
@@ -56,7 +62,9 @@ export default {
     return {
       hasStarted: false,
       hasFinished: false,
+      isShowingHint: false,
       ignoreNextPuzzleScore: false,
+      moveHint: null,
       numPuzzlesSolved: 0,
       numHints: 3,
       numLives: 3,
@@ -94,10 +102,16 @@ export default {
     }
     subscribe({
       'puzzle:loaded': data => {
+        this.moveHint = null
         this.currentPuzzleId = data.puzzle.id
         this.puzzleIdsSeen.push(this.currentPuzzleId)
       },
+      'puzzle:hint': hint => {
+        const halfHint = Math.random() < 0.5 ? hint.slice(0, 2) : hint.slice(2, 4)
+        this.moveHint = halfHint
+      },
       'puzzles:status': ({ i }) => {
+        // triggered when a puzzle gets loaded
         if (this.ignoreNextPuzzleScore) {
           this.ignoreNextPuzzleScore = false
         } else {
@@ -119,7 +133,7 @@ export default {
           dispatch('puzzles:next')
         } else {
           // if not enough lives, the game is over
-          gameOver();
+          gameOver()
         }
       }
     })
@@ -135,6 +149,13 @@ export default {
       source: '/threes/puzzles',
     })
   },
+
+  methods: {
+    viewHint() {
+      console.log('give me a hint')
+      dispatch('puzzle:get_hint')
+    }
+ },
 
   components: {
     Timer,

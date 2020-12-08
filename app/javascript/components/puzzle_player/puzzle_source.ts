@@ -1,9 +1,11 @@
 // fetches puzzles from the server, handles player moves,
 // and emits move events (move:success, move:almost, move:fail)
 
+import _ from 'underscore';
+
 import { fetchPuzzles } from '@blitz/api/requests'
 import { dispatch, subscribe } from '@blitz/store'
-import { ChessMove, InitialMove, Puzzle } from '@blitz/types'
+import { ChessMove, InitialMove, Puzzle, UciMove } from '@blitz/types'
 import { uciToMove, moveToUci } from '@blitz/utils'
 import Puzzles from './puzzles'
 
@@ -64,6 +66,15 @@ export default class PuzzleSource {
           n,
         })
         this.nextPuzzle()
+      },
+      'puzzle:get_hint': () => {
+        const hints: string[] = []
+        _.each(_.keys(this.current.boardState), (move: UciMove) => {
+          if (this.current.boardState[move] !== `retry`) {
+            hints.push(move)
+          }
+        })
+        dispatch('puzzle:hint', _.sample(hints));
       },
       'move:try': move => this.tryUserMove(move),
     })
