@@ -13,7 +13,7 @@ class CompletedThreeRound < ActiveRecord::Base
   def self.high_scores(since)
     where('created_at >= ?', since)
       .group(:user_id).maximum(:score)
-      .sort_by {|user_id, score| -score }.take(3)
+      .sort_by {|user_id, score| -score }.take(5)
       .map do |user_id, score|
         [
           User.find_by(id: user_id),
