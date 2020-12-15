@@ -29,10 +29,9 @@ aside.haste-sidebar
 </template>
 
 <script lang="ts">
-import store from 'store/dist/store.modern.min'
-
 import { hasteRoundCompleted } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
+import store from '@blitz/local_storage'
 import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
 import { ChessMove } from '@blitz/types'
 
@@ -84,7 +83,8 @@ export default {
         this.highScores = data.high_scores
         this.hasFinished = true
         // Store the player's mistakes in case they want to view these later
-        store.set(this.viewPuzzlesLink, puzzleIdsMistakes)
+        // Expires from local storage after 1 hour
+        store.set(this.viewPuzzlesLink, puzzleIdsMistakes, new Date().getTime() + 86400 * 1000)
       },
       'move:fail': (move) => {
         console.log(`mistake! - ${this.currentPuzzleId} - ${move.san}`)

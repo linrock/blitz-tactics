@@ -1,4 +1,4 @@
-import store from 'store/dist/store.modern.min'
+import store from '@blitz/local_storage'
 
 export default () => {
   console.log('puzzles#index init!')
@@ -17,6 +17,6 @@ export default () => {
       }
     })
   } else {
-    console.log('no info found')
+    console.log('no puzzle info found in localStorage')
   }
 }
