@@ -29,14 +29,19 @@ aside.haste-sidebar
 </template>
 
 <script lang="ts">
+import store from 'store/dist/store.modern.min'
+
 import { hasteRoundCompleted } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
+import { ChessMove } from '@blitz/types'
 
 import Timer from './timer.vue'
 
 import './style.sass'
 import './responsive.sass'
+
+const puzzleIdsMistakes: Record<number, string[]> = {}
 
 export default {
   data() {
@@ -44,6 +49,7 @@ export default {
       hasStarted: false,
       hasFinished: false,
       numPuzzlesSolved: 0,
+      currentPuzzleId: 0,
       puzzleIdsSeen: [] as number[],
       yourScore: 0,
       highScore: 0,
@@ -60,7 +66,8 @@ export default {
   mounted() {
     subscribe({
       'puzzle:loaded': data => {
-        this.puzzleIdsSeen.push(data.puzzle.id)
+        this.currentPuzzleId = data.puzzle.id
+        this.puzzleIdsSeen.push(this.currentPuzzleId)
       },
       'puzzles:status': ({ i }) => {
         this.numPuzzlesSolved = i + 1
@@ -76,6 +83,15 @@ export default {
         this.highScore = data.best
         this.highScores = data.high_scores
         this.hasFinished = true
+        // Store the player's mistakes in case they want to view these later
+        store.set(this.viewPuzzlesLink, puzzleIdsMistakes)
+      },
+      'move:fail': (move) => {
+        console.log(`mistake! - ${this.currentPuzzleId} - ${move.san}`)
+        if (!puzzleIdsMistakes[this.currentPuzzleId]) {
+          puzzleIdsMistakes[this.currentPuzzleId] = []
+        }
+        puzzleIdsMistakes[this.currentPuzzleId].push(move.san)
       }
     })
 

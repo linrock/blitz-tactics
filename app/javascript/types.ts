@@ -8,6 +8,7 @@ export type UciMove = string
 export type MoveColor = 'w' | 'b'
 
 export type ChessMove = { // used by chess.js
+  // color: MoveColor     // TODO make this match chess.js move types
   from: string
   to: string
   promotion?: string

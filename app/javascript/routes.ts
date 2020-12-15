@@ -11,6 +11,7 @@ import RatedMode from './game_modes/rated'
 import CustomizeBoard from './components/customize_board'
 import PositionTrainer from './components/position_trainer'
 import PuzzlePage from './components/puzzle_page'
+import PuzzleList from './components/puzzle_list'
 
 interface RouteMap {
   [routeKey: string]: () => void
@@ -36,6 +37,9 @@ const routes: RouteMap = {
 
   // individual puzzle pages
   "puzzles#show": () => PuzzlePage(),
+
+  // lists of puzzles (ex. after finishing a game)
+  "puzzles#index": () => PuzzleList(),
 
   // position trainers
   "pages#position": () => new PositionTrainer,

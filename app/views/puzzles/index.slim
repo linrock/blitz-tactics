@@ -3,6 +3,8 @@
 
   .puzzles
     - @puzzles.each_with_index do |puzzle, i|
-      div
+      div(data-puzzle-id="#{puzzle.id}")
         = linked_puzzle_miniboard(puzzle)
-        .puzzle-num= i + 1
+        .puzzle-info
+          .puzzle-num= i + 1
+          .puzzle-mistake-info
