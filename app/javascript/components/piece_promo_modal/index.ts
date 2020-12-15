@@ -5,9 +5,9 @@ import Chess from 'chess.js'
 import { dispatch, subscribe } from '@blitz/store'
 import { FEN, ChessMove } from '@blitz/types'
 
-// When you make a pawn move that requires pawn promotion,
-// this is what shows up
-//
+import './style.sass'
+
+/** When you make a pawn move that requires pawn promotion, this is what shows up */
 export default class PiecePromotionModal extends Backbone.View {
   private fen: FEN
   private moveIntent: ChessMove

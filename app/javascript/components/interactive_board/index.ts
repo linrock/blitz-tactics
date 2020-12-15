@@ -2,9 +2,7 @@
 
 import Chessboard from '../chessboard/chessboard'
 import MoveStatus from '../move_status'
-import PiecePromotionModal from './views/piece_promotion_modal'
-
-import './promo_modal.sass'
+import PiecePromotionModal from '../piece_promo_modal'
 
 interface BoardOptions {
   noCombo?: boolean
