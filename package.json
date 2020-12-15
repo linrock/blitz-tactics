@@ -30,6 +30,7 @@
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.0.0",
     "simple-color-picker": "^0.1.2",
+    "store": "^2.0.12",
     "tinycolor2": "^1.4.1",
     "ts-loader": "^8.0.4",
     "typescript": "^4.0",
