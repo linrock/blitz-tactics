@@ -1,7 +1,7 @@
-import InteractiveBoard from '@blitz/components/interactive_board'
 import { dispatch, subscribe } from '@blitz/store'
 import { FEN, PuzzleLines, UciMove } from '@blitz/types'
 import { moveToUci, uciToMove } from '@blitz/utils'
+import InteractiveBoard from '../interactive_board'
 
 import './style.sass'
 
