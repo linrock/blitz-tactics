@@ -14,21 +14,20 @@ export default class PiecePromotionModal extends Backbone.View {
   private readonly cjs = new Chess
 
   private template(color: 'w' | 'b'): string {
-    const piecesHtml = ['q', 'r', 'n', 'b'].map((piece) => {
-      return `
-        <a class="piece" href="javascript:" data-piece="${piece}">
-          <svg viewBox="0 0 45 45">
-            <use xlink:href="#${color}${piece}" width="100%" height="100%"/>
-          </svg>
-        </a>
-      `
-    }).join('')
     return `
       <div class="piece-promotion-modal">
         <div class="prompt">
           Choose your destiny
         </div>
-        <div class="pieces">${piecesHtml}</div>
+        <div class="pieces">
+          ${['q', 'r', 'n', 'b'].map((piece) => (`
+            <a class="piece" href="javascript:" data-piece="${piece}">
+              <svg viewBox="0 0 45 45">
+                <use xlink:href="#${color}${piece}" width="100%" height="100%"/>
+              </svg>
+            </a>`
+          )).join('')}
+        </div>
       </div>
       <div class="background"></div>
     `
@@ -57,16 +56,16 @@ export default class PiecePromotionModal extends Backbone.View {
   }
 
   private show() {
-    this.el.innerHTML = this.template(this.fen.includes('w') ? 'w' : 'b')
+    this.el.innerHTML = this.template(this.fen.includes(' w ') ? 'w' : 'b')
     this.el.style.display = 'block'
     this.el.style.zIndex = '1000'
-    Mousetrap.bind(`esc`, () => this.hide())
+    Mousetrap.bind('esc', () => this.hide())
   }
 
   private hide() {
-    this.el.style.display = `none`
+    this.el.style.display = 'none'
     this.el.style.zIndex = '0'
-    Mousetrap.unbind(`esc`)
+    Mousetrap.unbind('esc')
   }
 
   private _selectPiece(e, childElement: HTMLElement) {
@@ -77,7 +76,7 @@ export default class PiecePromotionModal extends Backbone.View {
     this.cjs.load(this.fen)
     const m = this.cjs.move(move)
     if (m) {
-      dispatch(`move:try`, m)
+      dispatch('move:try', m)
     }
     this.hide()
   }
