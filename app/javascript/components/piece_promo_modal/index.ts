@@ -13,7 +13,7 @@ export default class PiecePromotionModal extends Backbone.View {
   private moveIntent: ChessMove
   private readonly cjs = new Chess
 
-  private template(color: 'w'): string {
+  private template(color: 'w' | 'b'): string {
     const piecesHtml = ['q', 'r', 'n', 'b'].map((piece) => {
       return `
         <a class="piece" href="javascript:" data-piece="${piece}">
@@ -57,7 +57,7 @@ export default class PiecePromotionModal extends Backbone.View {
   }
 
   private show() {
-    this.el.innerHTML = this.template('w')
+    this.el.innerHTML = this.template(this.fen.includes('w') ? 'w' : 'b')
     this.el.style.display = 'block'
     this.el.style.zIndex = '1000'
     Mousetrap.bind(`esc`, () => this.hide())
