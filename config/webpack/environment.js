@@ -26,6 +26,13 @@ environment.loaders.append('pug', {
   loader: 'pug-plain-loader'
 })
 
+environment.loaders.append('chess.js', {
+  test: /chess\.js/,
+  parser: {
+    amd: false,
+  }
+})
+
 environment.plugins.prepend('VueLoaderPlugin', new VueLoaderPlugin())
 environment.loaders.prepend('vue', vue)
 module.exports = environment

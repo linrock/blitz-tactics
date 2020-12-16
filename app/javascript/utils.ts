@@ -1,14 +1,15 @@
 import { UciMove, ChessMove, BlitzConfig } from './types'
+import { ShortMove, Square } from 'chess.js'
 
 declare var blitz: BlitzConfig
 
-export const uciToMove = (uci: UciMove): ChessMove => {
-  const m: ChessMove = {
-    from: uci.slice(0,2),
-    to: uci.slice(2,4)
+export const uciToMove = (uci: UciMove): ShortMove => {
+  const m: ShortMove = {
+    from: (uci.slice(0,2) as Square),
+    to: (uci.slice(2,4) as Square)
   }
   if (uci.length === 5) {
-    m.promotion = uci[4]
+    m.promotion = uci[4] as 'n' | 'b' | 'r' | 'q' | 'k'
   }
   return m
 }

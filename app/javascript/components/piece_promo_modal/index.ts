@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 import Mousetrap from 'mousetrap'
-import Chess from 'chess.js'
+import { Chess, ShortMove } from 'chess.js'
 
 import { dispatch, subscribe } from '@blitz/store'
 import { FEN, ChessMove } from '@blitz/types'
@@ -74,7 +74,7 @@ export default class PiecePromotionModal extends Backbone.View {
       promotion: chosenPiece
     })
     this.cjs.load(this.fen)
-    const m = this.cjs.move(move)
+    const m = this.cjs.move(move as ShortMove)
     if (m) {
       dispatch('move:try', m)
     }

@@ -7,6 +7,7 @@ export type UciMove = string
 
 export type MoveColor = 'w' | 'b'
 
+// TODO replace this with Move or ShortMove from @types/chess.js
 export type ChessMove = { // used by chess.js
   // color: MoveColor     // TODO make this match chess.js move types
   from: string

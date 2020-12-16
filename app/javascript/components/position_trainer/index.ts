@@ -1,4 +1,4 @@
-import Chess from 'chess.js'
+import { Chess } from 'chess.js'
 
 import { dispatch, subscribe } from '@blitz/store'
 import { FEN, MoveColor } from '@blitz/types'

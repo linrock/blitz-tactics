@@ -1,5 +1,5 @@
 import m from 'mithril'
-import Chess from 'chess.js'
+import { Chess, ChessInstance, ShortMove, Square } from 'chess.js'
 
 import { FEN, UciMove } from '@blitz/types'
 import { uciToMove } from '@blitz/utils'
@@ -19,7 +19,7 @@ const polarities = [`light`, `dark`]
 
 export default class MiniChessboard {
   private el: HTMLElement
-  private cjs: Chess
+  private cjs: ChessInstance
   private rows = [8, 7, 6, 5, 4, 3, 2, 1]
   private columns = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`]
   private highlights: {
@@ -36,7 +36,8 @@ export default class MiniChessboard {
     }
     this.renderFen(options.fen)
     // figure out what move to make to finish setting up the board
-    const move = options.initialMove ? uciToMove(options.initialMove) : options.initialMoveSan
+    const move: string | ShortMove = options.initialMove ? uciToMove(options.initialMove)
+                                                         : options.initialMoveSan
     if (move) {
       // make the move on the miniboard after a delay
       setTimeout(() => {
@@ -67,7 +68,7 @@ export default class MiniChessboard {
     const squares = []
     for (let row of this.rows) {
       for (let col of this.columns) {
-        let id = col + row
+        let id: Square = (col + row) as Square
         const pieces = []
         const piece = this.cjs.get(id)
         if (piece) {

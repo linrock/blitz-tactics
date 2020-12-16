@@ -2,7 +2,7 @@
 
 import _ from 'underscore'
 import m from 'mithril'
-import Chess from 'chess.js'
+import { Chess, ChessInstance, ShortMove, Square } from 'chess.js'
 
 import { dispatch, subscribe } from '@blitz/store'
 import { FEN, ChessMove } from '@blitz/types'
@@ -28,7 +28,7 @@ export default class Chessboard {
   private polarities = [`light`, `dark`]
   private fen: FEN
   private highlightedSquares: HighlightedSquares
-  public cjs: Chess
+  public cjs: ChessInstance
   public isFlipped: boolean
 
   get el() {
@@ -97,9 +97,9 @@ export default class Chessboard {
     requestAnimationFrame(() => m.render(this.el, this.virtualSquares()))
   }
 
-  public tryMove(move: ChessMove): void {
+  public tryMove(move: ShortMove): void {
     const { from, to } = move
-    const piece = this.cjs.get(from)
+    const piece = this.cjs.get(from as Square)
     if (!piece) {
       return
     }
@@ -112,7 +112,7 @@ export default class Chessboard {
         dispatch(`move:promotion`, { fen: this.fen, move })
       }
     } else {
-      const m: ChessMove = new Chess(this.fen).move(move)
+      const m = new Chess(this.fen).move(move)
       if (m) {
         dispatch(`move:try`, m)
       }
@@ -133,11 +133,11 @@ export default class Chessboard {
   // using data attributes to highlight because classes have
   // some weird bug (all classes get removed) when removing classes
   // with mithril
-  public highlightSquare(id, attr): void {
+  public highlightSquare(id: Square, attr): void {
     this.highlightedSquares[id] = { [attr]: `highlighted` }
   }
 
-  public unhighlightSquare(id): void {
+  public unhighlightSquare(id: Square): void {
     this.highlightedSquares[id] = {}
   }
 
@@ -157,13 +157,13 @@ export default class Chessboard {
         if (k === 0) {
           squareEls.push(m(`div.square-label.row.${polarity}`, {}, row))
         }
-        const piece = this.cjs.get(id)
+        const piece = this.cjs.get(id as Square)
         if (piece) {
           squareEls.push(virtualPiece(piece, vnode => makeDraggable(vnode.dom)))
         }
         const squareAttrs = {
           'data-square': id,
-          oncreate: vnode => makeDroppable(vnode.dom, move => this.tryMove(move)),
+          oncreate: vnode => makeDroppable(vnode.dom, (move: ShortMove) => this.tryMove(move)),
           id,
         }
         if (this.highlightedSquares[id]) {

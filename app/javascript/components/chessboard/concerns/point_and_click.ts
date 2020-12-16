@@ -1,7 +1,8 @@
 // Point and click pieces to select and move them
 
+import { ShortMove, Square } from 'chess.js'
+
 import { subscribe } from '@blitz/store'
-import { ChessMove } from '@blitz/types'
 import Chessboard from '../chessboard'
 
 export default class PointAndClick {
@@ -39,8 +40,8 @@ export default class PointAndClick {
       if (this.isMoveable(piece)) {
         this.selectSquare(squareId)
       } else {
-        const move: ChessMove = {
-          from: <string>this.selectedSquare,
+        const move: ShortMove = {
+          from: (this.selectedSquare as Square),
           to: squareId
         }
         this.board.tryMove(move)
@@ -61,7 +62,7 @@ export default class PointAndClick {
     if (!this.selectedSquare) {
       return
     }
-    this.board.unhighlightSquare(this.selectedSquare)
+    this.board.unhighlightSquare(this.selectedSquare as Square)
     this.selectedSquare = false
     this.board.renderVirtualDom()
   }
