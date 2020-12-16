@@ -18,6 +18,7 @@
     "@interactjs/modifiers": "^1.10.0",
     "@rails/webpacker": "5.2.1",
     "@types/backbone": "^1.4.5",
+    "@types/chess.js": "^0.10.1",
     "@vue/compiler-sfc": "^3.0.1",
     "axios": "^0.18.0",
     "backbone": "^1.4.0",
