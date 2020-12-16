@@ -4,7 +4,7 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es2017", "dom"],
+    "lib": ["es2020", "dom"],
     "module": "es6",
     "moduleResolution": "node",
     "baseUrl": ".",
