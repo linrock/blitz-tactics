@@ -5,7 +5,7 @@ import { FEN, MoveColor } from '@blitz/types'
 import { uciToMove, getConfig } from '@blitz/utils'
 import StockfishEngine from '@blitz/workers/stockfish_engine'
 
-import InteractiveBoard from '../interactive_board'
+import ChessgroundBoard from '../chessground_board'
 import Instructions from './views/instructions'
 import Actions from './views/actions'
 
@@ -19,25 +19,25 @@ const START_FEN: FEN = `rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 export default class PositionTrainer {
   private depth: number
   private engine: StockfishEngine
-  private currentFen: FEN
+  private chessgroundBoard: ChessgroundBoard
 
   constructor() {
-    new InteractiveBoard
-    this.listenForEvents()
+    this.chessgroundBoard = new ChessgroundBoard(this.initialFen)
     if (this.computerColor === `w`) {
-      dispatch(`board:flip`)
+      // TODO set board orientation in constructor
+      this.chessgroundBoard.setOrientation('black')
     }
+    this.listenForEvents()
     this.depth = parseInt(getConfig(`depth`), 10) || SEARCH_DEPTH
     this.engine = new StockfishEngine
     this.setDebugHelpers()
-    dispatch(`fen:set`, this.initialFen)
     new Instructions({ fen: this.initialFen })
     new Actions()
   }
 
   private get initialFen(): FEN {
     let fen = getConfig(`fen`) || START_FEN
-    return fen.length === 4 ? `${fen} - -` : fen
+    return fen.split(' ').length === 4 ? `${fen} 0 1` : fen
   }
 
   private get computerColor(): MoveColor {
@@ -57,11 +57,11 @@ export default class PositionTrainer {
   private listenForEvents() {
     subscribe({
       'position:reset': () => {
+        this.chessgroundBoard.unfreeze()
         dispatch(`fen:set`, this.initialFen)
       },
 
-      'fen:set': fen => {
-        this.currentFen = fen
+      'fen:updated': (fen: FEN) => {
         const analysisOptions = {
           depth: this.depth,
           multipv: 1
@@ -69,7 +69,7 @@ export default class PositionTrainer {
         this.engine.analyze(fen, analysisOptions).then(output => {
           const { fen, state } = output
           const computerMove = state.evaluation.best
-          if (fen !== this.currentFen) {
+          if (fen !== this.chessgroundBoard.getFen()) {
             return
           }
           if (this.isComputersTurn(fen)) {
@@ -97,6 +97,9 @@ export default class PositionTrainer {
     } else {
       result = `0-1`
     }
-    setTimeout(() => dispatch(`game:over`, result), 500)
+    this.chessgroundBoard.freeze()
+    setTimeout(() => {
+      dispatch(`game:over`, result)
+    }, 500)
   }
 }

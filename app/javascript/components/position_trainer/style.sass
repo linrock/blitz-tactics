@@ -20,9 +20,15 @@
   $square-size-sm: 65px
   $board-size-sm: 8 * $square-size-sm + 2 * $border-width
 
-  .chessboard 
+  .chessboard, .chessground-board
     width: $board-size-sm
     height: $board-size-sm
+
+  .cg-wrap
+    width: 100%
+    height: 100%
+    box-sizing: border-box
+    border: $border-width solid #938172
 
   .actions 
     margin-top: 30px
@@ -67,7 +73,7 @@
   &.left-aligned
     display: flex
 
-  .chessboard 
+  .chessboard, .chessground-board
     width: $small-board-size
     height: $small-board-size
 

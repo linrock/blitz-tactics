@@ -9,7 +9,13 @@
 
 <% content_for(:position_trainer) do %>
   <div class="instructions invisible"></div>
-  <%= render partial: "puzzle_player/board_area" %>
+
+  <%# render partial: "puzzle_player/board_area" %>
+  <div class="chessground-board">
+    <div class="piece-promotion-modal-container"></div>
+    <div class="chessground"></div>
+  </div>
+
   <div class="actions">
     <button class="button restart">Reset position</button>
   </div>

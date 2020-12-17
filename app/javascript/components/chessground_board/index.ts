@@ -32,7 +32,10 @@ export default class ChessgroundBoard {
   private lastOpponentMove: any /* ChessJsMove */
 
   constructor(fen: FEN, selector: string = '.chessground') {
-    this.cjs = new Chess(fen)
+    this.cjs = new Chess()
+    if (!this.cjs.load(fen)) {
+      console.warn(`failed to load fen: ${fen}`)
+    }
     this.chessground = Chessground(document.querySelector(selector), {
       animation: {
         enabled: false,
@@ -141,6 +144,7 @@ export default class ChessgroundBoard {
           },
           turnColor,
         })
+        dispatch('fen:updated', this.cjs.fen())
       },
     })
   }
@@ -153,5 +157,13 @@ export default class ChessgroundBoard {
   // Enables player moves
   public unfreeze() {
     this.chessground.set({ viewOnly: false })
+  }
+
+  public setOrientation(color: 'white' | 'black') {
+    this.chessground.set({ orientation: color })
+  }
+
+  public getFen(): FEN {
+    return this.cjs.fen()
   }
 }
