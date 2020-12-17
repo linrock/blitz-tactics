@@ -13,7 +13,7 @@ interface MoveOptions {
 }
 
 const getDests = (chess: ChessInstance): Dests | null => {
-  const dests = {};
+  const dests: Partial<Record<Square, Square[]>> = {};
   chess.SQUARES.forEach(square => {
     const ms = chess.moves({ square, verbose: true });
     if (ms.length) dests[square] = ms.map(m => m.to);

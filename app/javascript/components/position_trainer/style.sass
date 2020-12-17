@@ -3,6 +3,10 @@
 .position-trainer 
   margin: 0 auto 50px
 
+  // TODO consolidate these variables
+  $square-size-sm: 65px
+  $board-size-sm: 8 * $square-size-sm + 2 * $border-width
+
   .instructions 
     font-weight: bold
     text-shadow: 0 0 8px rgba(0,0,0,0.9)
@@ -12,15 +16,8 @@
     height: 25px
     transition: all 0.35s ease-out
 
-  .chessboard 
-    margin: 0 auto
-
-  // TODO consolidate this
-  //
-  $square-size-sm: 65px
-  $board-size-sm: 8 * $square-size-sm + 2 * $border-width
-
   .chessboard, .chessground-board
+    margin: 0 auto
     width: $board-size-sm
     height: $board-size-sm
 

@@ -1,4 +1,4 @@
-import { Chess } from 'chess.js'
+import { Chess, Move } from 'chess.js'
 
 import { dispatch, subscribe } from '@blitz/store'
 import { FEN, MoveColor } from '@blitz/types'
@@ -17,9 +17,9 @@ const SEARCH_DEPTH = 15
 const START_FEN: FEN = `rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1`
 
 export default class PositionTrainer {
+  private chessgroundBoard: ChessgroundBoard
   private depth: number
   private engine: StockfishEngine
-  private chessgroundBoard: ChessgroundBoard
 
   constructor() {
     this.chessgroundBoard = new ChessgroundBoard(this.initialFen)
@@ -79,20 +79,20 @@ export default class PositionTrainer {
         this.notifyIfGameOver(fen)
       },
 
-      'move:try': move => dispatch(`move:make`, move),
+      'move:try': (move: Move) => dispatch(`move:make`, move),
     })
   }
 
   private notifyIfGameOver(fen: FEN) {
-    let c = new Chess
-    c.load(fen)
-    if (!c.game_over()) {
+    const cjs = new Chess
+    cjs.load(fen)
+    if (!cjs.game_over()) {
       return
     }
     let result: GameResult
-    if (c.in_draw()) {
+    if (cjs.in_draw()) {
       result = `1/2-1/2`
-    } else if (c.turn() === `b`) {
+    } else if (cjs.turn() === `b`) {
       result = `1-0`
     } else {
       result = `0-1`
