@@ -1,5 +1,6 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js'
 import { Chessground } from 'chessground'
+import { Api } from 'chessground/api'
 import { Color, Dests, FEN, Key, Piece } from 'chessground/types'
 
 import PiecePromoModal from '../piece_promo_modal'
@@ -28,7 +29,7 @@ const getDests = (chess: ChessInstance): Dests | null => {
 
 export default class ChessgroundBoard {
   private readonly cjs: ChessInstance
-  private readonly chessground: any /* Chessground */
+  private readonly chessground: Api
   private lastOpponentMove: any /* ChessJsMove */
 
   constructor(fen: FEN, selector: string = '.chessground') {
@@ -62,31 +63,25 @@ export default class ChessgroundBoard {
       },
       events: {
         // handle player moves
-        move: (orig: Key, dest: Key, capturedPiece?: Piece) => {
-          // reset the board to the position prior to the player's move
+        move: (from: Key, to: Key) => {
           // TODO ideally we never update the board based on the player move right away
           // this avoids a flash of a piece being dropped on the wrong square
-          this.chessground.set({
-            fen: this.cjs.fen(),
-            lastMove: [],
-            movable: { dests: getDests(this.cjs) },
-          })
-          const piece = this.cjs.get(orig as Square)
+          const piece = this.cjs.get(from as Square)
           const { color, type } = piece
           if (type === 'p' &&
-              ((color === 'w' && orig[1] === '7' && dest[1] === '8') ||
-              (color === 'b' && orig[1] === '2' && dest[1] === '1'))) {
+              ((color === 'w' && from[1] === '7' && to[1] === '8') ||
+              (color === 'b' && from[1] === '2' && to[1] === '1'))) {
             // handle piece promotions
-            const validMoves: Array<Move> = this.cjs.moves({ verbose: true })
-            if (validMoves.find(m => m.from === orig && m.to === dest)) {
+            const validMoves: Move[] = this.cjs.moves({ verbose: true })
+            if (validMoves.find(m => m.from === from && m.to === to)) {
               dispatch(`move:promotion`, {
                 fen: this.cjs.fen(),
-                move: { from: orig, to: dest }
+                move: { from, to }
               })
             }
           } else {
             // go through the move:try flow to decide whether to accept the move
-            dispatch('move:try', { from: orig, to: dest })
+            dispatch('move:try', { from, to })
           }
         }
       }
@@ -104,7 +99,7 @@ export default class ChessgroundBoard {
           lastMove: [],
           movable: {
             color: turnColor,
-            dests: getDests(this.cjs)
+            dests: getDests(this.cjs),
           },
           turnColor,
         })
@@ -112,21 +107,31 @@ export default class ChessgroundBoard {
 
       'move:fail': () => {
         // re-highlight the opponent's last move upon a move failure
-        if (this.lastOpponentMove) {
+        if (!this.lastOpponentMove) {
+          console.error(`Missing lastOpponentMove after a move:fail`)
+          return;
+        }
+        // delayed reset to previous board position after a mistake
+        setTimeout(() => {
           const turnColor = this.cjs.turn() === 'w' ? 'white' : 'black'
           const { from, to } = this.lastOpponentMove;
+          // reset the board to the position before the mistake
           this.chessground.set({
+            fen: this.cjs.fen(),
             lastMove: [from, to],
+            movable: { dests: getDests(this.cjs) },
             turnColor,
           })
-        }
-        console.log('got move:fail')
+        }, 0)
       },
 
       'move:make': (move: Move, options: MoveOptions = {}) => {
         // console.warn(`handling move:make ${move} from ${this.cjs.fen()}`)
         // console.log(`${options.opponent ? 'opponent' : 'player'} just moved`);
         const moveObj = this.cjs.move(move)
+        if (!moveObj) {
+          console.error(`No moveObj after move:make. FEN: ${this.cjs.fen()}, move: ${move}`)
+        }
         // console.log(`last move: ${moveObj.from}, ${moveObj.to}`)
         let lastMove = []
         if (options.opponent) {
