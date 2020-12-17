@@ -1,7 +1,8 @@
 import { dispatch, subscribe } from '@blitz/store'
 import { FEN, PuzzleLines, UciMove } from '@blitz/types'
 import { moveToUci, uciToMove } from '@blitz/utils'
-import InteractiveBoard from '../interactive_board'
+import ChessgroundBoard from '../chessground_board'
+import MoveStatus from '../move_status'
 
 import './style.sass'
 
@@ -22,23 +23,6 @@ interface PuzzleData {
 
 let originalInstructions: string;
 
-const resetPosition = (puzzleMovesData: PuzzleMovesData) => {
-  // Initialize the board position. Make initial opponent move if there is one
-  dispatch('fen:set', puzzleMovesData.initial_fen)
-  if (puzzleMovesData.initial_move_san) {
-    const sanMove = puzzleMovesData.initial_move_san
-    console.log(`initial opponent move: ${(sanMove)}`)
-    setTimeout(() => {
-      dispatch('move:make', sanMove, { opponent: true });
-      const instructionsEl: HTMLDivElement = document.querySelector('.instructions')
-      if (instructionsEl) {
-        instructionsEl.textContent = originalInstructions;
-        instructionsEl.classList.remove('invisible')
-      }
-    }, 500);
-  }
-}
-
 export default () => {
   const puzzleJsonDataEl: HTMLScriptElement = document.querySelector("#puzzle-data")
   const fenEl: HTMLInputElement = document.querySelector('.fen')
@@ -46,12 +30,12 @@ export default () => {
   // Select FEN input upon click for convenient copying
   fenEl.addEventListener('click', (event) => (event.target as HTMLInputElement).select())
 
+  // Toggle "Report puzzle" section when clicking the button
   const reportPuzzleBtnEl: HTMLElement = document.querySelector('.report-puzzle')
   if (reportPuzzleBtnEl) {
     reportPuzzleBtnEl.addEventListener('click', () => {
       reportPuzzleBtnEl.style.display = 'none'
 
-      console.log('report puzzle clicked')
       const reportPuzzleFormEl: HTMLElement = document.querySelector('.puzzle-report-form')
       reportPuzzleFormEl.style.display = 'block'
 
@@ -66,15 +50,16 @@ export default () => {
     })
   }
 
+  // Initialize a chessground board for this one puzzle
   const puzzleData: PuzzleData = JSON.parse(puzzleJsonDataEl.innerText)
-  // console.dir(puzzleData)
-
-  // Initialize an interactive chessboard for this one puzzle
   const puzzleMovesData: PuzzleMovesData = puzzleData.puzzle_data
-  new InteractiveBoard
   const initialPuzzleState = Object.assign({}, puzzleMovesData)
+  const fen = puzzleData.puzzle_data.initial_fen
   let puzzleStateLines = Object.assign({}, puzzleMovesData.lines)
-  dispatch(`board:flipped`, !!puzzleMovesData.initial_fen.match(/ w /))
+  console.dir(puzzleData)
+
+  const chessgroundBoard = new ChessgroundBoard(fen, '.chessground');
+  new MoveStatus;
 
   const instructionsEl: HTMLElement = document.querySelector('.instructions')
   const resetPositionEl: HTMLElement = document.querySelector('.button.restart')
@@ -82,6 +67,12 @@ export default () => {
   originalInstructions = instructionsEl.textContent
 
   subscribe({
+    'puzzle:solved': () => {
+      instructionsEl.textContent = 'Puzzle solved!'
+      instructionsEl.classList.remove('invisible')
+      chessgroundBoard.freeze()
+    },
+
     // Handle whenever the player tries a move
     'move:try': move => {
       // Always hide the instructions (White to move) after the player make a move
@@ -99,16 +90,14 @@ export default () => {
         dispatch(`move:fail`, move)
         return
       }
+      // the puzzle isn't finished yet if we get here
       dispatch(`move:make`, move)
       dispatch(`move:success`)
       const response = Object.keys(attempt)[0]
       const responseMove = uciToMove(response)
       const puzzleLines: PuzzleLines | 'win' | 'retry' = attempt[response]
       if (puzzleLines === `win`) {
-        console.log('win!')
         dispatch(`puzzle:solved`)
-        instructionsEl.textContent = 'Puzzle solved!'
-        instructionsEl.classList.remove('invisible')
       } else {
         dispatch(`move:sound`, move)
         setTimeout(() => {
@@ -119,8 +108,25 @@ export default () => {
     },
   })
 
-  resetPosition(initialPuzzleState)
+  // Initializes the board position. Makes initial opponent move if there is one
+  const resetPosition = (puzzleMovesData: PuzzleMovesData) => {
+    chessgroundBoard.unfreeze()
+    dispatch('fen:set', puzzleMovesData.initial_fen)
+    if (puzzleMovesData.initial_move_san) {
+      const sanMove = puzzleMovesData.initial_move_san
+      setTimeout(() => {
+        dispatch('move:make', sanMove, { opponent: true });
+        const instructionsEl: HTMLDivElement = document.querySelector('.instructions')
+        if (instructionsEl) {
+          instructionsEl.textContent = originalInstructions;
+          instructionsEl.classList.remove('invisible')
+        }
+      }, 500);
+    }
+  }
 
+  // reset position upon pageload and when clicking "Reset Position"
+  resetPosition(initialPuzzleState)
   resetPositionEl.addEventListener('click', () => {
     resetPosition(initialPuzzleState)
     puzzleStateLines = Object.assign({}, initialPuzzleState.lines)
