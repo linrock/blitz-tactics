@@ -32,6 +32,18 @@ class UserChessboard < ActiveRecord::Base
           .#{board_class} .square .square-label.dark {
             color: #{light_square_color} !important;
           }
+          .cg-wrap.orientation-white coords.ranks coord:nth-child(2n + 1) {
+            color: #{light_square_color} !important;
+          }
+          .cg-wrap.orientation-white coords.files coord:nth-child(2n + 1) {
+            color: #{light_square_color} !important;
+          }
+          .cg-wrap.orientation-black coords.ranks coord:nth-child(2n) {
+            color: #{light_square_color} !important;
+          }
+          .cg-wrap.orientation-black coords.files coord:nth-child(2n) {
+            color: #{light_square_color} !important;
+          }
         "
       end
       if dark_square_color
@@ -40,6 +52,18 @@ class UserChessboard < ActiveRecord::Base
             background: #{dark_square_color} !important;
           }
           .#{board_class} .square .square-label.light {
+            color: #{dark_square_color} !important;
+          }
+          .cg-wrap.orientation-white coords.ranks coord:nth-child(2n) {
+            color: #{dark_square_color} !important;
+          }
+          .cg-wrap.orientation-white coords.files coord:nth-child(2n) {
+            color: #{dark_square_color} !important;
+          }
+          .cg-wrap.orientation-black coords.ranks coord:nth-child(2n + 1) {
+            color: #{dark_square_color} !important;
+          }
+          .cg-wrap.orientation-black coords.files coord:nth-child(2n + 1) {
             color: #{dark_square_color} !important;
           }
         "
