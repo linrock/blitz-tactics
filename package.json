@@ -24,7 +24,7 @@
     "backbone": "^1.4.0",
     "backbone.native": "^1.0.0",
     "chess.js": "^0.11.0",
-    "chessground": "^7.9.3",
+    "chessground": "https://github.com/linrock/chessground.git#blitz-tactics",
     "fastclick": "^1.0.6",
     "mithril": "^1.1.6",
     "mousetrap": "^1.6.2",

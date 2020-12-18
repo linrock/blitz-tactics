@@ -49,6 +49,7 @@ export default class ChessgroundBoard {
       fen,
       movable: {
         free: false,
+        intentOnly: true,
         dests: getDests(this.cjs),
         showDests: false,
         events: {
