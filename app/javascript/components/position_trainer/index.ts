@@ -22,11 +22,10 @@ export default class PositionTrainer {
   private engine: StockfishEngine
 
   constructor() {
-    this.chessgroundBoard = new ChessgroundBoard(this.initialFen)
-    if (this.computerColor === `w`) {
-      // TODO set board orientation in constructor
-      this.chessgroundBoard.setOrientation('black')
-    }
+    this.chessgroundBoard = new ChessgroundBoard(this.initialFen, {
+      intentOnly: false,
+      orientation: this.computerColor === 'w' ? 'black' : 'white',
+    })
     this.listenForEvents()
     this.depth = parseInt(getConfig(`depth`), 10) || SEARCH_DEPTH
     this.engine = new StockfishEngine

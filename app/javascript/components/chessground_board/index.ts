@@ -27,12 +27,18 @@ const getDests = (chess: ChessInstance): Dests | null => {
   }
 };
 
+// Options used to initialize the board
+interface BoardOptions {
+  intentOnly?: boolean;
+  orientation?: Color;
+}
+
 export default class ChessgroundBoard {
   private readonly cjs: ChessInstance
   private readonly chessground: Api
   private lastOpponentMove: any /* ChessJsMove */
 
-  constructor(fen: FEN, selector: string = '.chessground') {
+  constructor(fen: FEN, options: BoardOptions = {}, selector = '.chessground') {
     this.cjs = new Chess()
     if (!this.cjs.load(fen)) {
       console.warn(`failed to load fen: ${fen}`)
@@ -45,11 +51,11 @@ export default class ChessgroundBoard {
       highlight: {
         lastMove: true,
       },
-      orientation: (fen.includes(' w ') ? 'black' : 'white' as Color),
+      orientation: options.orientation || (fen.includes(' w ') ? 'black' : 'white' as Color),
       fen,
       movable: {
         free: false,
-        intentOnly: true,
+        intentOnly: options.intentOnly || true,
         dests: getDests(this.cjs),
         showDests: false,
         events: {
