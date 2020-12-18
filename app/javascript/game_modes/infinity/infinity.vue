@@ -92,6 +92,7 @@ aside.infinity-sidebar
         shuffle: false,
         loopPuzzles: false,
         source: apiPath,
+        useChessground: true,
       })
     }
   }

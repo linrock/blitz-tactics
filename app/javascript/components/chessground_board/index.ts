@@ -38,7 +38,7 @@ export default class ChessgroundBoard {
   private readonly chessground: Api
   private lastOpponentMove: any /* ChessJsMove */
 
-  constructor(fen: FEN, options: BoardOptions = {}, selector = '.chessground') {
+  constructor(fen: FEN = '0/0/0/0/0/0/0/0', options: BoardOptions = {}, selector = '.chessground') {
     this.cjs = new Chess()
     if (!this.cjs.load(fen)) {
       console.warn(`failed to load fen: ${fen}`)
