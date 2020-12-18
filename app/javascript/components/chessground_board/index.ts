@@ -97,6 +97,10 @@ export default class ChessgroundBoard {
     new PiecePromoModal()
 
     subscribe({
+      'board:flipped': shouldBeFlipped => {
+        this.chessground.set({ orientation: shouldBeFlipped ? 'black' : 'white' })
+      },
+
       'fen:set': (fen: FEN) => {
         console.warn(`chessground_board - got fen:set - ${fen}`)
         this.cjs.load(fen)
