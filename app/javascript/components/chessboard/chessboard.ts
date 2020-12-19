@@ -6,8 +6,6 @@ import { Chess, ChessInstance, ShortMove, Square } from 'chess.js'
 
 import { dispatch, subscribe } from '@blitz/store'
 import { FEN, ChessMove } from '@blitz/types'
-import { makeDraggable, makeDroppable } from './concerns/drag_and_drop'
-import PointAndClick from './concerns/point_and_click'
 import virtualPiece from './concerns/pieces'
 
 import './chessboard.sass'
@@ -40,7 +38,6 @@ export default class Chessboard {
     this.cjs = new Chess()
     this.disableMobileDragScroll()
     this.listenToEvents()
-    new PointAndClick(this)
   }
 
   private disableMobileDragScroll(): void {
@@ -159,11 +156,10 @@ export default class Chessboard {
         }
         const piece = this.cjs.get(id as Square)
         if (piece) {
-          squareEls.push(virtualPiece(piece, vnode => makeDraggable(vnode.dom)))
+          squareEls.push(virtualPiece(piece))
         }
         const squareAttrs = {
           'data-square': id,
-          oncreate: vnode => makeDroppable(vnode.dom, (move: ShortMove) => this.tryMove(move)),
           id,
         }
         if (this.highlightedSquares[id]) {
