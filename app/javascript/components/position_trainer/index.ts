@@ -22,7 +22,8 @@ export default class PositionTrainer {
   private engine: StockfishEngine
 
   constructor() {
-    this.chessgroundBoard = new ChessgroundBoard(this.initialFen, {
+    this.chessgroundBoard = new ChessgroundBoard({
+      fen: this.initialFen,
       intentOnly: false,
       orientation: this.computerColor === 'w' ? 'black' : 'white',
     })

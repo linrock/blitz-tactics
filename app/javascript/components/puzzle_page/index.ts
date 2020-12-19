@@ -58,7 +58,7 @@ export default () => {
   let puzzleStateLines = Object.assign({}, puzzleMovesData.lines)
   console.dir(puzzleData)
 
-  const chessgroundBoard = new ChessgroundBoard(fen);
+  const chessgroundBoard = new ChessgroundBoard({ fen });
   new MoveStatus;
 
   const instructionsEl: HTMLElement = document.querySelector('.instructions')

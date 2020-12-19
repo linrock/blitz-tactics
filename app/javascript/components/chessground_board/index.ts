@@ -29,6 +29,7 @@ const getDests = (chess: ChessInstance): Dests | null => {
 
 // Options used to initialize the board
 interface BoardOptions {
+  fen?: FEN;
   intentOnly?: boolean;
   orientation?: Color;
 }
@@ -38,10 +39,16 @@ export default class ChessgroundBoard {
   private readonly chessground: Api
   private lastOpponentMove: any /* ChessJsMove */
 
-  constructor(fen: FEN = '0/0/0/0/0/0/0/0', options: BoardOptions = {}, selector = '.chessground') {
+  constructor(options: BoardOptions = {}, selector = '.chessground') {
     this.cjs = new Chess()
-    if (!this.cjs.load(fen)) {
-      console.warn(`failed to load fen: ${fen}`)
+    if (options.fen && !this.cjs.load(options.fen)) {
+      console.warn(`failed to load fen: ${options.fen}`)
+    }
+    let orientation;
+    if (options.orientation) {
+      orientation = options.orientation
+    } else if (options.fen) {
+      orientation = options.fen?.includes(' w ') ? 'black' : 'white' as Color
     }
     this.chessground = Chessground(document.querySelector(selector), {
       animation: {
@@ -51,22 +58,18 @@ export default class ChessgroundBoard {
       highlight: {
         lastMove: true,
       },
-      orientation: options.orientation || (fen.includes(' w ') ? 'black' : 'white' as Color),
-      fen,
+      fen: options.fen || '0/0/0/0/0/0/0/0',
+      orientation,
       movable: {
         free: false,
         intentOnly: options.intentOnly || true,
         dests: getDests(this.cjs),
         showDests: false,
-        events: {
-          after: (orig, dest, metadata) => {
-            console.log(`movable.events.after - ${orig} ${dest}`)
-          },
-        },
       },
       draggable: {
         distance: 1,
         autoDistance: false,
+        showGhost: true,
       },
       events: {
         // handle player moves
@@ -102,7 +105,7 @@ export default class ChessgroundBoard {
       },
 
       'fen:set': (fen: FEN) => {
-        console.warn(`chessground_board - got fen:set - ${fen}`)
+        console.log(`chessground_board - fen:set - ${fen}`)
         this.cjs.load(fen)
         const turnColor = this.cjs.turn() === 'w' ? 'white' : 'black'
         this.chessground.set({
