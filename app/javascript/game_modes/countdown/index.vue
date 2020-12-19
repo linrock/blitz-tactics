@@ -42,8 +42,6 @@ aside.countdown-sidebar
     },
 
     mounted() {
-      console.log('mounted!');
-
       let levelName: string
 
       subscribe({
@@ -68,7 +66,7 @@ aside.countdown-sidebar
         },
       })
 
-      subscribeOnce(`move:try`, () => {
+      subscribeOnce('move:try', () => {
         this.isStarted = true;
       })
 
@@ -78,6 +76,7 @@ aside.countdown-sidebar
         noCounter: true,
         noHint: true,
         source: '/countdown/puzzles.json',
+        useChessground: true,
       })
     },
 
