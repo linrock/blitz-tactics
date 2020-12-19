@@ -4,7 +4,10 @@ section.rated-mode
   .container
     .board-area-container
       = render partial: "puzzle_player/above_board"
-      = render partial: "puzzle_player/board_area"
+      .board-area
+        .chessground-board
+          .piece-promotion-modal-container
+          .chessground
     .vue-app-mount
 
 script#rated-mode-data(type="application/json")

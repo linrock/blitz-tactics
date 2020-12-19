@@ -74,7 +74,7 @@ export default function RatedMode() {
     },
 
     'puzzles:status': status => {
-      const { i, n, lastPuzzleId } = status
+      const { i, n } = status
       console.log(`${i} of ${n}`)
       if (i + fetchThreshold > n) {
         dispatch(`source:changed:add`, `${apiPath}?next=true`)
@@ -89,6 +89,7 @@ export default function RatedMode() {
     noCounter: true,
     noHint: true,
     source: apiPath,
-    mode: 'rated',
+    mode: 'rated', // TODO fix this hack
+    useChessground: true,
   })
 }

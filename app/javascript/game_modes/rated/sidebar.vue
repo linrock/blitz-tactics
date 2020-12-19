@@ -41,7 +41,6 @@ aside.rated-sidebar
     },
 
     mounted() {
-      console.log('rated sidebar mounted!')
       const data = JSON.parse(document.querySelector('#rated-mode-data').textContent)
       console.dir(data)
       this.playerRating = data.playerRating
