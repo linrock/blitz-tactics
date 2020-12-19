@@ -10,12 +10,6 @@
   },
   "dependencies": {
     "@bugsnag/js": "^7.5.3",
-    "@interactjs/actions": "^1.10.0",
-    "@interactjs/auto-start": "^1.10.0",
-    "@interactjs/dev-tools": "^1.10.0",
-    "@interactjs/inertia": "^1.10.0",
-    "@interactjs/interact": "^1.10.0",
-    "@interactjs/modifiers": "^1.10.0",
     "@rails/webpacker": "5.2.1",
     "@types/backbone": "^1.4.5",
     "@types/chess.js": "^0.10.1",
