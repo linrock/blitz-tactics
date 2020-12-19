@@ -162,6 +162,7 @@ export default {
       loopPuzzles: false,
       noHint: true,
       source: '/three/puzzles',
+      useChessground: true,
     })
   },
 

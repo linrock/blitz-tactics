@@ -41,11 +41,19 @@
     margin: 0
     transition: opacity 0.5s ease
 
-  .board-area, .chessboard
+  .board-area, .chessboard, .chessground-board
     width: $board-size
     height: $board-size
     margin: 0 auto
 
+  // TODO DRY these
+  .cg-wrap
+    width: 100%
+    height: 100%
+    box-sizing: border-box
+    border: 2px solid #938172
+
+  // TODO DRY
   .board-modal-container
     width: 100%
     height: 100%
@@ -53,6 +61,7 @@
     position: absolute
     left: 0
     top: 0
+    z-index: 2
 
   .three-sidebar
     margin-top: $above-board-height
