@@ -2154,7 +2154,7 @@ chess.js@^0.11.0:
 
 "chessground@https://github.com/linrock/chessground.git#blitz-tactics":
   version "7.9.3"
-  resolved "https://github.com/linrock/chessground.git#83e0683baf71e3390e26c21aebfa978461957e29"
+  resolved "https://github.com/linrock/chessground.git#3e27f6b41a5eaab6b31cb31734c135e5c53aa33f"
 
 chokidar@^2.1.8:
   version "2.1.8"
