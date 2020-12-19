@@ -116,7 +116,7 @@ class UserChessboard < ActiveRecord::Base
           .#{board_class} .square.move-from {
             background: #{opponent_from_square_color} !important;
           }
-          cg-board square.last-move:first-of-type {
+          cg-board square.last-move.move-from {
             background-color: #{opponent_from_square_color} !important;
           }
         "
@@ -129,7 +129,7 @@ class UserChessboard < ActiveRecord::Base
           .#{board_class} .square.move-to {
             background: #{opponent_to_square_color} !important;
           }
-          cg-board square.last-move {
+          cg-board square.last-move.move-to {
             background-color: #{opponent_to_square_color} !important;
           }
         "

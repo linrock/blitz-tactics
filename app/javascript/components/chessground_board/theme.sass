@@ -54,10 +54,11 @@ cg-board square
     background-color: rgba(238, 255, 255, 1.0)
 
   // Highlights for last opponent move
-  &.last-move:first-of-type 
-    background-color: #FFF79B
   &.last-move
-    background-color: #fffcdd
+    &.move-from
+      background-color: #fffcdd
+    &.move-to
+      background-color: #FFF79B
 
 // Alternating colors in rank/file labels
 .cg-wrap.orientation-white coords
