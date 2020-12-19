@@ -108,20 +108,24 @@ export default () => {
     },
   })
 
+  let firstMoveT
+
   // Initializes the board position. Makes initial opponent move if there is one
   const resetPosition = (puzzleMovesData: PuzzleMovesData) => {
     chessgroundBoard.unfreeze()
+    clearTimeout(firstMoveT)
     dispatch('fen:set', puzzleMovesData.initial_fen)
     if (puzzleMovesData.initial_move_san) {
       const sanMove = puzzleMovesData.initial_move_san
-      setTimeout(() => {
+      firstMoveT = setTimeout(() => {
         dispatch('move:make', sanMove, { opponent: true });
         const instructionsEl: HTMLDivElement = document.querySelector('.instructions')
         if (instructionsEl) {
           instructionsEl.textContent = originalInstructions;
           instructionsEl.classList.remove('invisible')
         }
-      }, 500);
+        firstMoveT = undefined
+      }, 500)
     }
   }
 
