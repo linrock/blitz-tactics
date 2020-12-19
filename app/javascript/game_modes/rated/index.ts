@@ -90,6 +90,5 @@ export default function RatedMode() {
     noHint: true,
     source: apiPath,
     mode: 'rated', // TODO fix this hack
-    useChessground: true,
   })
 }

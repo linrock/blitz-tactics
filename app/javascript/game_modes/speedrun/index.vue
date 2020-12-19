@@ -85,7 +85,6 @@ aside.speedrun-sidebar
         shuffle: false,
         loopPuzzles: false,
         source: apiPath,
-        useChessground: true,
       })
     },
 

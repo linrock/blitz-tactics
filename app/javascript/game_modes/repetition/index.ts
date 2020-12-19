@@ -32,7 +32,6 @@ export default function RepetitionMode() {
     shuffle: true,
     loopPuzzles: true,
     source: `${window.location.pathname}/puzzles.json`,
-    useChessground: true,
   })
 
   subscribe({

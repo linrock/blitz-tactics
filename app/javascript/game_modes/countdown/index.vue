@@ -76,7 +76,6 @@ aside.countdown-sidebar
         noCounter: true,
         noHint: true,
         source: '/countdown/puzzles.json',
-        useChessground: true,
       })
     },
 
