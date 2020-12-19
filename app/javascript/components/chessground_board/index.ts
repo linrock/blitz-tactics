@@ -91,7 +91,9 @@ export default class ChessgroundBoard {
             }
           } else {
             // go through the move:try flow to decide whether to accept the move
-            dispatch('move:try', { from, to })
+            const cjs = new Chess(this.cjs.fen())
+            const moveObj = cjs.move({ from: from as Square, to: to as Square })
+            dispatch('move:try', moveObj)
           }
         }
       }
