@@ -31,7 +31,8 @@ export default function RepetitionMode() {
   new PuzzlePlayer({
     shuffle: true,
     loopPuzzles: true,
-    source: `${window.location.pathname}/puzzles.json`
+    source: `${window.location.pathname}/puzzles.json`,
+    useChessground: true,
   })
 
   subscribe({
