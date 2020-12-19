@@ -104,6 +104,7 @@ export default {
       loopPuzzles: false,
       noHint: true,
       source: '/haste/puzzles',
+      useChessground: true,
     })
   },
 
