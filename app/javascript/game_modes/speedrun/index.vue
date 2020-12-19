@@ -43,7 +43,7 @@ aside.speedrun-sidebar
     },
 
     computed: {
-      formattedBestTime() {
+      formattedBestTime(): string {
         return formattedTime(parseInt(this.bestTime, 0))
       }
     },
@@ -85,6 +85,7 @@ aside.speedrun-sidebar
         shuffle: false,
         loopPuzzles: false,
         source: apiPath,
+        useChessground: true,
       })
     },
 

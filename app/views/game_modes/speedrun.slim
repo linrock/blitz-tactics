@@ -4,5 +4,9 @@ section.speedrun-mode
   .container
     .board-area-container
       = render partial: "puzzle_player/above_board"
-      = render partial: "puzzle_player/board_area"
+      .board-area
+        .chessground-board
+          .piece-promotion-modal-container
+          .chessground
+          .board-modal-container.invisible(style="display: none")
     .vue-app-mount
