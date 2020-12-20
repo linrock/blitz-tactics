@@ -41,6 +41,7 @@ export default class PuzzleSource {
   private started = false
   private shuffle = false
   private loopPuzzles = false
+  private firstMoveT: number | undefined
   private current: PuzzleState = {}
   private mode: string
 
@@ -134,13 +135,15 @@ export default class PuzzleSource {
       boardState: Object.assign({}, puzzle.lines),
       puzzle,
     }
+    clearTimeout(this.firstMoveT)
     dispatch(`puzzle:loaded`, this.current)
     dispatch(`board:flipped`, !!puzzle.fen.match(/ w /))
     dispatch(`fen:set`, puzzle.fen)
-    setTimeout(() => {
+    this.firstMoveT = window.setTimeout(() => {
       const move = this.getInitialMoveSan(puzzle.initialMove)
       dispatch(`move:make`, move, { opponent: true })
       dispatch(`move:sound`, move)
+      this.firstMoveT = undefined
     }, 500)
   }
 

@@ -52,10 +52,6 @@ aside.speedrun-sidebar
       subscribe({
         'config:init': data => this.levelName = data.level_name,
 
-        'level:selected': name => {
-          dispatch(`source:changed`, `${apiPath}?name=${name}`)
-        },
-
         'timer:stopped': elapsedTimeMs => {
           const boardOverlayEl: HTMLElement = document.querySelector(`.board-modal-container`)
           boardOverlayEl.style.display = ``
