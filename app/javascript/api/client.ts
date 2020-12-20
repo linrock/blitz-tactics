@@ -11,25 +11,17 @@ const headersWithCsrfToken = (): AxiosRequestConfig => {
   }
 }
 
-class APIClient {
-
-  public get(path: string): AxiosPromise {
+export default {
+  get(path: string): AxiosPromise {
     return axios.get(path)
-  }
-
-  public post(path: string, data = {}): AxiosPromise {
+  },
+  post(path: string, data = {}): AxiosPromise {
     return axios.post(path, data, headersWithCsrfToken())
-  }
-
-  public put(path: string, data): AxiosPromise {
+  },
+  put(path: string, data): AxiosPromise {
     return axios.put(path, data, headersWithCsrfToken())
-  }
-
-  public patch(path: string, data): AxiosPromise {
+  },
+  patch(path: string, data): AxiosPromise {
     return axios.patch(path, data, headersWithCsrfToken())
   }
 }
-
-const api = new APIClient
-
-export default api

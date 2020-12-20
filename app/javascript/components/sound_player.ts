@@ -3,18 +3,16 @@ import Backbone from 'backbone'
 import { toggleSound } from '../api/requests'
 import { dispatch, subscribe } from '../store'
 
-const theme = `sfx`
+const theme = 'sfx'
 const supportsAudio = !!(<any>window).Audio
 
-let audioMap
+let audioMap: Record<string, HTMLAudioElement> = {}
 if (supportsAudio) {
   audioMap = {
     'move:sound': new Audio(`/sounds/${theme}/Move.mp3`),
     'move:fail': new Audio(`/sounds/${theme}/Check.mp3`),
     'puzzle:solved': new Audio(`/sounds/${theme}/Capture.mp3`),
   }
-} else {
-  audioMap = {}
 }
 
 export default class SoundPlayer extends Backbone.View {

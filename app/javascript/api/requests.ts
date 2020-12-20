@@ -1,10 +1,6 @@
 import client from './client'
 import { InfinityPuzzleSolved } from '../game_modes/infinity'
 
-export function updateLevel(levelSlug: string, data) {
-  return client.put(`/${levelSlug}`, data).then(resp => resp.data)
-}
-
 export function infinityPuzzleSolved(puzzle: InfinityPuzzleSolved) {
   return client.post(`/infinity/puzzles`, { puzzle }).then(resp => resp.data)
 }
@@ -60,7 +56,7 @@ export function threeRoundCompleted(score: number) {
   return client.post(`/three`, params).then(resp => resp.data)
 }
 
-export function ratedPuzzleAttempted(puzzleId: number, uciMoves, elapsedTimeMs: number) {
+export function ratedPuzzleAttempted(puzzleId: number, uciMoves: any[], elapsedTimeMs: number) {
   const params = {
     puzzle_attempt: {
       id: puzzleId,
