@@ -18,8 +18,3 @@ Solve every puzzle quickly and precisely to unlock the next level.
 * [chess.js](https://github.com/jhlywa/chess.js) - javascript library used for the chessboard
 * [Stepmania](http://www.stepmania.com/) - inspiration for the game mechanics
 * [lichess](https://lichess.org/) - tactics puzzles and awesome community's feedback
-
-
-## License
-
-MIT
