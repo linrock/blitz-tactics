@@ -1,11 +1,12 @@
 // fetches puzzles from the server, handles player moves,
 // and emits move events (move:success, move:almost, move:fail)
 
-import _ from 'underscore';
+import { ShortMove, Move } from 'chess.js'
+import _ from 'underscore'
 
 import { fetchPuzzles } from '@blitz/api/requests'
 import { dispatch, subscribe } from '@blitz/store'
-import { ChessMove, InitialMove, Puzzle, UciMove } from '@blitz/types'
+import { InitialMove, Puzzle, UciMove } from '@blitz/types'
 import { uciToMove, moveToUci } from '@blitz/utils'
 import Puzzles from './puzzles'
 
@@ -118,8 +119,8 @@ export default class PuzzleSource {
     }
   }
 
-  // should make this one type of move
-  private getInitialMoveSan(move: InitialMove): string | ChessMove {
+  // TODO should make this one type of move
+  private getInitialMoveSan(move: InitialMove): string | ShortMove {
     if (move.san) {
       return move.san
     } else {
@@ -143,15 +144,11 @@ export default class PuzzleSource {
     }, 500)
   }
 
-  private tryUserMove(move: ChessMove) {
+  private tryUserMove(move: Move) {
     if (!this.started) {
       this.started = true
       dispatch(`puzzles:start`)
     }
-    this.handleUserMove(move)
-  }
-
-  private handleUserMove(move: ChessMove) {
     const attempt = this.current.boardState[moveToUci(move)]
     if (attempt === `win`) {
       dispatch(`move:success`)

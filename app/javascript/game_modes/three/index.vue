@@ -153,7 +153,7 @@ export default {
       }
     })
 
-    subscribeOnce(`move:try`, () => {
+    subscribeOnce('move:try', () => {
       this.hasStarted = true
     })
 

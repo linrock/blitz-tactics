@@ -32,7 +32,7 @@
     mounted() {
       let timerInterval: number
 
-      subscribeOnce(`move:try`, () => {
+      subscribeOnce('move:try', () => {
         this.startTime = Date.now()
         timerInterval = window.setInterval(() => this.nowTime = Date.now(), updateInterval)
       })

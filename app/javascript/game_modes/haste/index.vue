@@ -33,7 +33,6 @@ import { hasteRoundCompleted } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import store from '@blitz/local_storage'
 import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
-import { ChessMove } from '@blitz/types'
 
 import Timer from './timer.vue'
 
@@ -95,7 +94,7 @@ export default {
       }
     })
 
-    subscribeOnce(`move:try`, () => {
+    subscribeOnce('move:try', () => {
       this.hasStarted = true
     })
 

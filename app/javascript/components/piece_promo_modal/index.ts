@@ -3,14 +3,14 @@ import Mousetrap from 'mousetrap'
 import { Chess, ShortMove } from 'chess.js'
 
 import { dispatch, subscribe } from '@blitz/store'
-import { FEN, ChessMove } from '@blitz/types'
+import { FEN } from '@blitz/types'
 
 import './style.sass'
 
 /** When you make a pawn move that requires pawn promotion, this is what shows up */
 export default class PiecePromotionModal extends Backbone.View {
   private fen: FEN
-  private moveIntent: ChessMove
+  private moveIntent: ShortMove
   private readonly cjs = new Chess
 
   private template(color: 'w' | 'b'): string {
@@ -49,7 +49,7 @@ export default class PiecePromotionModal extends Backbone.View {
     subscribe({
       'move:promotion': data => {
         this.fen = data.fen
-        this.moveIntent = data.move
+        this.moveIntent = data.move as ShortMove
         this.show()
       }
     })
@@ -70,11 +70,11 @@ export default class PiecePromotionModal extends Backbone.View {
 
   private _selectPiece(e, childElement: HTMLElement) {
     const chosenPiece = childElement.dataset.piece
-    const move: ChessMove = Object.assign({}, this.moveIntent, {
+    const move: ShortMove = Object.assign({}, this.moveIntent, {
       promotion: chosenPiece
     })
     this.cjs.load(this.fen)
-    const m = this.cjs.move(move as ShortMove)
+    const m = this.cjs.move(move)
     if (m) {
       dispatch('move:try', m)
     }

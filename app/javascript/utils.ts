@@ -1,4 +1,4 @@
-import { UciMove, ChessMove, BlitzConfig } from './types'
+import { UciMove, BlitzConfig } from './types'
 import { ShortMove, Square } from 'chess.js'
 
 declare var blitz: BlitzConfig
@@ -14,7 +14,7 @@ export const uciToMove = (uci: UciMove): ShortMove => {
   return m
 }
 
-export const moveToUci = (move: ChessMove): UciMove => {
+export const moveToUci = (move: ShortMove): UciMove => {
   if (move.promotion) {
     return `${move.from}${move.to}${move.promotion}`
   } else {

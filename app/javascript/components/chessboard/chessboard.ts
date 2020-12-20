@@ -5,7 +5,7 @@ import m from 'mithril'
 import { Chess, ChessInstance, ShortMove, Square } from 'chess.js'
 
 import { dispatch, subscribe } from '@blitz/store'
-import { FEN, ChessMove } from '@blitz/types'
+import { FEN } from '@blitz/types'
 import virtualPiece from './concerns/pieces'
 
 import './chessboard.sass'
@@ -104,14 +104,14 @@ export default class Chessboard {
     if (type === `p` &&
         ((color === `w` && from[1] === `7` && to[1] === `8`) ||
          (color === `b` && from[1] === `2` && to[1] === `1`))) {
-      const validMoves: Array<ChessMove> = this.cjs.moves({ verbose: true })
-      if (_.find(validMoves, m => m.from === from && m.to === to)) {
+      const validMoves = this.cjs.moves({ verbose: true })
+      if (validMoves.find(m => m.from === from && m.to === to)) {
         dispatch(`move:promotion`, { fen: this.fen, move })
       }
     } else {
       const m = new Chess(this.fen).move(move)
       if (m) {
-        dispatch(`move:try`, m)
+        dispatch('move:try', m)
       }
     }
   }
