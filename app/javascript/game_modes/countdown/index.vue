@@ -14,6 +14,7 @@ aside.countdown-sidebar
       .label High score
       .score {{ highScore }}
 
+    a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
     a.blue-button(href="/countdown") Play again
 
   .make-a-move(v-if="!isStarted") Make a move to start the timer
@@ -36,9 +37,17 @@ aside.countdown-sidebar
         isStarted: false,
         isEnded: false,
         nPuzzlesSolved: 0,
+        currentPuzzleId: 0,
+        puzzleIdsSeen: [] as number[],
         score: 0,
         highScore: 0,
       }
+    },
+
+    computed: {
+      viewPuzzlesLink(): string {
+        return `/puzzles/${this.puzzleIdsSeen.join(',')}`
+      },
     },
 
     mounted() {
@@ -46,15 +55,19 @@ aside.countdown-sidebar
 
       subscribe({
         'config:init': data => levelName = data.level_name,
+        'puzzle:loaded': data => {
+          this.currentPuzzleId = data.puzzle.id
+          this.puzzleIdsSeen.push(this.currentPuzzleId)
+        },
         'puzzles:status': ({ i }) => {
           this.nPuzzlesSolved = i + 1
         },
         'timer:stopped': () => {
           // Cover the board with a dark transluscent overlay after the game ends
-          const boardOverlayEl: HTMLElement = document.querySelector(`.board-modal-container`)
-          boardOverlayEl.style.display = ``
-          boardOverlayEl.classList.remove(`invisible`)
-          dispatch(`timer:complete`, this.nPuzzlesSolved)
+          const boardOverlayEl: HTMLElement = document.querySelector('.board-modal-container')
+          boardOverlayEl.style.display = ''
+          boardOverlayEl.classList.remove('invisible')
+          dispatch('timer:complete', this.nPuzzlesSolved)
         },
         'timer:complete': score => {
           countdownCompleted(levelName, score).then(data => {
