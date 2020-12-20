@@ -68,6 +68,9 @@ export default class PositionTrainer {
         }
         this.engine.analyze(fen, analysisOptions).then(output => {
           const { fen, state } = output
+          if (!state) {
+            console.warn(`missing state in engine output: ${JSON.stringify(output)}`)
+          }
           const computerMove = state.evaluation.best
           if (fen !== this.chessgroundBoard.getFen()) {
             return
