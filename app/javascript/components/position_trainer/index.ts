@@ -37,7 +37,7 @@ export default class PositionTrainer {
 
   private get initialFen(): FEN {
     let fen = getConfig('fen') || START_FEN
-    return fen.split(' ').length === 4 ? '${fen} 0 1' : fen
+    return fen.split(' ').length === 4 ? `${fen} 0 1` : fen
   }
 
   private get computerColor(): 'w' | 'b' {
@@ -51,7 +51,7 @@ export default class PositionTrainer {
   }
 
   private isComputersTurn(fen: FEN): boolean {
-    return fen.indexOf(' ${this.computerColor} ') > 0
+    return fen.indexOf(` ${this.computerColor} `) > 0
   }
 
   private listenForEvents() {
