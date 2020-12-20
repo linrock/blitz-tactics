@@ -1,7 +1,7 @@
 import Backbone from 'backbone'
 
 import { toggleSound } from '../api/requests'
-import { dispatch, subscribe } from '../store'
+import { dispatch, subscribe } from '../events'
 
 const theme = 'sfx'
 const supportsAudio = !!(<any>window).Audio

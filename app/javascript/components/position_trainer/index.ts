@@ -1,6 +1,6 @@
 import { Chess, Move } from 'chess.js'
 
-import { dispatch, subscribe } from '@blitz/store'
+import { dispatch, subscribe } from '@blitz/events'
 import { FEN } from '@blitz/types'
 import { uciToMove, getConfig } from '@blitz/utils'
 import StockfishEngine from '@blitz/workers/stockfish_engine'

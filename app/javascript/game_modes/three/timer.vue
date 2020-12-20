@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
+import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
 import { formattedTimeSeconds } from '@blitz/utils'
 
 const initialTimeMin = 3      // number of minutes on the clock initially

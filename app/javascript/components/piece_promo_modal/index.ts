@@ -2,7 +2,7 @@ import Backbone from 'backbone'
 import Mousetrap from 'mousetrap'
 import { Chess, ShortMove } from 'chess.js'
 
-import { dispatch, subscribe } from '@blitz/store'
+import { dispatch, subscribe } from '@blitz/events'
 import { FEN } from '@blitz/types'
 
 import './style.sass'

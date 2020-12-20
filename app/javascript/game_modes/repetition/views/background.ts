@@ -1,4 +1,4 @@
-import { subscribe } from '@blitz/store'
+import { subscribe } from '@blitz/events'
 
 export default class Background {
 

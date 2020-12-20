@@ -53,7 +53,7 @@ aside.three-sidebar
 <script lang="ts">
 import { threeRoundCompleted } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
-import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
+import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
 
 import Timer from './timer.vue'
 

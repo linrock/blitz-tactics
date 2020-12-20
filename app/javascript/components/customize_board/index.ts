@@ -1,7 +1,7 @@
 import Backbone from 'backbone'
 import SimpleColorPicker from 'simple-color-picker'
 
-import { dispatch } from '@blitz/store'
+import { dispatch } from '@blitz/events'
 import Chessboard from '../chessboard/chessboard'
 import BoardStyles from './board_styles'
 

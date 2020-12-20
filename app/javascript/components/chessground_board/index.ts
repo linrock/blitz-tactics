@@ -4,7 +4,7 @@ import { Api } from 'chessground/api'
 import { Color, Dests, FEN, Key, Piece } from 'chessground/types'
 
 import PiecePromoModal from '../piece_promo_modal'
-import { dispatch, subscribe } from '@blitz/store'
+import { dispatch, subscribe } from '@blitz/events'
 
 import './chessground.sass'
 import './theme.sass'

@@ -2,7 +2,7 @@
 
 import Backbone from 'backbone'
 
-import { dispatch } from '@blitz/store'
+import { dispatch } from '@blitz/events'
 
 export default class Actions extends Backbone.View {
 

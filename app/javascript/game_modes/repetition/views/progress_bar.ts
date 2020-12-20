@@ -1,6 +1,6 @@
 // bar under main header showing how close you are to the next level
 
-import { subscribe } from '@blitz/store'
+import { subscribe } from '@blitz/events'
 
 export default class ProgressBar {
   private progressEl: HTMLElement

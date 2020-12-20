@@ -1,6 +1,6 @@
 // instructions above the board for what to do in this position
 
-import { subscribe } from '@blitz/store'
+import { subscribe } from '@blitz/events'
 import { FEN } from '@blitz/types'
 import { getConfig } from '@blitz/utils'
 

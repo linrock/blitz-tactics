@@ -24,7 +24,7 @@ aside.infinity-sidebar
 <script lang="ts">
   import { infinityPuzzleSolved } from '@blitz/api/requests'
   import PuzzlePlayer from '@blitz/components/puzzle_player'
-  import { dispatch, subscribe } from '@blitz/store'
+  import { dispatch, subscribe } from '@blitz/events'
 
   import { InfinityPuzzleDifficulty } from './index'
 

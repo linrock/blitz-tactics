@@ -1,4 +1,4 @@
-import { dispatch, subscribe } from '@blitz/store'
+import { dispatch, subscribe } from '@blitz/events'
 import { FEN, PuzzleLines, UciMove } from '@blitz/types'
 import { moveToUci, uciToMove } from '@blitz/utils'
 import ChessgroundBoard from '../chessground_board'

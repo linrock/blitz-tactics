@@ -4,7 +4,7 @@ import _ from 'underscore'
 import m from 'mithril'
 import { Chess, ChessInstance, ShortMove, Square } from 'chess.js'
 
-import { dispatch, subscribe } from '@blitz/store'
+import { dispatch, subscribe } from '@blitz/events'
 import { FEN } from '@blitz/types'
 import virtualPiece from './concerns/pieces'
 

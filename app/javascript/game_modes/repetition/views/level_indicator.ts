@@ -1,4 +1,4 @@
-import { subscribe } from '@blitz/store'
+import { subscribe } from '@blitz/events'
 
 // Level name, next level, etc.
 //

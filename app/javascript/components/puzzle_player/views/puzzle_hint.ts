@@ -1,7 +1,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-import { dispatch, subscribe } from '@blitz/store'
+import { dispatch, subscribe } from '@blitz/events'
 import { UciMove } from '@blitz/types'
 import { PuzzleState } from '../puzzle_source'
 

@@ -1,4 +1,4 @@
-import { subscribe } from '@blitz/store'
+import { subscribe } from '@blitz/events'
 
 // Fastest 5 player round times in the sidebar
 

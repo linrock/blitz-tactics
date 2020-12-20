@@ -5,7 +5,7 @@ import { ShortMove, Move } from 'chess.js'
 import _ from 'underscore'
 
 import { fetchPuzzles } from '@blitz/api/requests'
-import { dispatch, subscribe } from '@blitz/store'
+import { dispatch, subscribe } from '@blitz/events'
 import { InitialMove, Puzzle, UciMove } from '@blitz/types'
 import { uciToMove, moveToUci } from '@blitz/utils'
 import Puzzles from './puzzles'

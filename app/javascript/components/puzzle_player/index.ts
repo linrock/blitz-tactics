@@ -1,4 +1,4 @@
-import { subscribe } from '@blitz/store'
+import { subscribe } from '@blitz/events'
 import { trackEvent } from '@blitz/utils'
 import ChessgroundBoard from '../chessground_board'
 import MoveStatus from '../move_status'

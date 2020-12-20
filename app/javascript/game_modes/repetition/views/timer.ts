@@ -1,4 +1,4 @@
-import { dispatch, subscribe } from '@blitz/store'
+import { dispatch, subscribe } from '@blitz/events'
 
 const updateInterval = 50
 

@@ -1,4 +1,4 @@
-import { subscribe } from '@blitz/store'
+import { subscribe } from '@blitz/events'
 
 const perfectTiming = 2500
 const greatTiming = 5000

@@ -1,6 +1,6 @@
 // onboarding message on first level of repetition mode
 
-import { subscribe } from '@blitz/store'
+import { subscribe } from '@blitz/events'
 
 export default class Onboarding {
 

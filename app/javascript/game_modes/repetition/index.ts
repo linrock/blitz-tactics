@@ -3,7 +3,7 @@ import {
   repetitionLevelCompleted
 } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
-import { dispatch, subscribe } from '@blitz/store'
+import { dispatch, subscribe } from '@blitz/events'
 
 import Background from './views/background'
 import LevelIndicator from './views/level_indicator'

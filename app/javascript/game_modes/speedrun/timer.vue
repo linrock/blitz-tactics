@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-  import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
+  import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
   import { formattedTime } from '@blitz/utils'
 
   const updateInterval = 37

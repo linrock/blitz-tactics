@@ -27,7 +27,7 @@ aside.rated-sidebar
 </template>
 
 <script lang="ts">
-  import { dispatch, subscribe, subscribeOnce } from '@blitz/store'
+  import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
 
   export default {
     data() {

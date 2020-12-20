@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import { ratedPuzzleAttempted } from '@blitz/api/requests'
-import { dispatch, subscribe } from '@blitz/store'
+import { dispatch, subscribe } from '@blitz/events'
 import { moveToUci } from '@blitz/utils'
 
 import SidebarVue from './sidebar.vue'
