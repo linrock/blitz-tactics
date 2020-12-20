@@ -5,15 +5,13 @@ export type FEN = string
 
 export type UciMove = string
 
-export type MoveColor = 'w' | 'b'
-
 export interface InitialMove {
   san: string,
   uci: UciMove,
 }
 
 export interface PuzzleLines {
-  [uciMove: string]: PuzzleLines | "win" | "retry"
+  [uciMove: string]: PuzzleLines | 'win' | 'retry'
 }
 
 // fields for all puzzles fetched from the server
