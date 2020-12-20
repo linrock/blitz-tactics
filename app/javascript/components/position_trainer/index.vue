@@ -1,11 +1,10 @@
 <template lang="pug">
-.position-trainer.container
-  .instructions.invisible
-  .chessground-board
-    .piece-promotion-modal-container
-    .chessground
-  .actions
-    button.button.restart Reset position
+.instructions.invisible
+.chessground-board
+  .piece-promotion-modal-container
+  .chessground
+.actions
+  button.button.restart(@click="resetPosition()") Reset position
 
 </template>
 
@@ -19,7 +18,6 @@ import StockfishEngine from '@blitz/workers/stockfish_engine'
 
 import ChessgroundBoard from '../chessground_board'
 import Instructions from './views/instructions'
-import Actions from './views/actions'
 
 import './style.sass'
 
@@ -68,6 +66,9 @@ export default {
       setTimeout(() => {
         dispatch('game:over', result)
       }, 500)
+    },
+    resetPosition() {
+      dispatch('position:reset')
     }
   },
 
@@ -105,7 +106,6 @@ export default {
     })
     // this.setDebugHelpers()
     new Instructions({ fen: this.initialFen })
-    new Actions()
   }
 }
 </script>

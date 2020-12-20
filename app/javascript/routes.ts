@@ -9,8 +9,7 @@ import ThreeMode from './game_modes/three/index.vue'
 import RatedMode from './game_modes/rated'
 
 import CustomizeBoard from './components/customize_board'
-import PositionTrainer from './components/position_trainer'
-import PositionTrainerVue from './components/position_trainer/index.vue'
+import PositionTrainer from './components/position_trainer/index.vue'
 import PuzzlePage from './components/puzzle_page'
 import PuzzleList from './components/puzzle_list'
 
@@ -39,9 +38,8 @@ const routes: RouteMap = {
   "puzzles#index": () => PuzzleList(),
 
   // position trainers
-  // "pages#position": () => new PositionTrainer,
-  "pages#position": () => mountVue(PositionTrainerVue, '.vue-app-mount'),
-  "pages#defined_position": () => new PositionTrainer,
+  "pages#position": () => mountVue(PositionTrainer, '.vue-app-mount'),
+  "pages#defined_position": () => mountVue(PositionTrainer, '.vue-app-mount'),
 
   // user profile
   "users#customize_board": () => new CustomizeBoard,
