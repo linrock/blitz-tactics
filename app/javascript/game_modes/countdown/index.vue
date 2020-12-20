@@ -25,11 +25,14 @@ aside.countdown-sidebar
   import { countdownCompleted } from '@blitz/api/requests'
   import PuzzlePlayer from '@blitz/components/puzzle_player'
   import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
+  import store from '@blitz/local_storage'
 
   import Timer from './timer.vue'
 
   import './style.sass'
   import './responsive.sass'
+
+  const puzzleIdsMistakes: Record<number, string[]> = {}
 
   export default {
     data() {
@@ -62,20 +65,27 @@ aside.countdown-sidebar
         'puzzles:status': ({ i }) => {
           this.nPuzzlesSolved = i + 1
         },
+        'move:fail': (move) => {
+          console.log(`mistake! - ${this.currentPuzzleId} - ${move.san}`)
+          if (!puzzleIdsMistakes[this.currentPuzzleId]) {
+            puzzleIdsMistakes[this.currentPuzzleId] = []
+          }
+          puzzleIdsMistakes[this.currentPuzzleId].push(move.san)
+        },
         'timer:stopped': () => {
           // Cover the board with a dark transluscent overlay after the game ends
           const boardOverlayEl: HTMLElement = document.querySelector('.board-modal-container')
           boardOverlayEl.style.display = ''
           boardOverlayEl.classList.remove('invisible')
-          dispatch('timer:complete', this.nPuzzlesSolved)
-        },
-        'timer:complete': score => {
-          countdownCompleted(levelName, score).then(data => {
+          countdownCompleted(levelName, this.nPuzzlesSolved).then(data => {
             const { score, best } = data
             this.score = score
             this.highScore = best
             this.isEnded = true
           })
+          // Store the player's mistakes in case they want to view these later
+          // Expires from local storage after 1 hour
+          store.set(this.viewPuzzlesLink, puzzleIdsMistakes, new Date().getTime() + 86400 * 1000)
         },
       })
 
