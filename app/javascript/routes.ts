@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, Component } from 'vue'
 
 import InfinityMode from './game_modes/infinity'
 import RepetitionMode from './game_modes/repetition'
@@ -10,6 +10,7 @@ import RatedMode from './game_modes/rated'
 
 import CustomizeBoard from './components/customize_board'
 import PositionTrainer from './components/position_trainer'
+import PositionTrainerVue from './components/position_trainer/index.vue'
 import PuzzlePage from './components/puzzle_page'
 import PuzzleList from './components/puzzle_list'
 
@@ -17,20 +18,16 @@ interface RouteMap {
   [routeKey: string]: () => void
 }
 
+const mountVue = (component: Component, selector: string) => {
+  createApp(component).mount(selector)
+}
+
 const routes: RouteMap = {
   // game modes
-  "game_modes/speedrun#index": () => {
-    createApp(SpeedrunMode).mount('.speedrun-mode .vue-app-mount')
-  },
-  "game_modes/countdown#index": () => {
-    createApp(CountdownMode).mount('.countdown-mode .vue-app-mount')
-  },
-  "game_modes/haste#index": () => {
-    createApp(HasteMode).mount('.haste-mode .vue-app-mount')
-  },
-  "game_modes/three#index": () => {
-    createApp(ThreeMode).mount('.three-mode .vue-app-mount')
-  },
+  "game_modes/speedrun#index": () => mountVue(SpeedrunMode, '.speedrun-mode .vue-app-mount'),
+  "game_modes/countdown#index": () => mountVue(CountdownMode, '.countdown-mode .vue-app-mount'),
+  "game_modes/haste#index": () => mountVue(HasteMode, '.haste-mode .vue-app-mount'),
+  "game_modes/three#index": () => mountVue(ThreeMode, '.three-mode .vue-app-mount'),
   "game_modes/infinity#index": () => InfinityMode(),
   "game_modes/repetition#index": () => RepetitionMode(),
   "game_modes/rated#index": () => RatedMode(),
@@ -42,7 +39,8 @@ const routes: RouteMap = {
   "puzzles#index": () => PuzzleList(),
 
   // position trainers
-  "pages#position": () => new PositionTrainer,
+  // "pages#position": () => new PositionTrainer,
+  "pages#position": () => mountVue(PositionTrainerVue, '.vue-app-mount'),
   "pages#defined_position": () => new PositionTrainer,
 
   // user profile
