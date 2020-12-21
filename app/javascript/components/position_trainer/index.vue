@@ -5,7 +5,8 @@
   .piece-promotion-modal-container
   .chessground
 .actions
-  button.button.restart(@click="resetPosition()") Reset position
+  button.dark-button(@click="resetPosition()") Reset position
+  button.dark-button(@click="analyzeOnLichess()") Analyze on Lichess
 
 </template>
 
@@ -62,6 +63,7 @@ export default {
         return
       }
       let text: string
+      console.log(`goal: ${this.goal}, toMove: ${this.toMove}, result: ${this.result}`)
       if (this.goal === 'win') {
         if ((this.toMove === 'White' && this.result === '1-0') ||
             (this.toMove === 'Black' && this.result === '0-1')) {
@@ -101,9 +103,10 @@ export default {
     resetPosition() {
       dispatch('position:reset')
     },
-    resetInstructions() {
-
-    }
+    analyzeOnLichess() {
+      console.log(chessgroundBoard.getFen())
+      window.open(`https://lichess.org/analysis/standard/${chessgroundBoard.getFen().replace(/\s+/g, '_')}`)
+    },
   },
 
   mounted() {
