@@ -44,9 +44,12 @@ class SpeedrunLevel < ActiveRecord::Base
 
   def puzzles
     # speedrun_puzzles.order('id ASC')
-    open(LEVELS_DIR.join("speedrun-#{name}.json"), 'r') do |f|
-      JSON.parse(f.read)
+    json_data_filename = LEVELS_DIR.join("speedrun-#{name}.json")
+    unless File.exists? json_data_filename
+      # TODO fix race condition where concurrent requests will trigger this
+      SpeedrunLevelCreator.export_puzzles_for_date(Date.strptime(name))
     end
+    open(json_data_filename, 'r') { |f| JSON.parse(f.read) }
   end
 
   def first_puzzle
