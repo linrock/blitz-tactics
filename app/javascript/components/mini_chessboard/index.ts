@@ -3,9 +3,9 @@ import { Chess, ChessInstance, ShortMove, Square } from 'chess.js'
 
 import { FEN, UciMove } from '@blitz/types'
 import { uciToMove } from '@blitz/utils'
-import virtualPiece from './concerns/pieces'
+import virtualPiece from './pieces'
 
-import './mini_chessboard.sass'
+import './style.sass'
 
 interface MiniChessboardOptions {
   el: HTMLElement
