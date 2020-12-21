@@ -77,6 +77,12 @@ class User < ActiveRecord::Base
     @num_haste_rounds_completed ||= completed_haste_rounds.count
   end
 
+  # three mode methods
+
+  def num_three_rounds_completed
+    @num_three_rounds_completed ||= completed_three_rounds.count
+  end
+
   # countdown mode methods
 
   def num_countdowns_completed

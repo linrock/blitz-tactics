@@ -47,17 +47,24 @@
 
       <div class="training-mode-stats">
         <div class="stats-rows">
-          <% if @user.num_countdowns_completed > 0 %>
-            <div class="stats-row total">
-              <div class="long-label">Countdowns completed</div>
-              <div class="count"><%= @user.num_countdowns_completed %></div>
-            </div>
-          <% end %>
-
           <% if @user.num_haste_rounds_completed > 0 %>
             <div class="stats-row total">
               <div class="long-label">Haste rounds completed</div>
               <div class="count"><%= @user.num_haste_rounds_completed %></div>
+            </div>
+          <% end %>
+
+          <% if @user.num_three_rounds_completed > 0 %>
+            <div class="stats-row total">
+              <div class="long-label">Three rounds completed</div>
+              <div class="count"><%= @user.num_three_rounds_completed %></div>
+            </div>
+          <% end %>
+
+          <% if @user.num_countdowns_completed > 0 %>
+            <div class="stats-row total">
+              <div class="long-label">Countdowns completed</div>
+              <div class="count"><%= @user.num_countdowns_completed %></div>
             </div>
           <% end %>
 
