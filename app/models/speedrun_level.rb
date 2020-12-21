@@ -1,4 +1,6 @@
 class SpeedrunLevel < ActiveRecord::Base
+  LEVELS_DIR = Rails.root.join("data/speedruns")
+
   NAMES = %w( quick endurance marathon )
 
   has_many :speedrun_puzzles, dependent: :destroy
@@ -21,7 +23,7 @@ class SpeedrunLevel < ActiveRecord::Base
   end
 
   def self.todays_level
-    find_by(name: today.to_s)
+    find_or_create_by(name: today.to_s)
   end
 
   def self.yesterday
@@ -41,11 +43,14 @@ class SpeedrunLevel < ActiveRecord::Base
   end
 
   def puzzles
-    speedrun_puzzles.order('id ASC')
+    # speedrun_puzzles.order('id ASC')
+    open(LEVELS_DIR.join("speedrun-#{name}.json"), 'r') do |f|
+      JSON.parse(f.read)
+    end
   end
 
   def first_puzzle
-    puzzles.first
+    Puzzle.find(puzzles.first["id"])
   end
 
   def num_puzzles

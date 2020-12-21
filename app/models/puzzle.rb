@@ -21,6 +21,27 @@ class Puzzle < ActiveRecord::Base
   before_create :recalculate_and_set_puzzle_data_hash
   before_save :recalculate_and_set_puzzle_data_hash
 
+  # puzzle format used by blitz tactics game modes
+  def bt_puzzle_data
+    {
+      id: id,
+      fen: puzzle_data["initial_fen"],
+      lines: puzzle_data["lines"],
+      initialMove: {
+        san: puzzle_data["initial_move_san"],
+        uci: puzzle_data["initial_move_uci"],
+      }
+    }
+  end
+
+  def fen
+    puzzle_data["initial_fen"]
+  end
+
+  def initial_move_san
+    puzzle_data["initial_move_san"]
+  end
+
   # Any string that can be used to uniquely identify a puzzle
   def self.find_by_id(puzzle_id)
     Puzzle.find_by(puzzle_id: puzzle_id)

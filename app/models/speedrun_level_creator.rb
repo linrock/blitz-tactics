@@ -1,7 +1,6 @@
 # For generating daily speedrun levels
 
 module SpeedrunLevelCreator
-  LEVELS_DIR = Rails.root.join("data/speedruns")
   OUTFILE_NAME = -> (date) { "speedrun-#{date.strftime}.json" }
 
   N_PUZZLES = 30  # number of puzzles per speedrun level
@@ -36,7 +35,7 @@ module SpeedrunLevelCreator
 
   def export_puzzles_for_date(date)
     puzzles = generate_puzzles(date)
-    open(LEVELS_DIR.join(OUTFILE_NAME.call(date)), "w") do |f|
+    open(SpeedrunLevel::LEVELS_DIR.join(OUTFILE_NAME.call(date)), "w") do |f|
       f.write JSON.pretty_generate(puzzles).to_s
     end
   end
@@ -68,7 +67,7 @@ module SpeedrunLevelCreator
     ActiveRecord::Base.logger.silence do
       ids = puzzle_ids(date.hash, pool)
       ids.map do |id|
-        Puzzle.find(id).puzzle_data
+        Puzzle.find(id).bt_puzzle_data
       end
     end
   end

@@ -1,7 +1,6 @@
 # For generating daily speedrun levels
 
 module CountdownLevelCreator
-  LEVELS_DIR = Rails.root.join("data/countdowns")
   OUTFILE_NAME = -> (date) { "countdown-#{date.strftime}.json" }
 
   N_PUZZLES = 90  # number of puzzles per countdown level
@@ -44,7 +43,7 @@ module CountdownLevelCreator
 
   def export_puzzles_for_date(date)
     puzzles = generate_puzzles(date)
-    open(LEVELS_DIR.join(OUTFILE_NAME.call(date)), "w") do |f|
+    open(CountdownLevel::LEVELS_DIR.join(OUTFILE_NAME.call(date)), "w") do |f|
       f.write JSON.pretty_generate(puzzles).to_s
     end
   end
@@ -77,7 +76,7 @@ module CountdownLevelCreator
     ActiveRecord::Base.logger.silence do
       ids = puzzle_ids(date.hash, pool)
       ids.map do |id|
-        Puzzle.find(id).puzzle_data
+        Puzzle.find(id).bt_puzzle_data
       end
     end
   end
