@@ -3,6 +3,7 @@ import SimpleColorPicker from 'simple-color-picker'
 
 import { dispatch } from '@blitz/events'
 import Chessboard from '../chessboard/chessboard'
+import ChessgroundBoard from '../chessground_board'
 import BoardStyles from './board_styles'
 
 import '../../../../vendor/assets/stylesheets/simple-color-picker.css'
@@ -40,11 +41,15 @@ export default class CustomizeBoard extends Backbone.View<Backbone.Model> {
   }
 
   initialize() {
-    new Chessboard()
-    dispatch(`fen:set`, `1Q6/8/8/8/8/2K5/k7/8 b - - 13 62`)
-    dispatch(`move:highlight`, { from: `a3`, to: `a2` })
+    new ChessgroundBoard({ fen: '1Q6/8/8/8/8/k1K5/8/8 b - - 13 62', viewOnly: true })
     setTimeout(() => {
-      document.getElementById(`b8`).setAttribute('data-selected', '1')
+      dispatch('move:make', 'Ka2', { opponent: true })
+      setTimeout(() => {
+        const highlightEl = document.createElement('square')
+        highlightEl.classList.add('selected')
+        highlightEl.style.transform = 'translate(60px, 0)'
+        document.querySelector('cg-board').appendChild(highlightEl)
+      }, 200)
     }, 500)
     const squares = ['light', 'dark', 'selected', 'from', 'to']
     const initialColors = {}

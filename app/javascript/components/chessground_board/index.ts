@@ -1,7 +1,7 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js'
 import { Chessground } from 'chessground'
 import { Api } from 'chessground/api'
-import { Color, Dests, FEN, Key, Piece } from 'chessground/types'
+import { Color, Dests, FEN, Key } from 'chessground/types'
 
 import PiecePromoModal from '../piece_promo_modal'
 import { dispatch, subscribe } from '@blitz/events'
@@ -32,6 +32,7 @@ interface BoardOptions {
   fen?: FEN;
   intentOnly?: boolean;
   orientation?: Color;
+  viewOnly?: boolean;
 }
 
 export default class ChessgroundBoard {
@@ -60,6 +61,7 @@ export default class ChessgroundBoard {
       },
       fen: options.fen || '0/0/0/0/0/0/0/0',
       orientation,
+      viewOnly: options.viewOnly || false,
       movable: {
         free: false,
         intentOnly: options.intentOnly || true,

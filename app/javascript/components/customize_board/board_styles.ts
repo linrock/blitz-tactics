@@ -30,4 +30,3 @@ export default class BoardStyles extends Backbone.Model {
     return css
   }
 }
-
