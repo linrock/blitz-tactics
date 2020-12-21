@@ -1,0 +1,11 @@
+- content_for(:title) { "Endgame studies" }
+
+.positions-index.container
+  h2 Endgame studies
+  .positions
+    .description
+      | Here are some endgame studies to help improve your endgame!
+
+    .examples
+      - open(Rails.root.join("db/endgame-fens.txt"), "r").read.split(/\n/).each_with_index do |fen, i|
+        = linked_miniboard "Study #{i+1}", fen, "win"

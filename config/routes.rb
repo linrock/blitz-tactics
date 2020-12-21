@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   get '/position'                => 'pages#position'
   get '/pawn-endgames'           => 'pages#pawn_endgames'
   get '/rook-endgames'           => 'pages#rook_endgames'
+  get '/endgame-studies'         => 'pages#endgame_studies'
   get '/scoreboard'              => 'pages#scoreboard'
   get '/about'                   => 'pages#about'
 
