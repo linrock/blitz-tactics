@@ -15,10 +15,10 @@
     p.description
       | Checkmating with minor pieces isn't as straightforward
         as using rooks and queens. Practice them here
-
-    = linked_miniboard_route "/checkmates/two-bishops"
-    = linked_miniboard_route "/checkmates/bishop-and-knight"
-    = linked_miniboard_route "/checkmates/two-knights"
+    .examples
+      = linked_miniboard_route "/checkmates/two-bishops"
+      = linked_miniboard_route "/checkmates/bishop-and-knight"
+      = linked_miniboard_route "/checkmates/two-knights"
 
   h2 Pawn endgames
   .positions
@@ -36,11 +36,6 @@
       = linked_miniboard "The square rule", "8/3p4/8/2P5/P3k3/8/8/7K w - -", "win", 15
       = linked_miniboard "Unusual king move", "6K1/8/6k1/8/8/p7/P7/8 w - -", "draw", 15
       = linked_miniboard "Key squares", "4k3/8/8/8/8/1P6/8/2K5 w - -", "win", 15
-
-      = linked_miniboard "Anti-reti", "8/8/8/8/8/P4p2/k6K/8 w - -", "win", 15
-      = linked_miniboard "Triangulation 2", "2k5/8/p1P5/P2K4/8/8/8/8 w - -", "win", 15
-      = linked_miniboard "Bodycheck 2", "2K5/k7/7p/8/8/8/6P1/8 w - -", "win", 15
-
     a.button.more-button(href="/pawn-endgames") More pawn endgames &raquo;
 
   h2 Rook endgames
@@ -58,7 +53,6 @@
       = linked_miniboard "Reach Lucena", "r7/2KP1k2/8/8/8/8/8/4R3 w - -", "win"
       = linked_miniboard "Long side blunder", "4k3/R7/5K2/5P2/8/8/8/5r2 w - -", "win"
       = linked_miniboard "Isolated pawns", "8/8/R3Pk1K/7P/8/8/8/4r3 b - -", "draw"
-
     a.button.more-button(href="/rook-endgames") More rook endgames &raquo;
 
   h2 Endgame studies
