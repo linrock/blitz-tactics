@@ -46,13 +46,7 @@ Rails.application.routes.draw do
   get '/rated/attempts/:id'      => 'game_modes/rated#puzzle_attempt'
   post '/rated/attempts'         => 'game_modes/rated#attempt'
 
-  # pages
-  get '/positions'               => 'pages#positions'
-  get '/positions/:id'           => 'pages#position'
-  get '/position'                => 'pages#position'
-  get '/pawn-endgames'           => 'pages#pawn_endgames'
-  get '/rook-endgames'           => 'pages#rook_endgames'
-  get '/endgame-studies'         => 'pages#endgame_studies'
+  # more pages
   get '/scoreboard'              => 'pages#scoreboard'
   get '/about'                   => 'pages#about'
 
@@ -66,6 +60,15 @@ Rails.application.routes.draw do
   # puzzle reports
   get '/puzzle_reports'          => 'puzzle_reports#index'
   post '/puzzle_reports'         => 'puzzle_reports#create'
+
+  # position pages
+  get '/positions'               => 'pages#positions'
+  get '/positions/:id'           => 'pages#position'
+  get '/position'                => 'pages#position'
+  get '/pawn-endgames'           => 'pages#pawn_endgames'
+  get '/rook-endgames'           => 'pages#rook_endgames'
+  get '/endgame-studies'         => 'pages#endgame_studies'
+  get '/mate-in-two'             => 'pages#mate_in_two'
 
   # pre-defined position trainer routes
   static_routes = StaticRoutes.new
