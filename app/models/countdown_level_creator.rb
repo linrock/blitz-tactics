@@ -1,9 +1,10 @@
 # For generating daily speedrun levels
 
 module CountdownLevelCreator
-  LEVELS_DIR = Rails.root.join("data/levels")
+  LEVELS_DIR = Rails.root.join("data/countdowns")
+  OUTFILE_NAME = -> (date) { "countdown-#{date.strftime}.json" }
 
-  N_PUZZLES = 90
+  N_PUZZLES = 90  # number of puzzles per countdown level
 
   POOL_1 = [
     Puzzle.rating_range(1000, 1200).white_to_move.vote_gt(100),
@@ -33,21 +34,25 @@ module CountdownLevelCreator
 
   def count_pools
     ActiveRecord::Base.logger.silence do
-      w_pool = POOL_1.map { |pool| pool.count }
+      w_pool = POOL_1.map(&:count)
       puts "pool 1: #{w_pool} = #{w_pool.sum}"
-      b_pool = POOL_2.map { |pool| pool.count }
+      b_pool = POOL_2.map(&:count)
       puts "pool 2: #{b_pool} = #{b_pool.sum}"
       puts "total #: #{w_pool.sum + b_pool.sum}"
+    end
+  end
+
+  def export_puzzles_for_date(date)
+    puzzles = generate_puzzles(date)
+    open(LEVELS_DIR.join(OUTFILE_NAME.call(date)), "w") do |f|
+      f.write JSON.pretty_generate(puzzles).to_s
     end
   end
 
   def export_puzzles_for_date_range(from_date, to_date)
     date_range = Date.strptime(from_date)..Date.strptime(to_date)
     date_range.each do |date|
-      puzzles = generate_puzzles(date)
-      open("#{LEVELS_DIR}/countdowns/countdown-#{date.strftime}.json", "w") do |f|
-        f.write JSON.pretty_generate(puzzles).to_s
-      end
+      export_puzzles_for_date(date)
     end
   end
 
@@ -72,7 +77,7 @@ module CountdownLevelCreator
     ActiveRecord::Base.logger.silence do
       ids = puzzle_ids(date.hash, pool)
       ids.map do |id|
-        LichessPuzzle.find(id).simplified_data
+        Puzzle.find(id).puzzle_data
       end
     end
   end
