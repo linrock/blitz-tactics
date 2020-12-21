@@ -10,6 +10,8 @@
 #      "lines": { [uci_move: "lines"] } }
 
 class Puzzle < ActiveRecord::Base
+  include PuzzleQuery
+
   has_many :puzzle_reports
 
   # Each puzzle is uniquely hashed based on their puzzle data
