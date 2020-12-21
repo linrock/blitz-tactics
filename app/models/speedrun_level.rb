@@ -1,18 +1,10 @@
 class SpeedrunLevel < ActiveRecord::Base
   LEVELS_DIR = Rails.root.join("data/speedruns")
 
-  NAMES = %w( quick endurance marathon )
-
   has_many :speedrun_puzzles, dependent: :destroy
   has_many :completed_speedruns, dependent: :destroy
 
-  validates :name,
-    presence: true,
-    uniqueness: true
-
-  NAMES.each do |name|
-    scope name, -> { find_or_create_by(name: name) }
-  end
+  validates :name, presence: true, uniqueness: true
 
   def self.today
     Date.today
@@ -36,10 +28,6 @@ class SpeedrunLevel < ActiveRecord::Base
 
   def self.two_days_ago_level
     find_by(name: 2.days.ago.to_date.to_s)
-  end
-
-  def self.first_level
-    find_by(name: 'quick')
   end
 
   def puzzles

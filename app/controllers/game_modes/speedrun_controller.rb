@@ -1,5 +1,3 @@
-# speedrun mode puzzles
-
 class GameModes::SpeedrunController < ApplicationController
 
   def index
@@ -8,7 +6,7 @@ class GameModes::SpeedrunController < ApplicationController
 
   # json endpoint for fetching puzzles on initial pageload
   def puzzles_json
-    speedrun_level = SpeedrunLevel.todays_level || SpeedrunLevel.first_level
+    speedrun_level = SpeedrunLevel.todays_level
     render json: {
       level_name: speedrun_level.name,
       puzzles: speedrun_level.puzzles

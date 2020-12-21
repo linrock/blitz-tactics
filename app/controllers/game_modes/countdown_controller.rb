@@ -1,5 +1,3 @@
-# countdown mode puzzles
-
 class GameModes::CountdownController < ApplicationController
 
   def index
