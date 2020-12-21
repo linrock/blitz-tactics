@@ -1,5 +1,6 @@
 <template lang="pug">
-.instructions.invisible
+.instructions(:class=`{ invisible: !showInstructions && !showGameOver}`)
+  | {{ showInstructions ? instructionsText : showGameOver ? gameOverText : '' }}
 .chessground-board
   .piece-promotion-modal-container
   .chessground
@@ -15,9 +16,7 @@ import { dispatch, subscribe } from '@blitz/events'
 import { FEN } from '@blitz/types'
 import { uciToMove, getConfig } from '@blitz/utils'
 import StockfishEngine from '@blitz/workers/stockfish_engine'
-
 import ChessgroundBoard from '../chessground_board'
-import Instructions from './views/instructions'
 
 import './style.sass'
 
@@ -32,43 +31,78 @@ let engine: StockfishEngine
 
 export default {
   data() {
-    let fen = getConfig('fen') || START_FEN
+    const fen = getConfig('fen') || START_FEN
+    const goal = getConfig('goal') as 'win' | 'draw'
     return {
       initialFen: fen.split(' ').length === 4 ? `${fen} 0 1` : fen,
+      showInstructions: false,
+      showGameOver: false,
+      gameResult: null,
+      goal,
     }
   },
 
   computed: {
     computerColor(): 'w' | 'b' {
       return this.initialFen.indexOf('w') > 0 ? 'b' : 'w'
+    },
+    toMove(): 'White' | 'Black' {
+      return this.initialFen.indexOf('w') > 0 ? 'White' : 'Black'
+    },
+    instructionsText(): string {
+      if (this.goal === 'win') {
+        return this.toMove + ' to play and win'
+      } else if (this.goal === 'draw') {
+        return this.toMove + ' to play and draw'
+      }
+      return this.toMove + ' to move'
+    },
+    gameOverText(): string | undefined {
+      if (!this.result) {
+        return
+      }
+      let text: string
+      if (this.goal === 'win') {
+        if ((this.toMove === 'White' && this.result === '1-0') ||
+            (this.toMove === 'Black' && this.result === '0-1')) {
+          text = 'You win!!'
+        } else {
+          text = 'You failed :('
+        }
+      } else if (this.goal === 'draw' && this.result === '1/2-1/2') {
+        text = 'Success!!'
+      } else {
+        text = 'Game over'
+      }
+      return text
     }
   },
 
   methods: {
     isComputersTurn(fen: FEN): boolean {
-      return fen.indexOf(` ${this.computerColor} `) > 0
+      return fen.includes(` ${this.computerColor} `)
     },
     notifyIfGameOver(fen: FEN): void {
-      const cjs = new Chess
-      cjs.load(fen)
+      const cjs = new Chess(fen)
       if (!cjs.game_over()) {
         return
       }
       let result: GameResult
       if (cjs.in_draw()) {
-        result = '1/2-1/2'
+        this.result = '1/2-1/2'
       } else if (cjs.turn() === 'b') {
-        result = '1-0'
+        this.result = '1-0'
       } else {
-        result = '0-1'
+        this.result = '0-1'
       }
       chessgroundBoard.freeze()
-      setTimeout(() => {
-        dispatch('game:over', result)
-      }, 500)
+      setTimeout(() => this.showGameOver = true, 300)
     },
     resetPosition() {
       dispatch('position:reset')
+    },
+    resetInstructions() {
+
     }
   },
 
@@ -84,6 +118,9 @@ export default {
       'position:reset': () => {
         chessgroundBoard.unfreeze()
         dispatch('fen:set', this.initialFen)
+        this.result = null
+        this.showGameOver = false
+        this.showInstructions = true
       },
       'fen:updated': (fen: FEN) => {
         const analysisOptions = { depth, multipv: 1 }
@@ -102,10 +139,14 @@ export default {
         })
         this.notifyIfGameOver(fen)
       },
-      'move:try': (move: Move) => dispatch('move:make', move),
+      'move:try': (move: Move) => {
+        this.showInstructions = false
+        dispatch('move:make', move)
+      },
+      'game:over': result => this.gameOverMan(result),
     })
     // this.setDebugHelpers()
-    new Instructions({ fen: this.initialFen })
+    this.showInstructions = true
   }
 }
 </script>
