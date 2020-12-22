@@ -4,24 +4,23 @@ module SpeedrunLevelCreator
   OUTFILE_NAME = -> (date) { "speedrun-#{date.strftime}.json" }
 
   N_PUZZLES = 30  # number of puzzles per speedrun level
-  V = 70          # min votes to be considered
-  A = 100         # min attempts to be considered
+  V = 40          # min votes to be considered
 
   POOL_1 = [
-    Puzzle.rating_range(1000, 1310).white_to_move.vote_gt(V).attempts_gt(A),
-    Puzzle.rating_range(1311, 1450).black_to_move.vote_gt(V).attempts_gt(A),
-    Puzzle.rating_range(1451, 1550).white_to_move.vote_gt(V).attempts_gt(A),
-    Puzzle.rating_range(1551, 1650).black_to_move.vote_gt(V).attempts_gt(A),
-    Puzzle.rating_range(1651, 1750).white_to_move.vote_gt(V).attempts_gt(A),
-  ].map {|pool| pool.new_not_deleted.no_retry }
+    Puzzle.rating_range(1000, 1200).black_to_move,
+    Puzzle.rating_range(1201, 1400).white_to_move,
+    Puzzle.rating_range(1401, 1500).black_to_move,
+    Puzzle.rating_range(1501, 1550).white_to_move,
+    Puzzle.rating_range(1551, 1650).black_to_move,
+  ].map {|pool| pool.new_not_deleted.no_retry.vote_gt(V) }
 
   POOL_2 = [
-    Puzzle.rating_range(1000, 1310).black_to_move.vote_gt(V).attempts_gt(A),
-    Puzzle.rating_range(1311, 1450).white_to_move.vote_gt(V).attempts_gt(A),
-    Puzzle.rating_range(1451, 1550).black_to_move.vote_gt(V).attempts_gt(A),
-    Puzzle.rating_range(1551, 1650).white_to_move.vote_gt(V).attempts_gt(A),
-    Puzzle.rating_range(1651, 1750).black_to_move.vote_gt(V).attempts_gt(A),
-  ].map {|pool| pool.new_not_deleted.no_retry }
+    Puzzle.rating_range(1000, 1200).white_to_move,
+    Puzzle.rating_range(1201, 1400).black_to_move,
+    Puzzle.rating_range(1401, 1500).white_to_move,
+    Puzzle.rating_range(1501, 1550).black_to_move,
+    Puzzle.rating_range(1551, 1650).white_to_move,
+  ].map {|pool| pool.new_not_deleted.no_retry.vote_gt(V) }
 
   def count_pools
     ActiveRecord::Base.logger.silence do

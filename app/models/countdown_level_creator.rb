@@ -3,32 +3,32 @@
 module CountdownLevelCreator
   OUTFILE_NAME = -> (date) { "countdown-#{date.strftime}.json" }
 
-  N_PUZZLES = 90  # number of puzzles per countdown level
+  N_PUZZLES = 100  # number of puzzles per countdown level
 
   POOL_1 = [
-    Puzzle.rating_range(1000, 1200).white_to_move.vote_gt(100),
-    Puzzle.rating_range(1201, 1400).black_to_move.vote_gt(150),
-    Puzzle.rating_range(1401, 1500).white_to_move.vote_gt(150),
-    Puzzle.rating_range(1501, 1600).black_to_move.vote_gt(200),
-    Puzzle.rating_range(1601, 1700).white_to_move.vote_gt(200),
-    Puzzle.rating_range(1701, 1800).black_to_move.vote_gt(200),
-    Puzzle.rating_range(1801, 1900).white_to_move.vote_gt(200),
-    Puzzle.rating_range(1901, 2000).black_to_move.vote_gt(200),
-    Puzzle.rating_range(2001, 2200).white_to_move.vote_gt(200),
-    Puzzle.rating_gte(2201).black_to_move.vote_gt(200),
+    Puzzle.rating_range(1000, 1300).white_to_move.vote_gt(80),
+    Puzzle.rating_range(1301, 1400).black_to_move.vote_gt(80),
+    Puzzle.rating_range(1401, 1500).white_to_move.vote_gt(80),
+    Puzzle.rating_range(1501, 1600).black_to_move.vote_gt(80),
+    Puzzle.rating_range(1601, 1700).white_to_move.vote_gt(80),
+    Puzzle.rating_range(1701, 1800).black_to_move.vote_gt(80),
+    Puzzle.rating_range(1801, 1900).white_to_move.vote_gt(80),
+    Puzzle.rating_range(1901, 2000).black_to_move.vote_gt(80),
+    Puzzle.rating_range(2001, 2200).white_to_move.vote_gt(80),
+    Puzzle.rating_gte(2201).black_to_move.vote_gt(80),
   ].map {|pool| pool.new_not_deleted.no_retry }
 
   POOL_2 = [
-    Puzzle.rating_range(1000, 1200).black_to_move.vote_gt(100),
-    Puzzle.rating_range(1201, 1400).white_to_move.vote_gt(150),
-    Puzzle.rating_range(1401, 1500).black_to_move.vote_gt(150),
-    Puzzle.rating_range(1501, 1600).white_to_move.vote_gt(200),
-    Puzzle.rating_range(1601, 1700).black_to_move.vote_gt(200),
-    Puzzle.rating_range(1701, 1800).white_to_move.vote_gt(200),
-    Puzzle.rating_range(1801, 1900).black_to_move.vote_gt(200),
-    Puzzle.rating_range(1901, 2000).white_to_move.vote_gt(200),
-    Puzzle.rating_range(2001, 2200).black_to_move.vote_gt(200),
-    Puzzle.rating_gte(2201).white_to_move.vote_gt(200),
+    Puzzle.rating_range(1000, 1300).black_to_move.vote_gt(80),
+    Puzzle.rating_range(1301, 1400).white_to_move.vote_gt(80),
+    Puzzle.rating_range(1401, 1500).black_to_move.vote_gt(80),
+    Puzzle.rating_range(1501, 1600).white_to_move.vote_gt(80),
+    Puzzle.rating_range(1601, 1700).black_to_move.vote_gt(80),
+    Puzzle.rating_range(1701, 1800).white_to_move.vote_gt(80),
+    Puzzle.rating_range(1801, 1900).black_to_move.vote_gt(80),
+    Puzzle.rating_range(1901, 2000).white_to_move.vote_gt(80),
+    Puzzle.rating_range(2001, 2200).black_to_move.vote_gt(80),
+    Puzzle.rating_gte(2201).white_to_move.vote_gt(80),
   ].map {|pool| pool.new_not_deleted.no_retry }
 
   def count_pools
