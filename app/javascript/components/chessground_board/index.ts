@@ -1,6 +1,7 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js'
 import { Chessground } from 'chessground'
 import { Api } from 'chessground/api'
+import { Config } from 'chessground/config'
 import { Color, Dests, FEN, Key } from 'chessground/types'
 
 import PiecePromoModal from '../piece_promo_modal'
@@ -45,13 +46,7 @@ export default class ChessgroundBoard {
     if (options.fen && !this.cjs.load(options.fen)) {
       console.warn(`failed to load fen: ${options.fen}`)
     }
-    let orientation;
-    if (options.orientation) {
-      orientation = options.orientation
-    } else if (options.fen) {
-      orientation = options.fen?.includes(' w ') ? 'black' : 'white' as Color
-    }
-    this.chessground = Chessground(document.querySelector(selector), {
+    const cgOptions: Config = {
       animation: {
         enabled: false,
         duration: 0,
@@ -60,7 +55,6 @@ export default class ChessgroundBoard {
         lastMove: true,
       },
       fen: options.fen || '0/0/0/0/0/0/0/0',
-      orientation,
       viewOnly: options.viewOnly || false,
       movable: {
         free: false,
@@ -98,8 +92,14 @@ export default class ChessgroundBoard {
             dispatch('move:try', moveObj)
           }
         }
-      }
-    });
+      },
+    }
+    if (options.orientation) {
+      cgOptions.orientation = options.orientation
+    } else if (options.fen) {
+      cgOptions.orientation = options.fen?.includes(' w ') ? 'black' : 'white' as Color
+    }
+    this.chessground = Chessground(document.querySelector(selector), cgOptions);
 
     new PiecePromoModal()
 
