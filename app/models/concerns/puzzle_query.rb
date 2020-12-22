@@ -11,27 +11,27 @@ module PuzzleQuery
     end
 
     scope :rating_gte, -> (min_rating) do
-      where("(metadata -> 'rating')::int >= ?", min_rating)
+      where("(metadata ->> 'rating')::int >= ?", min_rating)
     end
 
     scope :rating_lte, -> (min_rating) do
-      where("(metadata -> 'rating')::int <= ?", min_rating)
+      where("(metadata ->> 'rating')::int <= ?", min_rating)
     end
 
     scope :attempts_gt, -> (n_attempts) do
-      where("(metadata -> 'attempts')::int > ?", n_attempts)
+      where("(metadata ->> 'attempts')::int > ?", n_attempts)
     end
 
     scope :vote_gt, -> (votes) do
-      where("(metadata -> 'vote')::int > ?", votes)
+      where("(metadata ->> 'vote')::int > ?", votes)
     end
 
     scope :white_to_move, -> do
-      where("(metadata ->> 'color')::text = 'white'")
+      where("(metadata ->> 'color') = 'white'")
     end
 
     scope :black_to_move, -> do
-      where("(metadata ->> 'color')::text = 'black'")
+      where("(metadata ->> 'color') = 'black'")
     end
 
     scope :ascending_rating, -> do
