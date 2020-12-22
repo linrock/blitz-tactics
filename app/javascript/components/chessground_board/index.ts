@@ -171,6 +171,14 @@ export default class ChessgroundBoard {
         })
         dispatch('fen:updated', this.cjs.fen())
       },
+
+      'shape:draw': (square: Square) => {
+        const brushes = ['green', 'red', 'blue', 'yellow']
+        this.chessground.setShapes([{
+          orig: square,
+          brush: brushes[~~(Math.random() * brushes.length)]
+        }])
+      },
     })
   }
 

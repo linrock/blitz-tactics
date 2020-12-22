@@ -115,6 +115,7 @@ export default {
         this.numHints -= 1
         const halfHint = Math.random() < 0.5 ? hint.slice(0, 2) : hint.slice(2, 4)
         this.moveHint = halfHint
+        dispatch('shape:draw', halfHint)
       },
       'puzzles:status': ({ i }) => {
         // triggered when a puzzle gets loaded onto the board
