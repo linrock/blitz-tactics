@@ -148,7 +148,9 @@ export default class ChessgroundBoard {
         // console.log(`${options.opponent ? 'opponent' : 'player'} just moved`);
         const moveObj = this.cjs.move(move)
         if (!moveObj) {
-          throw new Error(`No moveObj after move:make. FEN: ${this.cjs.fen()}, move: ${move}`)
+          throw new Error(
+            `No moveObj after move:make. FEN: ${this.cjs.fen()}, move: ${JSON.stringify(move)}`
+          )
         }
         // console.log(`last move: ${moveObj.from}, ${moveObj.to}`)
         let lastMove = []

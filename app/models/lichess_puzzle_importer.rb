@@ -1,6 +1,7 @@
 # Imports Lichess puzzle data as `Puzzle`s
 
 module LichessPuzzleImporter
+  PUZZLE_FILES = Rails.root.join("data/lichess/[0-9]*.json")
   # The total number of Lichess puzzles as of Oct 2020
   NUM_LICHESS_PUZZLES = 125262
 
@@ -28,7 +29,7 @@ module LichessPuzzleImporter
   # Populate puzzles database from Lichess puzzles and try to map them
   # 1-to-1 with lichess puzzle ids
   def self.populate_from_lichess_puzzle_json_files(
-    json_puzzle_files = Dir.glob(Rails.root.join("data/lichess/[0-9]*.json"))
+    json_puzzle_files = Dir.glob(PUZZLE_FILES)
   )
     if Puzzle.count > 0
       "Can only import lichess puzzle files from an empty database"
