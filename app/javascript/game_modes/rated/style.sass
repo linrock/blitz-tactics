@@ -1,16 +1,10 @@
 @import "../../../assets/stylesheets/_colors"
 @import "../../../assets/stylesheets/_variables"
+@import "../base"
 
 .rated-mode
   $board-size: 496px
   $above-board-height: 80px
-
-  .container
-    display: flex
-
-  .vue-app-mount
-    display: flex
-    width: 100%
 
   .dark-button
     font-size: 14px
@@ -27,19 +21,6 @@
     .instructions
       top: 25px
       font-size: 22px
-
-  .board-area, .chessboard, .chessground-board
-    width: $board-size
-    height: $board-size
-    margin: 0 auto
-
-  .board-modal-container
-    width: 100%
-    height: 100%
-    background: rgba(0,0,0,0.6)
-    position: absolute
-    left: 0
-    top: 0
 
   .rated-sidebar
     margin-top: $above-board-height

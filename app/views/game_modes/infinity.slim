@@ -1,14 +1,12 @@
 - content_for(:title) { "Infinity mode" }
 
-section.infinity-mode
+section.game-mode.infinity-mode
   .container
-    = render partial: "puzzle_player/above_board"
-    .move-status
-
-    .board-container
+    .board-area-container
+      = render partial: "puzzle_player/above_board"
+      .move-status
       .board-area
         .chessground-board
           .piece-promotion-modal-container
           .chessground
-
-      .vue-app-mount
+    .vue-app-mount

@@ -1,8 +1,7 @@
 @import "../../../assets/stylesheets/_variables"
+@import "../base"
 
 .three-mode
-  $board-size: 496px
-
   .rewarded
     color: #34FF00
 
@@ -11,32 +10,6 @@
 
   .complete
     color: #ffff00
-
-  .container
-    display: flex
-
-  .vue-app-mount
-    display: flex
-
-  .above-board
-    width: $board-size
-    margin: 0
-    transition: opacity 0.5s ease
-
-  .board-area, .chessboard, .chessground-board
-    width: $board-size
-    height: $board-size
-    margin: 0 auto
-
-  // TODO DRY
-  .board-modal-container
-    width: 100%
-    height: 100%
-    background: rgba(0,0,0,0.6)
-    position: absolute
-    left: 0
-    top: 0
-    z-index: 2
 
   .three-sidebar
     margin-top: $above-board-height

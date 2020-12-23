@@ -1,3 +1,5 @@
+// TODO these are currently unused
+
 export enum PuzzleEvent {
   Loaded = 'puzzle:loaded',
   Solved = 'puzzle:solved',

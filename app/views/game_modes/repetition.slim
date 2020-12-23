@@ -1,6 +1,6 @@
 - content_for(:title) { "#{@level.display_name} | Repetition mode" }
 
-section.repetition-mode(data-level="#{@level.path}")
+section.game-mode.repetition-mode(data-level="#{@level.path}")
   = render partial: "puzzle_player/progress_bar"
   .main
     .board-area-container

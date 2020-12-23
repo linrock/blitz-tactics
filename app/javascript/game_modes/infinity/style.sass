@@ -1,32 +1,16 @@
 @import "../../../assets/stylesheets/_variables"
+@import "../base"
 
 .infinity-mode 
-  $board-size: 496px
-
-  .above-board 
-    width: $board-size
-    margin: 0
-
-  .board-container 
-    display: flex
-
-  .vue-app-mount
-    width: 100%
-    display: flex
-
   .dark-button
     padding: 8px 12px
-
-  .board-area, .chessboard, .chessground-board
-    width: $board-size
-    height: $board-size
-    margin: 0 auto
 
   .under-board 
     text-align: left
     opacity: 0.6
 
   .infinity-sidebar 
+    margin-top: $above-board-height
     margin-left: 30px
     font-size: 18px
     display: flex
