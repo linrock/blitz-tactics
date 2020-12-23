@@ -12,9 +12,6 @@
   .right
     h2 Puzzle #{@puzzle.puzzle_id}
     div
-      - if @puzzle.puzzle_id.to_i > 61052
-        a.ext-link(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
-          | View puzzle on Lichess
       a.ext-link(href="https://lichess.org/analysis/standard/#{@puzzle.puzzle_data["puzzle_fen"].gsub(/\s+/, '_')}" target="_blank")
         | Analyze on Lichess
 
