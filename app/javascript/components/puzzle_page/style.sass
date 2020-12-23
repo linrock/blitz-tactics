@@ -1,18 +1,13 @@
 @import "../../../assets/stylesheets/_variables"
 
 body[data-controller=puzzles][data-action=show]
-  $square-size: 50px
-  $small-board-size: 8 * $square-size
+  $board-size: 496px
 
   margin: 0 auto 50px
 
   .chessground-board
-    width: $small-board-size
-    height: $small-board-size
-
-  .cg-wrap
-    width: 100%
-    height: 100%
+    width: $board-size
+    height: $board-size
 
   .container
     display: flex
@@ -24,7 +19,7 @@ body[data-controller=puzzles][data-action=show]
     margin-top: 0
 
   .left
-    width: 404px
+    width: $board-size
 
   .right 
     margin: 103px 0 0 37px
