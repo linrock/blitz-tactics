@@ -12,8 +12,8 @@ class PuzzlesController < ApplicationController
   end
 
   def show
-    @puzzle = Puzzle.find_by_puzzle_id(params[:puzzle_id])
-    if current_user
+    @puzzle = get_puzzle
+    if current_user && @puzzle.is_reportable?
       @has_reported_puzzle = @puzzle.puzzle_reports.exists?(user_id: current_user.id)
     end
     unless @puzzle
@@ -26,5 +26,15 @@ class PuzzlesController < ApplicationController
   end
 
   def update
+  end
+
+  private
+
+  def get_puzzle
+    if params[:puzzle_id].to_s == params[:puzzle_id].to_i.to_s
+      @puzzle = Puzzle.find_by_puzzle_id(params[:puzzle_id])
+    else
+      @puzzle = LichessV2Puzzle.find_by(puzzle_id: params[:puzzle_id])
+    end
   end
 end

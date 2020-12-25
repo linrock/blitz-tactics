@@ -13,6 +13,9 @@
   .right
     h2 Puzzle #{@puzzle.puzzle_id}
     div
+      - if @puzzle.is_a? LichessV2Puzzle
+        a.ext-link(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
+          | View puzzle on Lichess
       a.ext-link(href="https://lichess.org/analysis/standard/#{@puzzle.puzzle_data["puzzle_fen"].gsub(/\s+/, '_')}" target="_blank")
         | Analyze on Lichess
 
@@ -26,7 +29,7 @@
             td= field_name
             td= field_value.to_s
 
-    - if current_user
+    - if current_user && @puzzle.is_reportable?
       - if @has_reported_puzzle
         .puzzle-report-status Puzzle reported!
       - else

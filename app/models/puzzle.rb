@@ -46,6 +46,10 @@ class Puzzle < ActiveRecord::Base
     puzzle_data["initial_move_san"]
   end
 
+  def is_reportable?
+    true
+  end
+
   # Any string that can be used to uniquely identify a puzzle
   def self.find_by_id(puzzle_id)
     Puzzle.find_by(puzzle_id: puzzle_id)
