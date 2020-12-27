@@ -1,6 +1,6 @@
 import Backbone from 'backbone'
 import Mousetrap from 'mousetrap'
-import { Chess, ShortMove } from 'chess.js'
+import { Chess, ShortMove, Square } from 'chess.js'
 
 import { dispatch, subscribe } from '@blitz/events'
 import { FEN } from '@blitz/types'
@@ -10,6 +10,7 @@ import './style.sass'
 /** When you make a pawn move that requires pawn promotion, this is what shows up */
 export default class PiecePromotionModal extends Backbone.View {
   private fen: FEN
+  private lastMove: [Square, Square]
   private moveIntent: ShortMove
   private readonly cjs = new Chess
 
@@ -41,7 +42,7 @@ export default class PiecePromotionModal extends Backbone.View {
   events(): Backbone.EventsHash {
     return {
       'click .piece' : '_selectPiece',
-      'click .background' : 'hide'
+      'click .background' : 'cancelMove'
     }
   }
 
@@ -50,6 +51,7 @@ export default class PiecePromotionModal extends Backbone.View {
       'move:promotion': data => {
         this.fen = data.fen
         this.moveIntent = data.move as ShortMove
+        this.lastMove = data.lastMove
         this.show()
       }
     })
@@ -59,13 +61,18 @@ export default class PiecePromotionModal extends Backbone.View {
     this.el.innerHTML = this.template(this.fen.includes(' w ') ? 'w' : 'b')
     this.el.style.display = 'block'
     this.el.style.zIndex = '1000'
-    Mousetrap.bind('esc', () => this.hide())
+    Mousetrap.bind('esc', () => this.cancelMove())
   }
 
   private hide() {
     this.el.style.display = 'none'
     this.el.style.zIndex = '0'
     Mousetrap.unbind('esc')
+  }
+
+  private cancelMove() {
+    this.hide()
+    dispatch('fen:set', this.fen, this.lastMove)
   }
 
   private _selectPiece(e, childElement: HTMLElement) {

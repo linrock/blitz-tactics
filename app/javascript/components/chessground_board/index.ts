@@ -82,7 +82,8 @@ export default class ChessgroundBoard {
             if (validMoves.find(m => m.from === from && m.to === to)) {
               dispatch(`move:promotion`, {
                 fen: this.cjs.fen(),
-                move: { from, to }
+                move: { from, to },
+                lastMove: this.chessground.state.lastMove
               })
             }
           } else {
@@ -108,13 +109,13 @@ export default class ChessgroundBoard {
         this.chessground.set({ orientation: shouldBeFlipped ? 'black' : 'white' })
       },
 
-      'fen:set': (fen: FEN) => {
+      'fen:set': (fen: FEN, lastMove?: [Square, Square]) => {
         console.log(`chessground_board - fen:set - ${fen}`)
         this.cjs.load(fen)
         const turnColor = this.cjs.turn() === 'w' ? 'white' : 'black'
         this.chessground.set({
           fen,
-          lastMove: [],
+          lastMove: lastMove || [],
           movable: {
             color: turnColor,
             dests: getDests(this.cjs),
