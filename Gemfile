@@ -16,6 +16,9 @@ gem 'devise', '~> 4.3'
 gem 'slim'
 gem 'glicko2'
 
+gem 'execjs'
+gem 'mini_racer', platforms: :ruby
+
 # assets
 gem 'sprockets', '~> 4.0'
 gem 'sass-rails', '>= 6'

@@ -137,6 +137,7 @@ GEM
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     kostya-sigar (2.0.8)
+    libv8 (8.4.255.0)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -154,6 +155,8 @@ GEM
     mime-types-data (3.2021.0225)
     mini_mime (1.0.3)
     mini_portile2 (2.5.0)
+    mini_racer (0.3.1)
+      libv8 (~> 8.4.255)
     minitest (5.14.4)
     msgpack (1.4.2)
     netrc (0.11.0)
@@ -306,10 +309,12 @@ DEPENDENCIES
   dalli
   devise (~> 4.3)
   dotenv-rails
+  execjs
   eye
   glicko2
   listen
   mailgun-ruby
+  mini_racer
   pg (~> 1.0)
   pry
   puma (~> 5.0)
