@@ -488,6 +488,44 @@ ALTER SEQUENCE public.levels_id_seq OWNED BY public.levels.id;
 
 
 --
+-- Name: lichess_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.lichess_puzzles (
+    id bigint NOT NULL,
+    puzzle_id character varying NOT NULL,
+    initial_fen character varying NOT NULL,
+    moves_uci text[] NOT NULL,
+    rating integer NOT NULL,
+    rating_deviation integer NOT NULL,
+    popularity integer NOT NULL,
+    num_plays integer NOT NULL,
+    game_url character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: lichess_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.lichess_puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: lichess_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.lichess_puzzles_id_seq OWNED BY public.lichess_puzzles.id;
+
+
+--
 -- Name: positions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1067,6 +1105,13 @@ ALTER TABLE ONLY public.levels ALTER COLUMN id SET DEFAULT nextval('public.level
 
 
 --
+-- Name: lichess_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lichess_puzzles ALTER COLUMN id SET DEFAULT nextval('public.lichess_puzzles_id_seq'::regclass);
+
+
+--
 -- Name: positions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1275,6 +1320,14 @@ ALTER TABLE ONLY public.level_attempts
 
 ALTER TABLE ONLY public.levels
     ADD CONSTRAINT levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: lichess_puzzles lichess_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lichess_puzzles
+    ADD CONSTRAINT lichess_puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -1509,6 +1562,13 @@ CREATE UNIQUE INDEX index_levels_on_slug ON public.levels USING btree (slug);
 
 
 --
+-- Name: index_lichess_puzzles_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_lichess_puzzles_on_puzzle_id ON public.lichess_puzzles USING btree (puzzle_id);
+
+
+--
 -- Name: index_positions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1697,6 +1757,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190221152109'),
 ('20201002022940'),
 ('20201021035332'),
-('20201207014332');
+('20201207014332'),
+('20201229001317');
 
 
