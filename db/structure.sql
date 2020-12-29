@@ -563,6 +563,37 @@ ALTER SEQUENCE public.positions_id_seq OWNED BY public.positions.id;
 
 
 --
+-- Name: puzzle_categories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.puzzle_categories (
+    id bigint NOT NULL,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: puzzle_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.puzzle_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: puzzle_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.puzzle_categories_id_seq OWNED BY public.puzzle_categories.id;
+
+
+--
 -- Name: puzzle_reports; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1119,6 +1150,13 @@ ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.po
 
 
 --
+-- Name: puzzle_categories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzle_categories ALTER COLUMN id SET DEFAULT nextval('public.puzzle_categories_id_seq'::regclass);
+
+
+--
 -- Name: puzzle_reports id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1336,6 +1374,14 @@ ALTER TABLE ONLY public.lichess_puzzles
 
 ALTER TABLE ONLY public.positions
     ADD CONSTRAINT positions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: puzzle_categories puzzle_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzle_categories
+    ADD CONSTRAINT puzzle_categories_pkey PRIMARY KEY (id);
 
 
 --
@@ -1576,6 +1622,13 @@ CREATE INDEX index_positions_on_user_id ON public.positions USING btree (user_id
 
 
 --
+-- Name: index_puzzle_categories_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_puzzle_categories_on_name ON public.puzzle_categories USING btree (name);
+
+
+--
 -- Name: index_puzzle_reports_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1758,6 +1811,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201002022940'),
 ('20201021035332'),
 ('20201207014332'),
-('20201229001317');
+('20201229001317'),
+('20201229071033');
 
 
