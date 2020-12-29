@@ -72,9 +72,6 @@ module LichessPuzzlesV1Importer
         end
       end
     end
-    if sorted_json_puzzle_filenames == Puzzle.count
-      puts "Successfully imported #{Puzzle.count} Lichess puzzles!"
-    end
   end
 
   # Hack for matching puzzle_id values with lichess puzzle ids
