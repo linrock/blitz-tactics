@@ -526,6 +526,16 @@ ALTER SEQUENCE public.lichess_puzzles_id_seq OWNED BY public.lichess_puzzles.id;
 
 
 --
+-- Name: lichess_puzzles_puzzle_categories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.lichess_puzzles_puzzle_categories (
+    lichess_puzzle_id bigint NOT NULL,
+    puzzle_category_id bigint NOT NULL
+);
+
+
+--
 -- Name: positions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1489,6 +1499,20 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: idx_category_lichess_puzzles; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_category_lichess_puzzles ON public.lichess_puzzles_puzzle_categories USING btree (puzzle_category_id, lichess_puzzle_id);
+
+
+--
+-- Name: idx_lichess_puzzle_categories; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_lichess_puzzle_categories ON public.lichess_puzzles_puzzle_categories USING btree (lichess_puzzle_id, puzzle_category_id);
+
+
+--
 -- Name: index_completed_countdown_levels_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1812,6 +1836,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201021035332'),
 ('20201207014332'),
 ('20201229001317'),
-('20201229071033');
+('20201229071033'),
+('20201229071538');
 
 
