@@ -25,10 +25,12 @@ let originalInstructions: string;
 
 export default () => {
   const puzzleJsonDataEl: HTMLScriptElement = document.querySelector("#puzzle-data")
-  const fenEl: HTMLInputElement = document.querySelector('.fen')
 
   // Select FEN input upon click for convenient copying
-  fenEl.addEventListener('click', (event) => (event.target as HTMLInputElement).select())
+  const fenEl: HTMLInputElement = document.querySelector('.fen')
+  if (fenEl) {
+    fenEl.addEventListener('click', (event) => (event.target as HTMLInputElement).select())
+  }
 
   // Toggle "Report puzzle" section when clicking the button
   const reportPuzzleBtnEl: HTMLElement = document.querySelector('.report-puzzle')
@@ -115,18 +117,21 @@ export default () => {
     chessgroundBoard.unfreeze()
     clearTimeout(firstMoveT)
     dispatch('fen:set', puzzleMovesData.initial_fen)
+    let firstMove
     if (puzzleMovesData.initial_move_san) {
-      const sanMove = puzzleMovesData.initial_move_san
-      firstMoveT = setTimeout(() => {
-        dispatch('move:make', sanMove, { opponent: true });
-        const instructionsEl: HTMLDivElement = document.querySelector('.instructions')
-        if (instructionsEl) {
-          instructionsEl.textContent = originalInstructions;
-          instructionsEl.classList.remove('invisible')
-        }
-        firstMoveT = undefined
-      }, 500)
+      firstMove = puzzleMovesData.initial_move_san
+    } else {
+      firstMove = uciToMove(puzzleMovesData.initial_move_uci)
     }
+    firstMoveT = setTimeout(() => {
+      dispatch('move:make', firstMove, { opponent: true });
+      const instructionsEl: HTMLDivElement = document.querySelector('.instructions')
+      if (instructionsEl) {
+        instructionsEl.textContent = originalInstructions;
+        instructionsEl.classList.remove('invisible')
+      }
+      firstMoveT = undefined
+    }, 500)
   }
 
   // reset position upon pageload and when clicking "Reset Position"

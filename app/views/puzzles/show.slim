@@ -13,15 +13,17 @@
   .right
     h2 Puzzle #{@puzzle.puzzle_id}
     div
-      - if @puzzle.is_a? LichessV2Puzzle
+      - if @puzzle.is_a? LichessPuzzle
         a.ext-link(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
           | View puzzle on Lichess
-      a.ext-link(href="https://lichess.org/analysis/standard/#{@puzzle.puzzle_data["puzzle_fen"].gsub(/\s+/, '_')}" target="_blank")
-        | Analyze on Lichess
+      - unless @puzzle.is_a? LichessPuzzle
+        a.ext-link(href="https://lichess.org/analysis/standard/#{@puzzle.puzzle_data["puzzle_fen"].gsub(/\s+/, '_')}" target="_blank")
+          | Analyze on Lichess
 
     .puzzle-info
-      div Puzzle FEN
-      input.fen(type="text" readonly="readonly" value="#{@puzzle.puzzle_data["puzzle_fen"]}")
+      - unless @puzzle.is_a? LichessPuzzle
+        div Puzzle FEN
+        input.fen(type="text" readonly="readonly" value="#{@puzzle.puzzle_data["puzzle_fen"]}")
 
       table.metadata
         - @puzzle.metadata.each do |field_name, field_value|

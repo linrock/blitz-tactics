@@ -34,7 +34,7 @@ class PuzzlesController < ApplicationController
     if params[:puzzle_id].to_s == params[:puzzle_id].to_i.to_s
       @puzzle = Puzzle.find_by_puzzle_id(params[:puzzle_id])
     else
-      @puzzle = LichessV2Puzzle.find_by(puzzle_id: params[:puzzle_id])
+      @puzzle = LichessPuzzle.find_by(puzzle_id: params[:puzzle_id])
     end
   end
 end
