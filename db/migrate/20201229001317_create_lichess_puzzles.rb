@@ -8,6 +8,7 @@ class CreateLichessPuzzles < ActiveRecord::Migration[6.1]
       t.integer :rating_deviation, null: false
       t.integer :popularity, null: false
       t.integer :num_plays, null: false
+      t.text :themes, array: true, null: false
       t.string :game_url, null: false
       t.timestamps null: false
     end
