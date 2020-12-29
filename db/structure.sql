@@ -488,54 +488,6 @@ ALTER SEQUENCE public.levels_id_seq OWNED BY public.levels.id;
 
 
 --
--- Name: lichess_puzzles; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.lichess_puzzles (
-    id bigint NOT NULL,
-    puzzle_id character varying NOT NULL,
-    initial_fen character varying NOT NULL,
-    moves_uci text[] NOT NULL,
-    rating integer NOT NULL,
-    rating_deviation integer NOT NULL,
-    popularity integer NOT NULL,
-    num_plays integer NOT NULL,
-    game_url character varying NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: lichess_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.lichess_puzzles_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: lichess_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.lichess_puzzles_id_seq OWNED BY public.lichess_puzzles.id;
-
-
---
--- Name: lichess_puzzles_puzzle_themes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.lichess_puzzles_puzzle_themes (
-    lichess_puzzle_id bigint NOT NULL,
-    puzzle_theme_id bigint NOT NULL
-);
-
-
---
 -- Name: positions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -603,37 +555,6 @@ CREATE SEQUENCE public.puzzle_reports_id_seq
 --
 
 ALTER SEQUENCE public.puzzle_reports_id_seq OWNED BY public.puzzle_reports.id;
-
-
---
--- Name: puzzle_themes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.puzzle_themes (
-    id bigint NOT NULL,
-    name character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: puzzle_themes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.puzzle_themes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: puzzle_themes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.puzzle_themes_id_seq OWNED BY public.puzzle_themes.id;
 
 
 --
@@ -1146,13 +1067,6 @@ ALTER TABLE ONLY public.levels ALTER COLUMN id SET DEFAULT nextval('public.level
 
 
 --
--- Name: lichess_puzzles id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.lichess_puzzles ALTER COLUMN id SET DEFAULT nextval('public.lichess_puzzles_id_seq'::regclass);
-
-
---
 -- Name: positions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1164,13 +1078,6 @@ ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.po
 --
 
 ALTER TABLE ONLY public.puzzle_reports ALTER COLUMN id SET DEFAULT nextval('public.puzzle_reports_id_seq'::regclass);
-
-
---
--- Name: puzzle_themes id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.puzzle_themes ALTER COLUMN id SET DEFAULT nextval('public.puzzle_themes_id_seq'::regclass);
 
 
 --
@@ -1371,14 +1278,6 @@ ALTER TABLE ONLY public.levels
 
 
 --
--- Name: lichess_puzzles lichess_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.lichess_puzzles
-    ADD CONSTRAINT lichess_puzzles_pkey PRIMARY KEY (id);
-
-
---
 -- Name: positions positions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1392,14 +1291,6 @@ ALTER TABLE ONLY public.positions
 
 ALTER TABLE ONLY public.puzzle_reports
     ADD CONSTRAINT puzzle_reports_pkey PRIMARY KEY (id);
-
-
---
--- Name: puzzle_themes puzzle_themes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.puzzle_themes
-    ADD CONSTRAINT puzzle_themes_pkey PRIMARY KEY (id);
 
 
 --
@@ -1496,20 +1387,6 @@ ALTER TABLE ONLY public.user_ratings
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: idx_lichess_puzzle_puzzle_themes; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX idx_lichess_puzzle_puzzle_themes ON public.lichess_puzzles_puzzle_themes USING btree (lichess_puzzle_id, puzzle_theme_id);
-
-
---
--- Name: idx_puzzle_theme_lichess_puzzles; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX idx_puzzle_theme_lichess_puzzles ON public.lichess_puzzles_puzzle_themes USING btree (puzzle_theme_id, lichess_puzzle_id);
 
 
 --
@@ -1632,13 +1509,6 @@ CREATE UNIQUE INDEX index_levels_on_slug ON public.levels USING btree (slug);
 
 
 --
--- Name: index_lichess_puzzles_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_lichess_puzzles_on_puzzle_id ON public.lichess_puzzles USING btree (puzzle_id);
-
-
---
 -- Name: index_positions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1657,13 +1527,6 @@ CREATE INDEX index_puzzle_reports_on_puzzle_id ON public.puzzle_reports USING bt
 --
 
 CREATE INDEX index_puzzle_reports_on_user_id ON public.puzzle_reports USING btree (user_id);
-
-
---
--- Name: index_puzzle_themes_on_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_puzzle_themes_on_name ON public.puzzle_themes USING btree (name);
 
 
 --
@@ -1834,9 +1697,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190221152109'),
 ('20201002022940'),
 ('20201021035332'),
-('20201207014332'),
-('20201229001317'),
-('20201229071033'),
-('20201229071538');
+('20201207014332');
 
 
