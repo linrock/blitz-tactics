@@ -29,7 +29,13 @@
         - @puzzle.metadata.each do |field_name, field_value|
           tr
             td= field_name
-            td= field_value.to_s
+            - if field_name == :themes
+              td
+                - field_value.each do |theme_name|
+                  = theme_name
+                  br
+            - else
+              td= field_value.to_s
 
     - if current_user && @puzzle.is_reportable?
       - if @has_reported_puzzle
