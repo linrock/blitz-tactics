@@ -6,7 +6,7 @@
 module LichessPuzzlesV2Importer
   CSV_URL = "https://database.lichess.org/lichess_db_puzzle.csv.bz2"
 
-  # Fetches and unzips v2 puzzles csv
+  # Fetches and unzips v2 puzzles CSV
   def fetch_csv
     `wget '#{CSV_URL}' -O #{Rails.root.join("data/lichess_db_puzzle.csv.bz2")}`
     `bunzip2 -f #{Rails.root.join("data/lichess_db_puzzle.csv.bz2")}`
@@ -45,36 +45,29 @@ module LichessPuzzlesV2Importer
     num_plays,
     puzzle_themes,
     game_url = f.readline.strip.split(",")
+    # convert space-delimited fields to arrays
+    moves_uci = moves_uci.split(/\s+/)
+    puzzle_themes = puzzle_themes.split(/\s+/)
 
-    # Update the puzzle in the db
+    # Update or insert the puzzle into the db
     if LichessPuzzle.exists?(puzzle_id: lichess_puzzle_id)
       puzzle = LichessPuzzle.find_by(puzzle_id: lichess_puzzle_id)
       throw "Unexpected change in #{initial_fen}" if puzzle.initial_fen != initial_fen
-      throw "Unexpected change in #{move_sequence_uci}" if puzzle.move_sequence_uci != move_sequence_uci
+      throw "Unexpected change in #{moves_uci}" if puzzle.moves_uci != moves_uci
+      throw "Unexpected change in #{game_url}" if puzzle.game_url != game_url
     else
       puzzle = LichessPuzzle.new(puzzle_id: lichess_puzzle_id)
     end
-    moves_uci = moves_uci.split(/\s+/)
     puzzle.initial_fen = initial_fen
     puzzle.moves_uci = moves_uci
     puzzle.rating = rating
     puzzle.rating_deviation = rating_deviation
     puzzle.popularity = popularity
     puzzle.num_plays = num_plays
+    puzzle.themes = puzzle_themes
     puzzle.game_url = game_url
     return unless puzzle.changed?
     puzzle.save!
-
-    # Associates puzzle themes with puzzles
-    puzzle_themes.split(/\s+/).each do |theme|
-      theme = PuzzleTheme.find_or_create_by(name: theme)
-      if theme.lichess_puzzles.exists?(puzzle_id: puzzle.puzzle_id)
-        theme.lichess_puzzles << puzzle
-      else
-        # Delete a theme if it was removed
-        theme.lichess_puzzles.delete(puzzle)
-      end
-    end
   end
 
   extend self
