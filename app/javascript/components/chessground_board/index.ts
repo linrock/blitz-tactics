@@ -124,25 +124,8 @@ export default class ChessgroundBoard {
         })
       },
 
-      'move:fail': () => {
-        // re-highlight the opponent's last move upon a move failure
-        if (!this.lastOpponentMove) {
-          console.error(`Missing lastOpponentMove after a move:fail`)
-          return;
-        }
-        // delayed reset to previous board position after a mistake
-        setTimeout(() => {
-          const turnColor = this.cjs.turn() === 'w' ? 'white' : 'black'
-          const { from, to } = this.lastOpponentMove;
-          // reset the board to the position before the mistake
-          this.chessground.set({
-            fen: this.cjs.fen(),
-            lastMove: [from, to],
-            movable: { dests: getDests(this.cjs) },
-            turnColor,
-          })
-        }, 0)
-      },
+      'move:fail': () => this.resetToBeforePlayerMove(),
+      'move:almost': () => this.resetToBeforePlayerMove(),
 
       'move:make': (move: Move, options: MoveOptions = {}) => {
         // console.warn(`handling move:make ${move} from ${this.cjs.fen()}`)
@@ -199,5 +182,23 @@ export default class ChessgroundBoard {
 
   public getFen(): FEN {
     return this.cjs.fen()
+  }
+
+  // Resets the board to the position before the player's last attempted move
+  private resetToBeforePlayerMove() {
+    // re-highlight the opponent's last move upon a move failure
+    if (!this.lastOpponentMove) {
+      console.error(`Missing lastOpponentMove after a move:fail`)
+      return;
+    }
+    const turnColor = this.cjs.turn() === 'w' ? 'white' : 'black'
+    const { from, to } = this.lastOpponentMove;
+    // reset the board to the position before the mistake
+    this.chessground.set({
+      fen: this.cjs.fen(),
+      lastMove: [from, to],
+      movable: { dests: getDests(this.cjs) },
+      turnColor,
+    })
   }
 }
