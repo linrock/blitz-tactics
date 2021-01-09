@@ -17,8 +17,8 @@ import { dispatch, subscribe } from '@blitz/events'
 import { FEN } from '@blitz/types'
 import { uciToMove, getConfig } from '@blitz/utils'
 import StockfishEngine from '@blitz/workers/stockfish_engine'
-import ChessgroundBoard from '../chessground_board'
 
+import ChessgroundBoard from '@blitz/components/chessground_board'
 import './style.sass'
 
 type GameResult = '1-0' | '0-1' | '1/2-1/2'

@@ -1,9 +1,9 @@
 import { dispatch, subscribe } from '@blitz/events'
 import { FEN, PuzzleLines, UciMove } from '@blitz/types'
 import { moveToUci, uciToMove } from '@blitz/utils'
-import ChessgroundBoard from '../chessground_board'
-import MoveStatus from '../move_status'
 
+import ChessgroundBoard from '@blitz/components/chessground_board'
+import MoveStatus from '@blitz/components/move_status'
 import './style.sass'
 
 // The `puzzle_data` field in the puzzle data expected from the page

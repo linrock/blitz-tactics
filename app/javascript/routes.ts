@@ -8,10 +8,10 @@ import HasteMode from './game_modes/haste/index.vue'
 import ThreeMode from './game_modes/three/index.vue'
 import RatedMode from './game_modes/rated'
 
-import CustomizeBoard from './components/customize_board'
-import PositionTrainer from './components/position_trainer/index.vue'
-import PuzzlePage from './components/puzzle_page'
-import PuzzleList from './components/puzzle_list'
+import CustomizeBoard from './pages/customize_board'
+import PositionTrainer from './pages/position_trainer/index.vue'
+import PuzzleList from './pages/puzzle_list'
+import PuzzlePage from './pages/puzzle_page'
 
 interface RouteMap {
   [routeKey: string]: () => void
