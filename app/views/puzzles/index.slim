@@ -8,3 +8,8 @@
         .puzzle-info
           .puzzle-num= i + 1
           .puzzle-mistake-info
+    - if @puzzles.count % 3 == 2
+      .blank
+    - elsif @puzzles.count % 3 == 1
+      .blank
+      .blank

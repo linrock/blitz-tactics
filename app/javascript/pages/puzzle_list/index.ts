@@ -1,5 +1,7 @@
 import store from '@blitz/local_storage'
 
+import './style.sass'
+
 // If the player made mistakes, marks puzzles in the list as having mistakes
 export default () => {
   console.log('puzzles#index init')
