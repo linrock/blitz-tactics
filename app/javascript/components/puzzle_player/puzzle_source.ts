@@ -21,6 +21,8 @@ import Puzzles from './puzzles'
 // move:success
 // move:fail
 
+// delay (ms) before opponent's first move is played at the start of puzzles
+const FIRST_MOVE_DELAY = 300
 const responseDelay = 0
 
 export interface PuzzleState {
@@ -144,7 +146,7 @@ export default class PuzzleSource {
       dispatch(`move:make`, move, { opponent: true })
       dispatch(`move:sound`, move)
       this.firstMoveT = undefined
-    }, 500)
+    }, FIRST_MOVE_DELAY)
   }
 
   private tryUserMove(move: Move) {
