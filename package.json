@@ -23,7 +23,7 @@
     "mithril": "^1.1.6",
     "mousetrap": "^1.6.2",
     "postcss-cssnext": "^3.1.0",
-    "pug": "^3.0.0",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.1.0",
     "simple-color-picker": "^0.1.2",
     "store": "^2.0.12",
