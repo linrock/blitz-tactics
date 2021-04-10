@@ -27,6 +27,10 @@ export default class ChessboardResizer {
   private resizeBoard(width: number, height: number) {
     this.chessboardEl.style.width = `${width}px`
     this.chessboardEl.style.height = `${height}px`
+    const boardAreaEl: HTMLElement = document.querySelector('.board-area')
+    boardAreaEl.style.width = `${width}px`
+    const aboveBoardEl: HTMLElement = document.querySelector('.above-board')
+    aboveBoardEl.style.width = `${width}px`
   }
 
   private shrinkBoard() {

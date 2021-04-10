@@ -4,6 +4,13 @@ section.game-mode.speedrun-mode
   .container
     .board-area-container
       = render partial: "puzzle_player/above_board"
+      .chessboard-resizer
+        .zoom-out
+          svg
+            use(xlink:href="#zoom-out")
+        .zoom-in
+          svg
+            use(xlink:href="#zoom-in")
       .board-area
         .chessground-board
           .piece-promotion-modal-container
