@@ -5,6 +5,7 @@ import MoveStatus from '../move_status'
 import ComboCounter from './views/combo_counter'
 import Instructions from './views/instructions'
 import PuzzleHint from './views/puzzle_hint'
+import ChessboardResizer from './views/chessboard_resizer'
 import PuzzleSource, { PuzzleSourceOptions } from './puzzle_source'
 
 import './style.sass'
@@ -22,6 +23,7 @@ export default class PuzzlePlayer {
 
     // views
     new ChessgroundBoard
+    new ChessboardResizer
     new MoveStatus
     new Instructions
     if (!options.noCounter) {
