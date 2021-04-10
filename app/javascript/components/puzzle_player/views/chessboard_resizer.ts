@@ -32,12 +32,12 @@ export default class ChessboardResizer {
   private shrinkBoard() {
     const initialWidth = this.chessboardEl.clientWidth
     const initialHeight = this.chessboardEl.clientHeight
-    this.resizeBoard(initialWidth - 16, initialHeight - 16)
+    this.resizeBoard(initialWidth - 32, initialHeight - 32)
   }
 
   private enlargeBoard() {
     const initialWidth = this.chessboardEl.clientWidth
     const initialHeight = this.chessboardEl.clientHeight
-    this.resizeBoard(initialWidth + 16, initialHeight + 16)
+    this.resizeBoard(initialWidth + 32, initialHeight + 32)
   }
 }
