@@ -8,9 +8,16 @@ module LichessPuzzlesV1Importer
   # The total number of Lichess puzzles as of Oct 2020
   NUM_LICHESS_PUZZLES = 125262
 
-  # downloads a .zip file of lichess v1 puzzles and unzips them into the data/ dir
+  # download the zipped data files from here
+  ZIP_SOURCE = "https://github.com/linrock/blitz-tactics-puzzles/releases/download/2020.12/bt.lichess-puzzles-v1.zip"
+  # save the zip file here
+  ZIP_DEST = "data/bt.lichess-puzzles-v1.zip"
+
+  # downloads a .zip file of puzzles used for various game modes and unzips
+  # them into the data/ dir
   def self.fetch_puzzles_json
-    # TODO download from https://github.com/linrock/blitz-tactics-puzzles
+    `curl -L -o #{Rails.root.join(ZIP_DEST)} #{ZIP_SOURCE}`
+    `cd #{Rails.root.join("data")} && unzip #{Rails.root.join(ZIP_DEST)}`
   end
 
   # Imports lichess puzzles from *.json files into the database.

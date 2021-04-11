@@ -1,5 +1,5 @@
 class SpeedrunLevel < ActiveRecord::Base
-  LEVELS_DIR = Rails.root.join("data/speedruns")
+  LEVELS_DIR = Rails.root.join("data/game-modes/speedruns")
 
   has_many :speedrun_puzzles, dependent: :destroy
   has_many :completed_speedruns, dependent: :destroy

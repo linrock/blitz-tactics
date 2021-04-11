@@ -1,5 +1,5 @@
 class CountdownLevel < ActiveRecord::Base
-  LEVELS_DIR = Rails.root.join("data/countdowns")
+  LEVELS_DIR = Rails.root.join("data/game-modes/countdowns")
 
   has_many :countdown_puzzles, dependent: :destroy
 

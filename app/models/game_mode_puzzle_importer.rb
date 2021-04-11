@@ -10,10 +10,16 @@ class GameModePuzzleImporter
   # The 'three' game mode uses the same puzzles as 'haste'
   RATED_PUZZLE_SOURCE = "data/game-modes/rated/puzzles.json"
 
+  # download the zipped data files from here
+  ZIP_SOURCE = "https://github.com/linrock/blitz-tactics-puzzles/releases/download/2020.12/bt.game-modes.zip"
+  # save the zip file here
+  ZIP_DEST = "data/bt.game-modes.zip"
+
   # downloads a .zip file of puzzles used for various game modes and unzips
   # them into the data/ dir
   def self.fetch_puzzles_json
-    # TODO download from https://github.com/linrock/blitz-tactics-puzzles
+    `curl -L -o #{Rails.root.join(ZIP_DEST)} #{ZIP_SOURCE}`
+    `cd #{Rails.root.join("data")} && unzip #{Rails.root.join(ZIP_DEST)}`
   end
 
   # creates puzzles in the database out of *.json data files
