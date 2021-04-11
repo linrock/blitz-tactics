@@ -1,15 +1,23 @@
 # Loads puzzles from .json data files in the ./data dir into the DB
 #
-class PuzzleLoader
-  COUNTDOWN_PUZZLE_SOURCE = "data/countdowns/countdown-*.json"
-  SPEEDRUN_PUZZLE_SOURCE = "data/speedruns/speedrun-*.json"
-  REPETITION_PUZZLE_SOURCE = "data/repetition/level-*.json"
-  INFINITY_PUZZLE_SOURCE = "data/infinity/difficulty-*.json"
+class GameModePuzzleImporter
+  COUNTDOWN_PUZZLE_SOURCE = "data/game-modes/countdowns/countdown-*.json"
+  SPEEDRUN_PUZZLE_SOURCE = "data/game-modes/speedruns/speedrun-*.json"
+  REPETITION_PUZZLE_SOURCE = "data/game-modes/repetition/level-*.json"
+  INFINITY_PUZZLE_SOURCE = "data/game-modes/infinity/difficulty-*.json"
 
-  HASTE_PUZZLE_SOURCE = "data/haste/puzzles.json"
-  RATED_PUZZLE_SOURCE = "data/rated/puzzles.json"
+  HASTE_PUZZLE_SOURCE = "data/game-modes/haste/puzzles.json"
+  # The 'three' game mode uses the same puzzles as 'haste'
+  RATED_PUZZLE_SOURCE = "data/game-modes/rated/puzzles.json"
 
-  def self.create_puzzles
+  # downloads a .zip file of puzzles used for various game modes and unzips
+  # them into the data/ dir
+  def self.fetch_puzzles_json
+    # TODO download from https://github.com/linrock/blitz-tactics-puzzles
+  end
+
+  # creates puzzles in the database out of *.json data files
+  def self.import_puzzles
     # game modes where puzzles are spread across many files
     create_countdown_puzzles_from_json_files
     create_speedrun_puzzles_from_json_files
@@ -157,6 +165,7 @@ class PuzzleLoader
     puts "#{RepetitionLevel.count} repetition levels in db. Creating repetition levels..."
     num_checked = 0
     num_created = 0
+    # TODO sort this correctly by level number
     Dir.glob(Rails.root.join(REPETITION_PUZZLE_SOURCE)).sort.each do |filename|
       level_number = filename[/level-([\d]+).json/, 1].to_i
       puts "Level number: #{level_number}"
@@ -184,7 +193,7 @@ class PuzzleLoader
       level_difficulty = filename[/difficulty-([a-z]+)\.json/, 1]
       infinity_level = InfinityLevel.send(level_difficulty)
       puzzle_count = infinity_level.infinity_puzzles.count
-      puts "#{puzzle_count} #{level_difficulty} infinity puzzles in db"
+      puts "#{puzzle_count} #{level_difficulty} infinity puzzles in db before import.."
       open(filename) do |f|
         puzzle_list = JSON.parse(f.read)
         puzzle_list.each do |puzzle|

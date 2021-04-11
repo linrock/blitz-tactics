@@ -1,9 +1,14 @@
-# Imports Lichess puzzle data as `Puzzle`s
+# Imports Lichess puzzle data (*.json files) into the database
 
-module LichessPuzzleImporter
-  PUZZLE_FILES = Rails.root.join("data/lichess/[0-9]*.json")
+module LichessPuzzlesV1Importer
+  PUZZLE_FILES = Rails.root.join("data/lichess-puzzles-v1/[0-9]*.json")
   # The total number of Lichess puzzles as of Oct 2020
   NUM_LICHESS_PUZZLES = 125262
+
+  # downloads a .zip file of lichess v1 puzzles and unzips them into the data/ dir
+  def self.fetch_puzzles_json
+    # TODO download from https://github.com/linrock/blitz-tactics-puzzles
+  end
 
   # Check to see if the lichess puzzles were loaded as expected
   # Each Puzzle.id exactly matches Lichess puzzle ids
@@ -26,15 +31,15 @@ module LichessPuzzleImporter
     return true
   end
 
-  # Populate puzzles database from Lichess puzzles and try to map them
-  # 1-to-1 with lichess puzzle ids
-  def self.populate_from_lichess_puzzle_json_files(
-    json_puzzle_files = Dir.glob(PUZZLE_FILES)
-  )
+  # Imports lichess puzzles from *.json files into the database.
+  # Tries to map the puzzle_id columns in the database 1-to-1 to lichess puzzle ids.
+  def self.import_puzzles_json
     if Puzzle.count > 0
+      # TODO imports should be resumable
       "Can only import lichess puzzle files from an empty database"
       return
     end
+    json_puzzle_files = Dir.glob(PUZZLE_FILES)
     # Expecting to load a json file with this lichess puzzle id next
     upcoming_lichess_puzzle_id = 1
     # Loads JSON files in order - 1.json 2.json 3.json 5.json 10.json ...
@@ -67,9 +72,7 @@ module LichessPuzzleImporter
         created_puzzle = Puzzle.create!({
           puzzle_id: lichess_puzzle_id,
           puzzle_data: puzzle_json_data["puzzle_data"],
-          metadata: puzzle_json_data["metadata"].merge({
-            "source": "lichess"
-          }),
+          metadata: puzzle_json_data["metadata"],
           puzzle_data_hash: Puzzle.data_hash(puzzle_json_data)
         })
         puts "Created puzzle from Lichess puzzle #{lichess_puzzle_id}"
@@ -85,7 +88,8 @@ module LichessPuzzleImporter
     end
   end
 
-  # Hack for matching puzzle ids with lichess puzzle ids
+  # Hack for matching puzzle_id values with lichess puzzle ids
+  # since some of the lichess puzzles were deleted.
   def self.create_and_destroy_blank_puzzle
     p = Puzzle.create!({
       puzzle_id: "blank",

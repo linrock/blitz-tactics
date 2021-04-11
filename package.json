@@ -4,9 +4,12 @@
     "tsc": "./node_modules/.bin/tsc --noEmit",
     "eye:load": "eye l eye.rb",
     "eye:info": "eye i",
-    "puzzles:load": "rails runner 'PuzzleLoader.create_puzzles'",
-    "puzzles:load:lichess": "rails runner 'LichessPuzzleImporter.populate_from_lichess_puzzle_json_files'",
-    "puzzles:verify:lichess": "rails runner 'LichessPuzzleImporter.verify_db_lichess_puzzles'"
+    "blitz:game_modes:fetch": "rails runner 'GameModePuzzleImporter.fetch_puzzles_json'",
+    "blitz:game_modes:import": "rails runner 'GameModePuzzleImporter.import_puzzles'",
+    "blitz:game_modes:verify": "rails runner 'GameModePuzzleImporter.verify_db_lichess_puzzles'",
+    "puzzles:lichess:fetch": "rails runner 'LichessPuzzlesV1Importer.fetch_puzzles_json'",
+    "puzzles:lichess:import": "rails runner 'LichessPuzzlesV1Importer.import_puzzles_json'",
+    "puzzles:lichess:verify": "rails runner 'LichessPuzzlesV1Importer.verify_db_lichess_puzzles'"
   },
   "dependencies": {
     "@bugsnag/js": "^7.5.4",
