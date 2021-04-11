@@ -32,9 +32,13 @@ class GameModePuzzleImporter
   # Counts the # of puzzles in the db
   def self.check_db_puzzles
     puts "Infinity: #{InfinityPuzzle.count} puzzles"
+    puts "  easy: #{InfinityLevel.easy.num_puzzles}"
+    puts "  medium: #{InfinityLevel.medium.num_puzzles}"
+    puts "  hard: #{InfinityLevel.hard.num_puzzles}"
+    puts "  insane: #{InfinityLevel.insane.num_puzzles}"
     puts "Haste/Three: #{HastePuzzle.count} puzzles"
     puts "Repetition: #{RepetitionLevel.all.map(&:num_puzzles).sum} puzzles"
-    puts "Rated: #{RatedPuzzle.count}"
+    puts "Rated: #{RatedPuzzle.count} puzzles"
   end
 
   private
