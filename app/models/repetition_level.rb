@@ -25,6 +25,10 @@ class RepetitionLevel < ActiveRecord::Base
     end
   end
 
+  def num_puzzles
+    @num_puzzles ||= repetition_puzzles.count
+  end
+
   def first_level?
     number == 1
   end

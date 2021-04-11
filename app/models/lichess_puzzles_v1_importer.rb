@@ -1,4 +1,7 @@
-# Imports Lichess puzzle data (*.json files) into the database
+# three responsibilities:
+# - fetch Lichess puzzle data files
+# - import Lichess puzzle data (*.json files) into the database
+# - check that the puzzle files were loaded correctly
 
 module LichessPuzzlesV1Importer
   PUZZLE_FILES = Rails.root.join("data/lichess-puzzles-v1/[0-9]*.json")
@@ -8,27 +11,6 @@ module LichessPuzzlesV1Importer
   # downloads a .zip file of lichess v1 puzzles and unzips them into the data/ dir
   def self.fetch_puzzles_json
     # TODO download from https://github.com/linrock/blitz-tactics-puzzles
-  end
-
-  # Check to see if the lichess puzzles were loaded as expected
-  # Each Puzzle.id exactly matches Lichess puzzle ids
-  def self.verify_db_lichess_puzzles
-    if Puzzle.count != NUM_LICHESS_PUZZLES
-      puts "Expected #{NUM_LICHESS_PUZZLES} puzzles. Got #{Puzzle.count}"
-      return false
-    end
-    first_lichess_puzzle_id = Puzzle.order('id ASC').first.puzzle_id
-    last_lichess_puzzle_id = Puzzle.order('id ASC').last.puzzle_id
-    if first_lichess_puzzle_id != "1"
-      puts "Didn't expect #{first_lichess_puzzle_id} to be the first puzzle"
-      return false
-    end
-    if last_lichess_puzzle_id != "125272"
-      puts "Didn't expect #{last_lichess_puzzle_id} to be the last puzzle"
-      return false
-    end
-    puts "Found #{Puzzle.count} puzzles out of #{NUM_LICHESS_PUZZLES} expected Lichess puzzles"
-    return true
   end
 
   # Imports lichess puzzles from *.json files into the database.
@@ -97,5 +79,26 @@ module LichessPuzzlesV1Importer
       puzzle_data: { b: 0 }
     })
     p.destroy!
+  end
+
+  # Check to see if the lichess puzzles were loaded as expected
+  # Each Puzzle.id exactly matches Lichess puzzle ids
+  def self.check_db_puzzles
+    if Puzzle.count != NUM_LICHESS_PUZZLES
+      puts "Expected #{NUM_LICHESS_PUZZLES} puzzles. Got #{Puzzle.count}"
+      return false
+    end
+    first_lichess_puzzle_id = Puzzle.order('id ASC').first.puzzle_id
+    last_lichess_puzzle_id = Puzzle.order('id ASC').last.puzzle_id
+    if first_lichess_puzzle_id != "1"
+      puts "Didn't expect #{first_lichess_puzzle_id} to be the first puzzle"
+      return false
+    end
+    if last_lichess_puzzle_id != "125272"
+      puts "Didn't expect #{last_lichess_puzzle_id} to be the last puzzle"
+      return false
+    end
+    puts "Found #{Puzzle.count} puzzles out of #{NUM_LICHESS_PUZZLES} expected Lichess puzzles"
+    return true
   end
 end

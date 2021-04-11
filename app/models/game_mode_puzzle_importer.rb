@@ -29,6 +29,14 @@ class GameModePuzzleImporter
     create_rated_puzzles_from_json_file
   end
 
+  # Counts the # of puzzles in the db
+  def self.check_db_puzzles
+    puts "Infinity: #{InfinityPuzzle.count} puzzles"
+    puts "Haste/Three: #{HastePuzzle.count} puzzles"
+    puts "Repetition: #{RepetitionLevel.all.map(&:num_puzzles).sum} puzzles"
+    puts "Rated: #{RatedPuzzle.count}"
+  end
+
   private
 
   def self.create_countdown_puzzles_from_json_files
@@ -207,4 +215,5 @@ class GameModePuzzleImporter
     end
     puts "Created #{num_created} infinity puzzles"
   end
+
 end
