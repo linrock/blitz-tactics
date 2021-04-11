@@ -50,13 +50,13 @@ module LichessPuzzlesV2Importer
     puzzle_themes = puzzle_themes.split(/\s+/)
 
     # Update or insert the puzzle into the db
-    if LichessPuzzle.exists?(puzzle_id: lichess_puzzle_id)
-      puzzle = LichessPuzzle.find_by(puzzle_id: lichess_puzzle_id)
+    if LichessV2Puzzle.exists?(puzzle_id: lichess_puzzle_id)
+      puzzle = LichessV2Puzzle.find_by(puzzle_id: lichess_puzzle_id)
       throw "Unexpected change in #{initial_fen}" if puzzle.initial_fen != initial_fen
       throw "Unexpected change in #{moves_uci}" if puzzle.moves_uci != moves_uci
       throw "Unexpected change in #{game_url}" if puzzle.game_url != game_url
     else
-      puzzle = LichessPuzzle.new(puzzle_id: lichess_puzzle_id)
+      puzzle = LichessV2Puzzle.new(puzzle_id: lichess_puzzle_id)
     end
     puzzle.initial_fen = initial_fen
     puzzle.moves_uci = moves_uci

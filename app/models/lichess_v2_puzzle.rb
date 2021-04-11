@@ -1,5 +1,5 @@
 # New lichess v2 puzzles
-class LichessPuzzle < ActiveRecord::Base
+class LichessV2Puzzle < ActiveRecord::Base
 
   def is_reportable?
     false

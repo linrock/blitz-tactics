@@ -13,15 +13,15 @@
   .right
     h2 Puzzle #{@puzzle.puzzle_id}
     div
-      - if @puzzle.is_a? LichessPuzzle
+      - if @puzzle.is_a? LichessV2Puzzle
         a.ext-link(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
           | View puzzle on Lichess
-      - unless @puzzle.is_a? LichessPuzzle
+      - unless @puzzle.is_a? LichessV2Puzzle
         a.ext-link(href="https://lichess.org/analysis/standard/#{@puzzle.puzzle_data["puzzle_fen"].gsub(/\s+/, '_')}" target="_blank")
           | Analyze on Lichess
 
     .puzzle-info
-      - unless @puzzle.is_a? LichessPuzzle
+      - unless @puzzle.is_a? LichessV2Puzzle
         div Puzzle FEN
         input.fen(type="text" readonly="readonly" value="#{@puzzle.puzzle_data["puzzle_fen"]}")
 

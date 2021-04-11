@@ -1,6 +1,6 @@
-class CreateLichessPuzzles < ActiveRecord::Migration[6.1]
+class CreateLichessV2Puzzles < ActiveRecord::Migration[6.1]
   def change
-    create_table :lichess_puzzles do |t|
+    create_table :lichess_v2_puzzles do |t|
       t.string :puzzle_id, null: false
       t.string :initial_fen, null: false
       t.text :moves_uci, array: true, null: false
@@ -12,6 +12,6 @@ class CreateLichessPuzzles < ActiveRecord::Migration[6.1]
       t.string :game_url, null: false
       t.timestamps null: false
     end
-    add_index :lichess_puzzles, :puzzle_id, unique: true
+    add_index :lichess_v2_puzzles, :puzzle_id, unique: true
   end
 end
