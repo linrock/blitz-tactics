@@ -9,13 +9,13 @@ If you want to play random puzzles each time:
 
 These puzzles change daily:
 
-* [Countdown] - solve puzzles before time runs out
-* [Speedrun] - solve puzzles as quickly as you can
+* [Countdown](https://blitztactics.com/countdown) - solve puzzles before time runs out
+* [Speedrun](https://blitztactics.com/speedrun) - solve puzzles as quickly as you can
 
 For more ways to play:
 
 * [Repetition](https://blitztactics.com/repetition) - solve every puzzle quickly and precisely to unlock the next level
-* [Infinity](https://blitztactics.com) - play through endless puzzles and set your own difficulty
+* [Infinity](https://blitztactics.com/infinity) - play through endless puzzles and set your own difficulty
 
 <div align="center">
   <br>
@@ -24,15 +24,6 @@ For more ways to play:
   </a>
   <br><br>
 </div>
-
-## Install Instruccions
-
-1. Git clone the repo to your local computer:
-	`git clone https://github.com/linrock/blitz-tactics`
-2. Run `bundle install`. If you run into issues please have in mind that **postgresql** is required and for **ffi** please check [this](https://www.reddit.com/r/ruby/comments/a8brq3/an_error_occurred_while_installing_ffi_1925_and/).
-3. Edit `config/database.yml` with your postgres enviroment creds. Maybe you'll like to set the same config for the three env to avoid errors like ´fe_sendauth: no password supplied´.
-4. Run `bin/setup`.
-5. Run `bin/webpack-server-dev` or `bin/webpack`. Your local env is ready!
 
 ## Development
 
