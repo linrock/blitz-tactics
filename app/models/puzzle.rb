@@ -1,9 +1,13 @@
 # Represents a chess puzzle. Puzzles can be viewed online from their
-# corresponding link based on their puzzle_id:
-# https://blitztactics.com/p/:puzzle_id
+# corresponding link based on their puzzle `id`
+# https://blitztactics.com/p/:id
 #
-#  puzzle_data schema:
-#    { "fen": FEN | null,
+# See https://github.com/linrock/blitz-tactics-puzzles for schema docs
+#
+# The `puzzle_data` field contains all moves and positions for a valid
+# puzzle without any run-time calculations:
+#
+#    { "initial_fen": FEN | null,
 #      "initial_move_san": (string | null),
 #      "initial_move_uci": (string | null),
 #      "puzzle_fen": FEN | null,

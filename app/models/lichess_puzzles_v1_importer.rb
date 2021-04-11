@@ -40,16 +40,16 @@ module LichessPuzzlesV1Importer
       # puts puzzle_json_data
       lichess_puzzle_id = puzzle_json_data["metadata"]["id"]
       if upcoming_lichess_puzzle_id == lichess_puzzle_id
-        # Do nothing. We expected to see this lichess puzzle id
+        # Do nothing. We expected to see this lichess puzzle id.
       elsif upcoming_lichess_puzzle_id < lichess_puzzle_id 
-        # Check if we're resuming a previous import
+        # Check if we're resuming a previous import.
         last_puzzle = Puzzle.order('id DESC').first
         last_puzzle_id = last_puzzle.puzzle_id.to_i
         if last_puzzle_id > upcoming_lichess_puzzle_id 
           upcoming_lichess_puzzle_id = last_puzzle_id
         end
-        # We're missing a Lichess puzzle with this id
-        # Create a dummy puzzle and destroy it
+        # We're missing a Lichess puzzle with this id. Create a dummy puzzle and then
+        # destroy it right away to match Puzzle `id` columns with lichess puzzle ids.
         while lichess_puzzle_id > upcoming_lichess_puzzle_id
           create_and_destroy_blank_puzzle
           upcoming_lichess_puzzle_id += 1

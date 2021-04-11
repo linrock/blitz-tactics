@@ -184,7 +184,9 @@ class GameModePuzzleImporter
     num_checked = 0
     num_created = 0
     # TODO sort this correctly by level number
-    Dir.glob(Rails.root.join(REPETITION_PUZZLE_SOURCE)).sort.each do |filename|
+    Dir.glob(Rails.root.join(REPETITION_PUZZLE_SOURCE)).sort_by do |filename|
+      filename[/level-([\d]+).json/, 1].to_i
+    end.each do |filename|
       level_number = filename[/level-([\d]+).json/, 1].to_i
       puts "Level number: #{level_number}"
       if RepetitionLevel.exists?(number: level_number)
