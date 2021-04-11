@@ -70,36 +70,6 @@ class Puzzle < ActiveRecord::Base
     })
   end
 
-  # Goes through all existing puzzles and creates a Puzzle
-  # out of any puzzles that haven't been seen before
-  def self.populate_from_existing_puzzles
-  end
-
-  # Tries to parse a file glob as a set of source puzzle data files
-  # Currently unused
-  def self.populate_from_json_files(glob)
-    Dir.glob(glob).each do |filename|
-      json_file_data = JSON.parse(filename)
-      json_file_data.each do |json_file_row_data|
-        # Lichess Puzzle json data format - fen, initialMove (san, uci), lines, id
-        Puzzle.create_or_find_from_puzzle_data({
-          # The positions in a puzzle uniquely identify it
-          puzzle_data: {
-            initial_fen: json_file_row_data["fen"],
-            initial_move_san: json_file_row_data["initialMove"]["san"],
-            initial_move_uci: json_file_row_data["initialMove"]["uci"],
-            puzzle_fen: nil,
-            lines: json_file_row_data["lines"]
-          },
-          metadata: {
-            source: "lichess",
-            lichess_puzzle_id: json_file_row_data["id"]
-          }
-        })
-      end
-    end
-  end
-
   private
 
   def recalculate_and_set_puzzle_data_hash
