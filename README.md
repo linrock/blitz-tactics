@@ -3,16 +3,19 @@
 A free and open-source website for playing fast-paced chess puzzles!
 
 If you want to play random puzzles each time:
-- [Three](https://blitztactics.com/three) - three minutes, three lives, three hints.
-- [Haste](https://blitztactics.com/haste) - correct moves gain time, mistakes lose time.
+
+* [Three](https://blitztactics.com/three) - three minutes, three lives, three hints.
+* [Haste](https://blitztactics.com/haste) - correct moves gain time, mistakes lose time.
 
 These puzzles change daily:
-- [Countdown] - solve puzzles before time runs out
-- [Speedrun] - solve puzzles as quickly as you can
+
+* [Countdown] - solve puzzles before time runs out
+* [Speedrun] - solve puzzles as quickly as you can
 
 For more ways to play:
-- [Repetition](https://blitztactics.com/repetition) - solve every puzzle quickly and precisely to unlock the next level
-- [Infinity](https://blitztactics.com) - play through endless puzzles and set your own difficulty
+
+* [Repetition](https://blitztactics.com/repetition) - solve every puzzle quickly and precisely to unlock the next level
+* [Infinity](https://blitztactics.com) - play through endless puzzles and set your own difficulty
 
 <div align="center">
   <br>
@@ -62,10 +65,10 @@ yarn blitz:game_modes:import # imports game modes puzzles into the db (6+ min)
 yarn blitz:game_modes:check  # prints the number of puzzles in the db for each game mode
 ```
 
-Run a rails dev server: `rails s`
-Run a webpack dev server: `yarn dev` or `./bin/webpack-dev-server`
+* Run a rails dev server: `rails s`
+* Run a webpack dev server: `yarn dev` or `./bin/webpack-dev-server`
 
-Go to `http://localhost:3000/` and the page will load if all went well.
+Go to `http://localhost:3000/` and you'll see the Blitz Tactics homepage if all went well.
 
 ## Special thanks
 
