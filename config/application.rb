@@ -28,6 +28,12 @@ module BlitzTactics
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
 
+    config.autoload_paths << Rails.root.join("app/models/creators")
+    config.autoload_paths << Rails.root.join("app/models/importers")
+    config.autoload_paths << Rails.root.join("app/models/levels")
+    config.autoload_paths << Rails.root.join("app/models/puzzles")
+    config.autoload_paths << Rails.root.join("app/models/user_data")
+
     config.assets.paths << Rails.root.join("app/javascript/components")
     config.assets.paths << Rails.root.join("app/javascript/game_modes")
 
