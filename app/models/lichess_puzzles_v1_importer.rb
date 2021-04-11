@@ -1,6 +1,6 @@
 # three responsibilities:
-# - fetch Lichess puzzle data files
-# - import Lichess puzzle data (*.json files) into the database
+# - fetch Lichess v1 puzzle data files (compressed *.json files)
+# - import Lichess v1 puzzle data into the database
 # - check that the puzzle files were loaded correctly
 
 module LichessPuzzlesV1Importer
