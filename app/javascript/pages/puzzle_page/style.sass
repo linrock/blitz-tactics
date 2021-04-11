@@ -1,0 +1,100 @@
+@import "../../../assets/stylesheets/_variables"
+
+body[data-controller=puzzles][data-action=show]
+  $board-size: 496px
+
+  margin: 0 auto 50px
+
+  .chessground-board
+    width: $board-size
+    height: $board-size
+
+  .container
+    display: flex
+
+  .invisible
+    transition: 0.1s ease
+
+  .above-board
+    margin-top: 0
+
+  .left
+    width: $board-size
+
+  .right 
+    margin: 103px 0 0 37px
+    width: 100%
+
+    h2 
+      margin-bottom: 15px
+
+    .description 
+      font-size: 14px
+      line-height: 21px
+      opacity: 0.5
+
+    .ext-link
+      font-size: 14px
+      color: rgba(255, 255, 255, 0.6)
+      display: block
+      padding: 3px 0
+
+      &:hover
+        color: rgba(255, 255, 255, 0.8)
+
+    .fen
+      margin: 10px 0
+      width: 100%
+
+    .puzzle-info
+      margin-top: 40px
+
+      .metadata
+        font-size: 14px
+        opacity: 0.7
+        margin-top: 20px
+        line-height: 1.3em
+
+        td
+          padding-right: 25px
+
+    .report-puzzle
+      margin-top: 40px
+
+  .puzzle-report-form
+    margin-top: 25px
+    display: none
+
+    .dark-button
+      margin-top: 8px
+      margin-right: 8px
+
+    textarea
+      padding: 5px 10px
+
+  .puzzle-report-status
+    margin-top: 30px
+
+  .puzzle-report-message
+    width: 100%
+
+  .actions 
+    margin-top: 30px
+    text-align: center
+
+    .button 
+      font-size: 16px
+      padding: 8px 20px
+      border: 0
+      border-radius: 3px
+      background: black
+      color: white
+      display: inline-block
+      font-family: $main-font
+      line-height: 22px
+      text-decoration: none
+      transition: opacity 0.25s ease
+
+      &:hover 
+        background: #51B7FF
+        cursor: pointer

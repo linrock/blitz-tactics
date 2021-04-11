@@ -1,16 +1,10 @@
 class SpeedrunLevel < ActiveRecord::Base
-  NAMES = %w( quick endurance marathon )
+  LEVELS_DIR = Rails.root.join("data/speedruns")
 
   has_many :speedrun_puzzles, dependent: :destroy
   has_many :completed_speedruns, dependent: :destroy
 
-  validates :name,
-    presence: true,
-    uniqueness: true
-
-  NAMES.each do |name|
-    scope name, -> { find_or_create_by(name: name) }
-  end
+  validates :name, presence: true, uniqueness: true
 
   def self.today
     Date.today
@@ -21,7 +15,7 @@ class SpeedrunLevel < ActiveRecord::Base
   end
 
   def self.todays_level
-    find_by(name: today.to_s)
+    find_or_create_by(name: today.to_s)
   end
 
   def self.yesterday
@@ -36,16 +30,18 @@ class SpeedrunLevel < ActiveRecord::Base
     find_by(name: 2.days.ago.to_date.to_s)
   end
 
-  def self.first_level
-    find_by(name: 'quick')
-  end
-
   def puzzles
-    speedrun_puzzles.order('id ASC')
+    # speedrun_puzzles.order('id ASC')
+    json_data_filename = LEVELS_DIR.join("speedrun-#{name}.json")
+    unless File.exists? json_data_filename
+      # TODO fix race condition where concurrent requests will trigger this
+      SpeedrunLevelCreator.export_puzzles_for_date(Date.strptime(name))
+    end
+    open(json_data_filename, 'r') { |f| JSON.parse(f.read) }
   end
 
   def first_puzzle
-    puzzles.first
+    Puzzle.find(puzzles.first["id"])
   end
 
   def num_puzzles

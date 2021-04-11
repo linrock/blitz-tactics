@@ -1,25 +1,14 @@
 - content_for(:title) { "Rated mode" }
 
-section.rated-mode
+section.game-mode.rated-mode
   .container
     .board-area-container
       = render partial: "puzzle_player/above_board"
-      = render partial: "puzzle_player/board_area"
-    aside.rated-sidebar
-      .current-status
-        .your-rating
-          .label Your rating
-          .player-rating= @user_rating.rating.round
-        .puzzles-seen
-          .label Puzzles seen
-          .n-puzzles= @user_rating.rated_puzzle_attempts_count
+      .board-area
+        .chessground-board
+          .piece-promotion-modal-container
+          .chessground
+    .vue-app-mount
 
-      .moves-attempted(style="display: none")
-        .moves-shadow
-
-      .instructions
-        ul
-          li Solve puzzles quickly to gain more rating points
-          li Click start or make a move to begin
-
-        button.blue-button.start-button Start
+script#rated-mode-data(type="application/json")
+  | { "playerRating": #{@user_rating.rating.round}, "numPuzzlesSeen": #{@user_rating.rated_puzzle_attempts_count} }

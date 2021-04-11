@@ -1,0 +1,37 @@
+- content_for(:title) { "Pawn endgames" }
+
+.positions-index.container
+  h2 Pawn endgames
+  .positions
+    .description
+      | Pawn endgames are the most common type of endgame.
+      | Learn the concepts behind them to step up your chess game.
+
+    .examples
+      = linked_miniboard_route "/pawn-endgames/opposition"
+      = linked_miniboard_route "/pawn-endgames/triangulation"
+      = linked_miniboard_route "/pawn-endgames/retis-idea"
+
+      = linked_miniboard_route "/pawn-endgames/zig-zag"
+      = linked_miniboard_route "/pawn-endgames/bodycheck"
+      = linked_miniboard_route "/pawn-endgames/distant-opposition"
+
+      = linked_miniboard "The square rule", "8/3p4/8/2P5/P3k3/8/8/7K w - -", "win", 15
+      = linked_miniboard "Unusual king move", "6K1/8/6k1/8/8/p7/P7/8 w - -", "draw", 15
+      = linked_miniboard "Key squares", "4k3/8/8/8/8/1P6/8/2K5 w - -", "win", 15
+
+      = linked_miniboard "Anti-reti", "8/8/8/8/8/P4p2/k6K/8 w - -", "win", 15
+      = linked_miniboard "Triangulation 2", "2k5/8/p1P5/P2K4/8/8/8/8 w - -", "win", 15
+      = linked_miniboard "Bodycheck 2", "2K5/k7/7p/8/8/8/6P1/8 w - -", "win", 15
+
+      = linked_miniboard "Opposition 2", "8/2p5/8/1k1P4/8/K7/8/8 w - - 0 1", "draw"
+      = linked_miniboard "Opposition 3", "5k2/8/5P2/8/5PK1/8/8/8 w - - 0 1", "win"
+      = linked_miniboard "Opposition 4", "8/2k5/8/8/6pP/6P1/5K2/8 b - - 0 1", "draw"
+
+      = linked_miniboard "Reti's idea 2", "K7/8/p7/8/8/2k5/P7/8 w - - 0 1", "draw"
+      = linked_miniboard "Box em out", "8/8/8/5p1k/7P/6K1/6P1/8 w - - 0 1", "win"
+      = linked_miniboard "Trebuchet", "8/8/k1p1K3/2P5/8/8/8/8 w - - 0 1", "win"
+
+      = linked_miniboard "Opposition defense", "8/8/8/4p1p1/8/5P2/3k2K1/8 w - - 0 1", "draw"
+      = linked_miniboard "Reti's idea 3", "8/8/8/8/k7/P1P2p1K/1P6/8 b - - 0 1", "draw"
+      = linked_miniboard "Unusual king move 2", "8/8/7k/8/1p6/7K/2P5/8 w - -", "win"

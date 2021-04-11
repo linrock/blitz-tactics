@@ -1,0 +1,108 @@
+@import "../../../assets/stylesheets/_variables"
+@import "../base"
+
+.three-mode
+  .rewarded
+    color: #34FF00
+
+  .penalized
+    color: red
+
+  .complete
+    color: #ffff00
+
+  .three-sidebar
+    margin-top: $above-board-height
+    margin-left: 30px
+    display: flex
+    flex-direction: column
+    justify-content: space-evenly
+
+    .make-a-move
+      line-height: 26px
+      opacity: 0.7
+
+    .n-remaining
+      transition: color 0.25s ease
+
+    .timers
+      display: flex
+      flex-direction: column
+      justify-content: space-evenly
+
+      .timer
+        font-size: 40px
+        transition: opacity 0.25s ease, color 0.25s ease
+        margin-bottom: 20px
+
+        &.stopped
+          opacity: 0.3
+
+  .hints
+    height: 24px
+
+  .current-score
+    .label
+      font-size: 16px
+      opacity: 0.3
+
+    .score
+      font-size: 32px
+      margin-top: 15px
+
+  .n-remaining
+    padding: 8px 0
+
+  // shows up in the sidebar after a level is complete
+  .three-complete
+    display: flex
+    flex-direction: column
+    height: 100%
+    justify-content: space-evenly
+
+    .label
+      font-size: 13px
+      color: rgba(255,255,255,0.5)
+
+    // your score and high score
+    .score-container
+      .score
+        margin-top: 15px
+        font-size: 30px
+
+    .recent-high-scores
+
+      // past 24 hours
+      .label
+        margin-bottom: 15px
+
+      // a high score by another player
+      .high-score
+        display: flex
+        margin: 8px 0
+
+        .score
+          font-size: 16px
+          width: 30px
+          margin: 0
+          margin-right: 10px
+
+        .player-name
+          font-size: 16px
+          color: rgba(255,255,255,0.7)
+
+    .puzzles-failed
+      a
+        align-items: center
+        color: #F954AE
+        display: flex
+        padding: 5px 0
+
+      svg
+        width: 18px
+        height: 18px
+        margin-right: 5px
+
+    .blue-button
+      font-size: 18px
+      text-align: center

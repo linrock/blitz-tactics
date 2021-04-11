@@ -1,0 +1,28 @@
+- content_for(:title) { "Rook endgames" }
+
+.positions-index.container
+  h2 Rook endgames
+  .positions
+    .description Here are three class rook endgame positions
+    .examples
+      = linked_miniboard_route "/philidor-position"
+      = linked_miniboard_route "/lucena-position"
+      = linked_miniboard_route "/vancura-position"
+
+    .description Some more rook and pawn endgame concepts
+    .examples
+      = linked_miniboard "Rule of five", "3r4/8/8/6k1/3P4/3K4/8/5R2 w - -", "win"
+      = linked_miniboard "Rule of five 2", "1r6/8/4k3/8/1P6/1K6/8/3R4 b - -", "draw"
+      = linked_miniboard "Prevent a bridge", "2k1K3/4P3/8/8/5r2/8/8/3R4 w - -", "win"
+
+      = linked_miniboard "Alternate method", "4K3/2k1P3/8/8/8/8/3R4/5r2 w - -", "win"
+      = linked_miniboard "Back-rank defense", "1r4k1/R7/5KP1/8/8/8/8/8 b - -", "draw"
+      = linked_miniboard "No Philidor", "8/8/8/8/8/5pk1/1r6/R5K1 b - -", "win"
+
+      = linked_miniboard "Short side defense", "4K3/4P1k1/8/8/8/8/r7/5R2 b - -", "draw"
+      = linked_miniboard "Reach Lucena", "r7/2KP1k2/8/8/8/8/8/4R3 w - -", "win"
+      = linked_miniboard "Long side blunder", "4k3/R7/5K2/5P2/8/8/8/5r2 w - -", "win"
+
+      = linked_miniboard "Frontal defense", "1r6/4k3/8/8/6PK/8/5R2/8 b - -", "draw"
+      = linked_miniboard "Rook pawn win", "K7/P4k2/8/8/8/4R3/8/1r6 w - -", "win"
+      = linked_miniboard "Isolated pawns", "8/8/R3Pk1K/7P/8/8/8/4r3 b - -", "draw"

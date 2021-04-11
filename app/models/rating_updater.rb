@@ -63,12 +63,12 @@ class RatingUpdater
       logger.info "#{@user_rating.user.username} - moves #{uci_moves}"
       logger.info "#{@user_rating.user.username} - time #{elapsed_time_ms / 1000.to_f}s"
       logger.info "puzzle #{@rated_puzzle.id} - #{@rated_puzzle.rating.round} -> #{puzzle_g2.rating.round} (#{@rated_puzzle.rating_deviation.round} -> #{puzzle_g2.rating_deviation.round})"
-      @user_rating.update_attributes!({
+      @user_rating.update!({
         rating: player_g2.rating,
         rating_deviation: player_g2.rating_deviation,
         rating_volatility: player_g2.volatility,
       })
-      @rated_puzzle.update_attributes!({
+      @rated_puzzle.update!({
         rating: puzzle_g2.rating,
         rating_deviation: puzzle_g2.rating_deviation,
         rating_volatility: puzzle_g2.volatility,

@@ -1,0 +1,11 @@
+.puzzle-page.container
+  - if current_user
+    h2 Infinity puzzles you've solved recently
+
+    .puzzles
+      - @puzzles.each_with_index do |puzzle, i|
+        div
+          = linked_puzzle_miniboard(puzzle)
+          .puzzle-num= i + 1
+  - else
+    div Log in or sign up to view the recent puzzles you've seen!

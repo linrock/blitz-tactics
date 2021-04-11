@@ -1,5 +1,3 @@
-# countdown mode puzzles
-
 class GameModes::CountdownController < ApplicationController
 
   def index
@@ -7,7 +5,7 @@ class GameModes::CountdownController < ApplicationController
   end
 
   # json endpoint for fetching puzzles on initial pageload
-  def puzzles
+  def puzzles_json
     countdown_level = CountdownLevel.todays_level
     render json: {
       level_name: countdown_level.name,

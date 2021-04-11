@@ -1,14 +1,13 @@
 // fetches puzzles from the server, handles player moves,
 // and emits move events (move:success, move:almost, move:fail)
 
+import { ShortMove, Move } from 'chess.js'
 import _ from 'underscore'
-import Backbone from 'backbone'
 
-import { ChessMove, Puzzle } from '../../types'
-import { uciToMove, moveToUci } from '../../utils'
-import { fetchPuzzles } from '../../api/requests'
-import { dispatch, subscribe } from '../../store'
-import { PuzzleSourceOptions } from './index'
+import { fetchPuzzles } from '@blitz/api/requests'
+import { dispatch, subscribe } from '@blitz/events'
+import { InitialMove, Puzzle, UciMove } from '@blitz/types'
+import { uciToMove, moveToUci } from '@blitz/utils'
 import Puzzles from './puzzles'
 
 // source:changed
@@ -22,6 +21,8 @@ import Puzzles from './puzzles'
 // move:success
 // move:fail
 
+// delay (ms) before opponent's first move is played at the start of puzzles
+const FIRST_MOVE_DELAY = 300
 const responseDelay = 0
 
 export interface PuzzleState {
@@ -29,16 +30,24 @@ export interface PuzzleState {
   puzzle?: Puzzle,
 }
 
-export default class PuzzleSource<PuzzleSourceInterface> {
+export interface PuzzleSourceOptions {
+  shuffle?: boolean,
+  loopPuzzles?: boolean,
+  mode?: string,
+  source?: string,
+}
+
+export default class PuzzleSource {
   private i = 0
   private puzzles = new Puzzles()
   private started = false
   private shuffle = false
   private loopPuzzles = false
+  private firstMoveT: number | undefined
   private current: PuzzleState = {}
   private mode: string
 
-  // options - shuffle, loopPuzzles, source
+  // options - shuffle, loopPuzzles, source, mode
   constructor(options: PuzzleSourceOptions = {}) {
     this.shuffle = options.shuffle
     this.loopPuzzles = options.loopPuzzles
@@ -62,18 +71,27 @@ export default class PuzzleSource<PuzzleSourceInterface> {
         })
         this.nextPuzzle()
       },
+      'puzzle:get_hint': () => {
+        const hints: string[] = []
+        _.each(_.keys(this.current.boardState), (move: UciMove) => {
+          if (this.current.boardState[move] !== `retry`) {
+            hints.push(move)
+          }
+        })
+        dispatch('puzzle:hint', _.sample(hints));
+      },
       'move:try': move => this.tryUserMove(move),
     })
   }
 
-  private fetchPuzzles(source) {
+  private fetchPuzzles(source: string) {
     fetchPuzzles(source).then(data => {
       dispatch(`puzzles:fetched`, data.puzzles)
       dispatch(`config:init`, data)
     })
   }
 
-  private fetchAndAddPuzzles(source) {
+  private fetchAndAddPuzzles(source: string) {
     fetchPuzzles(source).then(data => dispatch(`puzzles:added`, data.puzzles))
   }
 
@@ -104,12 +122,12 @@ export default class PuzzleSource<PuzzleSourceInterface> {
     }
   }
 
-  // should make this one type of move
-  private getInitialMoveSan(move): string|ChessMove {
+  // TODO should make this one type of move
+  private getInitialMoveSan(move: InitialMove): string | ShortMove {
     if (move.san) {
       return move.san
     } else {
-      return move.uci ? uciToMove(move.uci) : uciToMove(move)
+      return move.uci ? uciToMove(move.uci) : uciToMove(move as any) // TODO
     }
   }
 
@@ -119,25 +137,23 @@ export default class PuzzleSource<PuzzleSourceInterface> {
       boardState: Object.assign({}, puzzle.lines),
       puzzle,
     }
+    clearTimeout(this.firstMoveT)
     dispatch(`puzzle:loaded`, this.current)
     dispatch(`board:flipped`, !!puzzle.fen.match(/ w /))
     dispatch(`fen:set`, puzzle.fen)
-    setTimeout(() => {
+    this.firstMoveT = window.setTimeout(() => {
       const move = this.getInitialMoveSan(puzzle.initialMove)
       dispatch(`move:make`, move, { opponent: true })
       dispatch(`move:sound`, move)
-    }, 500)
+      this.firstMoveT = undefined
+    }, FIRST_MOVE_DELAY)
   }
 
-  private tryUserMove(move: ChessMove) {
+  private tryUserMove(move: Move) {
     if (!this.started) {
       this.started = true
       dispatch(`puzzles:start`)
     }
-    this.handleUserMove(move)
-  }
-
-  private handleUserMove(move: ChessMove) {
     const attempt = this.current.boardState[moveToUci(move)]
     if (attempt === `win`) {
       dispatch(`move:success`)
@@ -153,7 +169,7 @@ export default class PuzzleSource<PuzzleSourceInterface> {
       dispatch(`move:almost`, move)
       return
     }
-    const response = _.keys(attempt)[0]
+    const response = attempt ? Object.keys(attempt)[0] : null
     if (!response) {
       dispatch(`move:fail`, move)
       return

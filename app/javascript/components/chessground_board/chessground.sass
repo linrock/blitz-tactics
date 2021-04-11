@@ -1,0 +1,123 @@
+.chessground-board
+  position: relative
+
+.cg-wrap
+  position: relative
+  display: block
+  width: 100%
+  height: 100%
+
+cg-helper
+  position: absolute
+  width: 12.5%
+  padding-bottom: 12.5%
+  display: table // hack: round to full pixel size in chrome
+  bottom: 0
+
+cg-container
+  position: absolute
+  width: 800%
+  height: 800%
+  display: block
+  bottom: 0
+
+cg-board
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+  line-height: 0
+  background-size: cover
+  cursor: pointer
+
+  square
+    position: absolute
+    top: 0
+    left: 0
+    width: 12.5%
+    height: 12.5%
+    pointer-events: none
+
+    &.last-move
+      will-change: transform
+
+.cg-wrap piece
+  position: absolute
+  top: 0
+  left: 0
+  width: 12.5%
+  height: 12.5%
+  background-size: cover
+  z-index: 2
+  will-change: transform
+  pointer-events: none
+
+cg-board
+  piece.dragging
+    cursor: move
+    z-index: 9
+  piece.anim
+    z-index: 8
+  piece.fading
+    z-index: 1
+    opacity: 0.5
+
+.cg-wrap
+  piece.ghost
+    opacity: 0.15
+
+  svg
+    overflow: hidden
+    position: relative
+    top: 0px
+    left: 0px
+    width: 100%
+    height: 100%
+    pointer-events: none
+    z-index: 2
+    opacity: 0.6
+
+  svg image
+    opacity: 0.5
+
+  coords
+    position: absolute
+    display: flex
+    pointer-events: none
+    user-select: none
+    opacity: 0.8
+    font-family: Orbitron, Arial, sans-serif
+    font-size: 12px;
+
+    &.ranks
+      left: 3px
+      top: -20px
+      flex-flow: column-reverse
+      height: 100%
+      width: 12px
+
+    &.ranks.black
+      flex-flow: column
+
+    &.files
+      bottom: -2px
+      left: 21px
+      flex-flow: row
+      width: 100%
+      height: 16px
+      text-transform: uppercase
+      text-align: center
+
+    &.files.black
+      flex-flow: row-reverse
+
+    & coord
+      flex: 1 1 auto
+
+    &.ranks coord
+      transform: translateY(39%)

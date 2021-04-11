@@ -8,11 +8,7 @@
    ).include?(@route[:path]) %>
 
 <% content_for(:position_trainer) do %>
-  <div class="instructions invisible"></div>
-  <%= render partial: "puzzle_player/board_area" %>
-  <div class="actions">
-    <button class="button restart">Reset position</button>
-  </div>
+  <div class="vue-app-mount"></div>
 <% end %>
 
 <% if has_description %>

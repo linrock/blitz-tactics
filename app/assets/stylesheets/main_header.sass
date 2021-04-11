@@ -1,0 +1,76 @@
+@import "_variables"
+
+.main-header 
+  $main-header-height: 40px
+
+  height: $main-header-height
+  background: #121212
+  width: 100%
+  text-transform: uppercase
+
+  .container
+    align-items: center
+    display: flex
+    height: 100%
+
+  .logo 
+    color: #6D6D6D
+    font-size: 12px
+    font-weight: bold
+    font-family: $combo-indicator-font
+    line-height: $main-header-height + 2px
+    letter-spacing: 1.5px
+    margin-right: auto
+
+    &:hover 
+      color: #ffe800
+    
+    i 
+      font-size: 15px
+      margin-right: 5px
+
+    svg
+      width: 8px
+      position: relative
+      top: 1px
+      margin-right: 7px
+
+    .large 
+      font-size: 16px
+
+  a 
+    color: #6D6D6D
+    text-decoration: none
+    font-size: 11px
+    line-height: $main-header-height
+    letter-spacing: 0.5px
+    transition: color 0.15s ease
+
+    &:hover 
+      color: #e0e0e0
+
+  .link-right 
+    height: $main-header-height
+    line-height: $main-header-height
+    padding: 0 3px
+    margin-left: 22px
+    display: flex
+    align-items: center
+
+    svg
+      width: 16px
+      height: 16px
+
+  .user-link
+    font-weight: bold
+
+  .sign-in 
+    color: rgba(255,255,255,0.75)
+
+    svg
+      width: 11px
+      margin-right: 6px
+
+    span
+      height: 16px
+      line-height: 16px

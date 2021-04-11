@@ -1,0 +1,76 @@
+@import "../../../assets/stylesheets/_variables"
+@import "../base"
+
+.speedrun-mode
+  .speedrun-sidebar
+    margin-top: $above-board-height
+    margin-left: 30px
+    display: flex
+    flex-direction: column
+    justify-content: space-evenly
+
+    .speedrun-instructions
+      font-size: 17px
+      width: 150px
+      display: flex
+
+      .sidebar-label
+        margin-bottom: 20px
+
+      [data-name]
+        opacity: 0.3
+        padding: 8px 0
+        transition: all 0.2s ease
+        user-select: none
+
+        &:not(.selected):hover
+          cursor: pointer
+          opacity: 0.5
+
+      .selected
+        opacity: 1
+
+        &.quick
+          color: #00ccff
+
+        &.endurance
+          color: #ffcc00
+
+        &.marathon
+          color: #ff3f00
+
+      .n-puzzles
+        width: 100px
+        margin-top: 20px
+
+    .make-a-move
+      line-height: 26px
+      opacity: 0.7
+
+    .timers
+      height: 100%
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: space-evenly
+
+      .timer
+        font-size: 40px
+        transition: all 0.1s ease
+        margin-bottom: 20px
+
+        &.stopped
+          opacity: 0.3
+
+        &.complete
+          color: #ffff00
+
+      .description
+        font-size: 16px
+
+      &.current-run .description
+        opacity: 0.7
+
+  .blue-button
+    font-size: 18px
+    text-align: center

@@ -45,7 +45,7 @@ class UserInfinityPuzzles
 
   def latest_difficulty
     if @user.present?
-      @user.solved_infinity_puzzles.last&.difficulty || 'easy'
+      @user.solved_infinity_puzzles.most_recent_last.last&.difficulty || 'easy'
     else
       'easy'
     end
@@ -59,7 +59,7 @@ class UserInfinityPuzzles
     if @user.present?
       # last solved infinity puzzle for logged-in users
       @user.solved_infinity_puzzles
-        .with_difficulty(difficulty).last&.infinity_puzzle_id
+        .with_difficulty(difficulty).most_recent_last.last&.infinity_puzzle_id
     else
       # random sample of puzzle set for anonymous users
       infinity_level(difficulty).random_puzzle_id

@@ -38,7 +38,9 @@ class Scoreboard
   # past 24 hours
 
   def recent_scores?
-    top_infinity_recent.present? or top_haste_scores_recent.present?
+    top_infinity_recent.present? or
+    top_haste_scores_recent.present? or
+    top_three_scores_recent.present?
   end
 
   def top_infinity_recent
@@ -50,6 +52,10 @@ class Scoreboard
 
   def top_haste_scores_recent
     @top_haste_scores_recent ||= CompletedHasteRound.high_scores(@recent_time)
+  end
+
+  def top_three_scores_recent
+    @top_three_scores_recent ||= CompletedThreeRound.high_scores(@recent_time)
   end
 
   def top_repetition_recent

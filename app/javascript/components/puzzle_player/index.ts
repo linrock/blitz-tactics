@@ -1,17 +1,13 @@
-import InteractiveBoard from '../interactive_board'
+import { subscribe } from '@blitz/events'
+import { trackEvent } from '@blitz/utils'
+import ChessgroundBoard from '../chessground_board'
+import MoveStatus from '../move_status'
 import ComboCounter from './views/combo_counter'
 import Instructions from './views/instructions'
 import PuzzleHint from './views/puzzle_hint'
-import PuzzleSource from './puzzle_source'
-import { subscribe } from '../../store'
-import { trackEvent } from '../../utils'
+import PuzzleSource, { PuzzleSourceOptions } from './puzzle_source'
 
-export interface PuzzleSourceOptions {
-  shuffle?: boolean,
-  loopPuzzles?: boolean,
-  mode?: string,
-  source?: string,
-}
+import './style.sass'
 
 interface PuzzlePlayerOptions extends PuzzleSourceOptions {
   noHint?: boolean,
@@ -19,12 +15,14 @@ interface PuzzlePlayerOptions extends PuzzleSourceOptions {
   noCombo?: boolean,
 }
 
+/** The puzzle player used in the various game modes */
 export default class PuzzlePlayer {
   constructor(options: PuzzlePlayerOptions = {}) {
     new PuzzleSource(options)
 
     // views
-    new InteractiveBoard(options)
+    new ChessgroundBoard
+    new MoveStatus
     new Instructions
     if (!options.noCounter) {
       new ComboCounter

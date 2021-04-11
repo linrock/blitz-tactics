@@ -1,19 +1,20 @@
-declare var blitz: any
+import { UciMove, BlitzConfig } from './types'
+import { ShortMove, Square } from 'chess.js'
 
-import { UciMove, ChessMove } from './types'
+declare var blitz: BlitzConfig
 
-const uciToMove = (uci: UciMove): ChessMove => {
-  const m: ChessMove = {
-    from: uci.slice(0,2),
-    to: uci.slice(2,4)
+export const uciToMove = (uci: UciMove): ShortMove => {
+  const m: ShortMove = {
+    from: (uci.slice(0,2) as Square),
+    to: (uci.slice(2,4) as Square)
   }
   if (uci.length === 5) {
-    m.promotion = uci[4]
+    m.promotion = uci[4] as 'n' | 'b' | 'r' | 'q' | 'k'
   }
   return m
 }
 
-const moveToUci = (move: ChessMove): UciMove => {
+export const moveToUci = (move: ShortMove): UciMove => {
   if (move.promotion) {
     return `${move.from}${move.to}${move.promotion}`
   } else {
@@ -21,20 +22,20 @@ const moveToUci = (move: ChessMove): UciMove => {
   }
 }
 
-const shuffle = (original: Array<any>): Array<any> => {
-  const array = original.slice(0)
-  let counter = array.length
+export const shuffle = (originalArray: any[]): any[] => {
+  const shuffledArray = originalArray.slice(0)
+  let counter = shuffledArray.length
   while (counter > 0) {
     let index = Math.floor(Math.random() * counter)
     counter--
-    let temp = array[counter]
-    array[counter] = array[index]
-    array[index] = temp
+    let temp = shuffledArray[counter]
+    shuffledArray[counter] = shuffledArray[index]
+    shuffledArray[index] = temp
   }
-  return array
+  return shuffledArray
 }
 
-const getQueryParam = (param: string): string => {
+export const getQueryParam = (param: string): string => {
   let query = window.location.search.substring(1)
   let vars = query.split('&')
   for (let i = 0; i < vars.length; i++) {
@@ -45,15 +46,20 @@ const getQueryParam = (param: string): string => {
   }
 }
 
-const getConfig = (param: string): string => {
-  let query = getQueryParam(param)
+// blitz config options can be overriden using query params
+export const getConfig = (param: (keyof BlitzConfig) | string): string => {
+  const query = getQueryParam(param as string)
   if (blitz.position) {
+    // Positions can be set from query params
     return blitz.position[param] || query
   }
   return query
 }
 
-const formattedTime = (milliseconds: number): string => {
+// Outputs minutes and seconds and centiseconds
+// Example: 7,500ms  = 7.5s     = 0:07.5
+// Example: 80,000ms = 1min 20s = 1:20.0
+export const formattedTime = (milliseconds: number): string => {
   const centisecondsStr = ("" + milliseconds % 1000)[0]
   const seconds = ~~( milliseconds / 1000 )
   const secondsStr = ("0" + (seconds % 60)).slice(-2)
@@ -61,14 +67,16 @@ const formattedTime = (milliseconds: number): string => {
   return `${minutes}:${secondsStr}.${centisecondsStr}`
 }
 
-const formattedTimeSeconds = (milliseconds: number): string => {
+// Outputs minutes and seconds
+// Example: 7,500ms  = 7.5s     = 0:07
+export const formattedTimeSeconds = (milliseconds: number): string => {
   const seconds = ~~( milliseconds / 1000 )
   const secondsStr = ("0" + (seconds % 60)).slice(-2)
   const minutes = ~~( seconds / 60 )
   return `${minutes}:${secondsStr}`
 }
 
-const trackEvent = (event, category, label): void => {
+export const trackEvent = (event: string, category: string, label: string): void => {
   const gtag = (<any>window).gtag
   if (gtag) {
     gtag('event', event, {
@@ -78,15 +86,4 @@ const trackEvent = (event, category, label): void => {
   } else {
     console.log(`event: ${event}, category: ${category}, label: ${label}`)
   }
-}
-
-export {
-  uciToMove,
-  moveToUci,
-  shuffle,
-  getQueryParam,
-  getConfig,
-  formattedTime,
-  formattedTimeSeconds,
-  trackEvent,
 }

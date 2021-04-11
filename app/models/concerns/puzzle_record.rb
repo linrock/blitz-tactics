@@ -26,12 +26,26 @@ module PuzzleRecord
       initial_move["uci"]
     end
 
+    def initial_move_san
+      initial_move["san"]
+    end
+
     def lines
       data["lines"]
     end
 
     def as_json(options = {})
-      data.merge(id: id)
+      if options[:lichess_puzzle_id]
+        data.merge(id: data["id"])
+      else
+        data.merge(id: id)
+      end
+    end
+
+    # a way to uniquely-identify puzzles based on the moves in the puzzle
+    def calculate_puzzle_hash
+      puzzle_data = data.slice("fen", "initialMove", "lines")
+      Digest::MD5.hexdigest puzzle_data.to_json
     end
 
     private
@@ -52,8 +66,7 @@ module PuzzleRecord
     end
 
     def calculate_and_set_puzzle_hash
-      puzzle_data = data.slice("fen", "initialMove", "lines")
-      self.puzzle_hash = Digest::MD5.hexdigest puzzle_data.to_json
+      self.puzzle_hash = calculate_puzzle_hash
     end
   end
 end

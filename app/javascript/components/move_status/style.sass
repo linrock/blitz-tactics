@@ -1,0 +1,48 @@
+@import "../../../assets/stylesheets/_colors"
+@import "../../../assets/stylesheets/_variables"
+
+// perfect, great, good, etc.
+.move-status 
+  opacity: 1
+  font-family: $combo-indicator-font
+  font-size: 32px
+  width: 100%
+  position: absolute
+  top: 20px
+  text-align: center
+  text-transform: uppercase
+  transform: scale3d(1,1,1)
+  transition: opacity 0.02s ease
+
+  &.fade-out 
+    opacity: 0
+    transform: scale3d(0.92,0.92,1)
+    transition: opacity 0.9s ease-out 0.2s, transform 0.05s ease-in-out
+
+  .perfect 
+    color: $move-perfect
+    font-weight: 600
+    letter-spacing: 3px
+    font-size: 40px
+
+  .great 
+    color: $move-great
+    font-weight: 600
+    letter-spacing: 3px
+    font-size: 38px
+
+  .good 
+    color: $move-good
+    font-weight: 600
+    letter-spacing: 3px
+    font-size: 38px
+
+  .almost 
+    color: $move-almost
+    position: relative
+    top: 12px
+
+  .fail 
+    color: $move-fail
+    position: relative
+    top: 12px

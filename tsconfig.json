@@ -4,13 +4,13 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es2017", "dom"],
+    "lib": ["es2020", "dom"],
     "module": "es6",
     "moduleResolution": "node",
-    "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "app/javascript/*"]
+      "*": ["node_modules/*", "app/javascript/*"],
+      "@blitz/*": ["app/javascript/*"]
     },
     "sourceMap": true,
     "target": "es5"

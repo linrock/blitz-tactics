@@ -1,0 +1,95 @@
+@import "../../../assets/stylesheets/_colors"
+
+.customize-board
+  // customize board
+  h2
+    font-size: 18px
+
+  // click on any square to customize its color
+  h3
+    margin: 8px 0
+    opacity: 0.5
+
+  // board squares, opponent's move, selected square
+  h4
+    font-size: 15px
+    margin-bottom: 10px
+
+  .chessground-board
+    width: 480px
+    height: 480px
+
+  .custom-board
+    margin-top: 25px
+    display: flex
+
+    .chessboard .square
+      transition: none
+
+    .right
+      display: block
+      margin-left: 20px
+
+    .squares
+      display: flex
+      margin-bottom: 25px
+
+    // contains colorpicker, square, color text input
+    .square-color
+      position: relative
+
+      // color picker container style
+      .color-picker
+        position: absolute
+        right: 75px
+        background: black
+        padding: 6px
+        z-index: 1
+
+      // preview square
+      .square
+        margin-right: 10px
+        width: 60px
+        height: 60px
+
+        &:hover
+          cursor: pointer
+
+      input
+        width: 60px
+        border: 0
+        float: left
+        font-size: 12px
+        padding: 5px 0
+        color: #aeaeae
+        background: none
+        text-align: center
+
+        &:focus
+          color: white
+
+    .action-buttons
+      margin-top: 28px
+
+    button
+      color: white
+      font-size: 14px
+      display: block
+      width: 120px
+      text-align: center
+      text-decoration: none
+      transition: opacity 0.25s ease
+      margin-bottom: 5px
+      border: 0
+      border-radius: 3px
+      padding: 7px 0
+
+      &:hover
+        background: #51B7FF
+        cursor: pointer
+
+      &.gray
+        background: #555
+
+      &.blue
+        background: $blue-button-bg

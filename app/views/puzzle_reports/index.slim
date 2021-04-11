@@ -1,0 +1,13 @@
+.puzzle-reports-list.container
+  - @puzzle_reports.each do |puzzle_report|
+    .puzzle-report-summary
+      a.puzzle-link(href="/p/#{puzzle_report.puzzle_id}")
+        | Puzzle #{puzzle_report.puzzle_id}
+      .puzzle-report-message
+        span= puzzle_report.user.username
+        span>
+          | :
+        span.puzzle-report-message= puzzle_report.message
+      .puzzle-report-timestamp
+        = time_ago_in_words(puzzle_report.updated_at)
+        span< ago

@@ -10,7 +10,7 @@
     <%= link_to "Sign up", https_registration_url %><br />
   <% end -%>
 
-  <%- if false and devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+  <%- if false && devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
     <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
   <% end -%>
 

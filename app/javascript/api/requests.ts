@@ -1,14 +1,12 @@
 import client from './client'
+import { InfinityPuzzleSolved } from '../game_modes/infinity'
+import { Puzzle } from '../types'
 
-export function updateLevel(levelSlug, data) {
-  return client.put(`/${levelSlug}`, data).then(resp => resp.data)
-}
-
-export function infinityPuzzleSolved(puzzle) {
+export async function infinityPuzzleSolved(puzzle: InfinityPuzzleSolved) {
   return client.post(`/infinity/puzzles`, { puzzle }).then(resp => resp.data)
 }
 
-export function repetitionLevelAttempted(levelPath, elapsedTimeMs) {
+export async function repetitionLevelAttempted(levelPath: string, elapsedTimeMs: number) {
   const params = {
     round: {
       elapsed_time_ms: elapsedTimeMs
@@ -17,11 +15,11 @@ export function repetitionLevelAttempted(levelPath, elapsedTimeMs) {
   return client.post(`${levelPath}/attempt`, params)
 }
 
-export function repetitionLevelCompleted(levelPath) {
+export async function repetitionLevelCompleted(levelPath: string) {
   return client.post(`${levelPath}/complete`).then(resp => resp.data)
 }
 
-export function speedrunCompleted(levelName, elapsedTimeMs) {
+export async function speedrunCompleted(levelName: string, elapsedTimeMs: number) {
   const params = {
     speedrun: {
       level_name: levelName,
@@ -31,7 +29,7 @@ export function speedrunCompleted(levelName, elapsedTimeMs) {
   return client.post(`/speedrun`, params).then(resp => resp.data)
 }
 
-export function countdownCompleted(levelName, score) {
+export async function countdownCompleted(levelName: string, score: number) {
   const params = {
     countdown: {
       level_name: levelName,
@@ -41,7 +39,7 @@ export function countdownCompleted(levelName, score) {
   return client.post(`/countdown`, params).then(resp => resp.data)
 }
 
-export function hasteRoundCompleted(score) {
+export async function hasteRoundCompleted(score: number) {
   const params = {
     haste: {
       score,
@@ -50,7 +48,16 @@ export function hasteRoundCompleted(score) {
   return client.post(`/haste`, params).then(resp => resp.data)
 }
 
-export function ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs) {
+export async function threeRoundCompleted(score: number) {
+  const params = {
+    three: {
+      score,
+    }
+  }
+  return client.post(`/three`, params).then(resp => resp.data)
+}
+
+export async function ratedPuzzleAttempted(puzzleId: number, uciMoves: any[], elapsedTimeMs: number) {
   const params = {
     puzzle_attempt: {
       id: puzzleId,
@@ -61,11 +68,11 @@ export function ratedPuzzleAttempted(puzzleId, uciMoves, elapsedTimeMs) {
   return client.post(`/rated/attempts`, params).then(resp => resp.data)
 }
 
-export function fetchPuzzles(source) {
+export async function fetchPuzzles(source: string): Promise<{ puzzles: Puzzle[] }> {
   return client.get(source).then(resp => resp.data)
 }
 
-export function toggleSound(enabled) {
+export async function toggleSound(enabled: boolean) {
   const params = {
     settings: {
       sound_enabled: enabled,

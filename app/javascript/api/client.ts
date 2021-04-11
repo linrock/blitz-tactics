@@ -1,8 +1,4 @@
-import axios from 'axios'
-import {
-  AxiosRequestConfig,
-  AxiosPromise,
-} from 'axios'
+import axios, { AxiosRequestConfig, AxiosPromise } from 'axios'
 
 const headersWithCsrfToken = (): AxiosRequestConfig => {
   const token: string = document
@@ -15,25 +11,17 @@ const headersWithCsrfToken = (): AxiosRequestConfig => {
   }
 }
 
-class APIClient {
-
-  get(path): AxiosPromise {
+export default {
+  get(path: string): AxiosPromise {
     return axios.get(path)
-  }
-
-  post(path, data = {}): AxiosPromise {
+  },
+  post(path: string, data = {}): AxiosPromise {
     return axios.post(path, data, headersWithCsrfToken())
-  }
-
-  put(path, data): AxiosPromise {
+  },
+  put(path: string, data): AxiosPromise {
     return axios.put(path, data, headersWithCsrfToken())
-  }
-
-  patch(path, data): AxiosPromise {
+  },
+  patch(path: string, data): AxiosPromise {
     return axios.patch(path, data, headersWithCsrfToken())
   }
 }
-
-const api = new APIClient
-
-export default api

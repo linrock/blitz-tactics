@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :completed_speedruns
   has_many :completed_countdown_levels
   has_many :completed_haste_rounds
+  has_many :completed_three_rounds
   has_many :completed_repetition_rounds
   has_many :completed_repetition_levels
   has_many :positions
@@ -74,6 +75,12 @@ class User < ActiveRecord::Base
 
   def num_haste_rounds_completed
     @num_haste_rounds_completed ||= completed_haste_rounds.count
+  end
+
+  # three mode methods
+
+  def num_three_rounds_completed
+    @num_three_rounds_completed ||= completed_three_rounds.count
   end
 
   # countdown mode methods

@@ -1,0 +1,8 @@
+.puzzle-page.container
+  h2 Today's speedrun puzzles
+
+  .puzzles
+    - @puzzles.each_with_index do |puzzle, i|
+      div
+        = linked_puzzle_miniboard(puzzle)
+        .puzzle-num= i + 1

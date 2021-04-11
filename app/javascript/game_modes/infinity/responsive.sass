@@ -1,0 +1,24 @@
+@media (max-aspect-ratio: 11/16)
+  .infinity-mode .infinity-sidebar
+    width: 100vw
+    margin: 0 !important
+    padding: 20px
+    flex-direction: row
+
+    .sidebar-label
+      width: 180px
+      margin-bottom: 0
+
+    .difficulties
+      display: flex
+      align-items: center
+
+      [data-difficulty]
+        padding: 5px 20px 5px 0
+
+        &:last-child
+          padding-right: 0
+
+    .stats
+      display: flex
+      align-items: center

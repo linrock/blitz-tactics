@@ -1,0 +1,52 @@
+- content_for(:title) { "#{@level.display_name} | Repetition mode" }
+
+section.game-mode.repetition-mode(data-level="#{@level.path}")
+  .progress-bar
+    .progress
+  .main
+    .board-area-container
+      = render partial: "puzzle_player/above_board"
+      .board-area
+        .chessground-board
+          .piece-promotion-modal-container
+          .chessground
+          .board-modal-container.invisible(style="display: none")
+      .under-board
+        label.level-name
+          - if @level
+            = @level.display_name
+          - elsif (title = local_assigns[:title])
+            = title
+
+        - if !user_signed_in? && @level.id == 1
+          .onboarding Solve puzzles quickly and accurately to unlock the next level
+
+        - if (next_level = @level&.next_level)
+          .next-stage.invisible.container(class="#{user_signed_in? ? '' : 'anonymous'}")
+            .left
+              | You've unlocked the next level!
+              - if !user_signed_in?
+                .small
+                  | Sign up to save your progress, or continue to Level #{next_level.number}
+            .right
+              - if !user_signed_in?
+                a.blue-button(href="#{https_registration_url}") Sign up
+              a.blue-button(href="#{next_level.path}")
+                | Level #{next_level.number}
+                svg(style="height: 12px")
+                  use(xlink:href="#chevron-right")
+
+    aside.sidebar
+      .times
+        .timer
+        .laps
+          - @formatted_round_times.each do |time_elapsed|
+            div= time_elapsed
+
+      .high-scores.invisible
+        h2 Fastest rounds
+        .scores
+          - @high_scores.each do |user, time|
+            .high-score
+              .time= time
+              .player= user_link(user)

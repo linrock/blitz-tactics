@@ -1,0 +1,79 @@
+@import "../../../assets/stylesheets/_variables"
+
+.repetition-mode 
+
+  .main
+    display: flex
+    justify-content: center
+
+  .chessboard, .chessground-board
+    width: $board-size
+    height: $board-size
+
+  .sidebar
+    margin: 125px 0 0 12px
+    text-align: right
+    width: 195px
+
+    .times
+      width: 35px
+      font-size: 14px
+      line-height: 20px
+      height: 5 * 20px
+      margin-bottom: 40px
+      overflow: hidden
+
+      .timer
+        opacity: 0.9
+
+      .laps
+        opacity: 0.3
+
+    // fastest 5 players
+    .high-scores
+      font-size: 14px
+
+      // fastest lap times
+      h2
+        text-align: left
+        margin-left: 50px
+        opacity: 0.3
+
+      .high-score
+        display: flex
+        margin: 10px 0
+
+        .time
+          width: 35px
+
+        .player
+          margin-left: 15px
+          opacity: 0.5
+
+          a
+            color: rgba(250, 250, 250, 0.8)
+            text-decoration: none
+
+            &:hover
+              color: rgba(250, 250, 250, 1)
+
+  // progress indicator under the main header for the current level
+  .progress-bar 
+    background: black
+    width: 100%
+    height: 3px
+
+    .progress 
+      background: yellow
+      width: 0
+      height: 100%
+      transition: width 0.5s ease-in-out, background 0.3s ease-in-out
+
+      &.complete 
+        width: 100%
+        background: #63F706
+
+  .next-stage
+    svg
+      margin-left: 5px
+      width: 10px

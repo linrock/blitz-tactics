@@ -1,0 +1,89 @@
+@import "../../../assets/stylesheets/_variables"
+
+.position-trainer 
+  margin: 0 auto 50px
+
+  // TODO consolidate these variables
+  $square-size-sm: 65px
+  $board-size-sm: 8 * $square-size-sm
+
+  .instructions 
+    font-weight: bold
+    text-shadow: 0 0 8px rgba(0,0,0,0.9)
+    text-align: center
+    margin: 40px auto
+    font-size: 25px
+    height: 25px
+    transition: all 0.35s ease-out
+
+  .chessground-board
+    margin: 0 auto
+    width: $board-size-sm
+    height: $board-size-sm
+
+  .cg-wrap
+    width: 100%
+    height: 100%
+
+  .actions 
+    margin-top: 30px
+    text-align: center
+
+    .dark-button
+      font-size: 14px
+      padding: 7px 16px
+      margin: 0 7px
+
+    .credits 
+      font-size: 14px
+      margin-left: 20px
+      color: #777
+
+      a 
+        color: inherit
+
+        &:hover 
+          color: white
+
+// position trainers with text on the right side
+
+.position-trainer.small 
+  $square-size: 50px
+  $small-board-size: 8 * $square-size
+
+  margin: 0 auto 50px
+
+  &.left-aligned
+    display: flex
+
+  .chessboard, .chessground-board
+    width: $small-board-size
+    height: $small-board-size
+
+  .chessground-board .cg-wrap coords
+    &.ranks
+      top: -15px
+    &.files
+      left: 16px
+
+  .right 
+    margin: 103px 20px 0 37px
+
+    h2 
+      margin-bottom: 20px
+
+    .description 
+      font-size: 14px
+      line-height: 21px
+      opacity: 0.5
+
+    .source 
+      font-size: 12px
+      margin-top: 15px
+      color: rgba(255, 255, 255, 0.6)
+
+      a 
+        color: inherit
+
+        &:hover 
+          color: rgba(255, 255, 255, 0.8)

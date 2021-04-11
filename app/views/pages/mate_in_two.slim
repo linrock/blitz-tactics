@@ -1,0 +1,10 @@
+- content_for(:title) { "Mate-in-2 puzzles" }
+
+.positions-index.container
+  h2 Mate-in-2 puzzles
+  .positions
+    .description These puzzles were created by chess composer W J Baird over 100 years ago!
+
+    .examples
+      - open(Rails.root.join("db/wj-baird-checkmates.txt"), "r").read.split(/\n/).each_with_index do |fen, i|
+        = linked_miniboard "Study #{i+1}", fen, "win"

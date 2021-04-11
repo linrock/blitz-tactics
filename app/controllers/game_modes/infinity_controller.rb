@@ -8,11 +8,26 @@ class GameModes::InfinityController < ApplicationController
   end
 
   # json endpoint for fetching puzzles
-  def puzzles
+  def puzzles_json
     render json: @user.next_infinity_puzzle_set(
       params[:difficulty],
       params[:after_puzzle_id]
     )
+  end
+
+  # shows a list of puzzles you've seen recently
+  def puzzles
+    if current_user
+      solved_puzzle_ids = @user.solved_infinity_puzzles.
+        order('id DESC').limit(30).
+        includes(:infinity_puzzle).
+        map do |solved|
+          solved.infinity_puzzle.data['id']
+        end
+      @puzzles = Puzzle.find_by_sorted(solved_puzzle_ids)
+    else
+      @puzzles = []
+    end
   end
 
   # notifying server of status updates in infinity mode

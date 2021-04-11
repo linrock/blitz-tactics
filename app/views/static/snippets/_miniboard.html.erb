@@ -1,11 +1,17 @@
 <% fen = local_assigns[:fen] %>
 <% initial_move = local_assigns[:initial_move] %>
+<% initial_move_san = local_assigns[:initial_move_san] %>
 <% flip = local_assigns[:flip] || false %>
 
 <div class="mini-chessboard"
      data-fen="<%= fen %>"
      data-flip="<%= flip %>"
-     data-initial-move="<%= initial_move %>">
+   <% if initial_move_san %>
+     data-initial-move-san="<%= initial_move_san %>"
+   <% elsif initial_move %>
+     data-initial-move="<%= initial_move %>"
+   <% end %>
+>
   <% polarity = %w( light dark ).cycle %>
   <% rows = (1..8).to_a.reverse %>
   <% cols = ('a'..'h').to_a %>

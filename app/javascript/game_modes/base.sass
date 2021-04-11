@@ -1,0 +1,30 @@
+@import "../../assets/stylesheets/_variables"
+
+.game-mode
+  $board-size: 496px
+
+  .container
+    display: flex
+
+  .vue-app-mount
+    display: flex
+    width: 100%
+
+  .above-board
+    width: $board-size
+    margin: 0
+
+  .board-area, .chessground-board
+    width: $board-size
+    height: $board-size
+    margin: 0 auto
+
+  // the overlay over the chessboard that shows up at the end of the game
+  .board-modal-container
+    width: 100%
+    height: 100%
+    background: rgba(0,0,0,0.6)
+    position: absolute
+    left: 0
+    top: 0
+    z-index: 2

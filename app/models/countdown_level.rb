@@ -1,4 +1,6 @@
 class CountdownLevel < ActiveRecord::Base
+  LEVELS_DIR = Rails.root.join("data/countdowns")
+
   has_many :countdown_puzzles, dependent: :destroy
 
   def self.today
@@ -9,8 +11,9 @@ class CountdownLevel < ActiveRecord::Base
     today.strftime "%b %-d, %Y"
   end
 
+  # format of name (today.to_s): "2020-09-10"
   def self.todays_level
-    find_by(name: today.to_s)
+    find_or_create_by(name: today.to_s)
   end
 
   def self.yesterday
@@ -26,10 +29,16 @@ class CountdownLevel < ActiveRecord::Base
   end
 
   def puzzles
-    countdown_puzzles.order('id ASC')
+    # countdown_puzzles.order('id ASC')
+    json_data_filename = LEVELS_DIR.join("countdown-#{name}.json")
+    unless File.exists? json_data_filename
+      # TODO fix race condition where concurrent requests will trigger this
+      CountdownLevelCreator.export_puzzles_for_date(Date.strptime(name))
+    end
+    open(json_data_filename, 'r') { |f| JSON.parse(f.read) }
   end
 
   def first_puzzle
-    puzzles.first
+    Puzzle.find(puzzles.first["id"])
   end
 end

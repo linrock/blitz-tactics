@@ -1,0 +1,12 @@
+- content_for(:title) { "Speedrun mode" }
+
+section.game-mode.speedrun-mode
+  .container
+    .board-area-container
+      = render partial: "puzzle_player/above_board"
+      .board-area
+        .chessground-board
+          .piece-promotion-modal-container
+          .chessground
+          .board-modal-container.invisible(style="display: none")
+    .vue-app-mount

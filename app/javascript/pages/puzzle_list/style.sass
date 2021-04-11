@@ -1,0 +1,36 @@
+@import "../../../assets/stylesheets/_colors"
+
+body[data-controller=puzzles][data-action=index], body[data-action=puzzles]
+  .puzzle-page
+    margin-top: 30px
+
+  h2
+    margin-bottom: 15px
+
+  .puzzles
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    margin-bottom: 100px
+
+  .blank
+    width: 190px
+
+  .miniboard-link
+    margin: 20px 0
+
+    .mini-chessboard
+      width: 190px
+      height: 190px
+
+  .puzzle-info
+    position: relative
+    top: -10px
+    display: flex
+    justify-content: space-between
+
+    .puzzle-num
+      opacity: 0.5
+
+    .puzzle-mistake-info
+      color: $move-fail

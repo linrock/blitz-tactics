@@ -1,0 +1,182 @@
+section.homepage
+  .container
+    h2 Fast-paced chess puzzles. Choose a game mode to get started.
+
+  .game-modes-container
+    .mode.haste
+      h3
+        a(href="/haste") Haste
+      h4.game-mode-description
+        | Combos gain time. Mistakes lose time. New puzzles each run.
+      = homepage_miniboard_link("/haste", @haste_puzzle)
+      .under-mini-board
+        - if user_signed_in?
+          .your-best-times
+            | Best score today:
+            span.best-time<= @haste_best_score
+        .daily-level
+          | New puzzles each run
+
+    .mode.threes
+      h3
+        a(href="/three") Three
+      h4.game-mode-description
+        | Three minutes, three lives,
+        br
+        | three hints
+      = homepage_miniboard_link("/three", @rated_puzzle)
+      .under-mini-board
+        - if user_signed_in?
+          .your-best-times
+            | Best score today:
+            span.best-time<= @three_best_score
+        .daily-level
+          | New puzzles each run
+
+    .mode.countdown
+      h3
+        a(href="/countdown") Countdown
+      h4.game-mode-description
+        | Solve puzzles before time runs out. New level each day.
+      = homepage_miniboard_link("/countdown", @countdown_puzzle)
+      .under-mini-board
+        - if user_signed_in?
+          .your-best-times
+            | Best score today:
+            span.best-time<= @countdown_level_score
+
+        .daily-level
+          .next-day
+            | Next level in #{@hours_until_tomorrow} hours
+
+    .mode.speedrun
+      h3
+        a(href="/speedrun") Speedrun
+      h4.game-mode-description
+        | Solve a sequence of puzzles as quickly as you can.
+      = homepage_miniboard_link("/speedrun", @speedrun_puzzle)
+      .under-mini-board.speedrun
+        - if user_signed_in?
+          .your-best-times
+            | Best time today:
+            span.best-time<= @best_speedrun_time
+
+        .daily-level
+          .next-day
+            | Next speedrun in #{@hours_until_tomorrow} hours
+
+    .game-modes
+      - begin
+        .mode.rated
+          h3
+            a(href="/rated") Rated
+          h4.game-mode-description
+            | Solve puzzles quickly to gain more rating points.
+          = homepage_miniboard_link("/rated", @rated_puzzle)
+          .under-mini-board
+            .your-best-times
+              | Your rating: #{@user_rating}
+      - rescue
+
+    - if @infinity_puzzle
+      .mode.infinity
+        h3
+          a(href="/infinity") Infinity
+        h4.game-mode-description
+          | Play through endless puzzles. Set your own difficulty.
+        = homepage_miniboard_link("/infinity", @infinity_puzzle)
+        .under-mini-board
+          - if user_signed_in?
+            | You've solved #{current_user.num_infinity_puzzles_solved} puzzles
+          - else
+            a>(href="/users/sign_up") Sign up
+            | to track your progress
+
+    .mode.repetition
+        h3
+          a(href="#{@repetition_level.path}") Repetition
+          h4.game-mode-description
+            | Quickly solve puzzles without mistakes to unlock the next level.
+          = homepage_miniboard_link(@repetition_level.path, @repetition_level.first_puzzle)
+          .under-mini-board= @repetition_level.display_name
+
+  .container
+    .mini-scoreboard
+      - fastest_speedruns = @scoreboard.fastest_speedruns(SpeedrunLevel.yesterdays_level)
+      - countdown_high_scores = @scoreboard.countdown_high_scores(CountdownLevel.yesterdays_level)
+      - if fastest_speedruns.present? or countdown_high_scores.present?
+        .scores
+          h6 Yesterday
+          - if fastest_speedruns.present?
+            .fastest-speedruns.top-players
+              h5 Fastest speedruns
+              - fastest_speedruns.each do |user, formatted_time_spent|
+                .ranking
+                  .player-name= user_link(user)
+                  .stats= formatted_time_spent
+          - if countdown_high_scores.present?
+            .countdown-high-scores.top-players
+              h5 Countdown high scores
+              - countdown_high_scores.each do |user, high_score|
+                .ranking
+                  .player-name= user_link(user)
+                  .stats= high_score
+
+      - if @scoreboard.recent_scores?
+        .scores
+          h6 Past 24 hours
+          - if @scoreboard.top_haste_scores_recent.present?
+            .top-players
+              h5 Haste high scores
+              - @scoreboard.top_haste_scores_recent.each do |user, high_score|
+                .ranking
+                  .player-name= user_link(user)
+                  .stats= high_score
+
+          - if @scoreboard.top_three_scores_recent.present?
+            .top-players
+              h5 Three high scores
+              - @scoreboard.top_three_scores_recent.each do |user, puzzles_solved|
+                .ranking
+                  .player-name= user_link(user)
+                  .stats= puzzles_solved
+
+          - if @scoreboard.top_infinity_recent.present?
+            .top-infinity.top-players
+              h5 Most infinity puzzles solved
+              - @scoreboard.top_infinity_recent.each do |user, puzzles_solved|
+                .ranking
+                  .player-name= user_link(user)
+                  .stats= puzzles_solved
+
+      - fastest_speedruns = @scoreboard.fastest_speedruns(@speedrun_level)
+      - countdown_high_scores = @scoreboard.countdown_high_scores(@countdown_level)
+      - if fastest_speedruns.present? or countdown_high_scores.present?
+        .scores
+          h6 Today
+          - if fastest_speedruns.present?
+            .fastest-speedruns.top-players
+              h5 Fastest speedruns
+              - fastest_speedruns.each do |user, formatted_time_spent|
+                .ranking
+                  .player-name= user_link(user)
+                  .stats= formatted_time_spent
+
+          - if countdown_high_scores.present?
+            .countdown-high-scores.top-players
+              h5 Countdown high scores
+              - countdown_high_scores.each do |user, high_score|
+                .ranking
+                  .player-name= user_link(user)
+                  .stats= high_score
+
+  .bottom
+    .container
+      .updates
+        = render "./site_updates"
+
+        h6 Links
+        .update
+          a(href="https://discord.gg/uqqhXbd") Join the Discord channel
+        .update
+          a(href="/positions") Practice endgame positions

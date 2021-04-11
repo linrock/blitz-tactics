@@ -1,0 +1,14 @@
+<% if ENV["BUGSNAG_KEY"].present? %>
+  <script type="application/json" id="bugsnag-options-json">
+    {
+      "apiKey": "<%= ENV["BUGSNAG_KEY"] %>"<% if current_user %>,<% end %>
+      <% if current_user %>
+      "user": {
+        "id": <%= current_user.id %>,
+        "name": "<%= current_user.username %>"
+      }
+      <% end %>
+    }
+  </script>
+  <%= javascript_pack_tag 'bugsnag', async: true %>
+<% end %>

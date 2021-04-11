@@ -5,26 +5,13 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
@@ -233,6 +220,38 @@ CREATE SEQUENCE public.completed_speedruns_id_seq
 --
 
 ALTER SEQUENCE public.completed_speedruns_id_seq OWNED BY public.completed_speedruns.id;
+
+
+--
+-- Name: completed_three_rounds; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_three_rounds (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    score integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_three_rounds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_three_rounds_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_three_rounds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_three_rounds_id_seq OWNED BY public.completed_three_rounds.id;
 
 
 --
@@ -503,6 +522,74 @@ CREATE SEQUENCE public.positions_id_seq
 --
 
 ALTER SEQUENCE public.positions_id_seq OWNED BY public.positions.id;
+
+
+--
+-- Name: puzzle_reports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.puzzle_reports (
+    id bigint NOT NULL,
+    puzzle_id integer NOT NULL,
+    user_id integer NOT NULL,
+    message character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: puzzle_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.puzzle_reports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: puzzle_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.puzzle_reports_id_seq OWNED BY public.puzzle_reports.id;
+
+
+--
+-- Name: puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.puzzles (
+    id bigint NOT NULL,
+    puzzle_id character varying NOT NULL,
+    puzzle_data jsonb DEFAULT '{}'::jsonb NOT NULL,
+    metadata jsonb DEFAULT '{}'::jsonb NOT NULL,
+    notes text,
+    puzzle_data_hash character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.puzzles_id_seq OWNED BY public.puzzles.id;
 
 
 --
@@ -924,6 +1011,13 @@ ALTER TABLE ONLY public.completed_speedruns ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: completed_three_rounds id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_three_rounds ALTER COLUMN id SET DEFAULT nextval('public.completed_three_rounds_id_seq'::regclass);
+
+
+--
 -- Name: countdown_levels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -977,6 +1071,20 @@ ALTER TABLE ONLY public.levels ALTER COLUMN id SET DEFAULT nextval('public.level
 --
 
 ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.positions_id_seq'::regclass);
+
+
+--
+-- Name: puzzle_reports id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzle_reports ALTER COLUMN id SET DEFAULT nextval('public.puzzle_reports_id_seq'::regclass);
+
+
+--
+-- Name: puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzles ALTER COLUMN id SET DEFAULT nextval('public.puzzles_id_seq'::regclass);
 
 
 --
@@ -1106,6 +1214,14 @@ ALTER TABLE ONLY public.completed_speedruns
 
 
 --
+-- Name: completed_three_rounds completed_three_rounds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_three_rounds
+    ADD CONSTRAINT completed_three_rounds_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: countdown_levels countdown_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1167,6 +1283,22 @@ ALTER TABLE ONLY public.levels
 
 ALTER TABLE ONLY public.positions
     ADD CONSTRAINT positions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: puzzle_reports puzzle_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzle_reports
+    ADD CONSTRAINT puzzle_reports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: puzzles puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzles
+    ADD CONSTRAINT puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -1286,6 +1418,20 @@ CREATE INDEX index_completed_speedruns_on_user_id_and_speedrun_level_id ON publi
 
 
 --
+-- Name: index_completed_three_rounds_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_three_rounds_on_created_at ON public.completed_three_rounds USING btree (created_at);
+
+
+--
+-- Name: index_completed_three_rounds_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_three_rounds_on_user_id ON public.completed_three_rounds USING btree (user_id);
+
+
+--
 -- Name: index_countdown_puzzles_on_countdown_level_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1367,6 +1513,34 @@ CREATE UNIQUE INDEX index_levels_on_slug ON public.levels USING btree (slug);
 --
 
 CREATE INDEX index_positions_on_user_id ON public.positions USING btree (user_id);
+
+
+--
+-- Name: index_puzzle_reports_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_puzzle_reports_on_puzzle_id ON public.puzzle_reports USING btree (puzzle_id);
+
+
+--
+-- Name: index_puzzle_reports_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_puzzle_reports_on_user_id ON public.puzzle_reports USING btree (user_id);
+
+
+--
+-- Name: index_puzzles_on_puzzle_data_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_puzzles_on_puzzle_data_hash ON public.puzzles USING btree (puzzle_data_hash);
+
+
+--
+-- Name: index_puzzles_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_puzzles_on_puzzle_id ON public.puzzles USING btree (puzzle_id);
 
 
 --
@@ -1520,6 +1694,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190220052623'),
 ('20190221152057'),
 ('20190221152105'),
-('20190221152109');
+('20190221152109'),
+('20201002022940'),
+('20201021035332'),
+('20201207014332');
 
 

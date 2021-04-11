@@ -1,0 +1,41 @@
+//= require "reset"
+//= require_self
+//= require_tree .
+//= require_tree ./pages
+
+@import "_variables"
+
+html 
+  box-sizing: border-box
+
+*, *:before, *:after 
+  box-sizing: inherit
+
+body 
+  font-family: $main-font
+  background: #1f1f1f
+  color: #fafafa
+  -webkit-font-smoothing: antialiased
+
+  * // disables font boosting on android chrome
+    max-height: 10000px
+
+// fixes undraggable pieces in IE edge
+svg use
+  pointer-events: none
+
+button 
+  border: none
+  outline: none
+
+  &:hover 
+    cursor: pointer
+
+.container 
+  width: $main-width
+  margin: 0 auto
+  padding: 0 15px
+
+.invisible 
+  opacity: 0
+  pointer-events: none

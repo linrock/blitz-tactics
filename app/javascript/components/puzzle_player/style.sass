@@ -1,0 +1,237 @@
+// the main puzzle player interface
+
+@import "../../../assets/stylesheets/_colors"
+@import "../../../assets/stylesheets/_variables"
+
+body 
+  transition: background 0.6s ease
+
+  &.unlocked 
+    background: #313131
+
+.blue-button 
+  font-size: 24px
+  padding: 10px 24px
+  border: 0
+  border-radius: 3px
+  background: $blue-button-bg
+  display: inline-block
+  color: white
+  text-decoration: none
+  transition: opacity 0.25s ease
+
+  &:hover 
+    background: #51B7FF
+    cursor: pointer
+
+  &.disabled 
+    opacity: 0.15
+
+.above-board 
+  height: $above-board-height
+  position: relative
+  // width $main-width
+  margin: 15px auto 0
+
+  // white to move
+  .instructions 
+    font-weight: bold
+    text-shadow: 0 0 8px rgba(0,0,0,0.9)
+    width: 100%
+    text-align: center
+    margin: 0 auto
+    position: absolute
+    font-size: 25px
+    top: 40px
+    transition: all 0.35s ease-out
+
+    &.smaller 
+      font-size: 22px
+      top: 20px
+
+  // shows up if player takes too long
+  .puzzle-hint 
+    text-align: center
+    margin: 0 auto
+    position: absolute
+    top: 60px
+    width: 100%
+    transition: opacity 0.15s ease
+
+    .hint-trigger 
+      background: #565656
+      padding: 6px 14px 5px
+      color: white
+      display: inline-block
+      border-radius: 2px
+      font-size: 12px
+      transition: opacity 0.08s ease
+
+      &:hover 
+        cursor: pointer
+        background: #676767
+
+      &.invisible
+        pointer-events: none
+
+    .move 
+      font-size: 14px
+      color: rgba(255,255,255,0.5)
+      height: 0
+
+  // perfect, great, good, etc.
+  .move-status 
+    opacity: 1
+    font-family: $combo-indicator-font
+    font-size: 32px
+    width: 100%
+    position: absolute
+    top: 15px
+    text-align: center
+    text-transform: uppercase
+    transform: scale3d(1,1,1)
+    transition: opacity 0.02s ease
+
+    &.fade-out 
+      opacity: 0
+      transform: scale3d(0.92,0.92,1)
+      transition: opacity 0.9s ease-out 0.2s, transform 0.05s ease-in-out
+
+    .perfect 
+      color: $move-perfect
+      font-weight: 600
+      letter-spacing: 3px
+      font-size: 40px
+
+    .great 
+      color: $move-great
+      font-weight: 600
+      letter-spacing: 3px
+      font-size: 38px
+
+    .good 
+      color: $move-good
+      font-weight: 600
+      letter-spacing: 3px
+      font-size: 38px
+
+    .almost 
+      color: $move-almost
+      position: relative
+      top: 12px
+
+    .fail 
+      color: $move-fail
+      position: relative
+      top: 12px
+
+  .combo-counter 
+    text-align: center
+    font-family: $combo-indicator-font
+    position: absolute
+    top: 60px
+    width: 100%
+    transition: opacity 0.25s ease
+
+    .counter 
+      display: inline-block
+      font-size: 24px
+      margin-right: 5px
+
+      &.large 
+        font-size: 52px
+
+      &.on-fire 
+        font-size: 70px
+
+      &.emphasis 
+        transform: scale3d(1.25, 1.25, 1)
+
+    .combo-text 
+      position: relative
+      text-transform: uppercase
+      font-size: 14px
+      top: -2px
+
+.under-board 
+  margin: 0 auto
+  padding: 25px 0
+  // width $main-width
+  text-align: center
+  position: relative
+
+  .level-name 
+    display: block
+    color: rgba(255,255,255,0.7)
+    font-size: 16px
+    transition: color 0.2s ease
+
+    &.faded 
+      color: rgba(255,255,255,0.4)
+
+  .onboarding 
+    background: #1f1f1f
+    position: absolute
+    top: 16px
+    font-size: 16px
+    text-align: center
+    width: 100%
+    padding: 10px 0
+    text-shadow: 0 0 3px rgba(0,0,0,0.4)
+    transition: opacity 0.2s ease
+
+  // Prompts you to go to the next level
+  //
+  .next-stage 
+    width: 100%
+    height: 65px
+    z-index: 11
+    position: absolute
+    top: 18px
+    transition: opacity 0.2s ease
+
+    &.invisible 
+      opacity: 0
+      pointer-events: none
+
+    .left 
+      display: inline-block
+      font-size: 18px
+      margin-right: 20px
+      position: relative
+      top: 1px
+
+    .right 
+      display: inline-block
+
+    .blue-button 
+      font-size: 17px
+      font-weight: bold
+      padding: 8px 20px 8px
+      height: 34px
+      margin-left: 7px
+      box-shadow: 0 0 4px rgba(0,0,0,0.2)
+      transition: background 0.12s ease
+
+      &:first-child 
+        margin-left: 0
+
+      i 
+        font-size: 16px
+        position: relative
+        left: 6px
+
+    &.anonymous 
+      .small 
+        font-size: 14px
+        margin-top: 7px
+        color: rgba(255,255,255,0.7)
+
+      .left 
+        display: block
+        float: left
+        text-align: left
+
+      .right 
+        display: block
+        float: right

@@ -1,0 +1,72 @@
+- content_for(:title) { "Positions Trainer" }
+
+.positions-index.container
+  h2 Chess endgame practice
+  .positions
+    p.description
+      | Choose from a list of chess endgame puzzles to train yourself at playing them correctly
+    .examples
+      = linked_miniboard_route "/lucena-position"
+      = linked_miniboard_route "/philidor-position"
+      = linked_miniboard_route "/vancura-position"
+
+  h2 Bishop and knight checkmates
+  .positions
+    p.description
+      | Checkmating with minor pieces isn't as straightforward
+        as using rooks and queens. Practice them here
+    .examples
+      = linked_miniboard_route "/checkmates/two-bishops"
+      = linked_miniboard_route "/checkmates/bishop-and-knight"
+      = linked_miniboard_route "/checkmates/two-knights"
+
+  h2 Pawn endgames
+  .positions
+    p.description
+      | Practice playing these common pawn endgame positions and learn the ideas behind them
+    .examples
+      = linked_miniboard_route "/pawn-endgames/opposition"
+      = linked_miniboard_route "/pawn-endgames/triangulation"
+      = linked_miniboard_route "/pawn-endgames/retis-idea"
+
+      = linked_miniboard_route "/pawn-endgames/zig-zag"
+      = linked_miniboard_route "/pawn-endgames/bodycheck"
+      = linked_miniboard_route "/pawn-endgames/distant-opposition"
+
+      = linked_miniboard "The square rule", "8/3p4/8/2P5/P3k3/8/8/7K w - -", "win", 15
+      = linked_miniboard "Unusual king move", "6K1/8/6k1/8/8/p7/P7/8 w - -", "draw", 15
+      = linked_miniboard "Key squares", "4k3/8/8/8/8/1P6/8/2K5 w - -", "win", 15
+    a.button.more-button(href="/pawn-endgames") More pawn endgames &raquo;
+
+  h2 Rook endgames
+  .positions
+    .description Some more rook and pawn endgame concepts
+    .examples
+      = linked_miniboard "Rule of five", "3r4/8/8/6k1/3P4/3K4/8/5R2 w - -", "win"
+      = linked_miniboard "Prevent a bridge", "2k1K3/4P3/8/8/5r2/8/8/3R4 w - -", "win"
+      = linked_miniboard "Alternate method", "4K3/2k1P3/8/8/8/8/3R4/5r2 w - -", "win"
+
+      = linked_miniboard "Back-rank defense", "1r4k1/R7/5KP1/8/8/8/8/8 b - -", "draw"
+      = linked_miniboard "No Philidor", "8/8/8/8/8/5pk1/1r6/R5K1 b - -", "win"
+      = linked_miniboard "Short side defense", "4K3/4P1k1/8/8/8/8/r7/5R2 b - -", "draw"
+
+      = linked_miniboard "Reach Lucena", "r7/2KP1k2/8/8/8/8/8/4R3 w - -", "win"
+      = linked_miniboard "Long side blunder", "4k3/R7/5K2/5P2/8/8/8/5r2 w - -", "win"
+      = linked_miniboard "Isolated pawns", "8/8/R3Pk1K/7P/8/8/8/4r3 b - -", "draw"
+    a.button.more-button(href="/rook-endgames") More rook endgames &raquo;
+
+  h2 Endgame studies
+  .positions
+    .description Here are more endgame studies for you to practice!
+    .examples
+      - open(Rails.root.join("db/endgame-fens.txt"), "r").read.split(/\n/).take(9).each_with_index do |fen, i|
+        = linked_miniboard "Study #{i+1}", fen, "win"
+    a.button.more-button(href="/endgame-studies") More endgame studies &raquo;
+
+  h2 Mate-in-2 puzzles
+  .positions
+    .description Puzzles created by W J Baird over 100 years ago!
+    .examples
+      - open(Rails.root.join("db/wj-baird-checkmates.txt"), "r").read.split(/\n/).take(9).each_with_index do |fen, i|
+        = linked_miniboard "Puzzle #{i+1}", fen, "win"
+    a.button.more-button(href="/mate-in-two") More mate-in-2 puzzles &raquo;

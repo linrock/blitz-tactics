@@ -8,8 +8,8 @@ class GameModes::RatedController < ApplicationController
     render "game_modes/rated"
   end
 
-  # GET /rated/puzzles - for fetching puzzles on initial pageload
-  def puzzles
+  # GET /rated/puzzles.json - for fetching puzzles on initial pageload
+  def puzzles_json
     puzzles = RatedPuzzle.for_user(current_user)
     unless params[:next].present?
       puzzles = [RepetitionLevel.number(1).first_puzzle] + puzzles
@@ -17,6 +17,14 @@ class GameModes::RatedController < ApplicationController
     render json: {
       puzzles: puzzles
     }
+  end
+
+  # TODO: GET /rated/puzzles - a page for recently-played rated puzzles
+  def puzzles
+    puzzle_ids = current_user.user_rating.
+      rated_puzzle_attempts.order('id DESC').limit(30).
+      includes(:rated_puzzle).map(&:rated_puzzle).compact.map {|p| p.data["id"] }
+    @puzzles = Puzzle.find_by_sorted(puzzle_ids)
   end
 
   # GET /rated/attempts - view recent puzzle attempts
