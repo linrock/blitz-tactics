@@ -6,7 +6,7 @@
 module LichessPuzzlesV1Importer
   PUZZLE_FILES = Rails.root.join("data/lichess-puzzles-v1/[0-9]*.json")
   # The total number of Lichess puzzles as of Oct 2020
-  NUM_LICHESS_PUZZLES = 125262
+  NUM_LICHESS_PUZZLES = 125_262
 
   # download the zipped data files from here
   ZIP_SOURCE = "https://github.com/linrock/blitz-tactics-puzzles/releases/download/2020.12/bt.lichess-puzzles-v1.zip"
