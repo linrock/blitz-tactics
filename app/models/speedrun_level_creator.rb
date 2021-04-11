@@ -34,6 +34,7 @@ module SpeedrunLevelCreator
 
   def export_puzzles_for_date(date)
     puzzles = generate_puzzles(date)
+    FileUtils.mkdir_p(SpeedrunLevel::LEVELS_DIR)
     open(SpeedrunLevel::LEVELS_DIR.join(OUTFILE_NAME.call(date)), "w") do |f|
       f.write JSON.pretty_generate(puzzles).to_s
     end
