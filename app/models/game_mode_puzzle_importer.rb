@@ -37,7 +37,7 @@ class GameModePuzzleImporter
     puts "  hard: #{InfinityLevel.hard.num_puzzles}"
     puts "  insane: #{InfinityLevel.insane.num_puzzles}"
     puts "Haste/Three: #{HastePuzzle.count} puzzles"
-    puts "Repetition: #{RepetitionLevel.all.map(&:num_puzzles).sum} puzzles"
+    puts "Repetition: #{RepetitionLevel.count} levels, #{RepetitionLevel.all.map(&:num_puzzles).sum} puzzles"
     puts "Rated: #{RatedPuzzle.count} puzzles"
   end
 
