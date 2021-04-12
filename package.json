@@ -9,7 +9,9 @@
     "blitz:game_modes:check": "rails runner 'GameModePuzzleImporter.check_db_puzzles'",
     "lichess:puzzles:fetch": "rails runner 'LichessV1PuzzleImporter.fetch_puzzles_json'",
     "lichess:puzzles:import": "rails runner 'LichessV1PuzzleImporter.import_puzzles_json'",
-    "lichess:puzzles:check": "rails runner 'LichessV1PuzzleImporter.check_db_puzzles'"
+    "lichess:puzzles:check": "rails runner 'LichessV1PuzzleImporter.check_db_puzzles'",
+    "lichess:puzzles:v2:fetch": "rails runner 'LichessV2PuzzleImporter.new.fetch_csv'",
+    "lichess:puzzles:v2:import": "rails runner 'LichessV2PuzzleImporter.new.import_from_csv'"
   },
   "dependencies": {
     "@bugsnag/js": "^7.5.4",
