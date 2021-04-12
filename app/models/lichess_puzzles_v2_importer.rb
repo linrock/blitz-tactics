@@ -6,6 +6,7 @@
 module LichessPuzzlesV2Importer
   CSV_URL = "https://database.lichess.org/lichess_db_puzzle.csv.bz2"
   OUT_FILE = Rails.root.join("data/lichess_db_puzzle.csv.bz2")
+  BATCH_SIZE = 10_000 # the number of rows to import per db transaction
 
   # Fetches and unzips v2 puzzles CSV
   def fetch_csv
@@ -22,7 +23,7 @@ module LichessPuzzlesV2Importer
       ActiveRecord::Base.logger.silence do
         while !f.eof?
           ActiveRecord::Base.transaction do
-            1000.times do
+            BATCH_SIZE.times do
               i += 1
               import_csv_row(f)
               puts "Imported puzzle #{i}"
