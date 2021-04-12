@@ -3,7 +3,7 @@
 # - import Lichess v1 puzzle data into the database
 # - check that the puzzle files were loaded correctly
 
-module LichessPuzzlesV1Importer
+module LichessV1PuzzleImporter
   PUZZLE_FILES = Rails.root.join("data/lichess-puzzles-v1/[0-9]*.json")
   # The total number of Lichess puzzles as of Oct 2020
   NUM_LICHESS_PUZZLES = 125_262

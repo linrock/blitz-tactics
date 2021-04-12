@@ -4,9 +4,10 @@
 # import Lichess puzzle data into the database:
 # LichessV2PuzzleImporter.new.import_from_csv
 
-class LichessPuzzlesV2Importer
+class LichessV2PuzzleImporter
   CSV_URL = "https://database.lichess.org/lichess_db_puzzle.csv.bz2"
   OUT_FILE = Rails.root.join("data/lichess_db_puzzle.csv.bz2")
+  CSV_FILE = Rails.root.join("data/lichess_db_puzzle.csv")
 
   # the number of rows to import per db transaction
   BATCH_SIZE = 10_000
@@ -31,7 +32,7 @@ class LichessPuzzlesV2Importer
   def import_from_csv
     i = 0
     @db_puzzle_ids = LichessV2Puzzle.pluck(:puzzle_id).to_set
-    open(Rails.root.join("data/lichess_db_puzzle.csv"), "r") do |f|
+    open(CSV_FILE, "r") do |f|
       ActiveRecord::Base.logger.silence do
         while !f.eof?
           ActiveRecord::Base.transaction do
