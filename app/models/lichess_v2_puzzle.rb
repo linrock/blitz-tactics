@@ -55,35 +55,47 @@ class LichessV2Puzzle < ActiveRecord::Base
   def calculate_lines_tree
     lines_tree_root = {}
     lines_tree = lines_tree_root
-    tree_depth = moves_uci.length - 1
-    self.moves_uci.each_with_index do |move_uci, i|
-      next if i == 0 # the 1st move sets up the puzzle FEN, the 2nd is the first player move
-      if i == tree_depth # this is the last move of the puzzle
-        lines_tree[move_uci] = 'win'
-      else
-        # go deeper in the tree to keep building it
-        lines_tree[move_uci] = {}
-        lines_tree = lines_tree[move_uci]
-      end
+    # the 1st move sets up the puzzle FEN, the 2nd is the first player move
+    self.moves_uci[1..-2].each_with_index do |move_uci, i|
+      # go deeper in the tree to keep building it
+      lines_tree[move_uci] = {}
+      lines_tree = lines_tree[move_uci]
     end
+    # treat the last move differently based on whether it's a checkmate puzzle
+    last_move_uci = moves_uci[-1]
     if checkmate_puzzle?
       fen = initial_fen
+      # get to the FEN just before the last player move of the puzzle
       self.moves_uci[..-2].each do |move_uci|
         fen = ChessJS.fen_after_move_uci(fen, move_uci)
       end
-      # moves from the last position of the puzzle that checkmate
+      # find moves from the last position of the puzzle that checkmate
       checkmate_moves_uci = ChessJS.checkmate_moves_uci_at_fen(fen)
-      unless checkmate_moves_uci.include?(moves_uci[-1])
+      unless checkmate_moves_uci.include?(last_move_uci)
         # expect our calculated checkmate moves to include the one checkmate
         # move provided in the CSV
         throw "Expected #{moves_uci[-1]} to be in #{checkmate_moves_uci}"
       end
+      # all moves that checkmate are winning moves of this puzzle
       checkmate_moves_uci.each do |checkmate_move_uci|
-        # all moves that checkmate are winning moves of this puzzle
         lines_tree[checkmate_move_uci] = 'win'
       end
+    else
+      # there's only one valid last move in non-checkmate puzzles
+      lines_tree[last_move_uci] = 'win'
     end
-    lines_tree_root
     self.lines_tree = lines_tree_root
+  end
+
+  # testing: for finding puzzles with multiple final player moves
+  def self.dev_find_multi_solution
+    found_puzzles = []
+    LichessV2Puzzle.find_each do |p|
+      next unless p.lines_tree.to_s.scan(/win/).length > 1
+      next unless p.moves_uci.length > 8
+      found_puzzles << p
+      break if found_puzzles.length >= 5
+    end
+    found_puzzles
   end
 end
