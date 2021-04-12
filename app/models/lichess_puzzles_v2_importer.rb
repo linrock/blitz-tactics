@@ -5,11 +5,12 @@
 
 module LichessPuzzlesV2Importer
   CSV_URL = "https://database.lichess.org/lichess_db_puzzle.csv.bz2"
+  OUT_FILE = Rails.root.join("data/lichess_db_puzzle.csv.bz2")
 
   # Fetches and unzips v2 puzzles CSV
   def fetch_csv
-    `wget '#{CSV_URL}' -O #{Rails.root.join("data/lichess_db_puzzle.csv.bz2")}`
-    `bunzip2 -f #{Rails.root.join("data/lichess_db_puzzle.csv.bz2")}`
+    `wget '#{CSV_URL}' -O #{OUT_FILE}`
+    `bunzip2 -f #{OUT_FILE}`
     nil
   end
 
@@ -32,7 +33,9 @@ module LichessPuzzlesV2Importer
     end
   end
 
-  # Attempts to import a puzzle from a single row of the CSV file
+  # Attempts to import a puzzle from a single row of the CSV file.
+  # File format docs at: https://database.lichess.org/#puzzles
+  # PuzzleId,FEN,Moves,Rating,RatingDeviation,Popularity,NbPlays,Themes,GameUrl
   def import_csv_row(f)
     return if f.eof?
     # Read a row of the CSV

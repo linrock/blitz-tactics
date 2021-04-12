@@ -1,5 +1,6 @@
 # New lichess v2 puzzles
 class LichessV2Puzzle < ActiveRecord::Base
+  before_save :calculate_lines_tree
 
   def is_reportable?
     false
@@ -46,8 +47,12 @@ class LichessV2Puzzle < ActiveRecord::Base
 
   private
 
-  # converts an array of puzzle moves to old tree format
-  def lines_tree
+  def checkmate_puzzle?
+    themes.include?("mate")
+  end
+
+  # converts an array of puzzle moves to old lines tree format
+  def calculate_lines_tree
     lines_tree_root = {}
     lines_tree = lines_tree_root
     last_move_uci = nil
@@ -58,5 +63,6 @@ class LichessV2Puzzle < ActiveRecord::Base
     end
     lines_tree[last_move_uci] = 'win'
     lines_tree_root
+    self.lines_tree = lines_tree_root
   end
 end
