@@ -1,12 +1,9 @@
+# ruby wrapper around chess.js for calculations that require chess logic
 module ChessJS
   extend self
 
-  def fen_after_move_san(fen, move_san)
-    context.exec("
-      const chess = new Chess('#{fen}');
-      chess.move('#{move_san}');
-      return chess.fen();
-    ")
+  def context
+    @@context ||= ExecJS.compile(open(Rails.root.join("node_modules/chess.js/chess.js")).read)
   end
 
   # returns a list of all valid moves by the current player at FEN
@@ -30,6 +27,7 @@ module ChessJS
     end
   end
 
+  # converts a sequence of UCI moves from FEN into a sequence of chess.js moves
   def get_move_sequence_cjs(initial_fen, move_sequence_uci)
     moves = []
     fen = initial_fen
@@ -67,6 +65,20 @@ module ChessJS
     ")
   end
 
+  # TODO these two can be combined to handle a move of an ambiguous type
+  # since there's no overlap between SAN and UCI move strings:
+  # def fen_after_move(fen, move)
+
+  # Get the resulting FEN after playing a SAN move from the initial FEN
+  def fen_after_move_san(fen, move_san)
+    context.exec("
+      const chess = new Chess('#{fen}');
+      chess.move('#{move_san}');
+      return chess.fen();
+    ")
+  end
+
+  # Get the resulting FEN after playing a UCI move from the initial FEN
   def fen_after_move_uci(fen, move_uci)
     from = move_uci[0..1]
     to = move_uci[2..3]
@@ -80,9 +92,5 @@ module ChessJS
       chess.move(#{move});
       return chess.fen();
     ")
-  end
-
-  def context
-    @@context ||= ExecJS.compile(open(Rails.root.join("node_modules/chess.js/chess.js")).read)
   end
 end

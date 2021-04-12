@@ -11,6 +11,8 @@ class PuzzlesController < ApplicationController
     end
   end
 
+  # a numeric puzzle ID is a Lichess v1 puzzle
+  # a string puzzle ID is a Lichess v2 puzzle
   def show
     @puzzle = get_puzzle
     if current_user && @puzzle.is_reportable?
