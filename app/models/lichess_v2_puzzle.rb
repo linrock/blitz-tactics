@@ -56,12 +56,29 @@ class LichessV2Puzzle < ActiveRecord::Base
     lines_tree_root = {}
     lines_tree = lines_tree_root
     last_move_uci = nil
-    moves_uci[1..].each do |move_uci|
+    self.moves_uci[1..].each do |move_uci|
       lines_tree[move_uci] = {}
       lines_tree = lines_tree[move_uci]
       last_move_uci = move_uci
     end
     lines_tree[last_move_uci] = 'win'
+    if checkmate_puzzle?
+      fen = initial_fen
+      self.moves_uci[..-2].each do |move_uci|
+        fen = ChessJS.fen_after_move_uci(fen, move_uci)
+      end
+      # moves from the last position of the puzzle that checkmate
+      checkmate_moves_uci = ChessJS.checkmate_moves_uci_at_fen(fen)
+      unless checkmate_moves_uci.include?(moves_uci[-1])
+        # expect our calculated checkmate moves to include the one checkmate
+        # move provided in the CSV
+        throw "Expected #{moves_uci[-1]} to be in #{checkmate_moves_uci}"
+      end
+      checkmate_moves_uci.each do |checkmate_move_uci|
+        # all moves that checkmate are winning moves of this puzzle
+        lines_tree[checkmate_move_uci] = 'win'
+      end
+    end
     lines_tree_root
     self.lines_tree = lines_tree_root
   end
