@@ -488,14 +488,15 @@ ALTER SEQUENCE public.levels_id_seq OWNED BY public.levels.id;
 
 
 --
--- Name: lichess_puzzles; Type: TABLE; Schema: public; Owner: -
+-- Name: lichess_v2_puzzles; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.lichess_puzzles (
+CREATE TABLE public.lichess_v2_puzzles (
     id bigint NOT NULL,
     puzzle_id character varying NOT NULL,
     initial_fen character varying NOT NULL,
     moves_uci text[] NOT NULL,
+    lines_tree jsonb NOT NULL,
     rating integer NOT NULL,
     rating_deviation integer NOT NULL,
     popularity integer NOT NULL,
@@ -508,10 +509,10 @@ CREATE TABLE public.lichess_puzzles (
 
 
 --
--- Name: lichess_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: lichess_v2_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.lichess_puzzles_id_seq
+CREATE SEQUENCE public.lichess_v2_puzzles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -520,10 +521,10 @@ CREATE SEQUENCE public.lichess_puzzles_id_seq
 
 
 --
--- Name: lichess_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: lichess_v2_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.lichess_puzzles_id_seq OWNED BY public.lichess_puzzles.id;
+ALTER SEQUENCE public.lichess_v2_puzzles_id_seq OWNED BY public.lichess_v2_puzzles.id;
 
 
 --
@@ -1106,10 +1107,10 @@ ALTER TABLE ONLY public.levels ALTER COLUMN id SET DEFAULT nextval('public.level
 
 
 --
--- Name: lichess_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: lichess_v2_puzzles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.lichess_puzzles ALTER COLUMN id SET DEFAULT nextval('public.lichess_puzzles_id_seq'::regclass);
+ALTER TABLE ONLY public.lichess_v2_puzzles ALTER COLUMN id SET DEFAULT nextval('public.lichess_v2_puzzles_id_seq'::regclass);
 
 
 --
@@ -1324,11 +1325,11 @@ ALTER TABLE ONLY public.levels
 
 
 --
--- Name: lichess_puzzles lichess_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: lichess_v2_puzzles lichess_v2_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.lichess_puzzles
-    ADD CONSTRAINT lichess_puzzles_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.lichess_v2_puzzles
+    ADD CONSTRAINT lichess_v2_puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -1563,10 +1564,10 @@ CREATE UNIQUE INDEX index_levels_on_slug ON public.levels USING btree (slug);
 
 
 --
--- Name: index_lichess_puzzles_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_lichess_v2_puzzles_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_lichess_puzzles_on_puzzle_id ON public.lichess_puzzles USING btree (puzzle_id);
+CREATE UNIQUE INDEX index_lichess_v2_puzzles_on_puzzle_id ON public.lichess_v2_puzzles USING btree (puzzle_id);
 
 
 --

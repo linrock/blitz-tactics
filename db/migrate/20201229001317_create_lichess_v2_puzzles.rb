@@ -4,6 +4,7 @@ class CreateLichessV2Puzzles < ActiveRecord::Migration[6.1]
       t.string :puzzle_id, null: false
       t.string :initial_fen, null: false
       t.text :moves_uci, array: true, null: false
+      t.jsonb :lines_tree, null: false
       t.integer :rating, null: false
       t.integer :rating_deviation, null: false
       t.integer :popularity, null: false
