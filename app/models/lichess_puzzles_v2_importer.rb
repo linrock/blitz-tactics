@@ -12,7 +12,7 @@ class LichessPuzzlesV2Importer
   BATCH_SIZE = 10_000
 
   # skip this number of rows in the CSV for resuming imports
-  SKIP_NUM_ROWS = 400_000
+  SKIP_NUM_ROWS = 0
 
   def initialize
     # track lichess puzzle ids already in the DB
