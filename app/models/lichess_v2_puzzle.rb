@@ -55,13 +55,17 @@ class LichessV2Puzzle < ActiveRecord::Base
   def calculate_lines_tree
     lines_tree_root = {}
     lines_tree = lines_tree_root
-    last_move_uci = nil
-    self.moves_uci[1..].each do |move_uci|
-      lines_tree[move_uci] = {}
-      lines_tree = lines_tree[move_uci]
-      last_move_uci = move_uci
+    tree_depth = moves_uci.length - 1
+    self.moves_uci.each_with_index do |move_uci, i|
+      next if i == 0 # the 1st move sets up the puzzle FEN, the 2nd is the first player move
+      if i == tree_depth # this is the last move of the puzzle
+        lines_tree[move_uci] = 'win'
+      else
+        # go deeper in the tree to keep building it
+        lines_tree[move_uci] = {}
+        lines_tree = lines_tree[move_uci]
+      end
     end
-    lines_tree[last_move_uci] = 'win'
     if checkmate_puzzle?
       fen = initial_fen
       self.moves_uci[..-2].each do |move_uci|
