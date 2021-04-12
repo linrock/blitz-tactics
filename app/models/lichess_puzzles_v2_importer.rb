@@ -12,7 +12,7 @@ class LichessPuzzlesV2Importer
   BATCH_SIZE = 10_000
 
   # skip this number of rows in the CSV for resuming imports
-  # SKIP_NUM_ROWS = 0
+  SKIP_NUM_ROWS = 400_000
 
   def initialize
     # track lichess puzzle ids already in the DB
@@ -37,8 +37,16 @@ class LichessPuzzlesV2Importer
           ActiveRecord::Base.transaction do
             BATCH_SIZE.times do
               i += 1
-              import_csv_row(f)
-              puts "Imported puzzle #{i}"
+              if SKIP_NUM_ROWS >= i
+                f.readline
+                next
+              end
+              result = import_csv_next_row(f)
+              if result
+                puts "imported CSV row #{i}: #{result}"
+              else
+                puts "skipped CSV row #{i}"
+              end
             end
           end
         end
@@ -49,7 +57,7 @@ class LichessPuzzlesV2Importer
   # Attempts to import a puzzle from a single row of the CSV file.
   # File format docs at: https://database.lichess.org/#puzzles
   # PuzzleId,FEN,Moves,Rating,RatingDeviation,Popularity,NbPlays,Themes,GameUrl
-  def import_csv_row(f)
+  def import_csv_next_row(f)
     return if f.eof?
     # Read a row of the CSV
     lichess_puzzle_id,
@@ -61,6 +69,7 @@ class LichessPuzzlesV2Importer
     num_plays,
     puzzle_themes,
     game_url = f.readline.strip.split(",")
+
     # convert space-delimited fields to arrays
     moves_uci = moves_uci.split(/\s+/)
     puzzle_themes = puzzle_themes.split(/\s+/)
@@ -89,5 +98,6 @@ class LichessPuzzlesV2Importer
     puzzle.game_url = game_url
     return unless puzzle.changed?
     puzzle.save!
+    lichess_puzzle_id
   end
 end
