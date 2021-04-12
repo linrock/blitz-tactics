@@ -1,12 +1,23 @@
-# three responsibilities:
-# - fetch Lichess puzzle data files (compressed .csv file)
-# - import Lichess puzzle data into the database
-# - check that the puzzle files were loaded correctly
+# fetch Lichess puzzle data files (compressed .csv file):
+# LichessV2PuzzleImporter.new.fetch_csv
+#
+# import Lichess puzzle data into the database:
+# LichessV2PuzzleImporter.new.import_from_csv
 
-module LichessPuzzlesV2Importer
+class LichessPuzzlesV2Importer
   CSV_URL = "https://database.lichess.org/lichess_db_puzzle.csv.bz2"
   OUT_FILE = Rails.root.join("data/lichess_db_puzzle.csv.bz2")
-  BATCH_SIZE = 10_000 # the number of rows to import per db transaction
+
+  # the number of rows to import per db transaction
+  BATCH_SIZE = 10_000
+
+  # skip this number of rows in the CSV for resuming imports
+  # SKIP_NUM_ROWS = 0
+
+  def initialize
+    # track lichess puzzle ids already in the DB
+    @db_puzzle_ids = Set.new
+  end
 
   # Fetches and unzips v2 puzzles CSV
   def fetch_csv
@@ -19,6 +30,7 @@ module LichessPuzzlesV2Importer
   # https://database.lichess.org/#puzzles
   def import_from_csv
     i = 0
+    @db_puzzle_ids = LichessV2Puzzle.pluck(:puzzle_id).to_set
     open(Rails.root.join("data/lichess_db_puzzle.csv"), "r") do |f|
       ActiveRecord::Base.logger.silence do
         while !f.eof?
@@ -53,8 +65,13 @@ module LichessPuzzlesV2Importer
     moves_uci = moves_uci.split(/\s+/)
     puzzle_themes = puzzle_themes.split(/\s+/)
 
+    # special-case hacks
+    if lichess_puzzle_id == 'gtWql'
+      puzzle_themes -= ["mate", "mateIn2"] # fix incorrect tags
+    end
+
     # Update or insert the puzzle into the db
-    if LichessV2Puzzle.exists?(puzzle_id: lichess_puzzle_id)
+    if @db_puzzle_ids.include?(lichess_puzzle_id)
       puzzle = LichessV2Puzzle.find_by(puzzle_id: lichess_puzzle_id)
       throw "Unexpected change in #{initial_fen}" if puzzle.initial_fen != initial_fen
       throw "Unexpected change in #{moves_uci}" if puzzle.moves_uci != moves_uci
@@ -73,6 +90,4 @@ module LichessPuzzlesV2Importer
     return unless puzzle.changed?
     puzzle.save!
   end
-
-  extend self
 end
