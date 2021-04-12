@@ -9,7 +9,6 @@ gem 'eye', require: false
 
 # persistence
 gem 'pg', '~> 1.0'
-gem 'dalli'
 
 gem 'dotenv-rails'
 gem 'devise', '~> 4.3'
