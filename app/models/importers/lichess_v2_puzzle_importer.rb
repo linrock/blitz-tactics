@@ -30,8 +30,9 @@ class LichessV2PuzzleImporter
   # Import all puzzles from a CSV file
   # https://database.lichess.org/#puzzles
   def import_from_csv
-    i = 0
+    num_rows = `wc -l "#{CSV_FILE}"`.strip.split(' ')[0].to_i
     @db_puzzle_ids = LichessV2Puzzle.pluck(:puzzle_id).to_set
+    i = 0
     open(CSV_FILE, "r") do |f|
       ActiveRecord::Base.logger.silence do
         while !f.eof?
@@ -43,10 +44,11 @@ class LichessV2PuzzleImporter
                 next
               end
               result = import_csv_next_row(f)
+              percent_done = (i * 100.0 / num_rows).floor
               if result
-                puts "imported CSV row #{i}: #{result}"
+                puts "[#{percent_done}%] imported lichess_db_puzzle.csv row #{i}: #{result}"
               else
-                puts "skipped CSV row #{i}"
+                puts "[#{percent_done}%] skipped lichess_db_puzzle.csv row #{i}"
               end
             end
           end
