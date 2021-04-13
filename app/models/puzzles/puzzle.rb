@@ -14,8 +14,6 @@
 #      "lines": { [uci_move: "lines"] } }
 
 class Puzzle < ActiveRecord::Base
-  include PuzzleQuery
-
   has_many :puzzle_reports
 
   # Each puzzle is uniquely hashed based on their puzzle data
@@ -24,6 +22,47 @@ class Puzzle < ActiveRecord::Base
   validates :puzzle_data, presence: true
   before_create :recalculate_and_set_puzzle_data_hash
   before_save :recalculate_and_set_puzzle_data_hash
+
+  scope :rating_range, -> (min, max) { rating_gte(min).rating_lte(max) }
+  scope :rating_gte, -> (min_rating) { where("(metadata ->> 'rating')::int >= ?", min_rating) }
+  scope :rating_lte, -> (min_rating) { where("(metadata ->> 'rating')::int <= ?", min_rating) }
+  scope :attempts_gt, -> (n_attempts) { where("(metadata ->> 'attempts')::int > ?", n_attempts) }
+  scope :vote_gt, -> (votes) { where("(metadata ->> 'vote')::int > ?", votes) }
+  scope :white_to_move, -> { where("(metadata ->> 'color') = 'white'") }
+  scope :black_to_move, -> { where("(metadata ->> 'color') = 'black'") }
+  scope :ascending_rating, -> { order('rating ASC') }
+  scope :enabled, -> { where("(metadata -> 'puzzle' ->> 'enabled')::bool") }
+  scope :old_batch, -> { where("(metadata -> 'puzzle' ->> 'id')::int <= 60120") }
+  scope :new_batch, -> { where("(metadata -> 'puzzle' ->> 'id')::int > 60120") }
+  # Puzzle IDs below 61053 were deleted from lichess.org v1 puzzles
+  scope :new_not_deleted, -> { where("id >= 61053 AND id <= 125272") }
+
+  def self.n_pieces_query
+    "char_length(
+        regexp_replace(
+          split_part(data -> 'puzzle' ->> 'fen', ' ', 1),
+          '[^a-zA-Z]', '', 'g'
+        )
+      )"
+  end
+
+  scope :n_pieces_eq, -> (n) do
+    where("#{n_pieces_query} = ?", n)
+  end
+
+  scope :n_pieces_lt, -> (n) do
+    where("#{n_pieces_query} < ?", n)
+  end
+
+  scope :n_pieces_gt, -> (n) do
+    where("#{n_pieces_query} > ?", n)
+  end
+
+  scope :no_retry, -> do
+    where(%(
+      (puzzle_data ->> 'lines')::TEXT NOT LIKE '%"retry"%'
+    ))
+  end
 
   # puzzle format used by blitz tactics game modes
   def bt_puzzle_data
