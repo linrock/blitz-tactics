@@ -598,6 +598,49 @@ ALTER SEQUENCE public.puzzle_reports_id_seq OWNED BY public.puzzle_reports.id;
 
 
 --
+-- Name: puzzle_sets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.puzzle_sets (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    slug character varying NOT NULL,
+    description text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: puzzle_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.puzzle_sets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: puzzle_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.puzzle_sets_id_seq OWNED BY public.puzzle_sets.id;
+
+
+--
+-- Name: puzzle_sets_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.puzzle_sets_puzzles (
+    puzzle_set_id integer NOT NULL,
+    puzzle_id character varying NOT NULL
+);
+
+
+--
 -- Name: puzzles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1128,6 +1171,13 @@ ALTER TABLE ONLY public.puzzle_reports ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: puzzle_sets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzle_sets ALTER COLUMN id SET DEFAULT nextval('public.puzzle_sets_id_seq'::regclass);
+
+
+--
 -- Name: puzzles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1346,6 +1396,14 @@ ALTER TABLE ONLY public.positions
 
 ALTER TABLE ONLY public.puzzle_reports
     ADD CONSTRAINT puzzle_reports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: puzzle_sets puzzle_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.puzzle_sets
+    ADD CONSTRAINT puzzle_sets_pkey PRIMARY KEY (id);
 
 
 --
@@ -1592,6 +1650,27 @@ CREATE INDEX index_puzzle_reports_on_user_id ON public.puzzle_reports USING btre
 
 
 --
+-- Name: index_puzzle_sets_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_puzzle_sets_on_slug ON public.puzzle_sets USING btree (slug);
+
+
+--
+-- Name: index_puzzle_sets_puzzles_on_puzzle_id_and_puzzle_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_puzzle_sets_puzzles_on_puzzle_id_and_puzzle_set_id ON public.puzzle_sets_puzzles USING btree (puzzle_id, puzzle_set_id);
+
+
+--
+-- Name: index_puzzle_sets_puzzles_on_puzzle_set_id_and_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_puzzle_sets_puzzles_on_puzzle_set_id_and_puzzle_id ON public.puzzle_sets_puzzles USING btree (puzzle_set_id, puzzle_id);
+
+
+--
 -- Name: index_puzzles_on_puzzle_data_hash; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1760,6 +1839,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201002022940'),
 ('20201021035332'),
 ('20201207014332'),
-('20201229001317');
+('20201229001317'),
+('20210417123507'),
+('20210417123508');
 
 
