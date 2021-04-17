@@ -61,6 +61,12 @@ Rails.application.routes.draw do
   get '/puzzle_reports'          => 'puzzle_reports#index'
   post '/puzzle_reports'         => 'puzzle_reports#create'
 
+  # puzzle sets
+  get '/puzzle-sets'             => 'puzzle_sets#index'
+  get '/puzzle-sets/new'         => 'puzzle_sets#new'
+  post '/puzzle-sets'            => 'puzzle_sets#create'
+  get '/ps/:id'                  => 'puzzle_sets#show'
+
   # position pages
   get '/positions'               => 'pages#positions'
   get '/positions/:id'           => 'pages#position'

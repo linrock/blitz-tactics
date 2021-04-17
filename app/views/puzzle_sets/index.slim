@@ -1,0 +1,7 @@
+.container
+  h2 Puzzle sets
+
+  = "#{@puzzle_sets.length} puzzles"
+
+  - @puzzle_sets.each do |puzzle_set|
+    = puzzle_set.name
