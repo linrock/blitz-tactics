@@ -603,8 +603,8 @@ ALTER SEQUENCE public.puzzle_reports_id_seq OWNED BY public.puzzle_reports.id;
 
 CREATE TABLE public.puzzle_sets (
     id bigint NOT NULL,
+    user_id integer NOT NULL,
     name character varying NOT NULL,
-    slug character varying NOT NULL,
     description text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -1650,10 +1650,10 @@ CREATE INDEX index_puzzle_reports_on_user_id ON public.puzzle_reports USING btre
 
 
 --
--- Name: index_puzzle_sets_on_slug; Type: INDEX; Schema: public; Owner: -
+-- Name: index_puzzle_sets_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_puzzle_sets_on_slug ON public.puzzle_sets USING btree (slug);
+CREATE INDEX index_puzzle_sets_on_user_id ON public.puzzle_sets USING btree (user_id);
 
 
 --
