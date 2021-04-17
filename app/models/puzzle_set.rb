@@ -1,6 +1,3 @@
 class PuzzleSet < ActiveRecord::Base
-
-  def puzzle_ids
-    []
-  end
+  has_and_belongs_to_many :lichess_v2_puzzles
 end

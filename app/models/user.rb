@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
          :trackable, :validatable, :recoverable
 
   has_many :level_attempts
+  has_many :puzzle_sets
   has_many :solved_infinity_puzzles
   has_many :completed_speedruns
   has_many :completed_countdown_levels
