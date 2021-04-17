@@ -528,6 +528,16 @@ ALTER SEQUENCE public.lichess_v2_puzzles_id_seq OWNED BY public.lichess_v2_puzzl
 
 
 --
+-- Name: lichess_v2_puzzles_puzzle_sets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.lichess_v2_puzzles_puzzle_sets (
+    puzzle_set_id bigint NOT NULL,
+    lichess_v2_puzzle_id bigint NOT NULL
+);
+
+
+--
 -- Name: positions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -628,16 +638,6 @@ CREATE SEQUENCE public.puzzle_sets_id_seq
 --
 
 ALTER SEQUENCE public.puzzle_sets_id_seq OWNED BY public.puzzle_sets.id;
-
-
---
--- Name: puzzle_sets_puzzles; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.puzzle_sets_puzzles (
-    puzzle_set_id integer NOT NULL,
-    puzzle_id character varying NOT NULL
-);
 
 
 --
@@ -1629,6 +1629,20 @@ CREATE UNIQUE INDEX index_lichess_v2_puzzles_on_puzzle_id ON public.lichess_v2_p
 
 
 --
+-- Name: index_lichess_v2_puzzles_puzzle_sets_on_lichess_v2_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_lichess_v2_puzzles_puzzle_sets_on_lichess_v2_puzzle_id ON public.lichess_v2_puzzles_puzzle_sets USING btree (lichess_v2_puzzle_id);
+
+
+--
+-- Name: index_lichess_v2_puzzles_puzzle_sets_on_puzzle_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_lichess_v2_puzzles_puzzle_sets_on_puzzle_set_id ON public.lichess_v2_puzzles_puzzle_sets USING btree (puzzle_set_id);
+
+
+--
 -- Name: index_positions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1654,20 +1668,6 @@ CREATE INDEX index_puzzle_reports_on_user_id ON public.puzzle_reports USING btre
 --
 
 CREATE INDEX index_puzzle_sets_on_user_id ON public.puzzle_sets USING btree (user_id);
-
-
---
--- Name: index_puzzle_sets_puzzles_on_puzzle_id_and_puzzle_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_puzzle_sets_puzzles_on_puzzle_id_and_puzzle_set_id ON public.puzzle_sets_puzzles USING btree (puzzle_id, puzzle_set_id);
-
-
---
--- Name: index_puzzle_sets_puzzles_on_puzzle_set_id_and_puzzle_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_puzzle_sets_puzzles_on_puzzle_set_id_and_puzzle_id ON public.puzzle_sets_puzzles USING btree (puzzle_set_id, puzzle_id);
 
 
 --
