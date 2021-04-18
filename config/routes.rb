@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   get '/puzzle-sets/new'         => 'puzzle_sets#new'
   post '/puzzle-sets'            => 'puzzle_sets#create'
   get '/ps/:id'                  => 'puzzle_sets#show'
+  get '/ps/:id/puzzles.json'     => 'puzzle_sets#puzzles_json'
 
   # position pages
   get '/positions'               => 'pages#positions'

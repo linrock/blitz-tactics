@@ -9,7 +9,7 @@ section.game-mode.puzzle-set
           .piece-promotion-modal-container
           .chessground
           .board-modal-container.invisible(style="display: none")
-    .right-sidebar
+    .right-sidebar.vue-app-mount
       .ps-info
         h2 Puzzle set
         .ps-name= @puzzle_set.name
@@ -19,4 +19,3 @@ section.game-mode.puzzle-set
         .ps-creator
           | created by
           =< link_to @puzzle_set.user.username, "/#{@puzzle_set.user.username}"
-    .vue-app-mount

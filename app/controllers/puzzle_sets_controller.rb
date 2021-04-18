@@ -8,6 +8,13 @@ class PuzzleSetsController < ApplicationController
     @puzzle_set = PuzzleSet.find_by(id: params[:id])
   end
 
+  def puzzles_json
+    @puzzle_set = PuzzleSet.find_by(id: params[:id])
+    render json: {
+      puzzles: @puzzle_set.lichess_v2_puzzles.map(&:bt_puzzle_data).as_json
+    }
+  end
+
   def new
     @new_puzzle_set = PuzzleSet.new(user_id: current_user.id)
   end

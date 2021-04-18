@@ -10,7 +10,7 @@ import RatedMode from './game_modes/rated'
 
 import CustomizeBoard from './pages/customize_board'
 import PositionTrainer from './pages/position_trainer/index.vue'
-import PuzzleSet from './pages/puzzle_set/index.vue'
+import PuzzleSet from './pages/puzzle_set'
 import PuzzleList from './pages/puzzle_list'
 import PuzzlePage from './pages/puzzle_page'
 
@@ -41,7 +41,8 @@ const routes: RouteMap = {
   // puzzle sets
   "puzzle_sets#show": () => {
     // TODO wait for a move before mounting the vue app
-    mountVue(PuzzleSet, '.puzzle-set .vue-app-mount')
+    // mountVue(PuzzleSet, '.puzzle-set .vue-app-mount')
+    PuzzleSet()
   },
 
   // position trainers
