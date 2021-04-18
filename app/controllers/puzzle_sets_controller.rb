@@ -24,7 +24,7 @@ class PuzzleSetsController < ApplicationController
     # Lichess v2 puzzle IDs are alphanumeric strings of length 5
     filtered_puzzle_ids = puzzle_set_params[:puzzle_ids].
       gsub(/[^a-zA-Z0-9]/, ' ').strip.split(/\s+/).
-      select {|puzzle_id| puzzle_id.length == 5 }
+      select {|puzzle_id| puzzle_id.length == 5 }.uniq
     lichess_v2_puzzles = LichessV2Puzzle.where(puzzle_id: filtered_puzzle_ids)
     if lichess_v2_puzzles.count > 0
       @puzzle_set = current_user.puzzle_sets.new({
