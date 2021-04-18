@@ -11,11 +11,12 @@ section.game-mode.puzzle-set
           .board-modal-container.invisible(style="display: none")
     .right-sidebar.vue-app-mount
       .ps-info
-        h2 Puzzle set
         .ps-name= @puzzle_set.name
         .ps-description= @puzzle_set.description
       .ps-meta-info
-        .ps-puzzle-count= "#{@puzzle_set.lichess_v2_puzzles.count} puzzles"
         .ps-creator
+          | a puzzle set
+          br
           | created by
           =< link_to @puzzle_set.user.username, "/#{@puzzle_set.user.username}"
+        .ps-puzzle-count= "#{@puzzle_set.lichess_v2_puzzles.count} puzzles"
