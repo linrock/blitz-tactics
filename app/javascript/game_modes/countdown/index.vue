@@ -24,7 +24,7 @@ aside.countdown-sidebar
 <script lang="ts">
   import { countdownCompleted } from '@blitz/api/requests'
   import PuzzlePlayer from '@blitz/components/puzzle_player'
-  import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
+  import { subscribe, subscribeOnce } from '@blitz/events'
   import store from '@blitz/local_storage'
 
   import Timer from './timer.vue'

@@ -1,5 +1,22 @@
-.container
-  h2 Puzzle Set
+- content_for(:title) { "Puzzle set | #{@puzzle_set.name}" }
 
-  div= @puzzle_set.name
-  div= @puzzle_set.description
+section.game-mode.puzzle-set
+  .container
+    .board-area-container
+      = render partial: "puzzle_player/above_board"
+      .board-area
+        .chessground-board
+          .piece-promotion-modal-container
+          .chessground
+          .board-modal-container.invisible(style="display: none")
+    .right-sidebar
+      .ps-info
+        h2 Puzzle set
+        .ps-name= @puzzle_set.name
+        .ps-description= @puzzle_set.description
+      .ps-meta-info
+        .ps-puzzle-count= "#{@puzzle_set.lichess_v2_puzzles.count} puzzles"
+        .ps-creator
+          | created by
+          =< link_to @puzzle_set.user.username, "/#{@puzzle_set.user.username}"
+    .vue-app-mount
