@@ -20,12 +20,6 @@ class PuzzleSetsController < ApplicationController
   end
 
   def create
-    puzzle_set_params = params.require(:puzzle_set).permit(:name, :description, :puzzle_ids)
-    # Lichess v2 puzzle IDs are alphanumeric strings of length 5
-    filtered_puzzle_ids = puzzle_set_params[:puzzle_ids].
-      gsub(/[^a-zA-Z0-9]/, ' ').strip.split(/\s+/).
-      select {|puzzle_id| puzzle_id.length == 5 }.uniq
-    lichess_v2_puzzles = LichessV2Puzzle.where(puzzle_id: filtered_puzzle_ids)
     if lichess_v2_puzzles.count > 0
       @puzzle_set = current_user.puzzle_sets.new({
         name: puzzle_set_params[:name],
@@ -42,6 +36,40 @@ class PuzzleSetsController < ApplicationController
     end
   end
 
+  def edit
+    @puzzle_set = PuzzleSet.find_by(id: params[:id])
+  end
+
   def update
+    if lichess_v2_puzzles.count > 0
+      @puzzle_set = current_user.puzzle_sets.new({
+        name: puzzle_set_params[:name],
+        description: puzzle_set_params[:description]
+      })
+      ActiveRecord::Base.transaction do
+        @puzzle_set.save!
+        @puzzle_set.lichess_v2_puzzles = lichess_v2_puzzles
+      end
+      redirect_to "/ps/#{@puzzle_set.id}"
+    else
+      # No valid puzzle IDs found in the payload. Do nothing.
+      render status: 400
+    end
+  end
+
+  private
+
+  def puzzle_set_params
+    params.require(:puzzle_set).permit(:name, :description, :puzzle_ids)
+  end
+
+  # looks up lichess v2 puzzles based on puzzle_ids input
+  def lichess_v2_puzzles
+    return @lichess_v2_puzzles if defined?(@lichess_v2_puzzles)
+    # Lichess v2 puzzle IDs are alphanumeric strings of length 5
+    filtered_puzzle_ids = puzzle_set_params[:puzzle_ids].
+      gsub(/[^a-zA-Z0-9]/, ' ').strip.split(/\s+/).
+      select {|puzzle_id| puzzle_id.length == 5 }.uniq
+    @lichess_v2_puzzles = LichessV2Puzzle.where(puzzle_id: filtered_puzzle_ids)
   end
 end

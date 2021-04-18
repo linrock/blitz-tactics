@@ -20,3 +20,7 @@ section.game-mode.puzzle-set
           | created by
           =< link_to @puzzle_set.user.username, "/#{@puzzle_set.user.username}"
         .ps-puzzle-count= "#{@puzzle_set.lichess_v2_puzzles.count} puzzles"
+
+      - if current_user && current_user == @puzzle_set.user
+        .ps-actions
+          = link_to "Edit puzzle set", "/ps/#{@puzzle_set.id}/edit"
