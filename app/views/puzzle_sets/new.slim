@@ -1,13 +1,13 @@
-.container
+.container.puzzle-set-form-page
   h2 New puzzle set
 
   = form_for @new_puzzle_set do |f|
-    div
-      input.ps-input-name(name="puzzle_set[name]" type="text" placeholder="Puzzle set name")
-    div
-      input.ps-input-description(name="puzzle_set[description]" type="text" placeholder="Description (optional)")
-    textarea.ps-input-puzzle-ids(name="puzzle_set[puzzle_ids]" placeholder="Puzzle IDs")
-    div
+    .left
+      div
+        input.ps-input-name(name="puzzle_set[name]" type="text" placeholder="Puzzle set name")
+      textarea.ps-input-description(name="puzzle_set[description]" placeholder="Description (optional)")
+      textarea.ps-input-puzzle-ids(name="puzzle_set[puzzle_ids]" placeholder="Puzzle IDs")
+      input.blue-button(type="submit" value="Create puzzle set")
+    .right
       | Input any number of Lichess v2 puzzle IDs separated by spaces, newlines, or commas.
 
-    = f.submit "Create puzzle set"

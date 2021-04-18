@@ -1,13 +1,12 @@
-.container
+.container.puzzle-set-form-page
   h2 Edit puzzle set
 
   = form_tag "/ps/#{@puzzle_set.id}", method: :put do |f|
-    div
-      input.ps-input-name(name="puzzle_set[name]" type="text" placeholder="Puzzle set name" value="#{@puzzle_set.name}")
-    div
-      input.ps-input-description(name="puzzle_set[description]" type="text" placeholder="Description (optional)" value="#{@puzzle_set.description}")
-    textarea.ps-input-puzzle-ids(name="puzzle_set[puzzle_ids]" placeholder="Puzzle IDs")= @puzzle_set.textarea_puzzle_ids
-    div
+    .left
+      div
+        input.ps-input-name(name="puzzle_set[name]" type="text" placeholder="Puzzle set name" value="#{@puzzle_set.name}")
+      textarea.ps-input-description(name="puzzle_set[description]" placeholder="Description (optional)")= @puzzle_set.description
+      textarea.ps-input-puzzle-ids(name="puzzle_set[puzzle_ids]" placeholder="Puzzle IDs")= @puzzle_set.textarea_puzzle_ids
+      input.blue-button(type="submit" value="Update puzzle set")
+    .right
       | Input any number of Lichess v2 puzzle IDs separated by spaces, newlines, or commas.
-
-    input(type="submit" value="Update puzzle set")
