@@ -16,9 +16,10 @@ export default () => {
     noHint: true,
     source: `${window.location.pathname}/puzzles.json`,
   })
+  const vueAppSelector = '.puzzle-set .vue-app-mount'
   subscribeOnce('move:try', () => {
-    createApp(PuzzleSetSidebar).mount('.puzzle-set .vue-app-mount')
-    const el: HTMLDivElement = document.querySelector('.puzzle-set .vue-app-mount')
+    createApp(PuzzleSetSidebar).mount(vueAppSelector)
+    const el: HTMLDivElement = document.querySelector(vueAppSelector)
     el.style.display = 'block'
   })
 }
