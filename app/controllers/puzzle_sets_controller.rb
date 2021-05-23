@@ -86,7 +86,8 @@ class PuzzleSetsController < ApplicationController
   def filtered_puzzle_ids
     lichess_v2_puzzle_ids = puzzle_set_params[:puzzle_ids].
       gsub(/[^a-zA-Z0-9]/, ' ').strip.split(/\s+/).
-      select {|puzzle_id| puzzle_id.length == 5 }.uniq
+      select {|puzzle_id| puzzle_id.length == 5 }.uniq.
+      take(PuzzleSet::PUZZLE_LIMIT)
     LichessV2Puzzle.where(puzzle_id: lichess_v2_puzzle_ids).pluck(:id)
   end
 end
