@@ -12,7 +12,7 @@ class PuzzleSetsController < ApplicationController
   def puzzles_json
     @puzzle_set = PuzzleSet.find_by(id: params[:id])
     render json: {
-      puzzles: @puzzle_set.lichess_v2_puzzles.map(&:bt_puzzle_data).as_json
+      puzzles: @puzzle_set.random_level.as_json
     }
   end
 
