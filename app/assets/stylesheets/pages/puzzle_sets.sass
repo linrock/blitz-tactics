@@ -15,7 +15,8 @@
     padding: 5px 10px
 
   .ps-input-puzzle-ids
-    height: 100px
+    min-height: 100px
+    height: 200px
 
   form
     display: flex
@@ -26,3 +27,28 @@
     line-height: 1.5em
     font-size: 14px
     opacity: 0.5
+
+body[data-controller="puzzle_sets"][data-action="index"]
+  .puzzle-sets-index
+    padding-top: 30px
+
+  .puzzle-sets-list
+    margin-top: 30px
+
+  a
+    display: block
+    color: inherit
+    text-decoration: none
+    padding: 5px 0
+    opacity: 0.8
+
+    &:hover
+      opacity: 1
+
+    .puzzle-set-name
+      font-size: 22px
+      text-decoration: underline
+      padding-bottom: 10px
+
+    .puzzle-set-info
+      font-size: 16px

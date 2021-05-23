@@ -1,7 +1,14 @@
-.container
+.container.puzzle-sets-index
   h2 Puzzle sets
 
-  = "#{@puzzle_sets.length} puzzles"
+  = "#{@puzzle_sets.length} puzzle sets"
 
-  - @puzzle_sets.each do |puzzle_set|
-    = puzzle_set.name
+  .puzzle-sets-list
+    - @puzzle_sets.each do |puzzle_set|
+      .puzzle-set
+        a(href="/ps/#{puzzle_set.id}")
+          .puzzle-set-name= puzzle_set.name
+          .puzzle-set-info
+            span= "#{puzzle_set.lichess_v2_puzzles.count} puzzles"
+            span &nbsp;-&nbsp;
+            span= "created by #{puzzle_set.user.username}"

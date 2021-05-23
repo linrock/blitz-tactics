@@ -1,7 +1,8 @@
 class PuzzleSetsController < ApplicationController
 
   def index
-    @puzzle_sets = PuzzleSet.all.limit(20)
+    # order puzzle sets by when they were last updated
+    @puzzle_sets = PuzzleSet.all.order('updated_at DESC').limit(30)
   end
 
   def show
