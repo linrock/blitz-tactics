@@ -40,7 +40,7 @@ export default {
   },
 
   mounted() {
-    let timerInterval
+    let timerInterval: number;
     const gameHasEnded = () => {
       this.hasEnded = true
       if (typeof timerInterval !== 'undefined') {

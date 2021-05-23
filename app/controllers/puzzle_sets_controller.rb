@@ -21,15 +21,18 @@ class PuzzleSetsController < ApplicationController
   end
 
   def create
-    if lichess_v2_puzzles.count > 0
-      @puzzle_set = current_user.puzzle_sets.new({
+    if filtered_puzzle_ids.count > 0
+      @puzzle_set = current_user.puzzle_sets.create!({
         name: puzzle_set_params[:name],
         description: puzzle_set_params[:description]
       })
-      ActiveRecord::Base.transaction do
-        @puzzle_set.save!
-        @puzzle_set.lichess_v2_puzzles = lichess_v2_puzzles
-      end
+      # insert all valid puzzle ids
+      LichessV2PuzzlesPuzzleSet.insert_all(filtered_puzzle_ids.map do |puzzle_id|
+        {
+          puzzle_set_id: @puzzle_set.id,
+          lichess_v2_puzzle_id: puzzle_id,
+        }
+      end)
       redirect_to "/ps/#{@puzzle_set.id}"
     else
       # No valid puzzle IDs found in the payload. Do nothing.
@@ -42,14 +45,29 @@ class PuzzleSetsController < ApplicationController
   end
 
   def update
-    if lichess_v2_puzzles.count > 0
-      @puzzle_set = current_user.puzzle_sets.new({
-        name: puzzle_set_params[:name],
-        description: puzzle_set_params[:description]
-      })
+    @puzzle_set = current_user.puzzle_sets.find_by(id: params[:id])
+    if @puzzle_set
       ActiveRecord::Base.transaction do
-        @puzzle_set.save!
-        @puzzle_set.lichess_v2_puzzles = lichess_v2_puzzles
+        @puzzle_set.update!({
+          name: puzzle_set_params[:name],
+          description: puzzle_set_params[:description]
+        })
+        # delete puzzles that are not in the new puzzle list
+        delete_puzzle_ids = @puzzle_set.lichess_v2_puzzle_ids - filtered_puzzle_ids
+        LichessV2PuzzlesPuzzleSet.delete_by(
+          puzzle_set_id: @puzzle_set.id,
+          lichess_v2_puzzle_id: delete_puzzle_ids
+        )
+        # insert puzzles that aren't already created
+        insert_puzzle_ids = filtered_puzzle_ids - @puzzle_set.lichess_v2_puzzle_ids
+        if insert_puzzle_ids.length > 0
+          LichessV2PuzzlesPuzzleSet.insert_all(insert_puzzle_ids.map do |puzzle_id|
+            {
+              puzzle_set_id: @puzzle_set.id,
+              lichess_v2_puzzle_id: puzzle_id,
+            }
+          end)
+        end
       end
       redirect_to "/ps/#{@puzzle_set.id}"
     else
@@ -64,13 +82,11 @@ class PuzzleSetsController < ApplicationController
     params.require(:puzzle_set).permit(:name, :description, :puzzle_ids)
   end
 
-  # looks up lichess v2 puzzles based on puzzle_ids input
-  def lichess_v2_puzzles
-    return @lichess_v2_puzzles if defined?(@lichess_v2_puzzles)
-    # Lichess v2 puzzle IDs are alphanumeric strings of length 5
-    filtered_puzzle_ids = puzzle_set_params[:puzzle_ids].
+  # filtered lichess v2 puzzle ids (primary keys) based on actual lichess v2 puzzle ids
+  def filtered_puzzle_ids
+    lichess_v2_puzzle_ids = puzzle_set_params[:puzzle_ids].
       gsub(/[^a-zA-Z0-9]/, ' ').strip.split(/\s+/).
       select {|puzzle_id| puzzle_id.length == 5 }.uniq
-    @lichess_v2_puzzles = LichessV2Puzzle.where(puzzle_id: filtered_puzzle_ids)
+    LichessV2Puzzle.where(puzzle_id: lichess_v2_puzzle_ids).pluck(:id)
   end
 end

@@ -1,5 +1,5 @@
 <template lang="pug">
-.puzzle-set-sidebar vue sidebar
+aside.puzzle-set-sidebar vue sidebar
 
 </template>
 
