@@ -1,6 +1,8 @@
 # New lichess v2 puzzles
 class LichessV2Puzzle < ActiveRecord::Base
-  has_and_belongs_to_many :puzzle_sets
+  has_many :lichess_v2_puzzles_puzzle_sets
+  has_many :puzzle_sets, through: :lichess_v2_puzzles_puzzle_sets
+
   before_save :calculate_lines_tree
 
   def is_reportable?
