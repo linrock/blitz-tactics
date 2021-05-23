@@ -18,13 +18,12 @@ class PuzzleSet < ActiveRecord::Base
     if num_puzzles < 10
       return lichess_v2_puzzles.map(&:bt_puzzle_data).shuffle
     end
+    sorted_puzzle_ids = lichess_v2_puzzles.order('rating ASC').pluck(:id)
     bucket_size = (num_puzzles / 10.0).ceil
-    serve_puzzles = []
-    sorted_puzzles = lichess_v2_puzzles.order('rating ASC')
-    10.times do |i|
-      candidate_puzzles = sorted_puzzles.offset(i * bucket_size).limit(bucket_size)
-      serve_puzzles += candidate_puzzles.shuffle.take(10)
+    serve_puzzle_ids = []
+    sorted_puzzle_ids.each_slice(bucket_size).each do |bucket|
+      serve_puzzle_ids.push(*bucket.shuffle.take(10))
     end
-    serve_puzzles.map(&:bt_puzzle_data)
+    LichessV2Puzzle.find_by_sorted(serve_puzzle_ids).map(&:bt_puzzle_data)
   end
 end
