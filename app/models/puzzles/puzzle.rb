@@ -80,6 +80,7 @@ class Puzzle < ActiveRecord::Base
   def fen
     puzzle_data["initial_fen"]
   end
+  alias :initial_fen :fen
 
   def initial_move_san
     puzzle_data["initial_move_san"]

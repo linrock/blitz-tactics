@@ -5,7 +5,12 @@ class PuzzlesController < ApplicationController
   def index
     if params[:puzzle_ids]
       puzzle_ids = params[:puzzle_ids].split(',').take(100)
-      @puzzles = Puzzle.find_by_sorted(puzzle_ids)
+      if puzzle_ids.any? {|p| p =~ /[a-z]/i }
+        # Hack to handle lichess v2 puzzles for puzzle sets
+        @puzzles = LichessV2Puzzle.find_by_sorted_lichess(puzzle_ids)
+      else
+        @puzzles = Puzzle.find_by_sorted(puzzle_ids)
+      end
     else
       @puzzles = Puzzle.order('id DESC').limit(9)
     end

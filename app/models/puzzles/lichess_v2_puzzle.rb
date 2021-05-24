@@ -9,6 +9,10 @@ class LichessV2Puzzle < ActiveRecord::Base
     false
   end
 
+  def initial_move_uci
+    moves_uci[0]
+  end
+
   # puzzle format used by blitz tactics game modes
   def bt_puzzle_data
     # TODO clean this up
@@ -106,5 +110,11 @@ class LichessV2Puzzle < ActiveRecord::Base
   def self.find_by_sorted(puzzle_ids)
     puzzle_ids = puzzle_ids.map(&:to_i)
     LichessV2Puzzle.where(id: puzzle_ids).sort_by { |p| puzzle_ids.index(p.id) }
+  end
+
+  def self.find_by_sorted_lichess(lichess_puzzle_ids)
+    LichessV2Puzzle.where(puzzle_id: lichess_puzzle_ids).sort_by do |p|
+      lichess_puzzle_ids.index(p.puzzle_id)
+    end
   end
 end

@@ -39,15 +39,19 @@ module MiniboardHelper
   # given a Puzzle model, render a miniboard
   def linked_puzzle_miniboard(puzzle)
     # TODO some puzzles have invalid UCI moves (ex. 66211)
-    initial_fen = puzzle.puzzle_data["initial_fen"]
-    initial_move_san = puzzle.puzzle_data["initial_move_san"]
+    initial_fen = puzzle.initial_fen
     puzzle_id = puzzle.puzzle_id
-    render_miniboard_link({
+    board_options = {
       fen: initial_fen,
-      initial_move_san: initial_move_san,
       flip: initial_fen.include?(" w "),
       path: "/p/#{puzzle_id}"
-    })
+    }
+    if puzzle.is_a? Puzzle
+      board_options[:initial_move_san] = puzzle.puzzle_data["initial_move_san"]
+    else
+      board_options[:initial_move] = puzzle.initial_move_uci
+    end
+    render_miniboard_link(board_options)
   end
 
   # for static routes defined in position_routes.txt
