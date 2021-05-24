@@ -7,7 +7,7 @@
         input.ps-input-name(name="puzzle_set[name]" type="text" placeholder="Puzzle set name")
       textarea.ps-input-description(name="puzzle_set[description]" placeholder="Description (optional)")
       textarea.ps-input-puzzle-ids(name="puzzle_set[puzzle_ids]" placeholder="Puzzle IDs")
-      input.blue-button(type="submit" value="Create puzzle set")
+      input.blue-button(type="submit" value="Create puzzle set" onClick="this.disabled = true; this.form.submit();")
     .right
       | Input up to 25k Lichess v2 puzzle IDs separated by spaces, newlines, or commas.
 
