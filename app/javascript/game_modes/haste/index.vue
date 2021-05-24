@@ -31,8 +31,8 @@ aside.haste-sidebar
 <script lang="ts">
 import { hasteRoundCompleted } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
-import store from '@blitz/local_storage'
 import { subscribe, subscribeOnce } from '@blitz/events'
+import store from '@blitz/local_storage'
 
 import Timer from './timer.vue'
 

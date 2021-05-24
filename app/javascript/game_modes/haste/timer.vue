@@ -19,7 +19,7 @@ export default {
     return {
       initialTimeMs: initialTimeMin * 60 * 1000,
       timeModifierMs: 0,
-      hasStarted: false,
+      hasStarted: true,
       hasEnded: false,
       startTime: 0,
       nowTime: 0,
@@ -49,19 +49,16 @@ export default {
       }
       dispatch('timer:stopped')
     }
-    subscribeOnce('move:try', () => {
-      // start the timer after the first player move
-      const now = Date.now()
-      this.startTime = now
-      this.nowTime = now
-      timerInterval = window.setInterval(() => {
-        this.nowTime = Date.now()
-        if (this.timeLeftMilliseconds <= 0) {
-          gameHasEnded()
-        }
-      }, updateIntervalMs)
-      this.hasStarted = true
-    })
+    // start the timer after this is mounted
+    const now = Date.now()
+    this.startTime = now
+    this.nowTime = now
+    timerInterval = window.setInterval(() => {
+      this.nowTime = Date.now()
+      if (this.timeLeftMilliseconds <= 0) {
+        gameHasEnded()
+      }
+    }, updateIntervalMs)
     subscribe({
       'move:success': () => {
         // gain time with higher combos

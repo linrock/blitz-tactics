@@ -24,3 +24,6 @@ section.game-mode.puzzle-set
       - if current_user && current_user == @puzzle_set.user
         .ps-actions
           = link_to "Edit puzzle set", "/ps/#{@puzzle_set.id}/edit"
+
+      .ps-instructions
+        | Make a move to start the timer
