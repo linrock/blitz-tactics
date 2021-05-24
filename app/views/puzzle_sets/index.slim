@@ -1,7 +1,11 @@
 .container.puzzle-sets-index
   h2 Puzzle sets
+  h3 Create your own puzzle sets from Lichess puzzles
 
-  = "#{@puzzle_sets.length} puzzle sets"
+  -#= "#{@puzzle_sets.length} puzzle sets"
+
+  br
+  a.blue-button(href="/puzzle-sets/new") Create puzzle set
 
   .puzzle-sets-list
     - @puzzle_sets.each do |puzzle_set|

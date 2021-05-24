@@ -1,4 +1,5 @@
 class PuzzleSetsController < ApplicationController
+  before_action :require_logged_in_user!, only: [:new]
 
   def index
     # order puzzle sets by when they were last updated
