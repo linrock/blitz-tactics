@@ -12,7 +12,7 @@ class GameModes::RepetitionController < ApplicationController
     end
     @formatted_round_times = current_user&.round_times_for_level_id(@level.id) || []
     if current_user&.completed_repetition_level?(@level)
-      @high_scores = @level.high_scores
+      @high_scores = @level.high_scores || []
     else
       @high_scores = []
     end
