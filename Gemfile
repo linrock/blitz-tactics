@@ -22,7 +22,7 @@ gem 'mini_racer', platforms: :ruby
 gem 'sprockets', '~> 4.0'
 gem 'sass-rails', '>= 6'
 gem 'uglifier', '>= 1.3.0'
-gem 'webpacker', '~> 5.4.0'
+gem 'webpacker', '~> 5.4.3'
 
 # production
 gem 'mailgun-ruby'
