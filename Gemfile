@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.7.3'
 
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0'
 gem 'puma', '~> 5.0'
 gem 'bootsnap', require: false
 gem 'eye', require: false
@@ -19,7 +19,7 @@ gem 'execjs'
 gem 'mini_racer', platforms: :ruby
 
 # assets
-gem 'sprockets', '~> 4.0'
+gem 'sprockets-rails', '~> 3.4'
 gem 'sass-rails', '>= 6'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker', '~> 5.4.3'
