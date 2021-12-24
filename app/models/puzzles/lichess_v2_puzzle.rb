@@ -74,10 +74,10 @@ class LichessV2Puzzle < ActiveRecord::Base
       fen = initial_fen
       # get to the FEN just before the last player move of the puzzle
       self.moves_uci[..-2].each do |move_uci|
-        fen = ChessJS.fen_after_move_uci(fen, move_uci)
+        fen = ChessJs.fen_after_move_uci(fen, move_uci)
       end
       # find moves from the last position of the puzzle that checkmate
-      checkmate_moves_uci = ChessJS.checkmate_moves_uci_at_fen(fen)
+      checkmate_moves_uci = ChessJs.checkmate_moves_uci_at_fen(fen)
       unless checkmate_moves_uci.include?(last_move_uci)
         # expect our calculated checkmate moves to include the one checkmate
         # move provided in the CSV

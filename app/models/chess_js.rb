@@ -1,5 +1,5 @@
 # ruby wrapper around chess.js for calculations that require chess logic
-module ChessJS
+module ChessJs
   extend self
 
   def context
