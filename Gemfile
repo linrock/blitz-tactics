@@ -16,7 +16,7 @@ gem 'slim'
 gem 'glicko2'
 
 gem 'execjs'
-gem 'mini_racer', platforms: :ruby
+gem 'mini_racer', '~> 0.4.0', platforms: :ruby
 
 # assets
 gem 'sprockets-rails', '~> 3.4'
