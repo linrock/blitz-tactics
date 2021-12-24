@@ -40,7 +40,7 @@ You'll need [Yarn](https://yarnpkg.com/) and maybe a Ruby version manager like
 Then from within your git clone of the codebase, these steps will get you
 a dev environment with the chess puzzles used on the site:
 
-```
+```bash
 bundle install    # install ruby gems
 yarn install      # install node_modules
 
@@ -48,7 +48,7 @@ rails db:create   # set up an empty postgres db: blitz-tactics_development
 rails db:migrate  # sets up the db schema
 
 yarn lichess:puzzles:fetch   # downloads ~125k lichess v1 puzzles as JSON files
-yarn lichess:puzzles:load    # import puzzles from JSON into the db (15+ min)
+yarn lichess:puzzles:import  # import puzzles from JSON into the db (15+ min)
 yarn lichess:puzzles:check   # should confirm the puzzles were loaded
 
 yarn blitz:game_modes:fetch  # downloads puzzles used on blitztactics.com as JSON files
