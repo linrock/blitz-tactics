@@ -47,6 +47,7 @@ section.game-mode.repetition-mode(data-level="#{@level.path}")
         h2 Fastest rounds
         .scores
           - @high_scores.each do |user, time|
-            .high-score
-              .time= time
-              .player= user_link(user)
+            - if user
+              .high-score
+                .time= time
+                .player= user_link(user)
