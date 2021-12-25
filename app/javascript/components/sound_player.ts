@@ -1,5 +1,3 @@
-import Backbone from 'backbone'
-
 import { toggleSound } from '../api/requests'
 import { dispatch, subscribe } from '../events'
 
@@ -15,31 +13,28 @@ if (supportsAudio) {
   }
 }
 
-export default class SoundPlayer extends Backbone.View {
+export default class SoundPlayer {
   private volumeIconEl: HTMLElement
   private soundEnabled = false
   private soundsLoaded = false
   private playSounds = false
 
-  events(): Backbone.EventsHash {
-    return {
-      "click .volume-toggle": "_toggleVolume",
-    }
-  }
-
-  // @ts-ignore
   get el(): HTMLElement {
     return document.querySelector(`.main-header`)
   }
 
   constructor() {
-    super()
     this.volumeIconEl = this.el.querySelector(`.volume-toggle`)
     this.soundEnabled = this.volumeIconEl.dataset.enabled == `true`
     this.playSounds = this.soundEnabled && supportsAudio
     if (this.playSounds) {
       this.loadSounds()
     }
+    this.volumeIconEl.addEventListener('click', () => {
+      // click the sound/volume icon in the main header to toggle sound on/off
+      this.soundEnabled = !this.soundEnabled
+      dispatch(`sound:enabled`, this.soundEnabled)
+    });
     subscribe({
       'sound:enabled': enabled => {
         const el = this.volumeIconEl.querySelector(`use`)
@@ -71,10 +66,5 @@ export default class SoundPlayer extends Backbone.View {
     if (this.soundEnabled && audioMap[type].readyState >= 2) {
       audioMap[type].play().catch(e => {})
     }
-  }
-
-  private _toggleVolume() {
-    this.soundEnabled = !this.soundEnabled
-    dispatch(`sound:enabled`, this.soundEnabled)
   }
 }
