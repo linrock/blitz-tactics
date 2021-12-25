@@ -43,11 +43,10 @@
     },
 
     mounted() {
-      console.log('piece promo modal mounted')
       subscribe({
         'move:promotion': data => {
           this.fen = data.fen
-          this.moveIntent = data.move // as ShortMove
+          this.moveIntent = data.move as ShortMove
           this.lastMove = data.lastMove
           this.color = this.fen.includes(' w ') ? 'w' : 'b'
           this.show()
