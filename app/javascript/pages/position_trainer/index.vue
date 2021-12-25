@@ -2,7 +2,7 @@
 .instructions(:class=`{ invisible: !showInstructions && !showGameOver}`)
   | {{ showInstructions ? instructionsText : showGameOver ? gameOverText : '' }}
 .chessground-board
-  .piece-promotion-modal-container
+  .piece-promotion-modal-mount
   .chessground
 .actions
   button.dark-button(@click="resetPosition()") Reset position

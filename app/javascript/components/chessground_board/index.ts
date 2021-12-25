@@ -3,8 +3,10 @@ import { Chessground } from 'chessground'
 import { Api } from 'chessground/api'
 import { Config } from 'chessground/config'
 import { Color, Dests, FEN, Key } from 'chessground/types'
+import { createApp } from 'vue'
 
 import PiecePromoModal from '../piece_promo_modal'
+import PiecePromoModalVue from '../piece_promo_modal/new.vue'
 import { dispatch, subscribe } from '@blitz/events'
 
 import './chessground.sass'
@@ -102,7 +104,8 @@ export default class ChessgroundBoard {
     }
     this.chessground = Chessground(document.querySelector(selector), cgOptions);
 
-    new PiecePromoModal()
+    // new PiecePromoModal()
+     createApp(PiecePromoModalVue).mount('.piece-promotion-modal-mount')
 
     subscribe({
       'board:flipped': shouldBeFlipped => {
