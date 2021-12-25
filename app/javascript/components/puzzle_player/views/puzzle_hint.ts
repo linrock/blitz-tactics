@@ -1,5 +1,4 @@
 import _ from 'underscore'
-import Backbone from 'backbone'
 
 import { dispatch, subscribe } from '@blitz/events'
 import { UciMove } from '@blitz/types'
@@ -10,28 +9,25 @@ const hintDelay = 750
 
 // Solution/hint that shows up after some time
 //
-export default class PuzzleHint extends Backbone.View {
+export default class PuzzleHint {
   private moveEl: HTMLElement
   private buttonEl: HTMLElement
   private current: PuzzleState
   private timeout = 0
 
-  // @ts-ignore
   get el(): HTMLElement {
     return document.querySelector(`.puzzle-hint`)
   }
 
-  events(): Backbone.EventsHash {
-    return {
-      "mousedown .hint-trigger" : `_showHint`,
-      "touchstart .hint-trigger" : `_showHint`
-    }
-  }
-
   constructor() {
-    super()
     this.moveEl = this.el.querySelector(`.move`)
     this.buttonEl = this.el.querySelector(`.hint-trigger`)
+    const events = ['mousedown', 'touchstart']
+    events.forEach(event => {
+      this.buttonEl.addEventListener(event, () => {
+        this.buttonEl.classList.add(`invisible`)
+      })
+    })
     subscribe({
       'puzzle:loaded': (current: PuzzleState) => {
         this.current = current
@@ -76,9 +72,5 @@ export default class PuzzleHint extends Backbone.View {
     this.el.classList.remove(`invisible`)
     this.buttonEl.classList.remove(`invisible`)
     this.moveEl.textContent = this.getRandomHint()
-  }
-
-  private _showHint() {
-    this.buttonEl.classList.add(`invisible`)
   }
 }
