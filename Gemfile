@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '3.0.3'
 
 gem 'rails', '~> 7.0'
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 5.6'
 gem 'bootsnap', require: false
 gem 'eye', require: false
 
