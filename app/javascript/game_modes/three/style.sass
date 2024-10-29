@@ -1,5 +1,5 @@
-@import "../../../assets/stylesheets/_variables"
-@import "../base"
+@use "../../../assets/stylesheets/_variables" as vars
+@forward "../base"
 
 .three-mode
   .rewarded
@@ -12,7 +12,7 @@
     color: #ffff00
 
   .three-sidebar
-    margin-top: $above-board-height
+    margin-top: vars.$above-board-height
     margin-left: 30px
     display: flex
     flex-direction: column

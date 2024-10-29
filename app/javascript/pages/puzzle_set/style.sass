@@ -1,9 +1,9 @@
-@import "../../../assets/stylesheets/_variables"
-@import "../../game_modes/base"
+@use "../../../assets/stylesheets/_variables" as vars
+@forward "../../game_modes/base"
 
 .puzzle-set
   .right-sidebar
-    margin-top: $above-board-height
+    margin-top: vars.$above-board-height
     margin-left: 20px
 
     a

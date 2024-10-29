@@ -1,6 +1,6 @@
-@import "../../../assets/stylesheets/_colors"
-@import "../../../assets/stylesheets/_variables"
-@import "../base"
+@use "../../../assets/stylesheets/_colors" as colors
+@use "../../../assets/stylesheets/_variables" as vars
+@forward "../base"
 
 .rated-mode
   .dark-button
@@ -9,8 +9,8 @@
     width: 100%
 
   .above-board
-    width: $board-size
-    height: $above-board-height
+    width: vars.$board-size
+    height: vars.$above-board-height
     margin: 0
     transition: opacity 0.5s ease
 
@@ -20,7 +20,7 @@
       font-size: 22px
 
   .rated-sidebar
-    margin-top: $above-board-height
+    margin-top: vars.$above-board-height
     margin-left: 30px
     display: flex
     flex-direction: column
@@ -74,11 +74,11 @@
         transition: opacity 0.5s ease
 
         &.success
-          color: $move-perfect
+          color: colors.$move-perfect
         &.fail
-          color: $move-fail
+          color: colors.$move-fail
         &.almost
-          color: $move-almost
+          color: colors.$move-almost
 
         svg
           width: 14px

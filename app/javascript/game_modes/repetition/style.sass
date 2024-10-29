@@ -1,4 +1,4 @@
-@import "../../../assets/stylesheets/_variables"
+@use "../../../assets/stylesheets/_variables" as vars
 
 .repetition-mode 
 
@@ -7,8 +7,8 @@
     justify-content: center
 
   .chessboard, .chessground-board
-    width: $board-size
-    height: $board-size
+    width: vars.$board-size
+    height: vars.$board-size
 
   .sidebar
     margin: 125px 0 0 12px

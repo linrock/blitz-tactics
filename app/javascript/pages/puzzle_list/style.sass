@@ -1,4 +1,4 @@
-@import "../../../assets/stylesheets/_colors"
+@use "../../../assets/stylesheets/_colors" as colors
 
 body[data-controller=puzzles][data-action=index], body[data-action=puzzles]
   .puzzle-page
@@ -33,4 +33,4 @@ body[data-controller=puzzles][data-action=index], body[data-action=puzzles]
       opacity: 0.5
 
     .puzzle-mistake-info
-      color: $move-fail
+      color: colors.$move-fail

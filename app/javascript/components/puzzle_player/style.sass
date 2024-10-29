@@ -1,7 +1,7 @@
 // the main puzzle player interface
 
-@import "../../../assets/stylesheets/_colors"
-@import "../../../assets/stylesheets/_variables"
+@use "../../../assets/stylesheets/_colors" as colors
+@use "../../../assets/stylesheets/_variables" as vars
 
 body 
   transition: background 0.6s ease
@@ -14,7 +14,7 @@ body
   padding: 10px 24px
   border: 0
   border-radius: 3px
-  background: $blue-button-bg
+  background: colors.$blue-button-bg
   display: inline-block
   color: white
   text-decoration: none
@@ -51,7 +51,7 @@ body
         opacity: 1
 
 .above-board 
-  height: $above-board-height
+  height: vars.$above-board-height
   position: relative
   // width $main-width
   margin: 15px auto 0
@@ -105,7 +105,7 @@ body
   // perfect, great, good, etc.
   .move-status 
     opacity: 1
-    font-family: $combo-indicator-font
+    font-family: vars.$combo-indicator-font
     font-size: 32px
     width: 100%
     position: absolute
@@ -121,36 +121,36 @@ body
       transition: opacity 0.9s ease-out 0.2s, transform 0.05s ease-in-out
 
     .perfect 
-      color: $move-perfect
+      color: colors.$move-perfect
       font-weight: 600
       letter-spacing: 3px
       font-size: 40px
 
     .great 
-      color: $move-great
+      color: colors.$move-great
       font-weight: 600
       letter-spacing: 3px
       font-size: 38px
 
     .good 
-      color: $move-good
+      color: colors.$move-good
       font-weight: 600
       letter-spacing: 3px
       font-size: 38px
 
     .almost 
-      color: $move-almost
+      color: colors.$move-almost
       position: relative
       top: 12px
 
     .fail 
-      color: $move-fail
+      color: colors.$move-fail
       position: relative
       top: 12px
 
   .combo-counter 
     text-align: center
-    font-family: $combo-indicator-font
+    font-family: vars.$combo-indicator-font
     position: absolute
     top: 60px
     width: 100%

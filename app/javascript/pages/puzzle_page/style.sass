@@ -1,4 +1,4 @@
-@import "../../../assets/stylesheets/_variables"
+@use "../../../assets/stylesheets/_variables" as vars
 
 body[data-controller=puzzles][data-action=show]
   $board-size: 496px
@@ -6,8 +6,8 @@ body[data-controller=puzzles][data-action=show]
   margin: 0 auto 50px
 
   .chessground-board
-    width: $board-size
-    height: $board-size
+    width: vars.$board-size
+    height: vars.$board-size
 
   .container
     display: flex
@@ -19,7 +19,7 @@ body[data-controller=puzzles][data-action=show]
     margin-top: 0
 
   .left
-    width: $board-size
+    width: vars.$board-size
 
   .right 
     margin: 103px 0 0 37px
@@ -90,7 +90,7 @@ body[data-controller=puzzles][data-action=show]
       background: black
       color: white
       display: inline-block
-      font-family: $main-font
+      font-family: vars.$main-font
       line-height: 22px
       text-decoration: none
       transition: opacity 0.25s ease

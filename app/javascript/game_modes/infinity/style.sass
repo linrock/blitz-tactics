@@ -1,5 +1,5 @@
-@import "../../../assets/stylesheets/_variables"
-@import "../base"
+@use "../../../assets/stylesheets/_variables" as vars
+@forward "../base"
 
 .infinity-mode 
   .dark-button
@@ -10,7 +10,7 @@
     opacity: 0.6
 
   .infinity-sidebar 
-    margin-top: $above-board-height
+    margin-top: vars.$above-board-height
     margin-left: 30px
     font-size: 18px
     display: flex
