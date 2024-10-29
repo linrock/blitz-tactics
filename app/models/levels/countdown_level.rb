@@ -31,7 +31,7 @@ class CountdownLevel < ActiveRecord::Base
   def puzzles
     # countdown_puzzles.order('id ASC')
     json_data_filename = LEVELS_DIR.join("countdown-#{name}.json")
-    unless File.exists? json_data_filename
+    unless File.exist? json_data_filename
       # TODO fix race condition where concurrent requests will trigger this
       CountdownLevelCreator.export_puzzles_for_date(Date.strptime(name))
     end
