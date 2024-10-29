@@ -14,6 +14,7 @@ gem 'dotenv-rails'
 gem 'devise', '~> 4.3'
 gem 'slim'
 gem 'glicko2'
+gem 'nio4r', '~> 2.5.9'
 
 gem 'execjs'
 gem 'mini_racer', '~> 0.6.3', platforms: :ruby
