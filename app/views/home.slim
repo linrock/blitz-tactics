@@ -1,6 +1,44 @@
 section.homepage
+
+  .quest-section
+    img.quest-bg src="/assets/photo-1461511669078-d46bf351cd6e.jpg"
+
+    .quest-container.container
+      aside.world-sidebar
+        .world-name
+          | World 1
+        .world-subtitle
+          | Just getting started
+
+      main.world-levels
+        .quest-level
+          .board-link= homepage_miniboard_link("/haste", @haste_puzzle)
+          .level-info
+            .level-name Repetition
+            .level-task Complete 5 puzzles in a row without mistakes
+            .level-best-score Best score: 28s
+
+        .quest-level
+          = homepage_miniboard_link("/haste", @haste_puzzle)
+          .level-info
+            .level-name Repetition
+            .level-task Complete 5 puzzles in a row without mistakes
+            .level-best-score Best score: 28s
+
+
+        .quest-level
+          = homepage_miniboard_link("/haste", @haste_puzzle)
+          .level-info
+            .level-name Repetition
+            .level-task Complete 5 puzzles in a row without mistakes
+            .level-best-score Start
+
+
+    .quest-container-bottom.container
+      | Complete 2 levels to unlock the next world
+
   .container
-    h2 Fast-paced chess puzzles. Choose a game mode to get started.
+    h2 Or practice fast-paced chess puzzles in another game mode.
 
   .game-modes-container
     .mode.haste
