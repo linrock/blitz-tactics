@@ -24,7 +24,8 @@ gem 'cssbundling-rails'
 gem 'propshaft'
 
 gem 'uglifier', '>= 1.3.0'
-gem 'webpacker', '~> 5.4.3'
+# gem 'webpacker', '~> 5.4.3'
+gem 'jsbundling-rails'
 
 # production
 gem 'mailgun-ruby'

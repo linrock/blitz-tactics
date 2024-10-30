@@ -15,6 +15,12 @@
     "sourceMap": true,
     "target": "es5"
   },
+  "include": [
+    "app/javascript/**/*.ts",
+    "app/javascript/**/*.tsx",
+    "app/javascript/**/*.vue", // Ensure this line is present
+    "app/javascript/globals.d.ts" // Optional, but good for clarity
+  ],
   "exclude": [
     "**/*.spec.ts",
     "node_modules",
