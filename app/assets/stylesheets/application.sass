@@ -1,9 +1,5 @@
-//= require "reset"
-//= require_self
-//= require_tree .
-//= require_tree ./pages
-
-@import "_variables"
+@forward "../../../vendor/assets/stylesheets/reset"
+@use "_variables" as vars
 
 html 
   box-sizing: border-box
@@ -12,7 +8,7 @@ html
   box-sizing: inherit
 
 body 
-  font-family: $main-font
+  font-family: vars.$main-font
   background: #1f1f1f
   color: #fafafa
   -webkit-font-smoothing: antialiased
@@ -32,10 +28,26 @@ button
     cursor: pointer
 
 .container 
-  width: $main-width
+  width: vars.$main-width
   margin: 0 auto
   padding: 0 15px
 
 .invisible 
   opacity: 0
   pointer-events: none
+
+@import "./buttons"
+@import "./main_header"
+@import "./responsive"
+@import "./quest"
+
+@import "./pages/about"
+@import "./pages/homepage"
+@import "./pages/not_found"
+@import "./pages/positions_index"
+@import "./pages/puzzle_attempts"
+@import "./pages/puzzle_reports"
+@import "./pages/puzzle_sets"
+@import "./pages/registration"
+@import "./pages/scoreboard"
+@import "./pages/user_profile"

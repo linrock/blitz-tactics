@@ -21,7 +21,9 @@ gem 'mini_racer', '~> 0.6.3', platforms: :ruby
 
 # assets
 gem 'sprockets-rails', '~> 3.4'
-gem 'sass-rails', '>= 6'
+# gem 'sass-rails', '>= 6'
+gem 'cssbundling-rails'
+
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker', '~> 5.4.3'
 
