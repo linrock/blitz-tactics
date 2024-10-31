@@ -1,53 +1,19 @@
 @forward "../../../vendor/assets/stylesheets/reset"
-@use "_variables" as vars
 
-html 
-  box-sizing: border-box
+@forward "./base"
+@forward "./buttons"
+@forward "./main_header"
+@forward "./responsive"
+@forward "./quest"
 
-*, *:before, *:after 
-  box-sizing: inherit
 
-body 
-  font-family: vars.$main-font
-  background: #1f1f1f
-  color: #fafafa
-  -webkit-font-smoothing: antialiased
-
-  * // disables font boosting on android chrome
-    max-height: 10000px
-
-// fixes undraggable pieces in IE edge
-svg use
-  pointer-events: none
-
-button 
-  border: none
-  outline: none
-
-  &:hover 
-    cursor: pointer
-
-.container 
-  width: vars.$main-width
-  margin: 0 auto
-  padding: 0 15px
-
-.invisible 
-  opacity: 0
-  pointer-events: none
-
-@import "./buttons"
-@import "./main_header"
-@import "./responsive"
-@import "./quest"
-
-@import "./pages/about"
-@import "./pages/homepage"
-@import "./pages/not_found"
-@import "./pages/positions_index"
-@import "./pages/puzzle_attempts"
-@import "./pages/puzzle_reports"
-@import "./pages/puzzle_sets"
-@import "./pages/registration"
-@import "./pages/scoreboard"
-@import "./pages/user_profile"
+@forward "./pages/about"
+@forward "./pages/homepage"
+@forward "./pages/not_found"
+@forward "./pages/positions_index"
+@forward "./pages/puzzle_attempts"
+@forward "./pages/puzzle_reports"
+@forward "./pages/puzzle_sets"
+@forward "./pages/registration"
+@forward "./pages/scoreboard"
+@forward "./pages/user_profile"

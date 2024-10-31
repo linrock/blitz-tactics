@@ -1,4 +1,4 @@
-@import "_variables"
+@use "_variables" as vars
 
 .main-header 
   $main-header-height: 40px
@@ -17,7 +17,7 @@
     color: #6D6D6D
     font-size: 12px
     font-weight: bold
-    font-family: $combo-indicator-font
+    font-family: vars.$combo-indicator-font
     line-height: $main-header-height + 2px
     letter-spacing: 1.5px
     margin-right: auto

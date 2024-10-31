@@ -1,4 +1,4 @@
-@import "../_variables"
+@use "../_variables" as vars
 
 .user-profile 
   margin: 50px 0 80px
@@ -8,12 +8,12 @@
 
     .username
       font-size: 36px
-      font-family: $main-font
+      font-family: vars.$main-font
       margin-bottom: 25px
 
     .tagline
       font-size: 18px
-      font-family: $main-font
+      font-family: vars.$main-font
       opacity: 0.6
 
   a
@@ -28,7 +28,7 @@
     display: flex
 
     input[type="text"]
-      font-family: $main-font
+      font-family: vars.$main-font
       font-size: 16px
       border: 0
       width: 380px

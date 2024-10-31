@@ -1,7 +1,7 @@
 // The /positions page
 
-@import "../_colors"
-@import "../_variables"
+@use "../_colors" as colors
+@use "../_variables" as vars
 
 .positions-index 
   padding-right: 0
@@ -21,10 +21,10 @@
     padding: 6px 18px 7px
     border: 0
     border-radius: 3px
-    background: $blue-button-bg
+    background: colors.$blue-button-bg
     color: white
     display: inline-block
-    font-family: $main-font
+    font-family: vars.$main-font
     line-height: 20px
     text-decoration: none
     transition: opacity 0.25s ease
