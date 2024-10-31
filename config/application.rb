@@ -29,8 +29,8 @@ module BlitzTactics
     config.autoload_paths << Rails.root.join("app/models/puzzles")
     config.autoload_paths << Rails.root.join("app/models/user_data")
 
-    config.assets.paths << Rails.root.join("app/javascript/components")
-    config.assets.paths << Rails.root.join("app/javascript/game_modes")
+    # config.assets.paths << Rails.root.join("app/javascript/components")
+    # config.assets.paths << Rails.root.join("app/javascript/game_modes")
 
     config.active_record.schema_format = :sql
 
