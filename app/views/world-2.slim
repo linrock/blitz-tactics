@@ -13,31 +13,33 @@ section.homepage
     .quest-container.container
       aside.world-sidebar
         .world-name
-          | World 1
+          | World 2
         .world-subtitle
-          | Just getting started
+          | Getting warmed up
 
       main.world-levels
         .quest-level
           .board-link= homepage_miniboard_link("/haste", @haste_puzzle)
           .level-info
-            .level-name Warmup
-            .level-task Complete 10 puzzles
+            .level-name Repetition
+            .level-task Complete 5 puzzles in a row without mistakes
             .level-best-score Best score: 28s
 
         .quest-level
           = homepage_miniboard_link("/haste", @haste_puzzle)
           .level-info
-            .level-name Warmup
-            .level-task Complete 10 puzzles
+            .level-name Repetition
+            .level-task Complete 5 puzzles in a row without mistakes
             .level-best-score Start
 
     .quest-container-bottom.container
-      div Complete one more level to unlock world 2
+      div
+        span < world 1
+        span Complete two levels to unlock world 3
 
   .game-modes-section
     .container
-      h2 Practice fast-paced chess puzzles in another game mode.
+      h2 Or practice fast-paced chess puzzles in another game mode.
 
     .game-modes-container
       .mode.haste

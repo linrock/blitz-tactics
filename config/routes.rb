@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
   root 'pages#home'
+  get '/world-2' => 'pages#world2'
+  get '/world-3' => 'pages#world3'
+  get '/world-4' => 'pages#world4'
+  get '/world-5' => 'pages#world5'
 
   # infinity mode
   get '/infinity'                => 'game_modes/infinity#index'
