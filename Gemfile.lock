@@ -224,6 +224,11 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pg (1.5.9)
+    propshaft (1.1.0)
+      actionpack (>= 7.0.0)
+      activesupport (>= 7.0.0)
+      rack
+      railties (>= 7.0.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -390,6 +395,7 @@ DEPENDENCIES
   mini_racer (~> 0.6.3)
   nio4r (~> 2.5.9)
   pg (~> 1.0)
+  propshaft
   pry
   puma (~> 6.0)
   rails (~> 7.0)
