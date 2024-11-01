@@ -29,17 +29,18 @@
     "mithril": "^1.1.6",
     "mousetrap": "^1.6.2",
     "postcss-cssnext": "^3.1.0",
-    "pug": "^3.0.2",
+    "pug": "^3.0.3",
     "pug-plain-loader": "^1.1.0",
     "sass": "^1.80.5",
-    "sass-loader": "10",
+    "sass-loader": "^16.0.2",
     "simple-color-picker": "^0.1.2",
     "store": "^2.0.12",
     "tinycolor2": "^1.4.2",
-    "ts-loader": "^8.0.12",
-    "typescript": "^4.5",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.3",
+    "underscore": "^1.12.0",
     "vue": "^3.5.12",
-    "vue-loader": "^17.3.1"
+    "vue-loader": "^17.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
