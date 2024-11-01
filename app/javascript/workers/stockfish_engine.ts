@@ -29,9 +29,11 @@ export default class StockfishEngine {
   private readonly stockfish: Worker
 
   constructor() {
-    this.stockfish = new Worker(`/assets/stockfish${wasmSupported ? '.wasm' : ''}.js`)
+    const filename = `/engines/stockfish${wasmSupported ? '.wasm' : ''}.js`;
+    console.log(`loading ${filename}`);
+    this.stockfish = new Worker(filename);
     this.stockfish.postMessage('uci')
-    this.debugMessages()
+    // this.debugMessages()
   }
 
   public analyze(fen: FEN, options: AnalysisOptions): Promise<PositionAnalysis> {
