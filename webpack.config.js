@@ -24,7 +24,7 @@ module.exports = {
     alias: {
       'jquery': 'backbone.native',
       '@blitz': path.resolve(__dirname, './app/javascript'),
-       vue: '@vue/runtime-dom',
+      // vue: '@vue/runtime-dom',
     },
   },
   plugins: [
@@ -58,39 +58,22 @@ module.exports = {
         test: /\.sass$/,
         use: [
            MiniCssExtractPlugin.loader, // extract CSS into separate files
-          // 'style-loader', // Injects styles into the DOM
-          'css-loader',   // Translates CSS into CommonJS
-          'sass-loader',  // Compiles SASS to CSS
+          // 'style-loader', // injects styles into the DOM
+          'css-loader',   // translates CSS into CommonJS
+          'sass-loader',  // compiles SASS to CSS
         ],
       },
-
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader'
+        ],
+      },
       // {
-      //   test: /chess\.js/,
-      //   parser: {
-      //     amd: false,
-      //   }
+      //   test: /\.html$/,
+      //   use: ['html-loader'],
       // },
-
-      /*
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-          },
-        },
-      },
-      */
-      {
-        test: /\.css$/, // Rule for CSS files
-        use: ['style-loader', 'css-loader'], // Use style-loader and css-loader
-      },
-      {
-        test: /\.html$/,
-        use: ['html-loader'],
-      },
     ],
   },
   devServer: {
