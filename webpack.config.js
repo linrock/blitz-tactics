@@ -1,12 +1,11 @@
-const { VueLoaderPlugin } = require('vue-loader');
-const PnpWebpackPlugin = require('pnp-webpack-plugin');
-const webpack             = require("webpack");
-const path                = require("path");
+const path = require("path");
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
+const webpack = require("webpack");
 
 
 const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production';
-
 
 module.exports = {
   mode,
@@ -34,7 +33,7 @@ module.exports = {
       maxChunks: 1
     }),
     new MiniCssExtractPlugin({
-      filename: 'application-webpack.css', // Output CSS file name
+      filename: 'application-webpack.css',
     }),
   ],
   optimization: {
@@ -50,18 +49,15 @@ module.exports = {
         test: /\.ts$/,
         loader: 'ts-loader',
         options: { appendTsSuffixTo: [/\.vue$/] },
-        // options: PnpWebpackPlugin.tsLoaderOptions({
-        //   appendTsSuffixTo: [/\.vue$/]
-        // }),
       },
       {
         test: /\.pug$/,
         loader: 'pug-plain-loader',
       },
       {
-        test: /\.sass$/, // Rule for SASS files
+        test: /\.sass$/,
         use: [
-           MiniCssExtractPlugin.loader, // Extract CSS into separate files
+           MiniCssExtractPlugin.loader, // extract CSS into separate files
           // 'style-loader', // Injects styles into the DOM
           'css-loader',   // Translates CSS into CommonJS
           'sass-loader',  // Compiles SASS to CSS
