@@ -61,6 +61,14 @@ module.exports = {
           'sass-loader',  // Compiles SASS to CSS
         ],
       },
+
+      // {
+      //   test: /chess\.js/,
+      //   parser: {
+      //     amd: false,
+      //   }
+      // },
+
       /*
       {
         test: /\.js$/,

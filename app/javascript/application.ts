@@ -2,7 +2,7 @@
 
 import FastClick from 'fastclick'
 
-import SoundPlayer from './components/sound_player.ts'
+import SoundPlayer from './components/sound_player'
 import MiniChessboard from './components/mini_chessboard'
 import routes from './routes'
 import { BlitzConfig } from './types'
