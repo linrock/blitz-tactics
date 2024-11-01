@@ -6,10 +6,11 @@ const webpack = require("webpack");
 
 
 const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production';
+console.log(`webpack mode: ${mode}`);
 
 module.exports = {
   mode,
-  devtool: "source-map",
+  // devtool: "source-map",
   entry: {
     application: "./app/javascript/application.ts"
   },
