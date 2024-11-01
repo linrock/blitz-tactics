@@ -54,6 +54,7 @@
     "babel-plugin-macros": "^3.1.0",
     "css-loader": "^7.1.2",
     "html-loader": "^5.1.0",
+    "mini-css-extract-plugin": "^2.9.2",
     "pnp-webpack-plugin": "^1.7.0",
     "sass": "^1.80.5",
     "style-loader": "^4.0.0",

@@ -8,9 +8,9 @@
 
   <%# Using 2 stylesheets here because webpacker is loading styles out-of-order %>
   <%= stylesheet_link_tag 'application', media: 'all' %>
-  <%# stylesheet_include_tag 'application', media: 'all' %>
+  <%= stylesheet_link_tag 'application-webpack', media: 'all' %>
 
-  <%= javascript_include_tag 'application', defer: true %>
+  <%= javascript_include_tag 'application', defer: true, type: "module" %>
 
   <% unless Rails.env.test? %>
     <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Open+Sans|Orbitron' %>
@@ -18,7 +18,6 @@
 
   <%= favicon_link_tag 'favicon.ico' %>
   <%= csrf_meta_tags %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 </head>
 
 <body data-controller="<%= params[:controller] %>" data-action="<%= params[:action] %>">

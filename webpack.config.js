@@ -2,6 +2,8 @@ const { VueLoaderPlugin } = require('vue-loader');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const webpack             = require("webpack");
 const path                = require("path");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production';
 
@@ -30,7 +32,10 @@ module.exports = {
     new VueLoaderPlugin(),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
-    })
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'application-webpack.css', // Output CSS file name
+    }),
   ],
   optimization: {
     moduleIds: 'deterministic',
@@ -56,7 +61,8 @@ module.exports = {
       {
         test: /\.sass$/, // Rule for SASS files
         use: [
-          'style-loader', // Injects styles into the DOM
+           MiniCssExtractPlugin.loader, // Extract CSS into separate files
+          // 'style-loader', // Injects styles into the DOM
           'css-loader',   // Translates CSS into CommonJS
           'sass-loader',  // Compiles SASS to CSS
         ],
