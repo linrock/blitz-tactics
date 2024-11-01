@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "dev": "./bin/webpack-dev-server",
-    "tsc": "./node_modules/.bin/tsc --noEmit",
+    "dev": "./bin/dev",
+    "tsc": "tsc --noEmit",
     "eye:load": "eye l eye.rb",
     "eye:info": "eye i",
     "blitz:game_modes:fetch": "rails runner 'GameModePuzzleImporter.fetch_puzzles_json'",
