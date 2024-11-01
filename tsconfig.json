@@ -18,8 +18,8 @@
   "include": [
     "app/javascript/**/*.ts",
     "app/javascript/**/*.tsx",
-    "app/javascript/**/*.vue", // Ensure this line is present
-    "app/javascript/globals.d.ts" // Optional, but good for clarity
+    "app/javascript/globals.d.ts", // Optional, but good for clarity
+    "app/javascript/**/*.vue"
   ],
   "exclude": [
     "**/*.spec.ts",

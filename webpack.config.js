@@ -23,6 +23,7 @@ module.exports = {
     alias: {
       'jquery': 'backbone.native',
       '@blitz': path.resolve(__dirname, './app/javascript'),
+       vue: '@vue/runtime-dom',
     },
   },
   plugins: [
@@ -41,15 +42,16 @@ module.exports = {
         loader: 'vue-loader',
       },
       {
-        test: /\.pug$/,
-        loader: 'pug-plain-loader',
-      },
-      {
         test: /\.ts$/,
         loader: 'ts-loader',
+        options: { appendTsSuffixTo: [/\.vue$/] },
         // options: PnpWebpackPlugin.tsLoaderOptions({
-        //  appendTsSuffixTo: [/\.vue$/]
+        //   appendTsSuffixTo: [/\.vue$/]
         // }),
+      },
+      {
+        test: /\.pug$/,
+        loader: 'pug-plain-loader',
       },
       {
         test: /\.sass$/, // Rule for SASS files
