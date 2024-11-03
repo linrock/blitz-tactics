@@ -2985,9 +2985,9 @@ chess.js@^0.11.0:
   resolved "https://registry.yarnpkg.com/chess.js/-/chess.js-0.11.0.tgz#e1802179b944eab5daf11b5d4bce08cdcadbeffa"
   integrity sha512-yTpi6XbRMkBtnjSvbt6wEp9Y7JzhJl1MC3GNn67q5ClyccXxCRf5cMPSUg4OblrUapg1kLHm7WzxxEVp20NK1Q==
 
-"chessground@https://github.com/linrock/chessground.git#blitz-tactics":
-  version "7.9.3"
-  resolved "https://github.com/linrock/chessground.git#a06487728c7c3b070d2ca6caa6a742df745a3830"
+"chessground@https://github.com/linrock/chessground.git#9.1.1-bt":
+  version "9.1.1"
+  resolved "https://github.com/linrock/chessground.git#c25879ab1d4044566f6363ad5c02c3257c60aa14"
 
 chokidar@^2.1.8:
   version "2.1.8"
