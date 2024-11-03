@@ -31,6 +31,7 @@ module BlitzTactics
 
     config.active_record.schema_format = :sql
 
+    config.assets.paths << Rails.root.join("app/assets/stylesheets")
     config.assets.paths << Rails.root.join("app/assets/builds")
 
     # Configuration for the application, engines, and railties goes here.

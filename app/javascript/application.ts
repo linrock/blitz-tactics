@@ -7,6 +7,9 @@ import MiniChessboard from './components/mini_chessboard'
 import routes from './routes'
 import { BlitzConfig } from './types'
 
+import "../assets/stylesheets/application.sass"
+
+
 const blitz: BlitzConfig = {};
 (<any>window).blitz = blitz
 
