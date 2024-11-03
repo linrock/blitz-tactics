@@ -81,4 +81,5 @@ module.exports = {
     static: path.resolve(__dirname, 'app/assets/builds'),
     hot: true,
   },
+  watch: mode == "development",
 }
