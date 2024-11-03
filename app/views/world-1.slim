@@ -1,9 +1,6 @@
 section.homepage
 
   .quest-section
-    -# img.quest-bg src="/assets/photo-1461511669078-d46bf351cd6e.jpg"
-    -# img.quest-bg src="/assets/photo-1445711005973-54fe2a103826.jpg"
-    -# style="background-image: url(/backgrounds/photo-1445711005973-54fe2a103826.jpg)")
     .quest-bg-2(
       style="background-image: url(/backgrounds/#{@background_img})")
     .quest-above-bg(
@@ -15,8 +12,7 @@ section.homepage
 
     .quest-container.container
       header.world-intro
-        .world-name
-          | World 1 - Just getting started
+        .world-name World #{@world_number} - #{@world_name}
 
       main.world-levels
         .quest-level
@@ -26,11 +22,11 @@ section.homepage
             .level-best-score Best score: 28s
 
     .quest-container-bottom.container
-      div Complete one more level to unlock world 2
+      div Complete one more level to unlock world #{@world_number + 1}
 
   .game-modes-section
     .container
-      h2 Practice fast-paced chess puzzles in another game mode.
+      h2 Practice fast-paced chess puzzles.
 
     .game-modes-container
       .mode.haste

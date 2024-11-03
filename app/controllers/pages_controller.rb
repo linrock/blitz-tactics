@@ -9,24 +9,32 @@ class PagesController < ApplicationController
   def world1
     @background_img = "photo-1503180036370-373c16943ae6.jpg"
     @background_overlay = "rgba(0, 0, 0, 0.3)"
+    @world_number = 1
+    @world_name = "Just getting started"
     render "/world-1"
   end
 
   def world2
     @background_img = "dusty-sky.jpg"
     @background_overlay = "rgba(0, 0, 0, 0.3)"
+    @world_number = 2
+    @world_name = "Getting warmed up"
     render "/world-2"
   end
 
   def world3
     @background_img = "photo-1461511669078-d46bf351cd6e.jpg"
     @background_overlay = "rgba(0, 0, 0, 0)"
+    @world_number = 3
+    @world_name = "Triple trouble"
     render "/world-3"
   end
 
   def world4
     @background_img = "photo-1619367300934-373d9adf7dfb-1.avif"
     @background_overlay = "rgba(0, 0, 0, 0.2)"
+    @world_number = 4
+    @world_name = "Royally forked"
     render "/world-4"
   end
 
