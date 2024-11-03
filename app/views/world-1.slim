@@ -5,8 +5,9 @@ section.homepage
     -# img.quest-bg src="/assets/photo-1445711005973-54fe2a103826.jpg"
     -# style="background-image: url(/backgrounds/photo-1445711005973-54fe2a103826.jpg)")
     .quest-bg-2(
-      style="background-image: url(/backgrounds/photo-1503180036370-373c16943ae6.jpg)")
-    .quest-above-bg
+      style="background-image: url(/backgrounds/#{@background_img})")
+    .quest-above-bg(
+      style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
 
     header.container
       .quest-next

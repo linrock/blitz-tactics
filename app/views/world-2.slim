@@ -3,42 +3,36 @@ section.homepage
   .quest-section
     -# img.quest-bg src="/assets/photo-1461511669078-d46bf351cd6e.jpg"
     -# img.quest-bg src="/assets/photo-1445711005973-54fe2a103826.jpg"
-    .quest-bg-2
-    .quest-above-bg
+    -# style="background-image: url(/backgrounds/photo-1445711005973-54fe2a103826.jpg)")
+    .quest-bg-2(
+      style="background-image: url(/backgrounds/#{@background_img})")
+    .quest-above-bg(
+      style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
 
-      .quest-bg-2(
-        style="background-image: url(/backgrounds/dusty-sky.jpg)")
-      .quest-above-bg
-      header.container
-        .quest-next
-          | Complete 2 levels to unlock the next world
+    header.container
+      .quest-next
+        | Complete 3 levels to unlock the next world
 
     .quest-container.container
-      aside.world-sidebar
+      header.world-intro
         .world-name
-          | World 2
-        .world-subtitle
-          | Getting warmed up
+          | World 2 - Getting warmed up
 
       main.world-levels
         .quest-level
+          .level-info-top Complete 10 puzzles
           .board-link= homepage_miniboard_link("/haste", @haste_puzzle)
-          .level-info
-            .level-name Repetition
-            .level-task Complete 5 puzzles in a row without mistakes
+          .level-info-bottom
             .level-best-score Best score: 28s
 
         .quest-level
+          .level-info-top Complete 10 puzzles
           = homepage_miniboard_link("/haste", @haste_puzzle)
-          .level-info
-            .level-name Repetition
-            .level-task Complete 5 puzzles in a row without mistakes
+          .level-info-bottom
             .level-best-score Start
 
     .quest-container-bottom.container
-      div
-        span < world 1
-        span Complete two levels to unlock world 3
+      div Complete two more levels to unlock world 3
 
   .game-modes-section
     .container
