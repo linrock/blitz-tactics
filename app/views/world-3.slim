@@ -3,49 +3,45 @@ section.homepage
   .quest-section
     -# img.quest-bg src="/assets/photo-1461511669078-d46bf351cd6e.jpg"
     -# img.quest-bg src="/assets/photo-1445711005973-54fe2a103826.jpg"
-    .quest-bg-2
+    -# style="background-image: url(/backgrounds/photo-1445711005973-54fe2a103826.jpg)")
+    .quest-bg-2(
+      style="background-image: url(/backgrounds/photo-1503180036370-373c16943ae6.jpg)")
     .quest-above-bg
 
     header.container
       .quest-next
-        | Complete 2 levels to unlock the next world
+        | Complete 3 levels to unlock the next world
 
     .quest-container.container
-      aside.world-sidebar
+      header.world-intro
         .world-name
-          | World 3
-        .world-subtitle
-          | Triple Trouble
+          | World 3 - Triple trouble
 
       main.world-levels
         .quest-level
+          .level-info-top Complete 10 puzzles
           .board-link= homepage_miniboard_link("/haste", @haste_puzzle)
-          .level-info
-            .level-name Repetition
-            .level-task Complete 5 puzzles in a row without mistakes
+          .level-info-bottom
             .level-best-score Best score: 28s
 
         .quest-level
+          .level-info-top Complete 10 puzzles
           = homepage_miniboard_link("/haste", @haste_puzzle)
-          .level-info
-            .level-name Repetition
-            .level-task Complete 5 puzzles in a row without mistakes
-            .level-best-score Best score: 28s
-
+          .level-info-bottom
+            .level-best-score Start
 
         .quest-level
+          .level-info-top Complete 10 puzzles
           = homepage_miniboard_link("/haste", @haste_puzzle)
-          .level-info
-            .level-name Repetition
-            .level-task Complete 5 puzzles in a row without mistakes
+          .level-info-bottom
             .level-best-score Start
 
     .quest-container-bottom.container
-      div Complete three levels to unlock world 4
+      div Complete three more levels to unlock world 4
 
   .game-modes-section
     .container
-      h2 Practice fast-paced chess puzzles in another game mode.
+      h2 Practice fast-paced chess puzzles
 
     .game-modes-container
       .mode.haste
