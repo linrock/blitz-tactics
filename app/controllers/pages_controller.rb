@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
-  before_action :set_user, only: [:home, :world1, :world2, :world3, :world4]
-  before_action :set_homepage_puzzles, only: [:home, :world1, :world2, :world3, :world4]
+  before_action :set_user, only: [:home, :world1, :world2, :world3, :world4, :world5, :world6]
+  before_action :set_homepage_puzzles, only: [:home, :world1, :world2, :world3, :world4, :world5, :world6]
 
   def home
     render "/home"
@@ -36,6 +36,22 @@ class PagesController < ApplicationController
     @world_number = 4
     @world_name = "Royally forked"
     render "/world-4"
+  end
+
+  def world5
+    @background_img = "photo-1619367300934-373d9adf7dfb-1.avif"
+    @background_overlay = "rgba(0, 0, 0, 0.2)"
+    @world_number = 5
+    @world_name = "Still warming up"
+    render "/world-5"
+  end
+
+  def world6
+    @background_img = "photo-1619367300934-373d9adf7dfb-1.avif"
+    @background_overlay = "rgba(0, 0, 0, 0.2)"
+    @world_number = 6
+    @world_name = "Hexadecimal"
+    render "/world-6"
   end
 
   def positions

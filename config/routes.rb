@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get '/world-3' => 'pages#world3'
   get '/world-4' => 'pages#world4'
   get '/world-5' => 'pages#world5'
+  get '/world-6' => 'pages#world6'
 
   # infinity mode
   get '/infinity'                => 'game_modes/infinity#index'
