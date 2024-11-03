@@ -41,31 +41,45 @@
 
   .quest-container
     display: flex
+    flex-direction: column
+    flex-align: center
+    align-items: center
     position: relative
     z-index: 2
 
   // World 1 - just getting started
-  aside.world-sidebar
-    min-width: 160px
-    margin-right: 3rem
+  header.world-intro
+    text-align: center
 
     .world-name
       opacity: 0.9
-      margin-bottom: 0.5rem
+      margin-bottom: 3rem
+      opacity: 0.7
 
     .world-subtitle
       opacity: 0.8
 
+  .world-levels
+    display: flex
+    flex-align: center
+
   // board preview + info on level task
   .quest-level
     display: flex
-    margin-bottom: 1rem   
+    flex-direction: column
+    margin: 0 2rem 1rem
 
     .board-link
       display: block
 
-    .level-info
-      margin-left: 1rem
+    .level-info-top
+      margin-bottom: 1rem
+      text-align: center
+      opacity: 0.7
+
+    .level-info-bottom
+      margin-top: 1rem
+      text-align: center
 
     .level-name
       margin-bottom: 0.5rem
@@ -73,9 +87,6 @@
     .level-task
       line-height: 1.25rem
       opacity: 0.8
-
-    .level-best-score
-      margin-top: 2rem
 
   .quest-next
     margin: 3rem 0 1rem

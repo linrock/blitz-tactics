@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
   root 'pages#home'
+  get '/world-1' => 'pages#world1'
   get '/world-2' => 'pages#world2'
   get '/world-3' => 'pages#world3'
   get '/world-4' => 'pages#world4'

@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  before_action :set_user, only: [:home, :world2, :world3]
+  before_action :set_user, only: [:home, :world1, :world2, :world3]
 
   def home
     @hours_until_tomorrow = 24 - DateTime.now.hour
@@ -21,6 +21,28 @@ class PagesController < ApplicationController
     @user_rating = @user.user_rating&.rating_string || "Unrated"
 
     render "/home"
+  end
+
+  def world1
+    @hours_until_tomorrow = 24 - DateTime.now.hour
+    @speedrun_level = SpeedrunLevel.todays_level
+    @speedrun_puzzle = @speedrun_level.first_puzzle
+    @countdown_level = CountdownLevel.todays_level
+    @countdown_puzzle = @countdown_level.first_puzzle
+    @haste_puzzle = HastePuzzle.random
+    @rated_puzzle = RatedPuzzle.order('rating ASC').take(10).shuffle.first
+    @scoreboard = Scoreboard.new
+
+    # user-specific
+    @infinity_puzzle = @user.next_infinity_puzzle
+    @haste_best_score = @user.best_haste_score(Date.today)
+    @three_best_score = @user.best_three_score(Date.today)
+    @best_speedrun_time = @user.best_speedrun_time(@speedrun_level)
+    @repetition_level = @user.highest_repetition_level_unlocked
+    @countdown_level_score = @user.best_countdown_score(@countdown_level)
+    @user_rating = @user.user_rating&.rating_string || "Unrated"
+
+    render "/world-1"
   end
 
   def world2
