@@ -2985,9 +2985,9 @@ chess.js@^0.11.0:
   resolved "https://registry.yarnpkg.com/chess.js/-/chess.js-0.11.0.tgz#e1802179b944eab5daf11b5d4bce08cdcadbeffa"
   integrity sha512-yTpi6XbRMkBtnjSvbt6wEp9Y7JzhJl1MC3GNn67q5ClyccXxCRf5cMPSUg4OblrUapg1kLHm7WzxxEVp20NK1Q==
 
-"chessground@https://github.com/linrock/chessground.git#9.1.1-bt":
+"chessground@https://github.com/linrock/chessground.git#9.1.1-bt-ubuntu16":
   version "9.1.1"
-  resolved "https://github.com/linrock/chessground.git#c25879ab1d4044566f6363ad5c02c3257c60aa14"
+  resolved "https://github.com/linrock/chessground.git#d0082a59acad2f1a07daa83522311201fdbcd12b"
 
 chokidar@^2.1.8:
   version "2.1.8"
