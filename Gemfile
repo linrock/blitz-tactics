@@ -30,6 +30,9 @@ gem 'webpacker', '~> 5.4.3'
 gem 'mailgun-ruby'
 gem 'bugsnag'
 
+# ruby standard lib
+gem 'ostruct'
+
 group :development do
   gem 'listen'
   gem 'web-console', '>= 3.3.0'
