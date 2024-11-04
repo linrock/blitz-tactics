@@ -32,15 +32,16 @@ class PagesController < ApplicationController
 
   def world4
     @background_img = "photo-1619367300934-373d9adf7dfb-1.avif"
-    @background_overlay = "rgba(0, 0, 0, 0.2)"
+    @background_overlay = "radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.5) 100%)"
     @world_number = 4
     @world_name = "Royally forked"
     render "/world-4"
   end
 
   def world5
-    @background_img = "photo-1619367300934-373d9adf7dfb-1.avif"
-    @background_overlay = "rgba(0, 0, 0, 0.2)"
+    # @background_img = "photo-1508583732154-e9ff899f8534.avif"
+    @background_img = "photo-1499988921418-b7df40ff03f9.avif"
+    @background_overlay = "rgba(0, 0, 0, 0.1)"
     @world_number = 5
     @world_name = "Still warming up"
     render "/world-5"
