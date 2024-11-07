@@ -1,15 +1,21 @@
 - content_for(:title) { "Puzzle player" }
 
 section.game-mode.puzzle-player
-  .container
-    .board-area-container
-      = render partial: "puzzle_player/above_board"
-      .board-area
-        .chessground-board
-          .piece-promotion-modal-mount
-          .chessground
-          .board-modal-container.invisible(style="display: none")
-    .vue-app-mount
+  .board-area-container(style="position: relative")
+    -# = render partial: "puzzle_player/above_board"
+    .chessboard-resizer
+      .zoom-out
+        svg
+          use(xlink:href="#zoom-out")
+      .zoom-in
+        svg
+          use(xlink:href="#zoom-in")
+    .board-area
+      .chessground-board
+        .piece-promotion-modal-mount
+        .chessground
+        .board-modal-container.invisible(style="display: none")
+  .vue-app-mount
 
 script
   |

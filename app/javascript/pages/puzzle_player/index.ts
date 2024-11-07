@@ -1,9 +1,11 @@
-import PuzzlePlayer from '@blitz/components/puzzle_player'
+import PuzzlePlayer from '@blitz/components/new_puzzle_player'
 
-console.log('starting puzzle player')
-new PuzzlePlayer({
-  shuffle: false,
-  loopPuzzles: false,
-  noHint: true,
-  source: '/haste/puzzles',
-})
+export default () => {
+  console.log('starting new puzzle player')
+  new PuzzlePlayer({
+    shuffle: false,
+    loopPuzzles: false,
+    noHint: true,
+    source: '/haste/puzzles',
+  })
+}
