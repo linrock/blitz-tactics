@@ -1,0 +1,18 @@
+- content_for(:title) { "Puzzle player" }
+
+section.game-mode.puzzle-player
+  .container
+    .board-area-container
+      = render partial: "puzzle_player/above_board"
+      .board-area
+        .chessground-board
+          .piece-promotion-modal-mount
+          .chessground
+          .board-modal-container.invisible(style="display: none")
+    .vue-app-mount
+
+script
+  |
+    document.addEventListener("DOMContentLoaded", () => {
+      blitz.puzzles = #{@puzzles.to_json.html_safe};
+    });

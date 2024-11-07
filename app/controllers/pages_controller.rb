@@ -55,6 +55,10 @@ class PagesController < ApplicationController
     render "/world-6"
   end
 
+  def puzzle_player
+    @puzzles = HastePuzzle.random_level(100).as_json(lichess_puzzle_id: true)
+  end
+
   def positions
   end
 
