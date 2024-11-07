@@ -49,6 +49,9 @@ export default class DragChessboardResizer {
     if (parseInt(this.boardAreaEl.style.width) !== size &&
         parseInt(this.boardAreaEl.style.height) !== size) {
       requestAnimationFrame(() => {
+        if (size > window.outerWidth - 128 || size > window.outerHeight - 192) {
+          return;
+        }
         console.log(`board size: ${size}`)
         this.boardAreaEl.style.height = `${size}px`
         this.boardAreaEl.style.width = `${size}px`

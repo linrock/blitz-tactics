@@ -5,7 +5,6 @@ import MoveStatus from '../move_status'
 import ComboCounter from './views/combo_counter'
 import Instructions from './views/instructions'
 import PuzzleHint from './views/puzzle_hint'
-import ChessboardResizer from './views/chessboard_resizer'
 import DragChessboardResizer from './views/drag_chessboard_resizer'
 import PuzzleSource, { PuzzleSourceOptions } from './puzzle_source'
 
@@ -27,7 +26,6 @@ export default class PuzzlePlayer {
 
     // views
     new ChessgroundBoard
-    new ChessboardResizer
     new DragChessboardResizer
 
     new MoveStatus

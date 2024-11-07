@@ -34,26 +34,6 @@ body
   .board-area
     position: relative
     
-    .chessboard-resizer
-      position: absolute
-      left: 50px
-      top: 50px
-
-    // zoom in + zoom out
-    svg
-      width: 24px
-      height: 24px
-      padding: 4px
-      margin-bottom: 8px
-      fill: #333
-      transform: rotateY(180deg) // hack: fix the icon itself
-      user-select: none
-      opacity: 0.2
-
-      &:hover
-        cursor: pointer
-        opacity: 1
-
   .new-chessboard-resizer
     position: absolute
     right: -4px
