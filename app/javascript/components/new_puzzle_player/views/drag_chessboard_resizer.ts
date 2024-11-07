@@ -20,10 +20,8 @@ export default class DragChessboardResizer {
       if (isDraggingResizer) {
         // console.dir(event)
         const size = Math.round(Math.min(event.clientX, event.clientY));
-        if (size % 4 == 0) {
-          // console.log(`${event.clientX} ${event.clientY}`)
-          this.resizeBoard(size)
-        }
+        // console.log(`${event.clientX} ${event.clientY}`)
+        this.resizeBoard(size)
       }
     })
 
@@ -33,14 +31,28 @@ export default class DragChessboardResizer {
         isDraggingResizer = false
       }
     })
+
+    window.addEventListener("resize", (event) => {
+      // console.dir(event)
+      const size = Math.round(Math.min(
+        window.outerWidth - 128,
+        window.outerHeight - 256
+      ))
+      this.resizeBoard(size)
+    })
   }
 
   private resizeBoard(size: number) {
+    if (size % 8 !== 0) {
+      return
+    }
     if (parseInt(this.boardAreaEl.style.width) !== size &&
         parseInt(this.boardAreaEl.style.height) !== size) {
-      console.log(`board size: ${size}`)
-      this.boardAreaEl.style.height = `${size}px`
-      this.boardAreaEl.style.width = `${size}px`
+      requestAnimationFrame(() => {
+        console.log(`board size: ${size}`)
+        this.boardAreaEl.style.height = `${size}px`
+        this.boardAreaEl.style.width = `${size}px`
+      })
     }
   }
 }
