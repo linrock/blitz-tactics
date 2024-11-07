@@ -6,6 +6,7 @@ import ComboCounter from './views/combo_counter'
 import Instructions from './views/instructions'
 import PuzzleHint from './views/puzzle_hint'
 import ChessboardResizer from './views/chessboard_resizer'
+import DragChessboardResizer from './views/drag_chessboard_resizer'
 import PuzzleSource, { PuzzleSourceOptions } from './puzzle_source'
 
 import './style.sass'
@@ -27,10 +28,12 @@ export default class PuzzlePlayer {
     // views
     new ChessgroundBoard
     new ChessboardResizer
+    new DragChessboardResizer
+
     new MoveStatus
-    new Instructions
+    // new Instructions
     if (!options.noCounter) {
-      new ComboCounter
+      // new ComboCounter
     }
     if (!options.noHint) {
       new PuzzleHint

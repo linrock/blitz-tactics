@@ -9,7 +9,7 @@ export default class ChessboardResizer {
     this.chessboardEl = document.querySelector(boardSelector)
     this.resizerEl = document.querySelector(resizerSelector)
     if (this.resizerEl && this.chessboardEl) {
-      console.log('yay it worked')
+      console.log('chessboard resizer')
       const zoomOutEl = this.resizerEl.querySelector('.zoom-out')
       zoomOutEl.addEventListener('click', () => this.shrinkBoard())
       const zoomInEl = this.resizerEl.querySelector('.zoom-in')
