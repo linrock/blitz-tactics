@@ -1,10 +1,10 @@
+const RESIZE_GRAIN = 8;
+
 export default class DragChessboardResizer {
-  private chessboardEl: HTMLElement
   private resizerEl: HTMLElement
   private boardAreaEl: HTMLElement
 
   constructor() {
-    this.chessboardEl = document.querySelector('.chessground-board')
     this.resizerEl = document.querySelector('.new-chessboard-resizer')
     this.boardAreaEl = document.querySelector('.board-area')
 
@@ -19,7 +19,7 @@ export default class DragChessboardResizer {
     document.addEventListener('mousemove', (event) => {
       if (isDraggingResizer) {
         // console.dir(event)
-        const size = Math.round(Math.min(event.clientX, event.clientY));
+        const size = RESIZE_GRAIN * Math.round(Math.min(event.clientX, event.clientY) / RESIZE_GRAIN);
         // console.log(`${event.clientX} ${event.clientY}`)
         this.resizeBoard(size)
       }
@@ -34,28 +34,29 @@ export default class DragChessboardResizer {
 
     window.addEventListener("resize", (event) => {
       // console.dir(event)
-      const size = Math.round(Math.min(
+      const size = RESIZE_GRAIN * Math.round(Math.min(
         window.outerWidth - 128,
         window.outerHeight - 256
-      ))
+      ) / RESIZE_GRAIN)
       this.resizeBoard(size)
     })
   }
 
   private resizeBoard(size: number) {
-    if (size % 8 !== 0) {
+    if (size % RESIZE_GRAIN !== 0) {
       return
     }
-    if (parseInt(this.boardAreaEl.style.width) !== size &&
-        parseInt(this.boardAreaEl.style.height) !== size) {
-      requestAnimationFrame(() => {
-        if (size > window.outerWidth - 128 || size > window.outerHeight - 192) {
-          return;
-        }
-        console.log(`board size: ${size}`)
-        this.boardAreaEl.style.height = `${size}px`
-        this.boardAreaEl.style.width = `${size}px`
-      })
+    if (size > window.outerWidth - 128 || size > window.outerHeight - 192) {
+      return;
     }
+    if (parseInt(this.boardAreaEl.style.width) === size &&
+        parseInt(this.boardAreaEl.style.height) === size) {
+      return;
+    }
+    requestAnimationFrame(() => {
+      console.log(`board size: ${size}`)
+      this.boardAreaEl.style.height = `${size}px`
+      this.boardAreaEl.style.width = `${size}px`
+    })
   }
 }
