@@ -35,8 +35,8 @@ export default class DragChessboardResizer {
     window.addEventListener("resize", (event) => {
       // console.dir(event)
       const size = RESIZE_GRAIN * Math.round(Math.min(
-        window.outerWidth - 128,
-        window.outerHeight - 256
+        window.innerWidth - 128,
+        window.innerHeight - 256
       ) / RESIZE_GRAIN)
       this.resizeBoard(size)
     })
@@ -46,7 +46,7 @@ export default class DragChessboardResizer {
     if (size % RESIZE_GRAIN !== 0) {
       return
     }
-    if (size > window.outerWidth - 128 || size > window.outerHeight - 192) {
+    if (size > window.innerWidth - 128 || size > window.innerHeight - 192) {
       return;
     }
     if (parseInt(this.boardAreaEl.style.width) === size &&
