@@ -1,28 +1,6 @@
 - content_for(:title) { "New puzzle player" }
 
-.new-puzzle-player
-  .board-area-container
-    .board-area
-      .chessground-board
-        .piece-promotion-modal-mount
-        .chessground
-        .board-modal-container.invisible(style="display: none")
-      svg.new-chessboard-resizer-icon
-        use(xlink:href="#resize-bottom-right")
-      .new-chessboard-resizer
-
-  .vue-app-mount
-  .new-puzzle-player-instructions
-    .whose-turn
-      - if true
-        svg(style="width: 40px; height: 40px; margin-right: 12px")
-          use(xlink:href="#wk")
-        | White to move
-      - else
-        svg(style="width: 40px; height: 40px; margin-right: 12px")
-          use(xlink:href="#bk")
-        | Black to move
-    .goal Solve 10 puzzles
+.vue-app-mount
 
 script
   |

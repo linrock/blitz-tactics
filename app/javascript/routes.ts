@@ -50,7 +50,8 @@ const routes: RouteMap = {
   "pages#position": () => mountVue(PositionTrainer, '.vue-app-mount'),
   "pages#defined_position": () => mountVue(PositionTrainer, '.vue-app-mount'),
 
-  "pages#puzzle_player": () => mountVue(PuzzlePlayer, '.vue-app-mount'),
+  // new puzzle player
+  "pages#puzzle_player": () => PuzzlePlayer(),
 
   // user profile
   "users#customize_board": () => new CustomizeBoard,
