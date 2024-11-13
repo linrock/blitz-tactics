@@ -5,8 +5,8 @@
 # LichessV2PuzzleImporter.new.import_from_csv
 
 class LichessV2PuzzleImporter
-  CSV_URL = "https://database.lichess.org/lichess_db_puzzle.csv.bz2"
-  OUT_FILE = Rails.root.join("data/lichess_db_puzzle.csv.bz2")
+  CSV_URL = "https://database.lichess.org/lichess_db_puzzle.csv.zst"
+  OUT_FILE = Rails.root.join("data/lichess_db_puzzle.csv.zst")
   CSV_FILE = Rails.root.join("data/lichess_db_puzzle.csv")
 
   # the number of rows to import per db transaction
@@ -23,7 +23,7 @@ class LichessV2PuzzleImporter
   # Fetches and unzips v2 puzzles CSV
   def fetch_csv
     `wget '#{CSV_URL}' -O #{OUT_FILE}`
-    `bunzip2 -f #{OUT_FILE}`
+    `zstd -d #{OUT_FILE}`
     nil
   end
 

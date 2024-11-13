@@ -3,7 +3,8 @@ module ChessJs
   extend self
 
   def context
-    @@context ||= ExecJS.compile(open(Rails.root.join("node_modules/chess.js/chess.js")).read)
+    # ExecJS.runtime = ExecJS::Runtimes::Node
+    @@context ||= ExecJS.compile(open(Rails.root.join("vendor/assets/javascripts/chess-0.10.3.js")).read)
   end
 
   # returns a list of all valid moves by the current player at FEN
