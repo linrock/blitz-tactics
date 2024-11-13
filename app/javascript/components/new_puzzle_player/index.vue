@@ -42,7 +42,7 @@
       console.log('vue new puzzle player');
 
       new PuzzleSource({
-        source: '/haste/puzzles'
+        source: '/quest/puzzles'
       })
 
       const w = window.innerWidth;
