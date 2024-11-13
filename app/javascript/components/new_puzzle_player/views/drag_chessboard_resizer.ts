@@ -9,17 +9,28 @@ export default class DragChessboardResizer {
     this.boardAreaEl = document.querySelector('.board-area')
 
     console.log('new chessboard resizer')
+    let initialSize, clickedX, clickedY
     let isDraggingResizer = false
 
-    this.resizerEl.addEventListener('mousedown', () => {
+    this.resizerEl.addEventListener('mousedown', (event) => {
       console.log('mousedown - new chessboard resizer')
+      initialSize = parseInt(this.boardAreaEl.style.width)
+      clickedX = event.clientX
+      clickedY = event.clientY
       isDraggingResizer = true
     })
 
     document.addEventListener('mousemove', (event) => {
       if (isDraggingResizer) {
+        const diffX = event.clientX - clickedX
+        const diffY = event.clientY - clickedY
+        console.log(`diff xy: ${diffX}, ${diffY}`)
+        
         // console.dir(event)
-        const size = RESIZE_GRAIN * Math.round(Math.min(event.clientX, event.clientY) / RESIZE_GRAIN);
+        const size = RESIZE_GRAIN * Math.round(Math.min(
+          initialSize + diffX,
+          initialSize + diffY
+        ) / RESIZE_GRAIN);
         // console.log(`${event.clientX} ${event.clientY}`)
         this.resizeBoard(size)
       }
