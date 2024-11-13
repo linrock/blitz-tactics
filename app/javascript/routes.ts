@@ -13,7 +13,8 @@ import PositionTrainer from './pages/position_trainer/index.vue'
 import PuzzleSet from './pages/puzzle_set'
 import PuzzleList from './pages/puzzle_list'
 import PuzzlePage from './pages/puzzle_page'
-import PuzzlePlayer from './pages/puzzle_player'
+
+import NewPuzzlePlayer from './components/new_puzzle_player/index.vue'
 
 interface RouteMap {
   [routeKey: string]: () => void
@@ -51,7 +52,7 @@ const routes: RouteMap = {
   "pages#defined_position": () => mountVue(PositionTrainer, '.vue-app-mount'),
 
   // new puzzle player
-  "pages#puzzle_player": () => PuzzlePlayer(),
+  "pages#puzzle_player": () => mountVue(NewPuzzlePlayer, '.vue-app-mount'),
 
   // user profile
   "users#customize_board": () => new CustomizeBoard,
