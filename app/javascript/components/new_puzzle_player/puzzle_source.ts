@@ -71,11 +71,8 @@ export default class PuzzleSource {
         this.nextPuzzle()
       },
       'puzzle:get_hint': () => {
-        const hints: string[] = []
-        Object.keys(this.current.boardState).forEach((move: UciMove) => {
-          if (this.current.boardState[move] !== `retry`) {
-            hints.push(move)
-          }
+        const hints: string[] = Object.keys(this.current.boardState).filter((move: UciMove) => {
+          return this.current.boardState[move] !== 'retry'
         })
         dispatch('puzzle:hint', hints[~~(Math.random() * hints.length)])
       },
