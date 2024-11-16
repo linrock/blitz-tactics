@@ -1,5 +1,3 @@
-import _ from 'underscore'
-
 import { dispatch, subscribe } from '@blitz/events'
 import { UciMove } from '@blitz/types'
 import { PuzzleState } from '../puzzle_source'
@@ -40,12 +38,12 @@ export default class PuzzleHint {
 
   private getRandomHint(): string {
     const hints: string[] = []
-    _.each(_.keys(this.current.boardState), (move: UciMove) => {
+    Object.keys(this.current.boardState).forEach((move: UciMove) => {
       if (this.current.boardState[move] !== `retry`) {
         hints.push(move)
       }
     })
-    return _.sample(hints)
+    return hints[~~(Math.random() * hints.length)]
   }
 
   private clearHintTimer() {

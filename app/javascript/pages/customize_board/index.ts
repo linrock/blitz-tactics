@@ -1,9 +1,9 @@
 import SimpleColorPicker from 'simple-color-picker'
 
-import { dispatch } from '@blitz/events'
-import BoardStyles from './board_styles'
-
 import ChessgroundBoard from '@blitz/components/chessground_board'
+import { dispatch } from '@blitz/events'
+
+import BoardStyles from './board_styles'
 import '../../../../vendor/assets/stylesheets/simple-color-picker.css'
 import './style.sass'
 

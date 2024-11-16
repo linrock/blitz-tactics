@@ -2,7 +2,6 @@
 // and emits move events (move:success, move:almost, move:fail)
 
 import { ShortMove, Move } from 'chess.js'
-import _ from 'underscore'
 
 import { fetchPuzzles } from '@blitz/api/requests'
 import { dispatch, subscribe } from '@blitz/events'
@@ -73,12 +72,12 @@ export default class PuzzleSource {
       },
       'puzzle:get_hint': () => {
         const hints: string[] = []
-        _.each(_.keys(this.current.boardState), (move: UciMove) => {
+        Object.keys(this.current.boardState).forEach((move: UciMove) => {
           if (this.current.boardState[move] !== `retry`) {
             hints.push(move)
           }
         })
-        dispatch('puzzle:hint', _.sample(hints));
+        dispatch('puzzle:hint', hints[~~(Math.random() * hints.length)])
       },
       'move:try': move => this.tryUserMove(move),
     })
