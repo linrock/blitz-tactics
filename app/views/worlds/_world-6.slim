@@ -1,0 +1,53 @@
+.quest-bg(
+  style="background-image: url(/backgrounds/#{@background_img})")
+.quest-above-bg(
+  style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
+
+header.container
+  .quest-next
+    | Complete 3 levels to unlock the next world
+
+.quest-container.container
+  header.world-intro
+    .world-name World #{@world_number} – #{@world_name}
+
+  main.world-levels
+    .quest-level
+      .level-info-top Attraction – 16
+      .board-link= homepage_miniboard_link("/haste", @haste_puzzle)
+      .level-info-bottom
+        .level-best-score Best score: 28s
+
+    .quest-level
+      .level-info-top Back rank mate – 16
+      = homepage_miniboard_link("/haste", @haste_puzzle)
+      .level-info-bottom
+        .level-best-score Start
+
+    .quest-level
+      .level-info-top Clearance – 16
+      = homepage_miniboard_link("/haste", @haste_puzzle)
+      .level-info-bottom
+        .level-best-score Start
+
+  main.world-levels
+    .quest-level
+      .level-info-top Double check – 16
+      = homepage_miniboard_link("/haste", @haste_puzzle)
+      .level-info-bottom
+        .level-best-score Start
+
+    .quest-level
+      .level-info-top Endgame – 16
+      = homepage_miniboard_link("/haste", @haste_puzzle)
+      .level-info-bottom
+        .level-best-score Start
+
+    .quest-level
+      .level-info-top Fork – 16
+      = homepage_miniboard_link("/haste", @haste_puzzle)
+      .level-info-bottom
+        .level-best-score Start
+
+.quest-container-bottom.container
+  div Complete six more levels to unlock world #{@world_number + 1}

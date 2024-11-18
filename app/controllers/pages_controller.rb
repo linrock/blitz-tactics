@@ -15,7 +15,7 @@ class PagesController < ApplicationController
     @background_overlay = "rgba(0, 0, 0, 0.1)"
     @world_number = 1
     @world_name = "Just getting started"
-    render "/world-1"
+    render "/home"
   end
 
   def world2
@@ -23,7 +23,7 @@ class PagesController < ApplicationController
     @background_overlay = "rgba(0, 0, 0, 0.3)"
     @world_number = 2
     @world_name = "Getting warmed up"
-    render "/world-2"
+    render "/home"
   end
 
   def world3
@@ -31,7 +31,7 @@ class PagesController < ApplicationController
     @background_overlay = "rgba(0, 0, 0, 0)"
     @world_number = 3
     @world_name = "Triple trouble"
-    render "/world-3"
+    render "/home"
   end
 
   def world4
@@ -39,7 +39,7 @@ class PagesController < ApplicationController
     @background_overlay = "radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.5) 100%)"
     @world_number = 4
     @world_name = "Royally forked"
-    render "/world-4"
+    render "/home"
   end
 
   def world5
@@ -48,7 +48,7 @@ class PagesController < ApplicationController
     @background_overlay = "rgba(0, 0, 0, 0.1)"
     @world_number = 5
     @world_name = "Still warming up"
-    render "/world-5"
+    render "/home"
   end
 
   def world6
@@ -56,7 +56,7 @@ class PagesController < ApplicationController
     @background_overlay = "rgba(0, 0, 0, 0.2)"
     @world_number = 6
     @world_name = "Hexadecimal"
-    render "/world-6"
+    render "/home"
   end
 
   def puzzle_player
