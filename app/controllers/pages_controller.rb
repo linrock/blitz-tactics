@@ -3,6 +3,10 @@ class PagesController < ApplicationController
   before_action :set_homepage_puzzles, only: [:home, :world1, :world2, :world3, :world4, :world5, :world6]
 
   def home
+    @background_img = "photo-1503180036370-373c16943ae6.jpg"
+    @background_overlay = "rgba(0, 0, 0, 0.1)"
+    @world_number = 1
+    @world_name = "Just getting started"
     render "/home"
   end
 

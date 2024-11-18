@@ -1,41 +1,28 @@
 section.homepage
 
   .quest-section
-    -# img.quest-bg src="/assets/photo-1461511669078-d46bf351cd6e.jpg"
-    -# img.quest-bg src="/assets/photo-1445711005973-54fe2a103826.jpg"
-    -# style="background-image: url(/backgrounds/photo-1445711005973-54fe2a103826.jpg)")
-    .quest-bg-2(
-      style="background-image: url(/backgrounds/photo-1503180036370-373c16943ae6.jpg)")
-    .quest-above-bg
+    .quest-bg(
+      style="background-image: url(/backgrounds/#{@background_img})")
+    .quest-above-bg(
+      style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
 
     header.container
       .quest-next
         | Complete 2 levels to unlock the next world
 
     .quest-container.container
-      aside.world-sidebar
-        .world-name
-          | World 1
-        .world-subtitle
-          | Just getting started
+      header.world-intro
+        .world-name World #{@world_number} - #{@world_name}
 
       main.world-levels
         .quest-level
-          .board-link= homepage_miniboard_link("/haste", @haste_puzzle)
-          .level-info
-            .level-name Warmup
-            .level-task Complete 10 puzzles
+          .level-info-top Complete 10 puzzles
+          .board-link= homepage_miniboard_link("/puzzle-player", @haste_puzzle)
+          .level-info-bottom
             .level-best-score Best score: 28s
 
-        .quest-level
-          = homepage_miniboard_link("/haste", @haste_puzzle)
-          .level-info
-            .level-name Warmup
-            .level-task Complete 10 puzzles
-            .level-best-score Start
-
     .quest-container-bottom.container
-      div Complete one more level to unlock world 2
+      div Complete the level to unlock world #{@world_number + 1}
 
   .game-modes-section
     .container
