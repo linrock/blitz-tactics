@@ -56,8 +56,7 @@ export default class ChessboardResizer {
     this.dragHandle.innerHTML = '⋰' // Resize icon
     this.dragHandle.title = 'Drag to resize board'
     
-    // Position it in the bottom-right corner
-    this.chessboardEl.style.position = 'relative'
+    // The chessboard already has absolute positioning from CSS, don't override it
     this.chessboardEl.appendChild(this.dragHandle)
   }
 
@@ -100,16 +99,9 @@ export default class ChessboardResizer {
     const rawSize = Math.max(200, this.startWidth + delta) // Minimum size of 200px
     const newSize = this.snapToMultipleOf8(rawSize) // Snap to multiples of 8px
     
-    // Update board size immediately for smooth visual feedback
+    // Only update the chessboard size during drag - let CSS centering handle positioning
     this.chessboardEl.style.width = `${newSize}px`
     this.chessboardEl.style.height = `${newSize}px`
-    
-    // Also update the board-area immediately to maintain layout
-    const boardAreaEl: HTMLElement = document.querySelector('.board-area')
-    if (boardAreaEl) {
-      boardAreaEl.style.width = `${newSize}px`
-      boardAreaEl.style.height = `${newSize}px`
-    }
   }
 
   private handleMouseUp(e: MouseEvent) {
@@ -120,14 +112,21 @@ export default class ChessboardResizer {
     document.body.style.cursor = ''
     document.body.style.userSelect = ''
     
-    // Update remaining container elements after dragging is complete
+    // Now update all container elements to match the new board size
     const currentSize = this.chessboardEl.clientWidth
-    this.updateRemainingContainers(currentSize)
+    this.updateAllContainers(currentSize)
   }
 
-  private updateRemainingContainers(size: number) {
+  private updateAllContainers(size: number) {
+    const boardAreaEl: HTMLElement = document.querySelector('.board-area')
     const boardAreaContainerEl: HTMLElement = document.querySelector('.board-area-container')
     const aboveBoardEl: HTMLElement = document.querySelector('.above-board')
+
+    // Update all containers to match the new board size
+    if (boardAreaEl) {
+      boardAreaEl.style.width = `${size}px`
+      boardAreaEl.style.height = `${size}px`
+    }
 
     if (boardAreaContainerEl) {
       boardAreaContainerEl.style.width = `${size}px`
@@ -142,14 +141,8 @@ export default class ChessboardResizer {
     this.chessboardEl.style.width = `${width}px`
     this.chessboardEl.style.height = `${height}px`
     
-    // Update the board-area container to match
-    const boardAreaEl: HTMLElement = document.querySelector('.board-area')
-    if (boardAreaEl) {
-      boardAreaEl.style.width = `${width}px`
-      boardAreaEl.style.height = `${width}px`
-    }
-    
-    this.updateRemainingContainers(width)
+    // Update all containers to match the new board size
+    this.updateAllContainers(width)
   }
 
   private shrinkBoard() {
