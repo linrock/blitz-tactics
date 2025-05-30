@@ -50,6 +50,37 @@ body
         cursor: pointer
         opacity: 1
 
+// Drag handle for resizing the chessboard
+.chessboard-drag-handle
+  position: absolute
+  bottom: -8px
+  right: -8px
+  width: 16px
+  height: 16px
+  background: rgba(255, 255, 255, 0.8)
+  border: 1px solid #ccc
+  border-radius: 3px
+  cursor: nw-resize
+  display: flex
+  align-items: center
+  justify-content: center
+  font-size: 10px
+  color: #666
+  user-select: none
+  z-index: 10
+  transition: all 0.2s ease
+
+  &:hover
+    background: rgba(255, 255, 255, 0.95)
+    border-color: #999
+    transform: scale(1.1)
+
+  &.dragging
+    background: rgba(255, 255, 255, 1)
+    border-color: #666
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3)
+    transform: scale(1.15)
+
 .above-board 
   height: vars.$above-board-height
   position: relative
