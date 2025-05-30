@@ -1,9 +1,7 @@
 const boardSelector = '.chessground-board'
-const resizerSelector = '.chessboard-resizer'
 
 export default class ChessboardResizer {
   private chessboardEl: HTMLElement
-  private resizerEl: HTMLElement
   private dragHandle: HTMLElement
   private isDragging: boolean = false
   private startX: number = 0
@@ -18,7 +16,6 @@ export default class ChessboardResizer {
 
   constructor() {
     this.chessboardEl = document.querySelector(boardSelector)
-    this.resizerEl = document.querySelector(resizerSelector)
     
     // Bind event handlers
     this.boundMouseMove = this.handleMouseMove.bind(this)
@@ -27,21 +24,8 @@ export default class ChessboardResizer {
     if (this.chessboardEl) {
       this.createDragHandle()
       this.setupDragEventListeners()
-    }
-    
-    if (this.resizerEl && this.chessboardEl) {
-      console.log('yay it worked')
-      const zoomOutEl = this.resizerEl.querySelector('.zoom-out')
-      zoomOutEl.addEventListener('click', () => this.shrinkBoard())
-      const zoomInEl = this.resizerEl.querySelector('.zoom-in')
-      zoomInEl.addEventListener('click', () => this.enlargeBoard())
     } else {
-      if (!this.chessboardEl) {
-        console.warn(`chessboard_resizer: failed to find ${boardSelector}`)
-      }
-      if (!this.resizerEl) {
-        console.warn(`chessboard_resizer: failed to find ${resizerSelector}`)
-      }
+      console.warn(`chessboard_resizer: failed to find ${boardSelector}`)
     }
   }
 
@@ -150,32 +134,6 @@ export default class ChessboardResizer {
     if (aboveBoardEl) {
       aboveBoardEl.style.width = `${size}px`
     }
-  }
-
-  private resizeBoard(width: number, height: number) {
-    this.chessboardEl.style.width = `${width}px`
-    this.chessboardEl.style.height = `${height}px`
-    
-    // Update all containers to match the new board size
-    this.updateAllContainers(width)
-  }
-
-  private shrinkBoard() {
-    const initialWidth = this.chessboardEl.clientWidth
-    const initialHeight = this.chessboardEl.clientHeight
-    const rawSize = Math.max(200, initialWidth - 32) // Decrease by 32px (multiple of 8)
-    const newSize = this.snapToMultipleOf8(rawSize)
-    this.resizeBoard(newSize, newSize)
-  }
-
-  private enlargeBoard() {
-    const initialWidth = this.chessboardEl.clientWidth
-    const initialHeight = this.chessboardEl.clientHeight
-    const rawSize = initialWidth + 32 // Increase by 32px (multiple of 8)
-    const maxSize = this.getMaxBoardSize()
-    const constrainedSize = Math.min(rawSize, maxSize) // Don't exceed viewport
-    const newSize = this.snapToMultipleOf8(constrainedSize)
-    this.resizeBoard(newSize, newSize)
   }
 
   // Cleanup method for proper disposal
