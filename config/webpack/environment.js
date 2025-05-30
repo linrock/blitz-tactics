@@ -5,7 +5,6 @@ const vue = require('./loaders/vue')
 const path = require('path');
 
 environment.config.resolve.alias = {
-  'jquery': 'backbone.native',
   '@blitz': path.resolve(__dirname, '../../app/javascript'),
 }
 

@@ -17,12 +17,9 @@
   "dependencies": {
     "@bugsnag/js": "^7.5.4",
     "@rails/webpacker": "5.4.3",
-    "@types/backbone": "^1.4.5",
     "@types/chess.js": "^0.10.1",
     "@vue/compiler-sfc": "^3.5.12",
     "axios": "^0.24.0",
-    "backbone": "^1.4.0",
-    "backbone.native": "^1.0.0",
     "chess.js": "^0.11.0",
     "chessground": "https://github.com/linrock/chessground.git#9.1.1-bt-ubuntu16",
     "fastclick": "^1.0.6",
@@ -38,7 +35,6 @@
     "tinycolor2": "^1.4.2",
     "ts-loader": "^8.0.12",
     "typescript": "^4.5",
-    "underscore": "^1.12.0",
     "vue": "^3.5.12",
     "vue-loader": "^16.1.2"
   },
