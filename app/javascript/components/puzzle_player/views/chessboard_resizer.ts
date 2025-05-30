@@ -49,6 +49,19 @@ export default class ChessboardResizer {
     return Math.round(size / 8) * 8
   }
 
+  private getMaxBoardSize(): number {
+    // Leave some padding around the board (40px on each side for margins/padding)
+    const viewportPadding = 80
+    const maxWidth = window.innerWidth - viewportPadding
+    const maxHeight = window.innerHeight - viewportPadding
+    
+    // Use the smaller dimension since the board is square
+    const maxSize = Math.min(maxWidth, maxHeight)
+    
+    // Snap to multiple of 8 and ensure it's at least the minimum size
+    return Math.max(200, this.snapToMultipleOf8(maxSize))
+  }
+
   private createDragHandle() {
     // Create the drag handle element
     this.dragHandle = document.createElement('div')
@@ -97,7 +110,9 @@ export default class ChessboardResizer {
     // Use the larger of the two deltas to maintain square aspect ratio
     const delta = Math.max(deltaX, deltaY)
     const rawSize = Math.max(200, this.startWidth + delta) // Minimum size of 200px
-    const newSize = this.snapToMultipleOf8(rawSize) // Snap to multiples of 8px
+    const maxSize = this.getMaxBoardSize()
+    const constrainedSize = Math.min(rawSize, maxSize) // Don't exceed viewport
+    const newSize = this.snapToMultipleOf8(constrainedSize) // Snap to multiples of 8px
     
     // Only update the chessboard size during drag - let CSS centering handle positioning
     this.chessboardEl.style.width = `${newSize}px`
@@ -157,7 +172,9 @@ export default class ChessboardResizer {
     const initialWidth = this.chessboardEl.clientWidth
     const initialHeight = this.chessboardEl.clientHeight
     const rawSize = initialWidth + 32 // Increase by 32px (multiple of 8)
-    const newSize = this.snapToMultipleOf8(rawSize)
+    const maxSize = this.getMaxBoardSize()
+    const constrainedSize = Math.min(rawSize, maxSize) // Don't exceed viewport
+    const newSize = this.snapToMultipleOf8(constrainedSize)
     this.resizeBoard(newSize, newSize)
   }
 
