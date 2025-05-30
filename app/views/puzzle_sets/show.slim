@@ -3,12 +3,12 @@
 section.game-mode.puzzle-set
   .container
     .board-area-container
-      = render partial: "puzzle_player/above_board"
       .board-area
         .chessground-board
           .piece-promotion-modal-mount
           .chessground
           .board-modal-container.invisible(style="display: none")
+      = render partial: "puzzle_player/above_board"
     .right-sidebar.vue-app-mount
       .ps-info
         .ps-name= @puzzle_set.name

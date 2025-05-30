@@ -5,12 +5,12 @@ section.game-mode.repetition-mode(data-level="#{@level.path}")
     .progress
   .main
     .board-area-container
-      = render partial: "puzzle_player/above_board"
       .board-area
         .chessground-board
           .piece-promotion-modal-mount
           .chessground
           .board-modal-container.invisible(style="display: none")
+      = render partial: "puzzle_player/above_board"
       .under-board
         label.level-name
           - if @level
