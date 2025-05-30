@@ -1,18 +1,19 @@
 <template lang="pug">
-aside.haste-sidebar
+.haste-under-board
   .timers(:style="`display: ${(hasStarted && !hasFinished) ? '' : 'none'}`")
     .current-progress
       timer
       .n-solved {{ numPuzzlesSolved }} puzzles solved
 
   .haste-complete(v-if="hasFinished")
-    .score-container.your-score
-      .label Your score
-      .score {{ yourScore }}
+    .score-section
+      .score-container.your-score
+        .label Your score
+        .score {{ yourScore }}
 
-    .score-container.high-score
-      .label Your high score today
-      .score {{ highScore }}
+      .score-container.high-score
+        .label Your high score today
+        .score {{ highScore }}
 
     .score-container.recent-high-scores(v-if="highScores.length >= 3")
       .label Past 24 hours
@@ -21,8 +22,9 @@ aside.haste-sidebar
           .score {{ score }}
           .player-name {{ playerName }}
 
-    a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
-    a.blue-button(href="/haste") Play again
+    .action-buttons
+      a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
+      a.blue-button(href="/haste") Play again
 
   .make-a-move(v-if="!hasStarted") Make a move to start the timer
 

@@ -1,21 +1,35 @@
 @media (max-aspect-ratio: 11/16)
   .haste-mode
-    .container
-      display: block !important
+    .haste-under-board
+      padding: 15px
+
+      .timers
+        padding: 15px 0
+
+        .timer
+          font-size: 36px
+
+        .n-solved
+          font-size: 16px
 
     .haste-complete
-      width: 100% !important
+      padding: 15px 0
 
-    .haste-sidebar
-      margin-top: 0 !important
-      margin-left: 0 !important
-      padding: 20px
+      .score-section
+        flex-direction: column
+        gap: 20px
+        margin-bottom: 20px
 
       .recent-high-scores
-        display: none !important
+        margin-bottom: 20px
 
-      .timers, .haste-complete
-        flex-direction: row !important
+        .list
+          gap: 6px
 
-      .make-a-move
-        width: 100% !important
+      .action-buttons
+        flex-direction: column
+        gap: 10px
+
+        .blue-button, .dark-button
+          width: 100%
+          font-size: 16px
