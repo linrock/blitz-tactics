@@ -109,10 +109,21 @@ export default class ChessboardResizer {
   private resizeBoard(width: number, height: number) {
     this.chessboardEl.style.width = `${width}px`
     this.chessboardEl.style.height = `${height}px`
+    
+    // Update the board-area container to match the new board size
     const boardAreaEl: HTMLElement = document.querySelector('.board-area')
     if (boardAreaEl) {
       boardAreaEl.style.width = `${width}px`
+      boardAreaEl.style.height = `${width}px` // Keep it square
     }
+    
+    // Update board-area-container if it exists (for proper centering)
+    const boardAreaContainerEl: HTMLElement = document.querySelector('.board-area-container')
+    if (boardAreaContainerEl) {
+      boardAreaContainerEl.style.width = `${width}px`
+    }
+    
+    // Update above-board area to match the board width
     const aboveBoardEl: HTMLElement = document.querySelector('.above-board')
     if (aboveBoardEl) {
       aboveBoardEl.style.width = `${width}px`

@@ -3,19 +3,36 @@
 
   .container
     display: flex
+    justify-content: center
+    align-items: flex-start
+    min-height: 100vh
+    padding: 20px 0
 
   .vue-app-mount
     display: flex
     width: 100%
 
+  .board-area-container
+    display: flex
+    flex-direction: column
+    align-items: center
+
   .above-board
     width: $board-size
-    margin: 0
+    margin: 0 auto
 
-  .board-area, .chessground-board
+  .board-area
     width: $board-size
     height: $board-size
     margin: 0 auto
+    display: flex
+    align-items: center
+    justify-content: center
+
+  .chessground-board
+    width: $board-size
+    height: $board-size
+    flex-shrink: 0
 
   // the overlay over the chessboard that shows up at the end of the game
   .board-modal-container
