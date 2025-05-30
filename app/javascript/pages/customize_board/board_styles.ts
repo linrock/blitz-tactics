@@ -1,10 +1,49 @@
-import Backbone from 'backbone'
 import tinycolor from 'tinycolor2'
 
-export default class BoardStyles extends Backbone.Model {
+type EventCallback = () => void
+
+export default class BoardStyles {
+  private attributes: Record<string, string> = {}
+  private changedAttrs: Record<string, string> = {}
+  private listeners: Record<string, EventCallback[]> = {}
+
   public setColor(squareType: string, color: string) {
     const colorHex = tinycolor(color).toHexString().toUpperCase()
-    this.set(squareType, colorHex)
+    this.set({ [squareType]: colorHex })
+  }
+
+  public set(attrs: Record<string, string>) {
+    this.changedAttrs = {}
+    let hasChanges = false
+
+    Object.entries(attrs).forEach(([key, value]) => {
+      if (this.attributes[key] !== value) {
+        this.attributes[key] = value
+        this.changedAttrs[key] = value
+        hasChanges = true
+      }
+    })
+
+    if (hasChanges) {
+      this.trigger('change')
+    }
+  }
+
+  public changedAttributes(): Record<string, string> {
+    return { ...this.changedAttrs }
+  }
+
+  public on(event: string, callback: EventCallback) {
+    if (!this.listeners[event]) {
+      this.listeners[event] = []
+    }
+    this.listeners[event].push(callback)
+  }
+
+  private trigger(event: string) {
+    if (this.listeners[event]) {
+      this.listeners[event].forEach(callback => callback())
+    }
   }
 
   public css(): string {
