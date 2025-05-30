@@ -27,14 +27,15 @@
     width: $board-size
     height: $board-size
     margin: 0 auto
-    display: flex
-    align-items: center
-    justify-content: center
+    position: relative
 
   .chessground-board
     width: $board-size
     height: $board-size
-    flex-shrink: 0
+    position: absolute
+    top: 0
+    left: 50%
+    transform: translateX(-50%)
 
   // the overlay over the chessboard that shows up at the end of the game
   .board-modal-container

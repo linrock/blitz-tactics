@@ -10,6 +10,7 @@ export default class ChessboardResizer {
   private startY: number = 0
   private startWidth: number = 0
   private startHeight: number = 0
+  private lastUpdateTime: number = 0
 
   // Bound event handlers for easy cleanup
   private boundMouseMove: (e: MouseEvent) => void
@@ -42,6 +43,10 @@ export default class ChessboardResizer {
         console.warn(`chessboard_resizer: failed to find ${resizerSelector}`)
       }
     }
+  }
+
+  private snapToMultipleOf8(size: number): number {
+    return Math.round(size / 8) * 8
   }
 
   private createDragHandle() {
@@ -92,9 +97,19 @@ export default class ChessboardResizer {
     
     // Use the larger of the two deltas to maintain square aspect ratio
     const delta = Math.max(deltaX, deltaY)
-    const newSize = Math.max(200, this.startWidth + delta) // Minimum size of 200px
+    const rawSize = Math.max(200, this.startWidth + delta) // Minimum size of 200px
+    const newSize = this.snapToMultipleOf8(rawSize) // Snap to multiples of 8px
     
-    this.resizeBoard(newSize, newSize)
+    // Update board size immediately for smooth visual feedback
+    this.chessboardEl.style.width = `${newSize}px`
+    this.chessboardEl.style.height = `${newSize}px`
+    
+    // Also update the board-area immediately to maintain layout
+    const boardAreaEl: HTMLElement = document.querySelector('.board-area')
+    if (boardAreaEl) {
+      boardAreaEl.style.width = `${newSize}px`
+      boardAreaEl.style.height = `${newSize}px`
+    }
   }
 
   private handleMouseUp(e: MouseEvent) {
@@ -104,43 +119,52 @@ export default class ChessboardResizer {
     this.dragHandle.classList.remove('dragging')
     document.body.style.cursor = ''
     document.body.style.userSelect = ''
+    
+    // Update remaining container elements after dragging is complete
+    const currentSize = this.chessboardEl.clientWidth
+    this.updateRemainingContainers(currentSize)
+  }
+
+  private updateRemainingContainers(size: number) {
+    const boardAreaContainerEl: HTMLElement = document.querySelector('.board-area-container')
+    const aboveBoardEl: HTMLElement = document.querySelector('.above-board')
+
+    if (boardAreaContainerEl) {
+      boardAreaContainerEl.style.width = `${size}px`
+    }
+    
+    if (aboveBoardEl) {
+      aboveBoardEl.style.width = `${size}px`
+    }
   }
 
   private resizeBoard(width: number, height: number) {
     this.chessboardEl.style.width = `${width}px`
     this.chessboardEl.style.height = `${height}px`
     
-    // Update the board-area container to match the new board size
+    // Update the board-area container to match
     const boardAreaEl: HTMLElement = document.querySelector('.board-area')
     if (boardAreaEl) {
       boardAreaEl.style.width = `${width}px`
-      boardAreaEl.style.height = `${width}px` // Keep it square
+      boardAreaEl.style.height = `${width}px`
     }
     
-    // Update board-area-container if it exists (for proper centering)
-    const boardAreaContainerEl: HTMLElement = document.querySelector('.board-area-container')
-    if (boardAreaContainerEl) {
-      boardAreaContainerEl.style.width = `${width}px`
-    }
-    
-    // Update above-board area to match the board width
-    const aboveBoardEl: HTMLElement = document.querySelector('.above-board')
-    if (aboveBoardEl) {
-      aboveBoardEl.style.width = `${width}px`
-    }
+    this.updateRemainingContainers(width)
   }
 
   private shrinkBoard() {
     const initialWidth = this.chessboardEl.clientWidth
     const initialHeight = this.chessboardEl.clientHeight
-    const newSize = Math.max(200, initialWidth - 32)
+    const rawSize = Math.max(200, initialWidth - 32) // Decrease by 32px (multiple of 8)
+    const newSize = this.snapToMultipleOf8(rawSize)
     this.resizeBoard(newSize, newSize)
   }
 
   private enlargeBoard() {
     const initialWidth = this.chessboardEl.clientWidth
     const initialHeight = this.chessboardEl.clientHeight
-    const newSize = initialWidth + 32
+    const rawSize = initialWidth + 32 // Increase by 32px (multiple of 8)
+    const newSize = this.snapToMultipleOf8(rawSize)
     this.resizeBoard(newSize, newSize)
   }
 
