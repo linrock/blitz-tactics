@@ -79,7 +79,7 @@ export default class ChessboardResizer {
     
     // Add dragging class for visual feedback
     this.dragHandle.classList.add('dragging')
-    document.body.style.cursor = 'nw-resize'
+    document.body.style.cursor = 'nwse-resize'
     document.body.style.userSelect = 'none'
   }
 
