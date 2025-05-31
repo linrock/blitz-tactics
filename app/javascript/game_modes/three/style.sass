@@ -12,32 +12,16 @@
     color: #ffff00
 
   .three-sidebar
-    display: flex
-    flex-direction: column
-    justify-content: flex-start
-    min-width: 200px
-    gap: 20px
-    margin: 20px auto 0
-    max-width: 496px
-
-    .make-a-move
-      line-height: 26px
-      opacity: 0.7
+    @extend .game-sidebar
 
     .n-remaining
       transition: color 0.25s ease
+      padding: 8px 0
 
     .timers
       display: flex
       flex-direction: column
       gap: 15px
-
-      .timer
-        font-size: 40px
-        transition: opacity 0.25s ease, color 0.25s ease
-
-        &.stopped
-          opacity: 0.3
 
   .hints
     height: 24px
@@ -51,46 +35,9 @@
       font-size: 32px
       margin-top: 15px
 
-  .n-remaining
-    padding: 8px 0
-
   // shows up in the sidebar after a level is complete
   .three-complete
-    display: flex
-    flex-direction: column
-    height: 100%
-    justify-content: space-evenly
-
-    .label
-      font-size: 13px
-      color: rgba(255,255,255,0.5)
-
-    // your score and high score
-    .score-container
-      .score
-        margin-top: 15px
-        font-size: 30px
-
-    .recent-high-scores
-
-      // past 24 hours
-      .label
-        margin-bottom: 15px
-
-      // a high score by another player
-      .high-score
-        display: flex
-        margin: 8px 0
-
-        .score
-          font-size: 16px
-          width: 30px
-          margin: 0
-          margin-right: 10px
-
-        .player-name
-          font-size: 16px
-          color: rgba(255,255,255,0.7)
+    @extend .game-complete
 
     .puzzles-failed
       a
@@ -104,12 +51,10 @@
         height: 18px
         margin-right: 5px
 
-    .blue-button
-      font-size: 18px
-      text-align: center
+    .view-puzzles.dark-button
       position: relative
       z-index: 20
 
-    .view-puzzles.dark-button
+    .blue-button
       position: relative
       z-index: 20

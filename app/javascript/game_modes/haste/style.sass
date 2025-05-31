@@ -3,39 +3,13 @@
 
 .haste-mode
   .haste-under-board
-    max-width: 600px
-    width: 100%
-    text-align: center
-    padding: 20px
-
-    .make-a-move
-      line-height: 26px
-      opacity: 0.7
-      font-size: 18px
-      margin: 20px 0
+    @extend .game-sidebar
 
     .timers
       display: flex
       flex-direction: column
       align-items: center
-      padding: 20px 0
-
-      .timer
-        font-size: 48px
-        transition: all 0.25s ease
-        margin-bottom: 15px
-
-        &.stopped
-          opacity: 0.3
-
-        &.rewarded
-          color: #34FF00
-
-        &.penalized
-          color: red
-
-        &.complete
-          color: #ffff00
+      gap: 15px
 
       .n-solved
         font-size: 18px
@@ -44,66 +18,10 @@
 
   // shows up under the board after a level is complete
   .haste-complete
-    display: flex
-    flex-direction: column
-    align-items: center
-    padding: 20px 0
-
-    .label
-      font-size: 13px
-      color: rgba(255,255,255,0.5)
-      margin-bottom: 5px
+    @extend .game-complete
 
     .score-section
       display: flex
       flex-direction: row
       gap: 40px
-      margin-bottom: 30px
-
-    // your score and high score
-    .score-container
-      text-align: center
-
-      .score
-        font-size: 36px
-        margin-top: 8px
-
-    .recent-high-scores
-      margin-bottom: 30px
-
-      // past 24 hours
-      .label
-        margin-bottom: 15px
-
-      .list
-        display: flex
-        flex-direction: column
-        align-items: center
-        gap: 8px
-
-      // a high score by another player
-      .high-score
-        display: flex
-        align-items: center
-        gap: 15px
-
-        .score
-          font-size: 16px
-          margin: 0
-          min-width: 30px
-
-        .player-name
-          font-size: 16px
-          color: rgba(255,255,255,0.7)
-
-    .action-buttons
-      display: flex
-      gap: 15px
-      align-items: center
-      position: relative
-      z-index: 10
-
-      .blue-button, .dark-button
-        font-size: 18px
-        text-align: center
-        padding: 12px 24px
+      margin-bottom: 10px
