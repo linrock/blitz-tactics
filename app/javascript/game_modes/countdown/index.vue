@@ -1,5 +1,5 @@
 <template lang="pug">
-aside.countdown-sidebar
+aside.countdown-under-board
   .timers(:style="{ display: (isStarted && !isEnded) ? '' : 'none'}")
     .current-countdown
       timer

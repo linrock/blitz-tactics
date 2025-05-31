@@ -1,5 +1,5 @@
 <template lang="pug">
-aside.three-sidebar
+aside.three-under-board
   .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
     timer
     .n-remaining.n-lives(:class=`{ penalized: isLosingLife }`)
