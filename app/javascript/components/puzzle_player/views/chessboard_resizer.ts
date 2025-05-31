@@ -139,7 +139,7 @@ export default class ChessboardResizer {
     // Update all container elements in real-time for smooth movement
     const boardAreaEl: HTMLElement = document.querySelector('.board-area')
     const boardAreaContainerEl: HTMLElement = document.querySelector('.board-area-container')
-    const aboveBoardEl: HTMLElement = document.querySelector('.above-board')
+    const belowBoardEl: HTMLElement = document.querySelector('.below-board')
     const containerEl: HTMLElement = document.querySelector('.game-mode .container')
 
     if (boardAreaEl) {
@@ -151,16 +151,18 @@ export default class ChessboardResizer {
       boardAreaContainerEl.style.width = `${newSize}px`
     }
     
-    if (aboveBoardEl) {
-      aboveBoardEl.style.width = `${newSize}px`
+    if (belowBoardEl) {
+      belowBoardEl.style.width = `${newSize}px`
     }
     
     // Update UI positioning in real-time during drag
     if (containerEl) {
-      const topOffset = 64 // Fixed top position of board
-      const aboveBoardHeight = 20 // Margin between board and above-board content
-      const totalOffset = topOffset + newSize + aboveBoardHeight
-      containerEl.style.paddingTop = `${totalOffset}px`
+      const belowBoardHeight = belowBoardEl ? belowBoardEl.offsetHeight : 0
+      const belowBoardMargin = 20 // Margin between board and below-board content
+      
+      // Position container to account for fixed board + below-board content + margins
+      const totalHeight = 64 + newSize + belowBoardMargin + belowBoardHeight + 20
+      containerEl.style.paddingTop = `${totalHeight}px`
     }
     
     // Save the new size to localStorage
@@ -186,7 +188,7 @@ export default class ChessboardResizer {
   private updateAllContainers(size: number) {
     const boardAreaEl: HTMLElement = document.querySelector('.board-area')
     const boardAreaContainerEl: HTMLElement = document.querySelector('.board-area-container')
-    const aboveBoardEl: HTMLElement = document.querySelector('.above-board')
+    const belowBoardEl: HTMLElement = document.querySelector('.below-board')
     const containerEl: HTMLElement = document.querySelector('.game-mode .container')
 
     // Update all containers to match the new board size
@@ -199,16 +201,18 @@ export default class ChessboardResizer {
       boardAreaContainerEl.style.width = `${size}px`
     }
     
-    if (aboveBoardEl) {
-      aboveBoardEl.style.width = `${size}px`
+    if (belowBoardEl) {
+      belowBoardEl.style.width = `${size}px`
     }
 
     // Update container padding to position UI elements correctly based on board size
     if (containerEl) {
-      const topOffset = 64 // Fixed top position of board
-      const aboveBoardHeight = 20 // Margin between board and above-board content
-      const totalOffset = topOffset + size + aboveBoardHeight
-      containerEl.style.paddingTop = `${totalOffset}px`
+      const belowBoardHeight = belowBoardEl ? belowBoardEl.offsetHeight : 0
+      const belowBoardMargin = 20 // Margin between board and below-board content
+      
+      // Position container to account for fixed board + below-board content + margins
+      const totalHeight = 64 + size + belowBoardMargin + belowBoardHeight + 20
+      containerEl.style.paddingTop = `${totalHeight}px`
     }
   }
 
