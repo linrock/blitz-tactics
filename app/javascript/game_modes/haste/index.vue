@@ -33,71 +33,44 @@
 <script lang="ts">
 import { hasteRoundCompleted } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
-import { subscribe, subscribeOnce } from '@blitz/events'
-import store from '@blitz/local_storage'
+import GameModeMixin from '@blitz/components/game_mode_mixin'
+import { subscribe } from '@blitz/events'
 
 import Timer from './timer.vue'
 
 import './style.sass'
 import './responsive.sass'
 
-const puzzleIdsMistakes: Record<number, string[]> = {}
-
 export default {
+  mixins: [GameModeMixin],
+
   data() {
     return {
-      hasStarted: false,
-      hasFinished: false,
       numPuzzlesSolved: 0,
-      currentPuzzleId: 0,
-      puzzleIdsSeen: [] as number[],
       yourScore: 0,
       highScore: 0,
       highScores: [] as [string, number][],
     }
   },
 
-  computed: {
-    viewPuzzlesLink() {
-      return `/puzzles/${this.puzzleIdsSeen.join(',')}`
-    }
-  },
-
   mounted() {
+    const commonSubscriptions = this.setupCommonSubscriptions()
+    
     subscribe({
-      'puzzle:loaded': data => {
-        this.currentPuzzleId = data.puzzle.id
-        this.puzzleIdsSeen.push(this.currentPuzzleId)
-      },
+      ...commonSubscriptions,
       'puzzles:status': ({ i }) => {
         this.numPuzzlesSolved = i + 1
       },
       'timer:stopped': async () => {
-        // Show an overlay over the board area after the round completes
-        const el: HTMLElement = document.querySelector(`.board-modal-container`)
-        el.style.display = ``
-        el.classList.remove(`invisible`)
+        this.showBoardOverlay()
         // Notify the server that the round has finished. Show high scores
         const data = await hasteRoundCompleted(this.numPuzzlesSolved)
         this.yourScore = data.score
         this.highScore = data.best
         this.highScores = data.high_scores
         this.hasFinished = true
-        // Store the player's mistakes in case they want to view these later
-        // Expires from local storage after 1 hour
-        store.set(this.viewPuzzlesLink, puzzleIdsMistakes, new Date().getTime() + 86400 * 1000)
-      },
-      'move:fail': (move) => {
-        console.log(`mistake! - ${this.currentPuzzleId} - ${move.san}`)
-        if (!puzzleIdsMistakes[this.currentPuzzleId]) {
-          puzzleIdsMistakes[this.currentPuzzleId] = []
-        }
-        puzzleIdsMistakes[this.currentPuzzleId].push(move.san)
+        this.saveMistakesToStorage()
       }
-    })
-
-    subscribeOnce('move:try', () => {
-      this.hasStarted = true
     })
 
     new PuzzlePlayer({

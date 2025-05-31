@@ -53,7 +53,8 @@ aside.three-under-board
 <script lang="ts">
 import { threeRoundCompleted } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
-import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
+import GameModeMixin from '@blitz/components/game_mode_mixin'
+import { dispatch, subscribe } from '@blitz/events'
 
 import Timer from './timer.vue'
 
@@ -61,10 +62,10 @@ import './style.sass'
 import './responsive.sass'
 
 export default {
+  mixins: [GameModeMixin],
+
   data() {
     return {
-      hasStarted: false,
-      hasFinished: false,
       isShowingHint: false,
       isLosingLife: false,
       isGainingScore: false,
@@ -75,16 +76,8 @@ export default {
       numLives: 3,
       yourScore: 0,
       highScore: 0,
-      currentPuzzleId: 0,
-      puzzleIdsSeen: [] as number[],
       puzzleIdsFailed: [] as number[],
       highScores: [] as [string, number][],
-    }
-  },
-
-  computed: {
-    viewPuzzlesLink(): string {
-      return `/puzzles/${this.puzzleIdsSeen.join(',')}`
     }
   },
 
@@ -93,10 +86,7 @@ export default {
       if (this.hasFinished) {
         return
       }
-      // Show an overlay over the board area after the round completes
-      const el: HTMLElement = document.querySelector(`.board-modal-container`)
-      el.style.display = ``
-      el.classList.remove(`invisible`)
+      this.showBoardOverlay()
       // Notify the server that the round has finished. Show high scores
       const data = await threeRoundCompleted(this.numPuzzlesSolved)
       this.yourScore = data.score
@@ -105,11 +95,14 @@ export default {
       this.hasFinished = true
       dispatch('timer:stop')
     }
+
+    const commonSubscriptions = this.setupCommonSubscriptions()
+    
     subscribe({
+      ...commonSubscriptions,
       'puzzle:loaded': data => {
         this.moveHint = null
-        this.currentPuzzleId = data.puzzle.id
-        this.puzzleIdsSeen.push(this.currentPuzzleId)
+        this.trackPuzzleLoaded(data.puzzle.id)
       },
       'puzzle:hint': hint => {
         this.numHints -= 1
@@ -151,11 +144,10 @@ export default {
       },
       'move:try': () => {
         this.moveHint = null
+        if (!this.hasStarted) {
+          this.hasStarted = true
+        }
       }
-    })
-
-    subscribeOnce('move:try', () => {
-      this.hasStarted = true
     })
 
     new PuzzlePlayer({
