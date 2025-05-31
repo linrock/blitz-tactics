@@ -1,24 +1,84 @@
 @use "_variables" as vars
+@use "_colors" as colors
 
-.dark-button
-  font-size: 16px
-  padding: 8px 20px
+// Base button styles
+%button-base
   border: 0
   border-radius: 3px
-  background: black
-  color: white
   display: inline-block
   font-family: vars.$main-font
   line-height: 22px
   text-align: center
   text-decoration: none
   transition: opacity 0.25s ease
+  cursor: pointer
+  user-select: none
+
+  &:hover
+    cursor: pointer
+
+  &.disabled
+    opacity: 0.15
+    pointer-events: none
+
+// Blue button (primary action)
+.blue-button
+  @extend %button-base
+  background: colors.$blue-button-bg
+  color: white
+  font-size: 18px
+  padding: 10px 24px
 
   &:hover
     background: #51B7FF
-    cursor: pointer
 
+  // Size variants
+  &.small
+    font-size: 14px
+    padding: 8px 16px
+
+  &.large
+    font-size: 24px
+    padding: 12px 28px
+
+// Dark button (secondary action)
+.dark-button
+  @extend %button-base
+  background: black
+  color: white
+  font-size: 16px
+  padding: 8px 20px
+
+  &:hover
+    background: #51B7FF
+
+  // Size variants  
   &.small
     font-size: 12px
     padding: 4px 10px
     line-height: 16px
+
+  &.large
+    font-size: 18px
+    padding: 10px 24px
+
+// Action button container (for groups of buttons)
+.action-buttons
+  display: flex
+  gap: 15px
+  align-items: center
+  position: relative
+  z-index: 20
+
+  .blue-button, .dark-button
+    position: relative
+    z-index: 20
+
+  // Responsive stacking on mobile
+  @media (max-aspect-ratio: 11/16)
+    flex-direction: column
+    gap: 10px
+
+    .blue-button, .dark-button
+      width: 100%
+      font-size: 16px
