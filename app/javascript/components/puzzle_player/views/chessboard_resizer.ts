@@ -98,9 +98,18 @@ export default class ChessboardResizer {
     const constrainedSize = Math.min(rawSize, maxSize) // Don't exceed viewport
     const newSize = this.snapToMultipleOf8(constrainedSize) // Snap to multiples of 8px
     
-    // Only update the chessboard size during drag - let CSS centering handle positioning
+    // Update the chessboard size and UI positioning during drag
     this.chessboardEl.style.width = `${newSize}px`
     this.chessboardEl.style.height = `${newSize}px`
+    
+    // Update UI positioning in real-time during drag
+    const containerEl: HTMLElement = document.querySelector('.game-mode .container')
+    if (containerEl) {
+      const topOffset = 64 // Fixed top position of board
+      const aboveBoardHeight = 20 // Margin between board and above-board content
+      const totalOffset = topOffset + newSize + aboveBoardHeight
+      containerEl.style.paddingTop = `${totalOffset}px`
+    }
   }
 
   private handleMouseUp(e: MouseEvent) {
@@ -120,6 +129,7 @@ export default class ChessboardResizer {
     const boardAreaEl: HTMLElement = document.querySelector('.board-area')
     const boardAreaContainerEl: HTMLElement = document.querySelector('.board-area-container')
     const aboveBoardEl: HTMLElement = document.querySelector('.above-board')
+    const containerEl: HTMLElement = document.querySelector('.game-mode .container')
 
     // Update all containers to match the new board size
     if (boardAreaEl) {
@@ -133,6 +143,14 @@ export default class ChessboardResizer {
     
     if (aboveBoardEl) {
       aboveBoardEl.style.width = `${size}px`
+    }
+
+    // Update container padding to position UI elements correctly based on board size
+    if (containerEl) {
+      const topOffset = 64 // Fixed top position of board
+      const aboveBoardHeight = 20 // Margin between board and above-board content
+      const totalOffset = topOffset + size + aboveBoardHeight
+      containerEl.style.paddingTop = `${totalOffset}px`
     }
   }
 
