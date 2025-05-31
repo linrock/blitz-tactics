@@ -1,4 +1,5 @@
 const boardSelector = '.chessground-board'
+const BOARD_SIZE_STORAGE_KEY = 'blitz-tactics-board-size'
 
 export default class ChessboardResizer {
   private chessboardEl: HTMLElement
@@ -24,9 +25,42 @@ export default class ChessboardResizer {
     if (this.chessboardEl) {
       this.createDragHandle()
       this.setupDragEventListeners()
+      // Load and apply saved board size
+      this.loadSavedBoardSize()
     } else {
       console.warn(`chessboard_resizer: failed to find ${boardSelector}`)
     }
+  }
+
+  private saveBoardSize(size: number) {
+    try {
+      localStorage.setItem(BOARD_SIZE_STORAGE_KEY, size.toString())
+    } catch (e) {
+      console.warn('Failed to save board size to localStorage:', e)
+    }
+  }
+
+  private loadSavedBoardSize() {
+    try {
+      const savedSize = localStorage.getItem(BOARD_SIZE_STORAGE_KEY)
+      if (savedSize) {
+        const size = parseInt(savedSize, 10)
+        if (size >= 200 && size <= this.getMaxBoardSize()) {
+          this.applyBoardSize(size)
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load board size from localStorage:', e)
+    }
+  }
+
+  private applyBoardSize(size: number) {
+    // Apply the size to the chessboard
+    this.chessboardEl.style.width = `${size}px`
+    this.chessboardEl.style.height = `${size}px`
+    
+    // Update all containers to match
+    this.updateAllContainers(size)
   }
 
   private snapToMultipleOf8(size: number): number {
@@ -128,6 +162,9 @@ export default class ChessboardResizer {
       const totalOffset = topOffset + newSize + aboveBoardHeight
       containerEl.style.paddingTop = `${totalOffset}px`
     }
+    
+    // Save the new size to localStorage
+    this.saveBoardSize(newSize)
   }
 
   private handleMouseUp(e: MouseEvent) {
@@ -141,6 +178,9 @@ export default class ChessboardResizer {
     // Now update all container elements to match the new board size
     const currentSize = this.chessboardEl.clientWidth
     this.updateAllContainers(currentSize)
+    
+    // Save the final size to localStorage
+    this.saveBoardSize(currentSize)
   }
 
   private updateAllContainers(size: number) {
