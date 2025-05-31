@@ -11,12 +11,32 @@
   .complete
     color: #ffff00
 
-  .three-sidebar
-    margin-top: vars.$above-board-height
-    margin-left: 30px
+  // Override the base container layout for Three mode to be horizontal
+  .container
+    display: flex
+    flex-direction: row
+    align-items: flex-start
+    justify-content: center
+    gap: 40px
+
+  .board-area-container
     display: flex
     flex-direction: column
-    justify-content: space-evenly
+    align-items: center
+
+  // Position the above-board content below the board with consistent spacing
+  .above-board
+    margin-top: 20px
+    margin-bottom: 0
+
+  .three-sidebar
+    margin-top: 0
+    margin-left: 0
+    display: flex
+    flex-direction: column
+    justify-content: flex-start
+    min-width: 200px
+    gap: 20px
 
     .make-a-move
       line-height: 26px
@@ -28,12 +48,11 @@
     .timers
       display: flex
       flex-direction: column
-      justify-content: space-evenly
+      gap: 15px
 
       .timer
         font-size: 40px
         transition: opacity 0.25s ease, color 0.25s ease
-        margin-bottom: 20px
 
         &.stopped
           opacity: 0.3

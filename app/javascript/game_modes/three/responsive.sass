@@ -1,7 +1,10 @@
 @media (max-aspect-ratio: 11/16)
   .three-mode
     .container
-      display: block !important
+      display: flex !important
+      flex-direction: column !important
+      align-items: center !important
+      gap: 20px !important
 
     .three-complete
       width: 100% !important
@@ -10,12 +13,17 @@
       margin-top: 0 !important
       margin-left: 0 !important
       padding: 20px
+      min-width: auto !important
+      width: 100%
+      max-width: 496px
 
       .recent-high-scores
         display: none !important
 
       .timers, .three-complete
         flex-direction: row !important
+        justify-content: space-around !important
 
       .make-a-move
         width: 100% !important
+        text-align: center

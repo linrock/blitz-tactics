@@ -6,27 +6,23 @@
     flex-direction: column
     align-items: center
     min-height: 100vh
-    padding: 20px 0
-
-  .vue-app-mount
-    display: flex
-    width: 100%
-    justify-content: center
-    margin-top: 20px
+    padding: 0
+    padding-top: calc(64px + $board-size + 20px)
 
   .board-area-container
+    position: absolute
+    top: 64px
+    left: 50%
+    transform: translateX(-50%)
     display: flex
     flex-direction: column
     align-items: center
-
-  .above-board
-    width: $board-size
-    margin: 0 auto
+    margin: 0
+    padding: 0
 
   .board-area
     width: $board-size
     height: $board-size
-    margin: 0 auto
     position: relative
 
   .chessground-board
@@ -36,6 +32,15 @@
     top: 0
     left: 50%
     transform: translateX(-50%)
+
+  .above-board
+    width: $board-size
+    margin: 20px auto 0
+
+  .vue-app-mount
+    display: flex
+    width: 100%
+    justify-content: center
 
   // the overlay over the chessboard that shows up at the end of the game
   .board-modal-container
