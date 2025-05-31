@@ -4,10 +4,9 @@
 </template>
 
 <script lang="ts">
-import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
-import { formattedTimeSeconds } from '@blitz/utils'
+import { subscribe } from '@blitz/events'
+import TimerMixin from '@blitz/components/timer_mixin'
 
-const initialTimeMin = 3      // number of minutes on the clock initially
 const updateIntervalMs = 100  // timer updates this frequently
 const rewardThreshold = 10    // combo this many moves to gain time
 const rewardMs = 7000         // gain this much time at the reward threshold
@@ -15,72 +14,32 @@ const comboRewardMs = 3000    // gain this much more time for maintaining combo
 const penaltyMs = 30000       // lose this much time per mistake
 
 export default {
-  data() {
-    return {
-      initialTimeMs: initialTimeMin * 60 * 1000,
-      timeModifierMs: 0,
-      hasStarted: true,
-      hasEnded: false,
-      startTime: 0,
-      nowTime: 0,
-      comboSize: 0,
-      isPenalized: false,
-      isRewarded: false,
-    }
-  },
-
-  computed: {
-    timeLeftMilliseconds(): number {
-      const t = this.initialTimeMs - (this.nowTime - this.startTime) + this.timeModifierMs
-      return t < 0 ? 0 : t
-    },
-    formattedTimeSeconds(): string {
-      return formattedTimeSeconds(this.timeLeftMilliseconds)
-    },
-  },
+  mixins: [TimerMixin],
 
   mounted() {
-    let timerInterval: number;
-    const gameHasEnded = () => {
-      this.hasEnded = true
-      if (typeof timerInterval !== 'undefined') {
-        clearInterval(timerInterval)
-        timerInterval = undefined
-      }
-      dispatch('timer:stopped')
-    }
-    // start the timer after this is mounted
-    const now = Date.now()
-    this.startTime = now
-    this.nowTime = now
-    timerInterval = window.setInterval(() => {
-      this.nowTime = Date.now()
-      if (this.timeLeftMilliseconds <= 0) {
-        gameHasEnded()
-      }
-    }, updateIntervalMs)
+    // Start timer immediately for haste mode
+    this.startTimer(updateIntervalMs)
+
     subscribe({
       'move:success': () => {
         // gain time with higher combos
-        this.comboSize += 1
+        this.incrementCombo()
         if (this.comboSize % rewardThreshold !== 0) {
           return
         }
-        this.timeModifierMs += rewardMs
-        this.timeModifierMs += (comboRewardMs * (this.comboSize / rewardThreshold - 1))
-        this.isRewarded = true
-        setTimeout(() => this.isRewarded = false, 250)
+        this.addTime(rewardMs)
+        this.addTime(comboRewardMs * (this.comboSize / rewardThreshold - 1))
+        this.showReward()
       },
       'move:fail': () => {
         // lose time when making mistakes
-        this.comboSize = 0
-        this.timeModifierMs -= penaltyMs
-        this.isPenalized = true
-        setTimeout(() => this.isPenalized = false, 250)
+        this.resetCombo()
+        this.subtractTime(penaltyMs)
+        this.showPenalty()
       },
       'puzzles:complete': () => {
         // this happens when all the haste puzzles in a round have been completed
-        gameHasEnded()
+        this.gameHasEnded()
       },
     })
   }

@@ -4,82 +4,42 @@
 </template>
 
 <script lang="ts">
-import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
-import { formattedTimeSeconds } from '@blitz/utils'
+import { subscribe, subscribeOnce } from '@blitz/events'
+import TimerMixin from '@blitz/components/timer_mixin'
 
-const initialTimeMin = 3      // number of minutes on the clock initially
 const updateIntervalMs = 33   // timer updates this frequently
 const rewardThreshold = 3     // combo this many puzzles to gain a time reward
 const comboRewardMs = 3_000   // gain this much more time for puzzle combos
 
 export default {
-  data() {
-    return {
-      initialTimeMs: initialTimeMin * 60 * 1000,
-      timeModifierMs: 0,
-      hasStarted: false,
-      hasEnded: false,
-      startTime: 0,
-      nowTime: 0,
-      comboSize: 0,
-      isRewarded: false,
-    }
-  },
-
-  computed: {
-    timeLeftMilliseconds(): number {
-      const t = this.initialTimeMs - (this.nowTime - this.startTime) + this.timeModifierMs
-      return t < 0 ? 0 : t
-    },
-    formattedTimeSeconds(): string {
-      return formattedTimeSeconds(this.timeLeftMilliseconds)
-    },
-  },
+  mixins: [TimerMixin],
 
   mounted() {
-    let timerInterval
-    const gameHasEnded = () => {
-      this.hasEnded = true
-      if (typeof timerInterval !== 'undefined') {
-        clearInterval(timerInterval)
-        timerInterval = undefined
-      }
-      dispatch('timer:stopped')
-    }
     subscribeOnce('move:try', () => {
       // start the timer after the first player move
-      const now = Date.now()
-      this.startTime = now
-      this.nowTime = now
-      timerInterval = window.setInterval(() => {
-        this.nowTime = Date.now()
-        if (this.timeLeftMilliseconds <= 0) {
-          gameHasEnded()
-        }
-      }, updateIntervalMs)
-      this.hasStarted = true
+      this.startTimer(updateIntervalMs)
     })
+
     subscribe({
       'timer:stop': () => {
-        gameHasEnded();
+        this.gameHasEnded();
       },
       'move:fail': () => {
         // reset the puzzle combo when making mistakes
-        this.comboSize = 0
+        this.resetCombo()
       },
       'puzzle:solved': () => {
         // increment puzzle combo and give a reward past a threshold
-        this.comboSize += 1
+        this.incrementCombo()
         if (this.comboSize > 0 && this.comboSize % rewardThreshold === 0) {
           console.log(`combo size: ${this.comboSize}. give a reward!`)
-          this.isRewarded = true
-          this.timeModifierMs += comboRewardMs
-          setTimeout(() => this.isRewarded = false, 250)
+          this.addTime(comboRewardMs)
+          this.showReward()
         }
       },
       'puzzles:complete': () => {
         // this happens when all the threes puzzles in a round have been completed
-        gameHasEnded()
+        this.gameHasEnded()
       },
     })
   }
