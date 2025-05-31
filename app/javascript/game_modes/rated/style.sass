@@ -19,70 +19,84 @@
       top: 25px
       font-size: 22px
 
-  .rated-sidebar
-    margin-top: vars.$above-board-height
-    margin-left: 30px
-    display: flex
-    flex-direction: column
-    width: 100%
+  .rated-under-board
+    @extend .game-under-board
 
-    .your-rating .label
-      margin-bottom: 10px
+    .label
+      font-size: 13px
+      color: rgba(255,255,255,0.5)
+      margin-bottom: 5px
 
-    .player-rating
-      font-size: 20px
-      transition: color 0.25s ease
+    .current-status
+      display: flex
+      gap: 30px
       margin-bottom: 30px
 
-      &.rewarded
-        color: #34FF00
+      .your-rating
+        .player-rating
+          font-size: 30px
+          margin-top: 15px
 
-      &.penalized
-        color: red
+      .puzzles-seen
+        .n-puzzles
+          font-size: 30px
+          margin-top: 15px
 
-    .puzzles-seen
-      font-size: 16px
-      line-height: 22px
-      height: 44px
-      margin-left: 1px
-      opacity: 0.7
-
-      .label
-        margin-bottom: 5px
-
-    // list of moves attempted with success/failure
     .moves-attempted
-      height: 192px
-      margin-top: 40px
-      overflow-y: hidden
+      margin-bottom: 30px
       position: relative
-
-      .moves-shadow
-        width: 100%
-        height: 105px
-        position: absolute
-        z-index: 1
-        pointer-events: none
-        bottom: 0
-        background: linear-gradient(rgba(0,0,0,0), rgba(31,31,31,0.8) 50%, rgba(31,31,31,1))
+      height: 100px
+      overflow: hidden
 
       .move-attempt
         display: flex
-        height: 18px
         align-items: center
-        margin: 5px 0
-        transition: opacity 0.5s ease
-
-        &.success
-          color: colors.$move-perfect
-        &.fail
-          color: colors.$move-fail
-        &.almost
-          color: colors.$move-almost
+        gap: 8px
+        padding: 4px 0
+        font-size: 16px
+        transition: all 0.3s ease
 
         svg
-          width: 14px
-          margin-right: 8px
+          width: 16px
+          height: 16px
+
+        &.success svg
+          color: #34FF00
+
+        &.almost svg
+          color: #ffcc00
+
+        &.fail svg
+          color: #ff3f00
+
+      .moves-shadow
+        position: absolute
+        bottom: 0
+        left: 0
+        right: 0
+        height: 20px
+        background: linear-gradient(transparent, rgba(0,0,0,0.8))
+
+    .instructions
+      margin-bottom: 30px
+
+      ul
+        margin-bottom: 20px
+        padding-left: 20px
+
+        li
+          margin-bottom: 8px
+          font-size: 16px
+          line-height: 22px
+          opacity: 0.8
+
+      .start-button
+        font-size: 18px
+        text-align: center
+
+    .recent-puzzles-btn
+      font-size: 18px
+      text-align: center
 
   .recent-puzzles-btn
     margin-top: auto

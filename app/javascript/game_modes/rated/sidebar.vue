@@ -1,5 +1,5 @@
 <template lang="pug">
-aside.rated-sidebar
+aside.rated-under-board
   .current-status
     .your-rating
       .label Your rating
