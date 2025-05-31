@@ -102,8 +102,26 @@ export default class ChessboardResizer {
     this.chessboardEl.style.width = `${newSize}px`
     this.chessboardEl.style.height = `${newSize}px`
     
-    // Update UI positioning in real-time during drag
+    // Update all container elements in real-time for smooth movement
+    const boardAreaEl: HTMLElement = document.querySelector('.board-area')
+    const boardAreaContainerEl: HTMLElement = document.querySelector('.board-area-container')
+    const aboveBoardEl: HTMLElement = document.querySelector('.above-board')
     const containerEl: HTMLElement = document.querySelector('.game-mode .container')
+
+    if (boardAreaEl) {
+      boardAreaEl.style.width = `${newSize}px`
+      boardAreaEl.style.height = `${newSize}px`
+    }
+
+    if (boardAreaContainerEl) {
+      boardAreaContainerEl.style.width = `${newSize}px`
+    }
+    
+    if (aboveBoardEl) {
+      aboveBoardEl.style.width = `${newSize}px`
+    }
+    
+    // Update UI positioning in real-time during drag
     if (containerEl) {
       const topOffset = 64 // Fixed top position of board
       const aboveBoardHeight = 20 // Margin between board and above-board content
