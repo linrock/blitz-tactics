@@ -132,37 +132,21 @@ export default class ChessboardResizer {
     const constrainedSize = Math.min(rawSize, maxSize) // Don't exceed viewport
     const newSize = this.snapToMultipleOf8(constrainedSize) // Snap to multiples of 8px
     
-    // Update the chessboard size and UI positioning during drag
+    // Update the chessboard size during drag
     this.chessboardEl.style.width = `${newSize}px`
     this.chessboardEl.style.height = `${newSize}px`
     
     // Update all container elements in real-time for smooth movement
     const boardAreaEl: HTMLElement = document.querySelector('.board-area')
-    const boardAreaContainerEl: HTMLElement = document.querySelector('.board-area-container')
     const belowBoardEl: HTMLElement = document.querySelector('.below-board')
-    const containerEl: HTMLElement = document.querySelector('.game-mode .container')
 
     if (boardAreaEl) {
       boardAreaEl.style.width = `${newSize}px`
       boardAreaEl.style.height = `${newSize}px`
     }
-
-    if (boardAreaContainerEl) {
-      boardAreaContainerEl.style.width = `${newSize}px`
-    }
     
     if (belowBoardEl) {
       belowBoardEl.style.width = `${newSize}px`
-    }
-    
-    // Update UI positioning in real-time during drag
-    if (containerEl) {
-      const belowBoardHeight = belowBoardEl ? belowBoardEl.offsetHeight : 0
-      const belowBoardMargin = 20 // Margin between board and below-board content
-      
-      // Position container to account for fixed board + below-board content + margins
-      const totalHeight = 64 + newSize + belowBoardMargin + belowBoardHeight + 20
-      containerEl.style.paddingTop = `${totalHeight}px`
     }
     
     // Save the new size to localStorage
@@ -187,32 +171,16 @@ export default class ChessboardResizer {
 
   private updateAllContainers(size: number) {
     const boardAreaEl: HTMLElement = document.querySelector('.board-area')
-    const boardAreaContainerEl: HTMLElement = document.querySelector('.board-area-container')
     const belowBoardEl: HTMLElement = document.querySelector('.below-board')
-    const containerEl: HTMLElement = document.querySelector('.game-mode .container')
 
     // Update all containers to match the new board size
     if (boardAreaEl) {
       boardAreaEl.style.width = `${size}px`
       boardAreaEl.style.height = `${size}px`
     }
-
-    if (boardAreaContainerEl) {
-      boardAreaContainerEl.style.width = `${size}px`
-    }
     
     if (belowBoardEl) {
       belowBoardEl.style.width = `${size}px`
-    }
-
-    // Update container padding to position UI elements correctly based on board size
-    if (containerEl) {
-      const belowBoardHeight = belowBoardEl ? belowBoardEl.offsetHeight : 0
-      const belowBoardMargin = 20 // Margin between board and below-board content
-      
-      // Position container to account for fixed board + below-board content + margins
-      const totalHeight = 64 + size + belowBoardMargin + belowBoardHeight + 20
-      containerEl.style.paddingTop = `${totalHeight}px`
     }
   }
 
