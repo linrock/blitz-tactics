@@ -11,7 +11,6 @@ body
 
 .board-area-container
   position: relative
-  z-index: 1 // hack: so the board covers UI components if it's too big
 
   .chessboard-resizer
     position: absolute
@@ -66,8 +65,6 @@ body
 .below-board
   height: vars.$below-board-height
   position: relative
-  // width $main-width
-  margin: 15px auto 0
 
   // white to move
   .instructions 
