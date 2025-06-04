@@ -1,11 +1,11 @@
 <template lang="pug">
 aside.countdown-under-board
-  .timers(:style="{ display: (isStarted && !isEnded) ? '' : 'none'}")
+  .timers(:style="{ display: (hasStarted && !hasFinished) ? '' : 'none'}")
     .current-countdown
       timer
       .description {{ nPuzzlesSolved }} puzzles solved
 
-  .countdown-complete(v-if="isEnded")
+  .countdown-complete(v-if="hasFinished")
     .score-container.your-score
       .label Your score
       .score {{ score }}
@@ -17,7 +17,7 @@ aside.countdown-under-board
     a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
     a.blue-button(href="/countdown") Play again
 
-  .make-a-move(v-if="!isStarted") Make a move to start the timer
+  .make-a-move(v-if="!hasStarted") Make a move to start the timer
 
 </template>
 
@@ -37,7 +37,6 @@ export default {
 
   data() {
     return {
-      isEnded: false,
       nPuzzlesSolved: 0,
       score: 0,
       highScore: 0,
@@ -60,7 +59,7 @@ export default {
           const { score, best } = data
           this.score = score
           this.highScore = best
-          this.isEnded = true
+          this.hasFinished = true
         })
         this.saveMistakesToStorage()
       },
