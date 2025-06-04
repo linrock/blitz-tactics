@@ -38,11 +38,11 @@ export default class PuzzleHint {
 
   private getRandomHint(): string {
     const hints: string[] = []
-    Object.keys(this.current.boardState).forEach((move: UciMove) => {
+    for (const move in this.current.boardState) {
       if (this.current.boardState[move] !== `retry`) {
         hints.push(move)
       }
-    })
+    }
     return hints[Math.floor(Math.random() * hints.length)]
   }
 

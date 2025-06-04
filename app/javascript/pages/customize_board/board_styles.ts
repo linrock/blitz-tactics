@@ -7,11 +7,6 @@ export default class BoardStyles {
   private changedAttrs: Record<string, string> = {}
   private listeners: Record<string, EventCallback[]> = {}
 
-  public setColor(squareType: string, color: string) {
-    const colorHex = tinycolor(color).toHexString().toUpperCase()
-    this.set({ [squareType]: colorHex })
-  }
-
   public set(attrs: Record<string, string>) {
     this.changedAttrs = {}
     let hasChanges = false
@@ -31,6 +26,11 @@ export default class BoardStyles {
 
   public changedAttributes(): Record<string, string> {
     return { ...this.changedAttrs }
+  }
+
+  public setColor(squareType: string, color: string) {
+    const colorHex = tinycolor(color).toHexString().toUpperCase()
+    this.set({ [squareType]: colorHex })
   }
 
   public on(event: string, callback: EventCallback) {

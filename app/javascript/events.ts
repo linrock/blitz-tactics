@@ -1,52 +1,44 @@
-type EventHandler = (...args: any[]) => void
+// Custom event system to replace Backbone.Events
 
 interface EventMap {
-  [event: string]: EventHandler
+  [event: string]: (...args: any[]) => void
 }
 
-class SimpleEventEmitter {
-  private listeners: Record<string, EventHandler[]> = {}
+class EventEmitter {
+  private listeners: { [event: string]: ((...args: any[]) => void)[] } = {}
 
-  on(event: string, handler: EventHandler) {
-    if (!this.listeners[event]) {
-      this.listeners[event] = []
-    }
-    this.listeners[event].push(handler)
-  }
-
-  off(event: string, handler?: EventHandler) {
-    if (!this.listeners[event]) return
-    
-    if (handler) {
-      this.listeners[event] = this.listeners[event].filter(h => h !== handler)
-    } else {
-      delete this.listeners[event]
+  trigger(eventName: string, ...data: any[]) {
+    if (this.listeners[eventName]) {
+      this.listeners[eventName].forEach(handler => handler(...data))
     }
   }
 
-  trigger(event: string, ...args: any[]) {
-    if (!this.listeners[event]) return
-    
-    this.listeners[event].forEach(handler => {
-      try {
-        handler(...args)
-      } catch (error) {
-        console.error(`Error in event handler for "${event}":`, error)
-      }
-    })
+  on(eventName: string, handler: (...args: any[]) => void) {
+    if (!this.listeners[eventName]) {
+      this.listeners[eventName] = []
+    }
+    this.listeners[eventName].push(handler)
   }
 
-  once(event: string, handler: EventHandler) {
+  once(eventName: string, handler: (...args: any[]) => void) {
     const onceHandler = (...args: any[]) => {
       handler(...args)
-      this.off(event, onceHandler)
+      this.off(eventName, onceHandler)
     }
-    this.on(event, onceHandler)
+    this.on(eventName, onceHandler)
+  }
+
+  off(eventName: string, handler: (...args: any[]) => void) {
+    if (this.listeners[eventName]) {
+      const index = this.listeners[eventName].indexOf(handler)
+      if (index > -1) {
+        this.listeners[eventName].splice(index, 1)
+      }
+    }
   }
 }
 
-const dispatcher = new SimpleEventEmitter()
-const listener = new SimpleEventEmitter()
+const dispatcher = new EventEmitter()
 
 const dispatch = (eventName: string, ...data: any[]) => {
   dispatcher.trigger(eventName, ...data)
@@ -54,12 +46,11 @@ const dispatch = (eventName: string, ...data: any[]) => {
 
 const subscribe = (eventMap: EventMap) => {
   Object.entries(eventMap).forEach(([eventName, handler]) => {
-    listener.on(eventName, handler)
     dispatcher.on(eventName, handler)
   })
 }
 
-const subscribeOnce = (eventName: string, cb: EventHandler) => {
+const subscribeOnce = (eventName: string, cb: (...args: any[]) => void) => {
   dispatcher.once(eventName, cb)
 }
 

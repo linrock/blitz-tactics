@@ -31,6 +31,37 @@ export default class CustomizeBoard {
     return this.el.querySelector(`style`)
   }
 
+  private initialize() {
+    new ChessgroundBoard({ fen: '1Q6/8/8/8/8/k1K5/8/8 b - - 13 62', viewOnly: true })
+    setTimeout(() => {
+      dispatch('move:make', 'Ka2', { opponent: true })
+      setTimeout(() => {
+        const highlightEl = document.createElement('square')
+        highlightEl.classList.add('selected')
+        highlightEl.style.transform = 'translate(60px, 0)'
+        document.querySelector('cg-board').appendChild(highlightEl)
+      }, 200)
+    }, 500)
+    const squares = ['light', 'dark', 'selected', 'from', 'to']
+    const initialColors = {}
+    squares.forEach(squareType => {
+      const colorInputEl = this.squareColorInputEl(squareType)
+      const color = colorInputEl.value || defaultColors[squareType]
+      initialColors[squareType] = color
+    })
+    
+    // Listen to board styles changes
+    boardStyles.on('change', () => {
+      Object.entries(boardStyles.changedAttributes()).forEach(([sqType, color]) => {
+        this.squareColorInputEl(sqType).value = color as string
+        this.squareEl(sqType).style.background = color as string
+      })
+      this.styleEl.textContent = boardStyles.css()
+    })
+    
+    boardStyles.set(initialColors)
+  }
+
   private setupEventListeners() {
     // Set up click handlers for square color toggles
     this.el.addEventListener('click', (e) => {
@@ -68,38 +99,6 @@ export default class CustomizeBoard {
       }
       this.removeColorPicker()
     })
-  }
-
-  private initialize() {
-    new ChessgroundBoard({ fen: '1Q6/8/8/8/8/k1K5/8/8 b - - 13 62', viewOnly: true })
-    setTimeout(() => {
-      dispatch('move:make', 'Ka2', { opponent: true })
-      setTimeout(() => {
-        const highlightEl = document.createElement('square')
-        highlightEl.classList.add('selected')
-        highlightEl.style.transform = 'translate(60px, 0)'
-        document.querySelector('cg-board').appendChild(highlightEl)
-      }, 200)
-    }, 500)
-    
-    const squares = ['light', 'dark', 'selected', 'from', 'to']
-    const initialColors = {}
-    squares.forEach(squareType => {
-      const colorInputEl = this.squareColorInputEl(squareType)
-      const color = colorInputEl.value || defaultColors[squareType]
-      initialColors[squareType] = color
-    })
-    
-    // Listen to board styles changes
-    boardStyles.on('change', () => {
-      Object.entries(boardStyles.changedAttributes()).forEach(([sqType, color]) => {
-        this.squareColorInputEl(sqType).value = color as string
-        this.squareEl(sqType).style.background = color as string
-      })
-      this.styleEl.textContent = boardStyles.css()
-    })
-    
-    boardStyles.set(initialColors)
   }
 
   private squareColorInputEl(sq: string): HTMLInputElement {
