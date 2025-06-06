@@ -2,11 +2,11 @@
 
 section.game-mode.haste-mode
   .container
+    = render partial: "puzzle_player/above_board"
     .board-area-container
       .board-area
         .chessground-board
           .piece-promotion-modal-mount
           .chessground
           .board-modal-container.invisible(style="display: none")
-      = render partial: "puzzle_player/above_board"
     .vue-app-mount

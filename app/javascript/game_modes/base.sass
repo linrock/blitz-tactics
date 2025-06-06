@@ -11,6 +11,64 @@
     padding: 20px 0
     padding-top: 30px
 
+  // Above board section positioning
+  .below-board
+    width: $board-size
+    margin-bottom: 50px
+    display: flex
+    justify-content: center
+    align-items: center
+    min-height: 40px
+    text-align: center
+
+    .instructions
+      font-size: 22px
+      font-weight: bold
+      text-shadow: 0 0 8px rgba(0,0,0,0.9)
+      transition: all 0.35s ease-out
+
+      &.smaller
+        font-size: 20px
+
+    .puzzle-hint
+      text-align: center
+      margin: 10px 0
+      transition: opacity 0.15s ease
+
+      .hint-trigger
+        background: #565656
+        padding: 6px 14px 5px
+        color: white
+        display: inline-block
+        border-radius: 2px
+        font-size: 12px
+        transition: opacity 0.08s ease
+
+        &:hover
+          cursor: pointer
+          background: #676767
+
+        &.invisible
+          pointer-events: none
+
+      .move
+        font-size: 14px
+        color: rgba(255,255,255,0.5)
+
+    .move-status
+      margin: 5px 0
+      min-height: 20px
+
+    .combo-counter
+      margin: 5px 0
+      font-size: 14px
+
+      .counter
+        font-weight: bold
+
+      .combo-text
+        opacity: 0.7
+
   .board-area-container
     display: flex
     flex-direction: column
@@ -31,15 +89,13 @@
     left: 50%
     transform: translateX(-50%)
 
-  .below-board
-    width: $board-size
-
   .vue-app-mount
     display: flex
     width: 100%
     justify-content: center
     position: relative
     z-index: 3
+    margin-top: 20px
 
   // the overlay over the chessboard that shows up at the end of the game
   .board-modal-container
