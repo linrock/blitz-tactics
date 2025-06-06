@@ -12,27 +12,34 @@
     padding-top: 30px
 
   // Above board section positioning
-  .below-board
+  .above-board
     width: $board-size
-    margin-bottom: 50px
-    display: flex
-    justify-content: center
-    align-items: center
-    min-height: 40px
+    height: 50px
+    margin-bottom: 20px
+    position: relative
     text-align: center
 
     .instructions
       font-size: 22px
       font-weight: bold
       text-shadow: 0 0 8px rgba(0,0,0,0.9)
+      width: 100%
+      text-align: center
+      margin: 0 auto
+      position: absolute
+      top: 15px
       transition: all 0.35s ease-out
 
       &.smaller
         font-size: 20px
+        top: 10px
 
     .puzzle-hint
       text-align: center
-      margin: 10px 0
+      margin: 0 auto
+      position: absolute
+      top: 30px
+      width: 100%
       transition: opacity 0.15s ease
 
       .hint-trigger
@@ -54,20 +61,7 @@
       .move
         font-size: 14px
         color: rgba(255,255,255,0.5)
-
-    .move-status
-      margin: 5px 0
-      min-height: 20px
-
-    .combo-counter
-      margin: 5px 0
-      font-size: 14px
-
-      .counter
-        font-weight: bold
-
-      .combo-text
-        opacity: 0.7
+        height: 0
 
   .board-area-container
     display: flex
