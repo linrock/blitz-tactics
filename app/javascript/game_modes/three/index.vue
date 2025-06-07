@@ -2,7 +2,7 @@
 aside.three-under-board
   .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
     timer
-    .n-remaining.n-lives(:class=`{ penalized: isLosingLife }`)
+    .n-remaining.n-lives(:class=`{ penalized: isLosingLife }` style="margin-bottom: 0.5rem")
       | {{ numLives }} {{ numLives === 1 ? 'life left' : 'lives' }}
     .n-remaining.n-hints
       | {{ numHints }} {{ numHints === 1 ? 'hint' : 'hints' }}
