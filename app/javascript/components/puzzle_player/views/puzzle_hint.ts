@@ -42,6 +42,7 @@ export default class PuzzleHint {
         this.displayHint(hint)
       },
       'move:make': () => this.delayedShowHint(),
+      'puzzle:solved': () => this.hideHint(),
       'timer:stopped': () => this.clearHintTimer(),
     })
   }
@@ -50,6 +51,12 @@ export default class PuzzleHint {
     this.el.classList.remove(`invisible`)
     this.buttonEl.classList.remove(`invisible`)
     this.moveEl.textContent = hint
+  }
+
+  private hideHint() {
+    this.clearHintTimer()
+    this.el.classList.add(`invisible`)
+    this.moveEl.textContent = ``
   }
 
   private clearHintTimer() {
