@@ -100,7 +100,8 @@ export default class PuzzleSource {
 
   private firstPuzzle() {
     this.i = 0
-    this.loadPuzzleAtIndex(this.i)
+    // Small delay to ensure all views have subscribed to events
+    setTimeout(() => this.loadPuzzleAtIndex(this.i), 10)
   }
 
   private nextPuzzle() {

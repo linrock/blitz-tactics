@@ -19,9 +19,7 @@ interface PuzzlePlayerOptions extends PuzzleSourceOptions {
 /** The puzzle player used in the various game modes */
 export default class PuzzlePlayer {
   constructor(options: PuzzlePlayerOptions = {}) {
-    new PuzzleSource(options)
-
-    // views
+    // Create all views first so they can subscribe to events
     new ChessgroundBoard
     new ChessboardResizer
     new MoveStatus
@@ -32,6 +30,9 @@ export default class PuzzlePlayer {
     if (!options.noHint) {
       new PuzzleHint
     }
+
+    // Create puzzle source last so views are ready for events
+    new PuzzleSource(options)
 
     subscribe({
       'puzzle:solved': puzzle => {

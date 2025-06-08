@@ -21,9 +21,9 @@ export default class PuzzleHint {
     this.moveEl = this.el.querySelector(`.move`)
     this.buttonEl = this.el.querySelector(`.hint-trigger`)
     
-    // Add click handler to show hint
+    // Add click handler to request hint from PuzzleSource
     this.buttonEl.addEventListener('click', () => {
-      this.showHint()
+      dispatch('puzzle:get_hint')
     })
     
     const events = ['mousedown', 'touchstart']
@@ -32,24 +32,24 @@ export default class PuzzleHint {
         this.buttonEl.classList.add(`invisible`)
       })
     })
+    
     subscribe({
       'puzzle:loaded': (current: PuzzleState) => {
         this.current = current
         this.delayedShowHint()
+      },
+      'puzzle:hint': (hint: string) => {
+        this.displayHint(hint)
       },
       'move:make': () => this.delayedShowHint(),
       'timer:stopped': () => this.clearHintTimer(),
     })
   }
 
-  private getRandomHint(): string {
-    const hints: string[] = []
-    for (const move in this.current.boardState) {
-      if (this.current.boardState[move] !== `retry`) {
-        hints.push(move)
-      }
-    }
-    return hints[Math.floor(Math.random() * hints.length)]
+  private displayHint(hint: string) {
+    this.el.classList.remove(`invisible`)
+    this.buttonEl.classList.remove(`invisible`)
+    this.moveEl.textContent = hint
   }
 
   private clearHintTimer() {
@@ -63,18 +63,13 @@ export default class PuzzleHint {
     if (!this.el) {
       return
     }
-    this.el.classList.add(`invisible`)
+    // Show the button but hide any existing hint text
+    this.el.classList.remove(`invisible`)
     this.buttonEl.classList.remove(`invisible`)
     this.moveEl.textContent = ``
     this.timeout = window.setTimeout(() => {
       dispatch(`move:too_slow`)
-      setTimeout(() => this.showHint(), hintDelay)
+      setTimeout(() => dispatch('puzzle:get_hint'), hintDelay)
     }, comboDroppedAfterMs)
-  }
-
-  private showHint() {
-    this.el.classList.remove(`invisible`)
-    this.buttonEl.classList.remove(`invisible`)
-    this.moveEl.textContent = this.getRandomHint()
   }
 }
