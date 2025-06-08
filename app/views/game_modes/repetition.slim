@@ -12,7 +12,7 @@ section.game-mode.repetition-mode(data-level="#{@level.path}")
           .chessground
     aside.repetition-under-board
       .level-info
-        label.level-name
+        .level-name
           - if @level
             = @level.display_name
           - elsif (title = local_assigns[:title])
