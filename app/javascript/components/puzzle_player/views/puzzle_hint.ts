@@ -63,13 +63,14 @@ export default class PuzzleHint {
     if (!this.el) {
       return
     }
-    // Show the button but hide any existing hint text
-    this.el.classList.remove(`invisible`)
-    this.buttonEl.classList.remove(`invisible`)
     this.moveEl.textContent = ``
     this.timeout = window.setTimeout(() => {
       dispatch(`move:too_slow`)
-      setTimeout(() => dispatch('puzzle:get_hint'), hintDelay)
+      setTimeout(() => {
+        dispatch('puzzle:get_hint')
+        this.el.classList.remove(`invisible`)
+        this.buttonEl.classList.remove(`invisible`)
+      }, hintDelay)
     }, comboDroppedAfterMs)
   }
 }
