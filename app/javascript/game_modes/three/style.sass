@@ -35,3 +35,25 @@
 
     .three-complete
       @extend .game-complete
+
+      .puzzles-failed
+        margin: 20px 0
+
+        div
+          margin-bottom: 10px
+
+        a
+          color: #ff6b6b
+          text-decoration: none
+          display: flex
+          align-items: center
+          gap: 8px
+          
+          &:hover
+            color: #ff5252
+            text-decoration: underline
+
+          svg
+            width: 16px
+            height: 16px
+            fill: currentColor
