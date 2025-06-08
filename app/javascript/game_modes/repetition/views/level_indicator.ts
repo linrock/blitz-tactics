@@ -7,7 +7,7 @@ export default class LevelIndicator {
   private nextStageEl: HTMLElement
 
   get el() {
-    return document.querySelector(`.under-board`)
+    return document.querySelector(`.repetition-under-board`)
   }
 
   constructor() {

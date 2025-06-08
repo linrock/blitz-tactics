@@ -3,15 +3,15 @@
 section.game-mode.repetition-mode(data-level="#{@level.path}")
   .progress-bar
     .progress
-  .main
+  .container
+    = render partial: "puzzle_player/above_board"
     .board-area-container
       .board-area
         .chessground-board
           .piece-promotion-modal-mount
           .chessground
-          .board-modal-container.invisible(style="display: none")
-      = render partial: "puzzle_player/above_board"
-      .under-board
+    aside.repetition-under-board
+      .level-info
         label.level-name
           - if @level
             = @level.display_name
@@ -21,22 +21,6 @@ section.game-mode.repetition-mode(data-level="#{@level.path}")
         - if !user_signed_in? && @level.id == 1
           .onboarding Solve puzzles quickly and accurately to unlock the next level
 
-        - if (next_level = @level&.next_level)
-          .next-stage.invisible.container(class="#{user_signed_in? ? '' : 'anonymous'}")
-            .left
-              | You've unlocked the next level!
-              - if !user_signed_in?
-                .small
-                  | Sign up to save your progress, or continue to Level #{next_level.number}
-            .right
-              - if !user_signed_in?
-                a.blue-button(href="#{https_registration_url}") Sign up
-              a.blue-button(href="#{next_level.path}")
-                | Level #{next_level.number}
-                svg(style="height: 12px")
-                  use(xlink:href="#chevron-right")
-
-    aside.sidebar
       .times
         .timer
         .laps
@@ -51,3 +35,18 @@ section.game-mode.repetition-mode(data-level="#{@level.path}")
               .high-score
                 .time= time
                 .player= user_link(user)
+
+      - if (next_level = @level&.next_level)
+        .next-stage.invisible.container(class="#{user_signed_in? ? '' : 'anonymous'}")
+          .left
+            | You've unlocked the next level!
+            - if !user_signed_in?
+              .small
+                | Sign up to save your progress, or continue to Level #{next_level.number}
+          .right
+            - if !user_signed_in?
+              a.blue-button(href="#{https_registration_url}") Sign up
+            a.blue-button(href="#{next_level.path}")
+              | Level #{next_level.number}
+              svg(style="height: 12px")
+                use(xlink:href="#chevron-right")

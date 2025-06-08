@@ -3,7 +3,7 @@ import {
   repetitionLevelCompleted
 } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
 
 import Background from './views/background'
 import LevelIndicator from './views/level_indicator'
@@ -25,13 +25,21 @@ export default function RepetitionMode() {
   new Timer
 
   const level = new LevelStatus()
-  const levelPath = (document.querySelector('.repetition-mode') as HTMLElement)
-    .dataset.level
+  const repetitionModeElement = document.querySelector('.repetition-mode') as HTMLElement
+  const levelPath = repetitionModeElement?.dataset.level
 
   new PuzzlePlayer({
     shuffle: true,
     loopPuzzles: true,
-    source: `${window.location.pathname}/puzzles.json`,
+    source: `${window.location.pathname}/puzzles`,
+  })
+
+  // Hide onboarding message after first move
+  subscribeOnce('move:try', () => {
+    const onboardingEl = document.querySelector('.onboarding') as HTMLElement
+    if (onboardingEl) {
+      onboardingEl.style.display = 'none'
+    }
   })
 
   subscribe({
