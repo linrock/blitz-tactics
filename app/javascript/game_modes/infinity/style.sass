@@ -6,40 +6,45 @@
   .infinity-under-board
     @extend .game-under-board
 
-    .sidebar-label
-      font-size: 13px
-      color: rgba(255,255,255,0.5)
-      margin-bottom: 15px
-
-    .difficulties
+    .difficulty-section
+      display: flex
+      align-items: center
+      gap: 20px
       margin-bottom: 30px
 
-      .difficulty
-        color: rgba(255,255,255,0.5)
-        padding: 8px 0
-        cursor: pointer
-        text-transform: capitalize
+      .sidebar-label
         font-size: 18px
-        user-select: none
-        transition: all 0.2s ease
+        color: rgba(255,255,255,0.5)
 
-        &:hover
-          color: rgba(255,255,255,0.7)
+      .difficulties
+        display: flex
+        gap: 20px
 
-        &.selected
-          color: white
+        .difficulty
+          color: rgba(255,255,255,0.5)
+          cursor: pointer
+          text-transform: capitalize
+          font-size: 18px
+          user-select: none
+          transition: color 0.2s ease
 
-        &.easy.selected
-          color: #0cf // cyan
+          &:hover
+            color: rgba(255,255,255,0.7)
 
-        &.medium.selected
-          color: #dfff00 // bright yellow-green
+          &.selected
+            color: white
 
-        &.hard.selected
-          color: #fc0 // orange/yellow
+          &.easy.selected
+            color: #0cf
 
-        &.insane.selected
-          color: #ff3f00 // red-orange
+          &.medium.selected
+            color: #dfff00
+
+          &.hard.selected
+            color: #fc0
+
+          &.insane.selected
+            color: #ff3f00
 
     .stats
       margin-bottom: 30px

@@ -1,12 +1,13 @@
 <template lang="pug">
 aside.infinity-under-board
-  .difficulties
+  .difficulty-section
     .sidebar-label Difficulty
-    template(v-for="difficulty in difficulties")
-      .difficulty(
-        :class="[difficulty, { selected: currentDifficulty === difficulty }]"
-        @click="chooseDifficulty(difficulty)"
-      ) {{ difficulty }}
+    .difficulties
+      template(v-for="difficulty in difficulties")
+        .difficulty(
+          :class="[difficulty, { selected: currentDifficulty === difficulty }]"
+          @click="chooseDifficulty(difficulty)"
+        ) {{ difficulty }}
 
   .stats(:class="{ invisible: !nPuzzlesSolved }")
     .sidebar-label You have solved
