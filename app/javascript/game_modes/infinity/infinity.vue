@@ -1,7 +1,7 @@
 <template lang="pug">
 aside.infinity-under-board
   .difficulty-section
-    .sidebar-label Difficulty
+    .sidebar-label Difficulty:
     .difficulties
       template(v-for="difficulty in difficulties")
         .difficulty(
