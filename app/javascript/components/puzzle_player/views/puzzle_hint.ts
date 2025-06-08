@@ -20,6 +20,12 @@ export default class PuzzleHint {
   constructor() {
     this.moveEl = this.el.querySelector(`.move`)
     this.buttonEl = this.el.querySelector(`.hint-trigger`)
+    
+    // Add click handler to show hint
+    this.buttonEl.addEventListener('click', () => {
+      this.showHint()
+    })
+    
     const events = ['mousedown', 'touchstart']
     events.forEach(event => {
       this.buttonEl.addEventListener(event, () => {

@@ -144,9 +144,8 @@ export default {
       },
       'move:try': () => {
         this.moveHint = null
-        if (!this.hasStarted) {
-          this.hasStarted = true
-        }
+        // Call the common subscription handler for hasStarted
+        commonSubscriptions['move:try']()
       }
     })
 
