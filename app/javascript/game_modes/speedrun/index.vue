@@ -20,6 +20,7 @@ aside.speedrun-under-board
 <script lang="ts">
   import { speedrunCompleted } from '@blitz/api/requests'
   import PuzzlePlayer from '@blitz/components/puzzle_player'
+  import GameModeMixin from '@blitz/components/game_mode_mixin'
   import { subscribe } from '@blitz/events'
   import { formattedTime } from '@blitz/utils'
 
@@ -31,9 +32,10 @@ aside.speedrun-under-board
   const apiPath = `/speedrun/puzzles.json`
 
   export default {
+    mixins: [GameModeMixin],
+
     data() {
       return {
-        hasStarted: false,
         hasCompleted: false,
         lebelName: null,
         numPuzzles: 0,
@@ -49,9 +51,20 @@ aside.speedrun-under-board
     },
 
     mounted() {
-      subscribe({
-        'config:init': data => this.levelName = data.level_name,
+      const commonSubscriptions = this.setupCommonSubscriptions()
 
+      // Subscribe to common events first
+      subscribe(commonSubscriptions)
+      
+      // Then subscribe to speedrun-specific events
+      subscribe({
+        'move:try': () => {
+          // Handle hasStarted for speedrun mode
+          if (!this.hasStarted) {
+            this.hasStarted = true
+          }
+        },
+        
         'timer:stopped': elapsedTimeMs => {
           const boardOverlayEl: HTMLElement = document.querySelector(`.board-modal-container`)
           boardOverlayEl.style.display = ``
@@ -60,10 +73,6 @@ aside.speedrun-under-board
             this.bestTime = data.best
             this.hasCompleted = true
           })
-        },
-
-        'move:try': () => {
-          this.hasStarted = true
         },
 
         'puzzles:fetched': puzzles => {
