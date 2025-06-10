@@ -47,8 +47,11 @@ export default {
     let levelName: string
     const commonSubscriptions = this.setupCommonSubscriptions()
 
+    // Subscribe to common events first
+    subscribe(commonSubscriptions)
+    
+    // Then subscribe to countdown-specific events
     subscribe({
-      ...commonSubscriptions,
       'config:init': data => levelName = data.level_name,
       'puzzles:status': ({ i }) => {
         this.nPuzzlesSolved = i + 1
@@ -63,6 +66,12 @@ export default {
         })
         this.saveMistakesToStorage()
       },
+      'move:try': move => {
+        // Set hasStarted on first move
+        if (!this.hasStarted) {
+          this.hasStarted = true
+        }
+      }
     })
 
     new PuzzlePlayer({
