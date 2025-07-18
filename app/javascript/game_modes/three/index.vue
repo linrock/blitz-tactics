@@ -126,6 +126,9 @@ export default {
         gameOver();
       },
       'move:fail': () => {
+        if (!this.hasStarted) {
+          this.hasStarted = true
+        }
         if (this.numLives <= 0) {
           return
         }
@@ -144,7 +147,9 @@ export default {
       },
       'move:try': () => {
         this.moveHint = null
-        // Call the common subscription handler for hasStarted
+        if (!this.hasStarted) {
+          this.hasStarted = true
+        }
         commonSubscriptions['move:try']()
       }
     })
