@@ -1,25 +1,27 @@
 <template lang="pug">
 aside.three-under-board
-  .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
-    timer
-    .n-remaining.n-lives(:class=`{ penalized: isLosingLife }` style="margin-bottom: 0.5rem")
-      | {{ numLives }} {{ numLives === 1 ? 'life left' : 'lives' }}
-    .n-remaining.n-hints
-      | {{ numHints }} {{ numHints === 1 ? 'hint' : 'hints' }}
+  .three-during-game
+    .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
+      timer
+      .n-remaining.n-lives(:class=`{ penalized: isLosingLife }` style="margin-bottom: 0.5rem")
+        | {{ numLives }} {{ numLives === 1 ? 'life left' : 'lives' }}
+      .n-remaining.n-hints
+        | {{ numHints }} {{ numHints === 1 ? 'hint' : 'hints' }}
 
-  // shown before the game starts
-  .make-a-move(v-if="!hasStarted")
-    | Make a move to start the game
+      // shown during the game
+      .hints(v-if="hasStarted && !hasFinished")
+        div(v-if="moveHint") Hint: {{ moveHint }}
+        div(v-else-if="numHints > 0")
+          a.dark-button(@click="viewHint") Use hint
 
-  // shown during the game
-  .hints(v-if="hasStarted && !hasFinished")
-    div(v-if="moveHint") Hint: {{ moveHint }}
-    div(v-else-if="numHints > 0")
-      a.dark-button(@click="viewHint") Use hint
+    .right-side
+      // shown before the game starts
+      .make-a-move(v-if="!hasStarted")
+        | Make a move to start the game
 
-  .current-score(v-if="hasStarted && !hasFinished")
-    .label Score
-    .score(:class=`{ rewarded: isGainingScore }`) {{ numPuzzlesSolved }}
+      .current-score(v-if="hasStarted && !hasFinished")
+        .label Score
+        .score(:class=`{ rewarded: isGainingScore }`) {{ numPuzzlesSolved }}
 
   // shown when the game has finished
   .three-complete(v-if="hasFinished")
@@ -124,6 +126,9 @@ export default {
       },
       'timer:stopped': () => {
         gameOver();
+      },
+      'move:success': () => {
+        this.hasStarted = true
       },
       'move:fail': () => {
         if (!this.hasStarted) {
