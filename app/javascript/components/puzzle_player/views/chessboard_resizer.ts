@@ -68,10 +68,28 @@ export default class ChessboardResizer {
   }
 
   private getMaxBoardSize(): number {
-    // Leave some padding around the board (40px on each side for margins/padding)
-    const viewportPadding = 80
-    const maxWidth = window.innerWidth - viewportPadding
-    const maxHeight = window.innerHeight - viewportPadding
+    // Calculate available space by considering actual UI elements
+    const viewportWidth = window.innerWidth
+    const viewportHeight = window.innerHeight
+    
+    // Account for header height
+    const headerEl = document.querySelector('.main-header')
+    const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 40
+    
+    // Account for above-board area
+    const aboveBoardEl = document.querySelector('.above-board')
+    const aboveBoardHeight = aboveBoardEl ? aboveBoardEl.getBoundingClientRect().height : 90
+    
+    // Account for below-board area (under-board UI elements)
+    const belowBoardEl = document.querySelector('.vue-app-mount')
+    const belowBoardHeight = belowBoardEl ? belowBoardEl.getBoundingClientRect().height : 200
+    
+    // Calculate available space with some padding
+    const horizontalPadding = 40 // 20px on each side
+    const verticalPadding = 40 // 20px top and bottom
+    
+    const maxWidth = viewportWidth - horizontalPadding
+    const maxHeight = viewportHeight - headerHeight - aboveBoardHeight - belowBoardHeight - verticalPadding
     
     // Use the smaller dimension since the board is square
     const maxSize = Math.min(maxWidth, maxHeight)
