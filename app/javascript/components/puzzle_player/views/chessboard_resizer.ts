@@ -14,6 +14,7 @@ export default class ChessboardResizer {
   // Bound event handlers for easy cleanup
   private boundMouseMove: (e: MouseEvent) => void
   private boundMouseUp: (e: MouseEvent) => void
+  private boundWindowResize: () => void
 
   constructor() {
     this.chessboardEl = document.querySelector(boardSelector)
@@ -21,6 +22,7 @@ export default class ChessboardResizer {
     // Bind event handlers
     this.boundMouseMove = this.handleMouseMove.bind(this)
     this.boundMouseUp = this.handleMouseUp.bind(this)
+    this.boundWindowResize = this.handleWindowResize.bind(this)
     
     if (this.chessboardEl) {
       this.createDragHandle()
@@ -117,6 +119,7 @@ export default class ChessboardResizer {
     this.dragHandle.addEventListener('mousedown', this.handleMouseDown.bind(this))
     document.addEventListener('mousemove', this.boundMouseMove)
     document.addEventListener('mouseup', this.boundMouseUp)
+    window.addEventListener('resize', this.boundWindowResize)
     
     // Prevent text selection while dragging
     this.dragHandle.addEventListener('selectstart', e => e.preventDefault())
@@ -191,6 +194,19 @@ export default class ChessboardResizer {
     this.saveBoardSize(currentSize)
   }
 
+  private handleWindowResize() {
+    // When window is resized, ensure board doesn't exceed new viewport constraints
+    const currentSize = this.chessboardEl.clientWidth
+    const maxSize = this.getMaxBoardSize()
+    
+    if (currentSize > maxSize) {
+      // Board is too large for new viewport, resize it down
+      const newSize = maxSize
+      this.applyBoardSize(newSize)
+      this.saveBoardSize(newSize)
+    }
+  }
+
   private updateAllContainers(size: number) {
     const boardAreaEl: HTMLElement = document.querySelector('.board-area')
     const belowBoardEl: HTMLElement = document.querySelector('.below-board')
@@ -213,6 +229,7 @@ export default class ChessboardResizer {
     }
     document.removeEventListener('mousemove', this.boundMouseMove)
     document.removeEventListener('mouseup', this.boundMouseUp)
+    window.removeEventListener('resize', this.boundWindowResize)
     document.body.style.cursor = ''
     document.body.style.userSelect = ''
   }
