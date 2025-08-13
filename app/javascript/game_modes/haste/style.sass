@@ -1,10 +1,8 @@
-@forward "../base"
 @use "../../../assets/stylesheets/_colors" as *
 @use "../../../assets/stylesheets/_variables" as *
 
 .haste-mode
   .haste-under-board
-    @extend .game-under-board
 
     .sidebar-label
       font-size: 13px
@@ -76,8 +74,7 @@
       opacity: 0.7
 
   // shows up under the board after a level is complete
-  .haste-complete
-    @extend .game-complete
+  .haste-complete.game-complete
 
     .score-section
       display: flex

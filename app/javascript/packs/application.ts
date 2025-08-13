@@ -6,6 +6,7 @@ import SoundPlayer from '../components/sound_player'
 import MiniChessboard from '../components/mini_chessboard'
 import routes from '../routes'
 import { BlitzConfig } from '../types'
+import '../game_modes/base.sass'
 
 const blitz: BlitzConfig = {};
 (<any>window).blitz = blitz

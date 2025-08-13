@@ -1,5 +1,5 @@
 <template lang="pug">
-.haste-under-board
+.haste-under-board.game-under-board
   .timers(:style="`display: ${(hasStarted && !hasFinished) ? '' : 'none'}`")
     .current-progress
       timer

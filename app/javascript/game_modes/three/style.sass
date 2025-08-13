@@ -1,10 +1,8 @@
-@forward "../base"
 @use "../../../assets/stylesheets/_colors" as *
 @use "../../../assets/stylesheets/_variables" as *
 
 .three-mode
   .three-under-board
-    @extend .game-under-board
 
     .three-during-game
       display: flex
@@ -49,8 +47,7 @@
       font-size: 32px
       margin-top: 12px
 
-    .three-complete
-      @extend .game-complete
+    .three-complete.game-complete
 
       .puzzles-failed
         margin: 20px 0

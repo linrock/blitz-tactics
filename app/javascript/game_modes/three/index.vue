@@ -1,5 +1,5 @@
 <template lang="pug">
-aside.three-under-board
+aside.three-under-board.game-under-board
   .three-during-game
     .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
       timer

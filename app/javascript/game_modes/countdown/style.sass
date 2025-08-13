@@ -1,10 +1,8 @@
-@forward "../base"
 @use "../../../assets/stylesheets/_colors" as *
 @use "../../../assets/stylesheets/_variables" as *
 
 .countdown-mode
   .countdown-under-board
-    @extend .game-under-board
 
     .timers
       height: 100%
@@ -21,5 +19,4 @@
         opacity: 0.7
 
     // shows up in the sidebar after a level is complete
-    .countdown-complete
-      @extend .game-complete
+    .countdown-complete.game-complete

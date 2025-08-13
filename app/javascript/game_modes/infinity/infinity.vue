@@ -1,5 +1,5 @@
 <template lang="pug">
-aside.infinity-under-board
+aside.infinity-under-board.game-under-board
   .difficulty-section
     .sidebar-label Difficulty:
     .difficulties

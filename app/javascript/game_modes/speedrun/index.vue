@@ -1,5 +1,5 @@
 <template lang="pug">
-aside.speedrun-under-board
+aside.speedrun-under-board.game-under-board
   .timers(:style="{ display: hasStarted ? '' : 'none' }")
     .current-run
       timer

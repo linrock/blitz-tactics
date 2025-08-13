@@ -1,5 +1,5 @@
 <template lang="pug">
-aside.countdown-under-board
+aside.countdown-under-board.game-under-board
   .timers(:style="{ display: (hasStarted && !hasFinished) ? '' : 'none'}")
     .current-countdown
       timer
