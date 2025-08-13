@@ -1,0 +1,153 @@
+---
+- name: Bootstrap Blitz Tactics server
+  hosts: app
+  become: true
+  vars:
+    app_user: rails
+    app_home: "/home/{{ app_user }}"
+    repo_url: "https://github.com/linrock/blitz-tactics"
+    app_dir: "{{ app_home }}/blitz-tactics"
+
+  pre_tasks:
+    - name: Ensure apt cache is updated
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install base packages
+      apt:
+        name:
+          - git
+          - curl
+          - ca-certificates
+          - gnupg
+          - build-essential
+          - autoconf
+          - bison
+          - libssl-dev
+          - libreadline-dev
+          - zlib1g-dev
+          - libyaml-dev
+          - libffi-dev
+          - libgdbm-dev
+          - libsqlite3-dev
+          - libxml2-dev
+          - libxslt1-dev
+          - pkg-config
+        state: present
+
+    - name: Add NodeSource GPG key
+      apt_key:
+        url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+        state: present
+
+    - name: Add NodeSource Node.js 22.x LTS repository
+      apt_repository:
+        repo: "deb https://deb.nodesource.com/node_22.x nodistro main"
+        filename: nodesource
+        state: present
+        update_cache: yes
+
+    - name: Install Node.js (LTS)
+      apt:
+        name: nodejs
+        state: present
+
+  tasks:
+    - name: Ensure app user exists
+      user:
+        name: "{{ app_user }}"
+        home: "{{ app_home }}"
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Allow passwordless sudo for app user
+      copy:
+        dest: "/etc/sudoers.d/{{ app_user }}"
+        content: "{{ app_user }} ALL=(ALL) NOPASSWD:ALL\n"
+        mode: "0440"
+        validate: "visudo -cf %s"
+
+    - name: Install PostgreSQL server and client
+      apt:
+        name:
+          - postgresql
+          - postgresql-contrib
+          - libpq-dev
+        state: present
+        update_cache: yes
+
+    - name: Ensure PostgreSQL is started and enabled
+      service:
+        name: postgresql
+        state: started
+        enabled: true
+
+    - name: Ensure database role for app user exists (no password)
+      become_user: postgres
+      postgresql_user:
+        name: "{{ app_user }}"
+        role_attr_flags: CREATEDB
+        state: present
+
+    - name: Install ruby-install
+      git:
+        repo: "https://github.com/postmodern/ruby-install.git"
+        dest: "/usr/local/src/ruby-install"
+        version: master
+
+    - name: Build and install ruby-install
+      command: make install
+      args:
+        chdir: "/usr/local/src/ruby-install"
+        creates: "/usr/local/bin/ruby-install"
+
+    - name: Install chruby
+      git:
+        repo: "https://github.com/postmodern/chruby.git"
+        dest: "/usr/local/src/chruby"
+        version: master
+
+    - name: Build and install chruby
+      command: make install
+      args:
+        chdir: "/usr/local/src/chruby"
+        creates: "/usr/local/share/chruby/chruby.sh"
+
+    - name: Clone repository
+      become_user: "{{ app_user }}"
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ app_dir }}"
+        version: main
+        update: yes
+
+    - name: Read Ruby version from .ruby-version
+      become_user: "{{ app_user }}"
+      command: bash -lc "head -n1 .ruby-version | tr -d '[:space:]'"
+      args:
+        chdir: "{{ app_dir }}"
+      register: ruby_version
+      changed_when: false
+
+    - name: Install Ruby {{ ruby_version.stdout }} via ruby-install
+      command: ruby-install --no-reinstall ruby {{ ruby_version.stdout }}
+      args:
+        creates: "/opt/rubies/ruby-{{ ruby_version.stdout }}/bin/ruby"
+
+    - name: Ensure chruby is initialized for rails user
+      become_user: "{{ app_user }}"
+      blockinfile:
+        path: "{{ app_home }}/.bashrc"
+        marker: "# {mark} ANSIBLE MANAGED CHRUBY"
+        block: |
+          source /usr/local/share/chruby/chruby.sh
+          source /usr/local/share/chruby/auto.sh
+          chruby ruby-{{ ruby_version.stdout }}
+        create: yes
+
+    - name: Install gem dependencies (bundle install)
+      become_user: "{{ app_user }}"
+      command: bash -lc "chruby-exec ruby-{{ ruby_version.stdout }} -- gem install bundler --no-document && chruby-exec ruby-{{ ruby_version.stdout }} -- bundle config set --local path vendor/bundle && chruby-exec ruby-{{ ruby_version.stdout }} -- bundle install --jobs 4 --retry 3"
+      args:
+        chdir: "{{ app_dir }}"
