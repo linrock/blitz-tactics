@@ -1,0 +1,66 @@
+---
+- name: Deploy Blitz Tactics
+  hosts: app
+  become: true
+  vars:
+    app_user: rails
+    app_home: "/home/{{ app_user }}"
+    app_dir: "{{ app_home }}/blitz-tactics"
+    service_name: blitz-puma
+
+  tasks:
+    - name: Pull latest code
+      become_user: "{{ app_user }}"
+      git:
+        repo: "https://github.com/linrock/blitz-tactics"
+        dest: "{{ app_dir }}"
+        version: master
+        update: yes
+
+    - name: Read Ruby version from .ruby-version
+      become_user: "{{ app_user }}"
+      command: bash -lc "grep -oE '[0-9\.]+' .ruby-version"
+      args:
+        chdir: "{{ app_dir }}"
+      register: ruby_version
+      changed_when: false
+
+    - name: Install JS deps
+      become_user: "{{ app_user }}"
+      command: bash -lc "yarn install --frozen-lockfile || yarn install"
+      args:
+        chdir: "{{ app_dir }}"
+
+    - name: Install gem deps (ensure up-to-date)
+      become_user: "{{ app_user }}"
+      command: bash -lc "chruby-exec ruby-{{ ruby_version.stdout }} -- bundle install --jobs 4 --retry 3"
+      args:
+        chdir: "{{ app_dir }}"
+
+    - name: Precompile assets
+      become_user: "{{ app_user }}"
+      environment:
+        RAILS_ENV: production
+      command: bash -lc "set -a && [ -f .env ] && source .env || true && set +a && chruby-exec ruby-{{ ruby_version.stdout }} -- bundle exec rake assets:precompile"
+      args:
+        chdir: "{{ app_dir }}"
+
+    - name: Install Puma systemd unit
+      template:
+        src: "{{ playbook_dir }}/blitz-puma.service.j2"
+        dest: /etc/systemd/system/blitz-puma.service
+        mode: "0644"
+      vars:
+        app_user: "{{ app_user }}"
+        app_dir: "{{ app_dir }}"
+        ruby_version: "{{ ruby_version.stdout }}"
+
+    - name: Reload systemd daemon
+      systemd:
+        daemon_reload: true
+
+    - name: Enable and restart Puma service
+      systemd:
+        name: "{{ service_name }}"
+        enabled: true
+        state: restarted

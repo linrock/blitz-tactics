@@ -54,6 +54,12 @@
         name: nodejs
         state: present
 
+    - name: Install Yarn (global)
+      npm:
+        name: yarn
+        global: yes
+        state: present
+
   tasks:
     - name: Ensure app user exists
       user:

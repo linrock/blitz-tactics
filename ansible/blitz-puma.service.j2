@@ -1,0 +1,18 @@
+[Unit]
+Description=Blitz Tactics Puma
+After=network.target postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User={{ app_user }}
+WorkingDirectory={{ app_dir }}
+Environment=RAILS_ENV=production
+Environment=CHRUBY_VERSION={{ ruby_version }}
+ExecStart=/bin/bash -lc "source /usr/local/share/chruby/chruby.sh && chruby ruby-{{ ruby_version }} && bundle exec puma -C config/puma.rb"
+Restart=always
+RestartSec=5
+TimeoutStartSec=30
+
+[Install]
+WantedBy=multi-user.target
