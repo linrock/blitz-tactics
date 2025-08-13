@@ -34,6 +34,7 @@
           - libxml2-dev
           - libxslt1-dev
           - pkg-config
+          - python3-psycopg2
         state: present
 
     - name: Add NodeSource GPG key
@@ -119,12 +120,11 @@
       git:
         repo: "{{ repo_url }}"
         dest: "{{ app_dir }}"
-        version: main
         update: yes
 
     - name: Read Ruby version from .ruby-version
       become_user: "{{ app_user }}"
-      command: bash -lc "head -n1 .ruby-version | tr -d '[:space:]'"
+      command: bash -lc "grep -oE '[0-9\.]+' .ruby-version"
       args:
         chdir: "{{ app_dir }}"
       register: ruby_version
