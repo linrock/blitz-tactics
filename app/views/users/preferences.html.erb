@@ -2,6 +2,10 @@
   <div class="container">
     <h2>Preferences</h2>
 
+    <% if flash[:alert].present? %>
+      <div class="alert"><%= flash[:alert] %></div>
+    <% end %>
+
     <div class="section">
       <h3>Customize board</h3>
       <p>Change the look and feel of your chessboard.</p>
