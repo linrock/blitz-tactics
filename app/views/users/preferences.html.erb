@@ -29,10 +29,11 @@
 
     <div class="section">
       <h3>Change email</h3>
+      <p>Optional. Emails are only sent to help reset your password if you forget it.</p>
       <%= form_for current_user, url: registration_path(:user), html: { method: :put } do |f| %>
         <div class="field" style="max-width: 340px">
           <label for="user_email">Email</label>
-          <%= f.email_field :email, value: current_user.email, required: true, autocomplete: 'email' %>
+          <%= f.email_field :email, value: current_user.email, autocomplete: 'email' %>
         </div>
         <div class="field" style="max-width: 340px">
           <label for="user_current_password">Confirm your password</label>
