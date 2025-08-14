@@ -5,6 +5,9 @@
     <% if flash[:alert].present? %>
       <div class="alert"><%= flash[:alert] %></div>
     <% end %>
+    <% if flash[:notice].present? %>
+      <div class="alert-notice"><%= flash[:notice] %></div>
+    <% end %>
 
     <div class="section">
       <div class="customize-board-row">
@@ -23,6 +26,27 @@
               } %>
         </div>
       </div>
+    </div>
+
+    <hr/>
+
+    <div class="section">
+      <h3>Change password</h3>
+      <%= form_for current_user, url: registration_path(:user), html: { method: :put } do |f| %>
+        <div class="field" style="max-width: 340px">
+          <label for="user_current_password">Current password</label>
+          <%= f.password_field :current_password, required: true, autocomplete: 'current-password' %>
+        </div>
+        <div class="field" style="max-width: 340px">
+          <label for="user_password">New password</label>
+          <%= f.password_field :password, required: true, autocomplete: 'new-password' %>
+        </div>
+        <div class="field" style="max-width: 340px">
+          <label for="user_password_confirmation">Confirm new password</label>
+          <%= f.password_field :password_confirmation, required: true, autocomplete: 'new-password' %>
+        </div>
+        <%= f.submit 'Change password', class: 'blue-button' %>
+      <% end %>
     </div>
 
     <hr/>
