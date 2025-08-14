@@ -15,6 +15,23 @@
     <hr/>
 
     <div class="section">
+      <h3>Change email</h3>
+      <%= form_for current_user, url: registration_path(:user), html: { method: :put } do |f| %>
+        <div class="field" style="max-width: 340px">
+          <label for="user_email">Email</label>
+          <%= f.email_field :email, value: current_user.email, required: true, autocomplete: 'email' %>
+        </div>
+        <div class="field" style="max-width: 340px">
+          <label for="user_current_password">Confirm your password</label>
+          <%= f.password_field :current_password, required: true, autocomplete: 'current-password' %>
+        </div>
+        <%= f.submit 'Change email', class: 'blue-button' %>
+      <% end %>
+    </div>
+
+    <hr/>
+
+    <div class="section" style="margin-top: 120px">
       <h3>Delete account</h3>
       <p>This will permanently delete your account and cannot be undone.</p>
       <%= form_tag '/account', method: :delete do %>
