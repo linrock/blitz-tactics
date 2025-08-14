@@ -104,7 +104,13 @@
         line: 'PasswordAuthentication no'
         state: present
         backrefs: yes
-      notify: Restart sshd
+      register: sshd_passwordauth
+
+    - name: Restart SSH if config changed
+      service:
+        name: ssh
+        state: restarted
+      when: sshd_passwordauth is changed
 
     - name: Install ruby-install
       git:
@@ -166,9 +172,3 @@
       command: bash -lc "chruby-exec ruby-{{ ruby_version.stdout }} -- gem install bundler --no-document && chruby-exec ruby-{{ ruby_version.stdout }} -- bundle config set --local path vendor/bundle && chruby-exec ruby-{{ ruby_version.stdout }} -- bundle install --jobs 4 --retry 3"
       args:
         chdir: "{{ app_dir }}"
-
-  handlers:
-    - name: Restart sshd
-      service:
-        name: ssh
-        state: restarted
