@@ -1,0 +1,19 @@
+<div class="preferences-page">
+  <div class="container">
+    <h2>Preferences</h2>
+
+    <div class="section">
+      <h3>Customize board</h3>
+      <p>Change the look and feel of your chessboard.</p>
+      <p><a class="blue-button" href="/customize">Customize board</a></p>
+    </div>
+
+    <hr/>
+
+    <div class="section">
+      <h3>Delete account</h3>
+      <p>This will permanently delete your account and cannot be undone.</p>
+      <%= button_to 'Delete my account', '/account', method: :delete, data: { confirm: 'Are you sure you want to delete your account? This cannot be undone.' }, class: 'dark-button' %>
+    </div>
+  </div>
+</div>

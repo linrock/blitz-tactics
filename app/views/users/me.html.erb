@@ -7,6 +7,10 @@
         <%= button_to 'Sign out', destroy_user_session_path, method: :delete %>
       </div>
 
+      <div class="preferences-link" style="margin-top: 10px;">
+        <a class="dark-button" href="/preferences">Preferences</a>
+      </div>
+
       <h2 class="username"><%= @user.username %></h2>
 
       <%= form_tag "/users/me", method: :put do %>

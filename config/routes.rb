@@ -89,6 +89,10 @@ Rails.application.routes.draw do
   # customization routes
   get '/customize'               => 'users#customize_board'
   put '/customize'               => 'users#update_board'
+  
+  # preferences
+  get '/preferences'             => 'users#preferences'
+  delete '/account'              => 'users#destroy'
 
   patch '/settings'              => 'user_settings#update'
 

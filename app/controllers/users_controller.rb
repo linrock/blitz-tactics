@@ -3,7 +3,7 @@
 class UsersController < ApplicationController
   before_action :set_request_format, only: [:show]
   before_action :require_logged_in_user!,
-    only: [:update, :customize_board, :update_board]
+    only: [:update, :customize_board, :update_board, :preferences, :destroy]
 
   def show
     @user = User.find_by_username(params[:username])
@@ -15,6 +15,17 @@ class UsersController < ApplicationController
       render "users/me"
       return
     end
+  end
+
+  # GET /preferences
+  def preferences
+  end
+
+  # DELETE /account
+  def destroy
+    current_user.destroy!
+    sign_out(:user)
+    redirect_to root_path, notice: 'Your account has been deleted.'
   end
 
   # when user sets a tagline
