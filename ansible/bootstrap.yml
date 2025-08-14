@@ -50,11 +50,24 @@
       args:
         creates: /etc/apt/keyrings/nodesource.gpg
 
-    - name: Add NodeSource Node.js 22.x LTS repository (signed-by keyring)
-      apt_repository:
-        repo: "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main"
-        filename: nodesource
-        state: present
+    - name: Remove legacy NodeSource list file (if any)
+      file:
+        path: /etc/apt/sources.list.d/nodesource.list
+        state: absent
+
+    - name: Install NodeSource Node.js LTS repository (deb822 .sources)
+      copy:
+        dest: /etc/apt/sources.list.d/nodesource.sources
+        mode: '0644'
+        content: |
+          Types: deb
+          URIs: https://deb.nodesource.com/node_22.x
+          Suites: nodistro
+          Components: main
+          Signed-By: /etc/apt/keyrings/nodesource.gpg
+
+    - name: Update apt cache after repo changes
+      apt:
         update_cache: yes
 
     - name: Install Node.js (LTS)
