@@ -5,10 +5,9 @@
     <header class="player-info">
       <div class="sign-out">
         <%= button_to 'Sign out', destroy_user_session_path, method: :delete %>
-      </div>
-
-      <div class="preferences-link" style="margin-top: 10px;">
-        <a class="dark-button" href="/preferences">Preferences</a>
+        <div class="preferences-link">
+          <a class="dark-button" href="/preferences">Preferences</a>
+        </div>
       </div>
 
       <h2 class="username"><%= @user.username %></h2>
