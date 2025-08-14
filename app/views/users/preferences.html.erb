@@ -53,7 +53,7 @@
           <label for="current_password">Confirm your password</label>
           <%= password_field_tag :current_password, nil, required: true, autocomplete: 'current-password' %>
         </div>
-        <%= submit_tag 'Delete my account', data: { confirm: 'Are you sure you want to delete your account? This cannot be undone.' }, class: 'dark-button' %>
+        <%= submit_tag 'Delete my account', class: 'dark-button', onclick: "return confirm('Are you sure you want to delete your account? This cannot be undone.')" %>
       <% end %>
     </div>
   </div>
