@@ -143,16 +143,7 @@ GEM
       kostya-sigar (~> 2.0.0)
       state_machines
       thor
-    ffi (1.17.0-aarch64-linux-gnu)
-    ffi (1.17.0-aarch64-linux-musl)
-    ffi (1.17.0-arm-linux-gnu)
-    ffi (1.17.0-arm-linux-musl)
-    ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86-linux-gnu)
-    ffi (1.17.0-x86-linux-musl)
-    ffi (1.17.0-x86_64-darwin)
-    ffi (1.17.0-x86_64-linux-gnu)
-    ffi (1.17.0-x86_64-linux-musl)
+    ffi (1.17.0)
     glicko2 (0.2.3)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -195,6 +186,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2024.1001)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     mini_racer (0.6.4)
       libv8-node (~> 16.19.0.0)
     minitest (5.25.1)
@@ -210,17 +202,8 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.5.9)
-    nokogiri (1.16.7-aarch64-linux)
-      racc (~> 1.4)
-    nokogiri (1.16.7-arm-linux)
-      racc (~> 1.4)
-    nokogiri (1.16.7-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.16.7-x86-linux)
-      racc (~> 1.4)
-    nokogiri (1.16.7-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.16.7-x86_64-linux)
+    nokogiri (1.16.7)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.0)
@@ -411,7 +394,7 @@ DEPENDENCIES
   webpacker (~> 5.4.3)
 
 RUBY VERSION
-   ruby 3.3.5p100
+   ruby 3.4.5p51
 
 BUNDLED WITH
    2.5.16
