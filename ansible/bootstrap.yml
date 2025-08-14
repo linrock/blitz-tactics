@@ -37,14 +37,22 @@
           - python3-psycopg2
         state: present
 
-    - name: Add NodeSource GPG key
-      apt_key:
-        url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
-        state: present
+    - name: Ensure apt keyrings directory exists
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
 
-    - name: Add NodeSource Node.js 22.x LTS repository
+    - name: Install NodeSource repo key (dearmored into keyring)
+      shell: |
+        curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+        | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+      args:
+        creates: /etc/apt/keyrings/nodesource.gpg
+
+    - name: Add NodeSource Node.js 22.x LTS repository (signed-by keyring)
       apt_repository:
-        repo: "deb https://deb.nodesource.com/node_22.x nodistro main"
+        repo: "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main"
         filename: nodesource
         state: present
         update_cache: yes
