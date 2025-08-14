@@ -17,12 +17,14 @@
     - name: Install base packages
       apt:
         name:
+          - vim
           - git
           - curl
           - ca-certificates
           - gnupg
           - build-essential
           - autoconf
+          - unzip
           - bison
           - libssl-dev
           - libreadline-dev
@@ -30,7 +32,6 @@
           - libyaml-dev
           - libffi-dev
           - libgdbm-dev
-          - libsqlite3-dev
           - libxml2-dev
           - libxslt1-dev
           - pkg-config
