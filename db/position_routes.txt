@@ -16,6 +16,12 @@ Vancura position
   fen: R7/6k1/P4r2/1K6/8/8/8/8 b - -
   goal: draw
 
+Saavedra position
+  Practice the Saavedra position. White to play wins with an underpromotion to a rook to avoid stalemate traps.
+  /saavedra-position
+  fen: 8/8/1KP5/3r4/8/8/8/k7 w - -
+  goal: win
+
 Two bishops | Checkmates
   Practice checkmating with two bishops. White to play wins.
   /checkmates/two-bishops
