@@ -3,12 +3,15 @@
 <div class="user-profile me">
   <div class="container">
     <header class="player-info">
-      <div class="sign-out">
-        <%= button_to 'Sign out', destroy_user_session_path, method: :delete %>
-        <div class="preferences-link">
-          <a class="dark-button" href="/preferences">Preferences</a>
+      <aside class="right-side">
+        <div class="sign-out">
+          <%= link_to 'Sign out', destroy_user_session_path, method: :delete %>
         </div>
-      </div>
+
+        <div class="preferences-link">
+          <a href="/preferences">Preferences</a>
+        </div>
+      </aside>
 
       <h2 class="username"><%= @user.username %></h2>
 
