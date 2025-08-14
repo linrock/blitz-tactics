@@ -31,11 +31,11 @@
       args:
         chdir: "{{ app_dir }}"
 
-    - name: Update Browserslist DB (non-fatal, non-interactive)
-      become_user: "{{ app_user }}"
-      command: bash -lc "npx -y update-browserslist-db@latest || true"
-      args:
-        chdir: "{{ app_dir }}"
+    # - name: Update Browserslist DB (non-fatal, non-interactive)
+    #   become_user: "{{ app_user }}"
+    #   command: bash -lc "npx -y update-browserslist-db@latest || true"
+    #   args:
+    #     chdir: "{{ app_dir }}"
 
     - name: Install gem deps (ensure up-to-date)
       become_user: "{{ app_user }}"
@@ -58,9 +58,7 @@
         dest: /etc/systemd/system/blitz-puma.service
         mode: "0644"
       vars:
-        app_user: "{{ app_user }}"
-        app_dir: "{{ app_dir }}"
-        ruby_version: "{{ ruby_version.stdout }}"
+        ruby_ver: "{{ ruby_version.stdout }}"
 
     - name: Reload systemd daemon
       systemd:
