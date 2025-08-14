@@ -23,6 +23,12 @@ class UsersController < ApplicationController
 
   # DELETE /account
   def destroy
+    password = params[:current_password].to_s
+    unless current_user.valid_password?(password)
+      redirect_back fallback_location: preferences_path, alert: 'Incorrect password. Account not deleted.'
+      return
+    end
+
     current_user.destroy!
     sign_out(:user)
     redirect_to root_path, notice: 'Your account has been deleted.'

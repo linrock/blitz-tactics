@@ -13,7 +13,13 @@
     <div class="section">
       <h3>Delete account</h3>
       <p>This will permanently delete your account and cannot be undone.</p>
-      <%= button_to 'Delete my account', '/account', method: :delete, data: { confirm: 'Are you sure you want to delete your account? This cannot be undone.' }, class: 'dark-button' %>
+      <%= form_tag '/account', method: :delete do %>
+        <div class="field">
+          <label for="current_password">Confirm your password</label>
+          <%= password_field_tag :current_password, nil, required: true, autocomplete: 'current-password' %>
+        </div>
+        <%= submit_tag 'Delete my account', data: { confirm: 'Are you sure you want to delete your account? This cannot be undone.' }, class: 'dark-button' %>
+      <% end %>
     </div>
   </div>
 </div>
