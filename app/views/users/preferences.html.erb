@@ -7,9 +7,22 @@
     <% end %>
 
     <div class="section">
-      <h3>Customize board</h3>
-      <p>Change the look and feel of your chessboard.</p>
-      <p><a class="blue-button" href="/customize">Customize board</a></p>
+      <div class="customize-board-row">
+        <div class="customize-copy">
+          <h3>Customize board</h3>
+          <p>Change the look and feel of your chessboard.</p>
+          <p><a class="blue-button" href="/customize">Customize board</a></p>
+        </div>
+        <div class="board-preview">
+          <% if current_user&.user_chessboard %>
+            <style type="text/css"><%= current_user.user_chessboard.to_css %></style>
+          <% end %>
+          <%= render partial: "static/snippets/miniboard", locals: {
+                fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                flip: false
+              } %>
+        </div>
+      </div>
     </div>
 
     <hr/>
