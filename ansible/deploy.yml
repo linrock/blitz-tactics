@@ -31,6 +31,12 @@
       args:
         chdir: "{{ app_dir }}"
 
+    - name: Update Browserslist DB (non-fatal, non-interactive)
+      become_user: "{{ app_user }}"
+      command: bash -lc "npx -y update-browserslist-db@latest || true"
+      args:
+        chdir: "{{ app_dir }}"
+
     - name: Install gem deps (ensure up-to-date)
       become_user: "{{ app_user }}"
       command: bash -lc "chruby-exec ruby-{{ ruby_version.stdout }} -- bundle install --jobs 4 --retry 3"
@@ -41,6 +47,7 @@
       become_user: "{{ app_user }}"
       environment:
         RAILS_ENV: production
+        NODE_OPTIONS: "--openssl-legacy-provider"
       command: bash -lc "set -a && [ -f .env ] && source .env || true && set +a && chruby-exec ruby-{{ ruby_version.stdout }} -- bundle exec rake assets:precompile"
       args:
         chdir: "{{ app_dir }}"
