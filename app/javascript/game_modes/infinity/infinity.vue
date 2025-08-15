@@ -10,11 +10,10 @@ aside.infinity-under-board.game-under-board
         ) {{ difficulty }}
 
   .stats(:class="{ invisible: !nPuzzlesSolved }")
-    .sidebar-label You have solved
-    .n-puzzles {{ nPuzzlesSolved }} puzzles
+    .n-puzzles {{ nPuzzlesSolved }} puzzles solved
 
-  .recent-puzzles
-    a.dark-button(href="/infinity/puzzles") Recent puzzles
+    .recent-puzzles
+      a.dark-button(href="/infinity/puzzles") Recent puzzles
 
   .no-more-left(v-if="noMoreLeft")
     | You did it! You solved all the puzzles in this level.
