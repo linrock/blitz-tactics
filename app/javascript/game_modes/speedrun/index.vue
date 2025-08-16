@@ -58,6 +58,10 @@ aside.speedrun-under-board.game-under-board
       
       // Then subscribe to speedrun-specific events
       subscribe({
+        'config:init': data => {
+          this.levelName = data.level_name
+        },
+
         'move:try': () => {
           // Handle hasStarted for speedrun mode
           if (!this.hasStarted) {
@@ -66,10 +70,12 @@ aside.speedrun-under-board.game-under-board
         },
         
         'timer:stopped': elapsedTimeMs => {
+          console.log('timer:stopped', elapsedTimeMs)
           const boardOverlayEl: HTMLElement = document.querySelector(`.board-modal-container`)
           boardOverlayEl.style.display = ``
           boardOverlayEl.classList.remove(`invisible`)
           speedrunCompleted(this.levelName, elapsedTimeMs).then(data => {
+            console.log('speedrun completed!')
             this.bestTime = data.best
             this.hasCompleted = true
           })
