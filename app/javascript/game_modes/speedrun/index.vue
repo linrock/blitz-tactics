@@ -1,14 +1,21 @@
 <template lang="pug">
 aside.speedrun-under-board.game-under-board
-  .timers(:style="{ display: hasStarted ? '' : 'none' }")
+  .timers(:style="{ display: hasStarted && !hasCompleted ? '' : 'none' }")
     .current-run
       timer
       .description {{ puzzleIdx }} of {{ numPuzzles }} solved
 
-    template(v-if="hasCompleted")
-      .personal-best
+  .speedrun-complete(v-if="hasCompleted")
+    .timers-section
+      .timer-container.your-time
+        .label Your time
+        .timer {{ formattedYourTime }}
+
+      .timer-container.personal-best
+        .label Personal best
         .timer {{ formattedBestTime }}
-        .description Personal best
+
+    .action-buttons
       a.dark-button.view-puzzles(href="/speedrun/puzzles") View puzzles
       a.blue-button(href="/speedrun") Play again
 
@@ -41,10 +48,14 @@ aside.speedrun-under-board.game-under-board
         numPuzzles: 0,
         puzzleIdx: 0,
         bestTime: 0,
+        yourTime: 0,
       }
     },
 
     computed: {
+      formattedYourTime(): string {
+        return formattedTime(parseInt(this.yourTime as any, 0))
+      },
       formattedBestTime(): string {
         return formattedTime(parseInt(this.bestTime, 0))
       }
@@ -74,6 +85,7 @@ aside.speedrun-under-board.game-under-board
           const boardOverlayEl: HTMLElement = document.querySelector(`.board-modal-container`)
           boardOverlayEl.style.display = ``
           boardOverlayEl.classList.remove(`invisible`)
+          this.yourTime = elapsedTimeMs
           speedrunCompleted(this.levelName, elapsedTimeMs).then(data => {
             console.log('speedrun completed!')
             this.bestTime = data.best
