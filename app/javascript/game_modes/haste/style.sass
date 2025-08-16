@@ -3,6 +3,7 @@
 
 .haste-mode
   .haste-under-board
+    margin-top: 10px
 
     .sidebar-label
       font-size: 13px
@@ -74,10 +75,18 @@
       opacity: 0.7
 
   // shows up under the board after a level is complete
-  .haste-complete.game-complete
+  .haste-complete
+    display: flex
+    gap: 32px
 
     .score-section
-      display: flex
       flex-direction: row
       gap: 40px
-      margin-bottom: 10px
+
+    .score-container
+      margin-bottom: 16px
+      align-items: center
+
+      .score
+        font-size: 28px
+        margin-top: 8px
