@@ -6,16 +6,18 @@ aside.countdown-under-board.game-under-board
       .description {{ nPuzzlesSolved }} puzzles solved
 
   .countdown-complete(v-if="hasFinished")
-    .score-container.your-score
-      .label Your score
-      .score {{ score }}
+    .score-section
+      .score-container.your-score
+        .label Your score
+        .score {{ score }}
 
-    .score-container.high-score
-      .label High score
-      .score {{ highScore }}
+      .score-container.high-score
+        .label High score
+        .score {{ highScore }}
 
-    a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
-    a.blue-button(href="/countdown") Play again
+    .action-buttons
+      a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
+      a.blue-button(href="/countdown") Play again
 
   .make-a-move(v-if="!hasStarted") Make a move to start the timer
 

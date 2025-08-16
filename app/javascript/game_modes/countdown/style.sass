@@ -18,5 +18,19 @@
         margin-left: 1px
         opacity: 0.7
 
-    // shows up in the sidebar after a level is complete
-    .countdown-complete.game-complete
+    // shows up under the board after a level is complete
+    .countdown-complete
+      display: flex
+      gap: 32px
+
+      .score-section
+        flex-direction: row
+        gap: 40px
+
+      .score-container
+        margin-bottom: 16px
+        align-items: center
+
+        .score
+          font-size: 28px
+          margin-top: 8px
