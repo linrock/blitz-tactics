@@ -1,7 +1,7 @@
 <template lang="pug">
 aside.three-under-board.game-under-board
-  .three-during-game
-    .timers(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
+  .three-during-game(:style="`display: ${(!hasFinished) ? '' : 'none'}`")
+    .timers
       timer
       .n-remaining.n-lives(:class=`{ penalized: isLosingLife }` style="margin-bottom: 0.5rem")
         | {{ numLives }} {{ numLives === 1 ? 'life left' : 'lives' }}
@@ -25,30 +25,27 @@ aside.three-under-board.game-under-board
 
   // shown when the game has finished
   .three-complete(v-if="hasFinished")
-    .score-container.your-score
-      .label Your score
-      .score {{ yourScore }}
+    .three-complete-section.scores
+      .score-container.your-score
+        .label Your score
+        .score {{ yourScore }}
 
-    .score-container.high-score
-      .label Your high score today
-      .score {{ highScore }}
+      .score-container.high-score
+        .label Your high score today
+        .score {{ highScore }}
 
-    .puzzles-failed(v-if="puzzleIdsFailed.length > 0")
-      div(v-for="puzzleId in puzzleIdsFailed")
-        a(:href="`/p/${puzzleId}`" target="_blank")
-          svg(viewBox="0 0 45 45")
-            use(xlink:href="#x-mark" width="100%" height="100%")
-          | Puzzle {{ puzzleId }}
+    .three-complete-section.actions
+      .action-buttons
+        a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
+        a.blue-button(href="/three") Play again
 
-    .score-container.recent-high-scores(v-if="highScores.length >= 3")
-      .label Past 24 hours
-      .list
-        .high-score(v-for="[playerName, score] in highScores")
-          .score {{ score }}
-          .player-name {{ playerName }}
-
-    a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
-    a.blue-button(href="/three") Play again
+      .three-complete-section.missed
+        .puzzles-failed(v-if="puzzleIdsFailed.length > 0")
+          div(v-for="puzzleId in puzzleIdsFailed")
+            a(:href="`/p/${puzzleId}`" target="_blank")
+              svg(viewBox="0 0 45 45")
+                use(xlink:href="#x-mark" width="100%" height="100%")
+              | Puzzle {{ puzzleId }}
 
 </template>
 
@@ -169,7 +166,6 @@ export default {
 
   methods: {
     viewHint() {
-      console.log('give me a hint')
       dispatch('puzzle:get_hint')
     }
  },

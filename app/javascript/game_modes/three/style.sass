@@ -3,15 +3,16 @@
 
 .three-mode
   .three-under-board
-
     .three-during-game
       display: flex
       justify-content: space-between
-      margin-bottom: 30px
 
     .timers
       width: 120px
       min-height: 140px
+
+    .score-container .score
+      margin-top: 10px
 
     .right-side
       width: 160px
@@ -48,9 +49,23 @@
       margin-top: 12px
 
     .three-complete
+      display: flex
+      gap: 20px
+
+      .three-complete-section
+        display: flex
+        flex-direction: column
+        gap: 12px
+
+        &.scores
+          align-items: center
+          text-align: center
+
+        &.actions
+          align-items: flex-start
 
       .puzzles-failed
-        margin: 20px 0
+        margin: 10px 0 0
 
         div
           margin-bottom: 10px
