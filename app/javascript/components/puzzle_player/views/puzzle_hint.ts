@@ -41,6 +41,10 @@ export default class PuzzleHint {
       'puzzle:hint': (hint: string) => {
         this.displayHint(hint)
       },
+      'move:success': () => {
+        // Hide the hint button after a successful move
+        this.buttonEl.classList.add(`invisible`)
+      },
       'move:make': () => this.delayedShowHint(),
       'puzzle:solved': () => this.hideHint(),
       'timer:stopped': () => this.clearHintTimer(),
