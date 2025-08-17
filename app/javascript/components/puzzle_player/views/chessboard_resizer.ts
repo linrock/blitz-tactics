@@ -164,6 +164,7 @@ export default class ChessboardResizer {
     // Update all container elements in real-time for smooth movement
     const boardAreaEl: HTMLElement = document.querySelector('.board-area')
     const belowBoardEl: HTMLElement = document.querySelector('.below-board')
+    const rightStatsEl: HTMLElement = document.querySelector('.right-stats')
 
     if (boardAreaEl) {
       boardAreaEl.style.width = `${newSize}px`
@@ -172,6 +173,11 @@ export default class ChessboardResizer {
     
     if (belowBoardEl) {
       belowBoardEl.style.width = `${newSize}px`
+    }
+
+    // Update repetition mode stats position to follow board resize
+    if (rightStatsEl) {
+      rightStatsEl.style.left = `calc(50% + ${newSize / 2}px + 1rem)`
     }
     
     // Save the new size to localStorage
@@ -210,6 +216,7 @@ export default class ChessboardResizer {
   private updateAllContainers(size: number) {
     const boardAreaEl: HTMLElement = document.querySelector('.board-area')
     const belowBoardEl: HTMLElement = document.querySelector('.below-board')
+    const rightStatsEl: HTMLElement = document.querySelector('.right-stats')
 
     // Update all containers to match the new board size
     if (boardAreaEl) {
@@ -219,6 +226,11 @@ export default class ChessboardResizer {
     
     if (belowBoardEl) {
       belowBoardEl.style.width = `${size}px`
+    }
+
+    // Update repetition mode stats position to follow board resize
+    if (rightStatsEl) {
+      rightStatsEl.style.left = `calc(50% + ${size / 2}px + 1rem)`
     }
   }
 

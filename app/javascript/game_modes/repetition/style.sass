@@ -1,8 +1,22 @@
 @use "../../../assets/stylesheets/_variables" as vars
 
 .repetition-mode 
-  .repetition-under-board
+  .container
+    position: relative
 
+    // wrapper for top-right stats (times + high-scores) - positioned relative to board
+    .right-stats
+      position: absolute
+      top: 90px
+      left: calc(50% + (vars.$board-size / 2) + 1rem)
+      width: 220px
+      display: flex
+      flex-direction: column
+      gap: 20px
+      text-align: left
+      z-index: 15
+
+  .repetition-under-board
     position: relative
     z-index: 10
 
@@ -19,50 +33,50 @@
         font-size: 1rem
         opacity: 0.7
 
-    .times
-      text-align: center
-      margin-bottom: 30px
+  // Styles for right-side stats (moved outside of repetition-under-board)
+  .times
+    margin: 0
 
-      .timer
-        font-size: 1rem
-        opacity: 0.9
+    .timer
+      font-size: 1rem
+      opacity: 0.9
 
-      .laps
-        opacity: 0.3
-        font-size: 14px
-        line-height: 1.3
+    .laps
+      opacity: 0.3
+      font-size: 14px
+      line-height: 1.3
 
-        div
-          margin-bottom: 5px
+      div
+        margin-bottom: 5px
 
-    .high-scores
-      text-align: center
+  .high-scores
+    text-align: left
 
-      h2
+    h2
+      font-size: 16px
+      opacity: 0.5
+      margin-bottom: 15px
+
+    .high-score
+      display: flex
+      justify-content: flex-start
+      align-items: center
+      margin: 8px 0
+      gap: 15px
+
+      .time
         font-size: 16px
-        opacity: 0.5
-        margin-bottom: 15px
+        min-width: 50px
 
-      .high-score
-        display: flex
-        justify-content: center
-        align-items: center
-        margin: 8px 0
-        gap: 15px
+      .player
+        opacity: 0.7
 
-        .time
-          font-size: 16px
-          min-width: 50px
+        a
+          color: rgba(250, 250, 250, 0.8)
+          text-decoration: none
 
-        .player
-          opacity: 0.7
-
-          a
-            color: rgba(250, 250, 250, 0.8)
-            text-decoration: none
-
-            &:hover
-              color: rgba(250, 250, 250, 1)
+          &:hover
+            color: rgba(250, 250, 250, 1)
 
     .next-stage
       margin-top: 30px
