@@ -20,6 +20,8 @@ export default class ComboCounter {
       },
       'move:fail': () => this.droppedCombo(),
       'move:too_slow': () => this.droppedCombo(),
+      // Allow modes to explicitly drop combo without affecting others
+      'combo:drop': () => this.droppedCombo(),
     })
   }
 
