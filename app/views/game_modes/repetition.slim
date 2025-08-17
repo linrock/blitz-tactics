@@ -45,7 +45,7 @@ section.game-mode.repetition-mode(data-level="#{@level.path}")
             - if !user_signed_in?
               .small
                 | Sign up to save your progress, or continue to Level #{next_level.number}
-          .right
+          .right(style="display: flex; gap: 20px")
             - if !user_signed_in?
               a.blue-button(href="#{https_registration_url}") Sign up
             a.blue-button(href="#{next_level.path}")
