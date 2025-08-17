@@ -61,11 +61,14 @@ class RepetitionLevel < ActiveRecord::Base
   # top five fastest users and round times for this level
   def high_scores
     completed_repetition_rounds
+      .joins(:user)  # Only include records with valid users
       .group(:user_id).minimum(:elapsed_time_ms)
       .sort_by {|user_id, time| time }.take(5)
-      .map do |user_id, time|
+      .filter_map do |user_id, time|
+        user = User.find_by(id: user_id)
+        next if user.nil?
         [
-          User.find_by(id: user_id),
+          user,
           Time.at(time / 1000).strftime("%M:%S").gsub(/^0/, '')
         ]
       end
