@@ -7,7 +7,7 @@ class SpeedrunLevel < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
 
   def self.today
-    Date.today
+    Time.zone.today
   end
 
   def self.todays_date

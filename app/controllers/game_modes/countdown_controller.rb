@@ -20,7 +20,7 @@ class GameModes::CountdownController < ApplicationController
       level_name = completed_countdown_params[:level_name]
       if level_name =~ /\A201\d-/
         date = Date.strptime(level_name) rescue nil
-        if !date or date > Date.today
+        if !date or date > Time.zone.today
           render status: 400, json: {}
           return
         end

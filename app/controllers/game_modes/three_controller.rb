@@ -21,7 +21,7 @@ class GameModes::ThreeController < ApplicationController
       if score > 0
         current_user.completed_three_rounds.create!(score: score)
       end
-      best = current_user.best_three_score(Date.today)
+      best = current_user.best_three_score(Time.zone.today)
     else
       best = score
     end

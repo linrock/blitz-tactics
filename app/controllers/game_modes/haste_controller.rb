@@ -20,7 +20,7 @@ class GameModes::HasteController < ApplicationController
       if score > 0
         current_user.completed_haste_rounds.create!(score: score)
       end
-      best = current_user.best_haste_score(Date.today)
+      best = current_user.best_haste_score(Time.zone.today)
     else
       best = score
     end

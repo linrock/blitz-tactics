@@ -4,7 +4,7 @@ class CountdownLevel < ActiveRecord::Base
   has_many :countdown_puzzles, dependent: :destroy
 
   def self.today
-    Date.today
+    Time.zone.today
   end
 
   def self.todays_date
