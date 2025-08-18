@@ -60,14 +60,6 @@ export default function RepetitionMode() {
     'puzzles:next': () => {
       level.nextPuzzle()
 
-      if (!level.completed) {
-        level.completed = true
-        repetitionLevelCompleted(levelPath).then(data => {
-          dispatch(`level:high_scores`, data.high_scores)
-          dispatch(`level:unlocked`, data.next.href)
-        })
-      }
-
       dispatch(`progress:update`, level.getProgress())
       if (!level.completed && level.nextLevelUnlocked()) {
         level.completed = true
