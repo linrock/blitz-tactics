@@ -20,7 +20,6 @@ gem 'execjs'
 gem 'mini_racer', '~> 0.6.3', platforms: :ruby
 
 # assets
-gem 'cssbundling-rails'
 gem 'propshaft'
 
 gem 'uglifier', '>= 1.3.0'
