@@ -20,6 +20,8 @@
           - vim
           - git
           - curl
+          - tig
+          - rsync
           - ca-certificates
           - gnupg
           - build-essential

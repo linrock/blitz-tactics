@@ -9,13 +9,13 @@
     service_name: blitz-puma
 
   tasks:
-    - name: Pull latest code
-      become_user: "{{ app_user }}"
-      git:
-        repo: "https://github.com/linrock/blitz-tactics"
-        dest: "{{ app_dir }}"
-        version: master
-        update: yes
+    # - name: Pull latest code
+    #   become_user: "{{ app_user }}"
+    #   git:
+    #     repo: "https://github.com/linrock/blitz-tactics"
+    #     dest: "{{ app_dir }}"
+    #     version: master
+    #     update: yes
 
     - name: Read Ruby version from .ruby-version
       become_user: "{{ app_user }}"
@@ -24,6 +24,11 @@
         chdir: "{{ app_dir }}"
       register: ruby_version
       changed_when: false
+
+    - name: Install Ruby {{ ruby_version.stdout }} via ruby-install
+      command: ruby-install --no-reinstall ruby {{ ruby_version.stdout }}
+      args:
+        creates: "/opt/rubies/ruby-{{ ruby_version.stdout }}/bin/ruby"
 
     - name: Install JS deps
       become_user: "{{ app_user }}"
