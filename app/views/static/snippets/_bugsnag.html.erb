@@ -10,5 +10,5 @@
       <% end %>
     }
   </script>
-  <%= javascript_pack_tag 'bugsnag', async: true %>
+  <%= javascript_include_tag 'bugsnag', async: true, type: 'module' %>
 <% end %>

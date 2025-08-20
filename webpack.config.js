@@ -12,7 +12,8 @@ module.exports = {
   mode,
   // devtool: "source-map",
   entry: {
-    application: "./app/javascript/application.ts"
+    application: "./app/javascript/application.ts",
+    bugsnag: "./app/javascript/packs/bugsnag.ts"
   },
   output: {
     filename: "[name].js",
