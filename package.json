@@ -12,7 +12,8 @@
     "lichess:puzzles:check": "rails runner 'LichessV1PuzzleImporter.check_db_puzzles'",
     "lichess:puzzles:v2:fetch": "rails runner 'LichessV2PuzzleImporter.new.fetch_csv'",
     "lichess:puzzles:v2:import": "rails runner 'LichessV2PuzzleImporter.new.import_from_csv'",
-    "build": "webpack --config webpack.config.js"
+    "build": "node esbuild.config.js",
+    "build:watch": "node esbuild.config.js watch"
   },
   "dependencies": {
     "@bugsnag/js": "^7.5.4",
@@ -24,27 +25,21 @@
     "backbone.native": "^1.0.0",
     "chess.js": "^0.13.4",
     "chessground": "https://github.com/linrock/chessground.git#9.1.1-bt-ubuntu16",
-    "css-loader": "^7.1.2",
+    "esbuild": "^0.25.9",
+    "esbuild-plugin-vue3": "^0.4.2",
+    "esbuild-sass-plugin": "^3.3.1",
     "fastclick": "^1.0.6",
-    "mini-css-extract-plugin": "^2.9.4",
     "mithril": "^2.2.9",
     "mousetrap": "^1.6.2",
     "postcss-cssnext": "^3.1.0",
     "pug": "^3.0.3",
-    "pug-plain-loader": "^1.1.0",
     "sass": "^1.80.5",
-    "sass-loader": "^16.0.3",
     "simple-color-picker": "^0.1.2",
     "store": "^2.0.12",
-    "style-loader": "^4.0.0",
     "tinycolor2": "^1.4.2",
-    "ts-loader": "^9.5.1",
     "typescript": "^5.6.3",
     "underscore": "^1.12.0",
-    "vue": "^3.5.12",
-    "vue-loader": "^17.4.2",
-    "webpack": "^5.101.3",
-    "webpack-cli": "^6.0.1"
+    "vue": "^3.5.12"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -54,8 +49,6 @@
     "@babel/plugin-transform-runtime": "^7.25.9",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-typescript": "^7.26.0",
-    "babel-loader": "^9.2.1",
-    "babel-plugin-macros": "^3.1.0",
-    "html-loader": "^5.1.0"
+    "babel-plugin-macros": "^3.1.0"
   }
 }
