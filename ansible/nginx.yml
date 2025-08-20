@@ -3,7 +3,6 @@
 # Usage:
 #   ansible-playbook -i <inventory> ansible/nginx.yml \
 #     -e server_name_main=blitztactics.com \
-#     -e server_name_www=www.blitztactics.com \
 #     -e app_root=/home/rails/blitz-tactics/public \
 #     -e upstream_port=3000
 
@@ -12,37 +11,36 @@
   vars:
     # Override via -e if needed
     server_name_main: blitztactics.com
-    server_name_www: www.blitztactics.com
     app_root: /home/rails/blitz-tactics/public
     upstream_port: 3000
-    nginx_site_filename: "blitztactics.conf"
+    nginx_site_filename: "blitztactics.com.conf"
     ssl_cert_path: "/etc/letsencrypt/live/{{ server_name_main }}/fullchain.pem"
     ssl_key_path: "/etc/letsencrypt/live/{{ server_name_main }}/privkey.pem"
 
   handlers:
     - name: reload nginx
-      ansible.builtin.service:
+      service:
         name: nginx
         state: reloaded
 
   tasks:
     - name: Ensure APT cache is up to date
-      ansible.builtin.apt:
+      apt:
         update_cache: true
 
     - name: Install Nginx
-      ansible.builtin.apt:
+      apt:
         name: nginx
         state: present
 
     - name: Ensure Nginx is enabled and started
-      ansible.builtin.service:
+      service:
         name: nginx
         state: started
         enabled: true
 
     - name: Ensure sites-available directory exists
-      ansible.builtin.file:
+      file:
         path: /etc/nginx/sites-available
         state: directory
         owner: root
@@ -50,37 +48,50 @@
         mode: '0755'
 
     - name: Ensure sites-enabled directory exists
-      ansible.builtin.file:
+      file:
         path: /etc/nginx/sites-enabled
         state: directory
         owner: root
         group: root
         mode: '0755'
 
-    - name: Deploy Blitz Tactics Nginx site config
-      ansible.builtin.template:
-        src: templates/nginx_site.conf.j2
+    - name: Deploy Blitz Tactics nginx site config
+      template:
+        src: blitz-nginx.conf.j2
         dest: "/etc/nginx/sites-available/{{ nginx_site_filename }}"
         owner: root
         group: root
         mode: '0644'
       notify: reload nginx
 
-    - name: Enable Blitz Tactics site
-      ansible.builtin.file:
+    - name: Enable Blitz Tactics nginx site
+      file:
         src: "/etc/nginx/sites-available/{{ nginx_site_filename }}"
         dest: "/etc/nginx/sites-enabled/{{ nginx_site_filename }}"
         state: link
         force: true
       notify: reload nginx
 
+    - name: Check if SSL certificates exist
+      stat:
+        path: "{{ ssl_cert_path }}"
+      register: ssl_cert_exists
+
+    - name: Comment out SSL directives if certificates don't exist
+      replace:
+        path: "/etc/nginx/sites-available/{{ nginx_site_filename }}"
+        regexp: '^(\s*)(ssl_certificate|include.*letsencrypt|ssl_dhparam)'
+        replace: '\1# \2'
+      when: not ssl_cert_exists.stat.exists
+      notify: reload nginx
+
     - name: Test Nginx configuration
-      ansible.builtin.command: nginx -t
+      command: nginx -t
       register: nginx_test
       changed_when: false
       failed_when: nginx_test.rc != 0
 
     - name: Reload Nginx to apply changes
-      ansible.builtin.service:
+      service:
         name: nginx
         state: reloaded
