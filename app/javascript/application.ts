@@ -8,6 +8,7 @@ import routes from './routes'
 import { BlitzConfig } from './types'
 
 import "../assets/stylesheets/application.sass"
+import "./game_modes/base.sass"
 
 
 const blitz: BlitzConfig = {};
