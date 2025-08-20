@@ -12,7 +12,6 @@
     "lichess:puzzles:check": "rails runner 'LichessV1PuzzleImporter.check_db_puzzles'",
     "lichess:puzzles:v2:fetch": "rails runner 'LichessV2PuzzleImporter.new.fetch_csv'",
     "lichess:puzzles:v2:import": "rails runner 'LichessV2PuzzleImporter.new.import_from_csv'",
-    "build:css": "sass ./app/assets/stylesheets/application.sass:./app/assets/builds/application.css --no-source-map --load-path=node_modules",
     "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
