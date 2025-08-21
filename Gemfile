@@ -23,7 +23,6 @@ gem 'mini_racer', '~> 0.6.3', platforms: :ruby
 gem 'propshaft'
 
 gem 'uglifier', '>= 1.3.0'
-# gem 'webpacker', '~> 5.4.3'
 gem 'jsbundling-rails'
 
 # production
