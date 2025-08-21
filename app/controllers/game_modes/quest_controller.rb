@@ -12,23 +12,37 @@ class GameModes::QuestController < ApplicationController
   def show
     @quest_world_level = QuestWorldLevel.find(params[:id])
     
-    render json: {
-      id: @quest_world_level.id,
-      world_id: @quest_world_level.quest_world.id,
-      world_description: @quest_world_level.quest_world.description,
-      puzzle_ids: @quest_world_level.puzzle_ids,
-      puzzle_count: @quest_world_level.puzzle_count,
-      puzzles_required: @quest_world_level.puzzles_required,
-      time_limit_seconds: @quest_world_level.time_limit_seconds,
-      has_time_limit: @quest_world_level.has_time_limit?,
-      success_criteria_description: @quest_world_level.success_criteria_description,
-      completed: current_user ? @quest_world_level.completed_by?(current_user) : false,
-      world_completion_percentage: current_user ? @quest_world_level.quest_world.completion_percentage(current_user) : 0
-    }
+    respond_to do |format|
+      format.html do
+        # Prepare lichess puzzle data for rendering mini boards
+        all_ids = Array(@quest_world_level.puzzle_ids).map(&:to_s)
+        @valid_lichess_puzzles = LichessV2Puzzle.where(puzzle_id: all_ids).to_a
+        @total_puzzle_count = all_ids.length
+        @valid_puzzle_count = @valid_lichess_puzzles.length
+        @invalid_puzzle_ids = all_ids - @valid_lichess_puzzles.map(&:puzzle_id)
+        render :show
+      end
+      format.json do
+        render json: {
+          id: @quest_world_level.id,
+          world_id: @quest_world_level.quest_world.id,
+          world_description: @quest_world_level.quest_world.description,
+          puzzle_ids: @quest_world_level.puzzle_ids,
+          puzzle_count: @quest_world_level.puzzle_count,
+          puzzles_required: @quest_world_level.puzzles_required,
+          time_limit_seconds: @quest_world_level.time_limit_seconds,
+          has_time_limit: @quest_world_level.has_time_limit?,
+          success_criteria_description: @quest_world_level.success_criteria_description,
+          completed: current_user ? @quest_world_level.completed_by?(current_user) : false,
+          world_completion_percentage: current_user ? @quest_world_level.quest_world.completion_percentage(current_user) : 0
+        }
+      end
+    end
   rescue ActiveRecord::RecordNotFound
-    render json: { 
-      error: "Quest level not found" 
-    }, status: :not_found
+    respond_to do |format|
+      format.html { render plain: "Quest level not found", status: :not_found }
+      format.json { render json: { error: "Quest level not found" }, status: :not_found }
+    end
   end
 
   def edit
@@ -72,11 +86,8 @@ class GameModes::QuestController < ApplicationController
       @quest_world.description = description
     end
     
-    if background.blank?
-      @quest_world.errors.add(:background, "can't be blank")
-    else
-      @quest_world.background = background
-    end
+    # Background is optional - assign even if blank
+    @quest_world.background = background
     
     # Store form values for redisplay on error
     @form_values = {
@@ -112,6 +123,9 @@ class GameModes::QuestController < ApplicationController
     end
     
     @quest_level = QuestWorldLevel.find(params[:id])
+    
+    # Fetch puzzle data for display
+    fetch_puzzle_data_for_quest_level
   rescue ActiveRecord::RecordNotFound
     render plain: "Quest level not found", status: :not_found
   end
@@ -168,6 +182,8 @@ class GameModes::QuestController < ApplicationController
     if @quest_level.errors.empty? && @quest_level.save
       redirect_to "/quest/worlds/#{@quest_level.quest_world.id}/edit", notice: "Quest level updated successfully!"
     else
+      # Re-initialize puzzle data for rendering the form with errors
+      fetch_puzzle_data_for_quest_level
       render :edit_quest_level
     end
   rescue ActiveRecord::RecordNotFound
@@ -307,5 +323,36 @@ class GameModes::QuestController < ApplicationController
       success: false, 
       error: "Quest level not found" 
     }, status: :not_found
+  end
+
+  def fetch_puzzle_data_for_quest_level
+    # Initialize puzzle data arrays
+    @puzzle_data = []
+    @valid_puzzle_count = 0
+    
+    # Fetch puzzle data from LichessV2Puzzle if puzzle_ids exist
+    if @quest_level&.puzzle_ids.present? && @quest_level.puzzle_ids.is_a?(Array)
+      @quest_level.puzzle_ids.each do |puzzle_id|
+        # Skip empty/nil puzzle IDs
+        next if puzzle_id.blank?
+        
+        puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id.to_s)
+        if puzzle
+          @puzzle_data << {
+            puzzle_id: puzzle_id,
+            fen: puzzle.initial_fen,
+            rating: puzzle.rating,
+            themes: puzzle.themes
+          }
+          @valid_puzzle_count += 1
+        else
+          @puzzle_data << {
+            puzzle_id: puzzle_id,
+            fen: nil,
+            error: "Puzzle not found"
+          }
+        end
+      end
+    end
   end
 end

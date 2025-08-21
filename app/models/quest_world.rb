@@ -4,7 +4,7 @@ class QuestWorld < ActiveRecord::Base
   has_many :completed_quest_world_levels, through: :quest_world_levels
   
   validates :description, presence: true
-  validates :background, presence: true
+  # Background is optional - can be empty
   
   # Check if a user has completed this world
   def completed_by?(user)

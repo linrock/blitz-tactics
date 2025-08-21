@@ -453,7 +453,8 @@
       font-size: 16px
 
     .current-criteria,
-    .current-puzzles-count
+    .current-puzzles-count,
+    .valid-puzzles-count
       margin-bottom: 15px
       display: flex
       align-items: center
@@ -467,19 +468,94 @@
         color: #666
         font-size: 16px
 
-    .puzzle-ids-preview
-      display: grid
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))
-      gap: 8px
-      margin-top: 10px
+      .valid-count
+        color: #2C9BEA
+        font-weight: 600
 
-    .puzzle-id-preview
+    .current-puzzle-data
+      margin-top: 25px
+
+      h5
+        margin-bottom: 20px
+        color: #444
+        font-size: 16px
+
+    .puzzle-data-list
+      display: grid
+      gap: 15px
+
+    .puzzle-data-item
       background: white
-      padding: 6px 10px
-      border-radius: 4px
-      border: 1px solid #d1d5db
-      font-family: 'Courier New', monospace
-      font-size: 12px
+      border: 1px solid #e0e0e0
+      border-radius: 6px
+      padding: 15px
+      
+      .puzzle-header
+        display: flex
+        align-items: center
+        gap: 10px
+        margin-bottom: 10px
+        padding-bottom: 10px
+        border-bottom: 1px solid #f0f0f0
+
+        .puzzle-number
+          font-weight: 600
+          color: #333
+          font-size: 14px
+
+        .puzzle-id
+          font-family: 'Courier New', monospace
+          background: #f8f9fa
+          padding: 2px 6px
+          border-radius: 3px
+          font-size: 13px
+          color: #333
+
+        .puzzle-valid
+          color: #22c55e
+          font-weight: 600
+          font-size: 16px
+
+        .puzzle-error
+          color: #ef4444
+          font-size: 12px
+          font-style: italic
+
+      .puzzle-details
+        .puzzle-fen
+          margin-bottom: 10px
+
+          strong
+            color: #333
+            font-size: 12px
+            margin-right: 8px
+
+          .fen-string
+            font-family: 'Courier New', monospace
+            font-size: 11px
+            background: #f8f9fa
+            padding: 4px 8px
+            border-radius: 3px
+            color: #333
+            word-break: break-all
+            line-height: 1.3
+
+        .puzzle-meta
+          display: flex
+          gap: 20px
+          font-size: 12px
+
+          .puzzle-rating
+            color: #2C9BEA
+            font-weight: 500
+
+          .puzzle-themes
+            color: #666
+
+      .puzzle-error-details
+        color: #ef4444
+        font-style: italic
+        font-size: 13px
 
   .quest-level-success-criteria,
   .quest-level-puzzles,

@@ -27,17 +27,16 @@
           | A descriptive name for the quest world that players will see
 
       .form-group
-        label.form-label(for="background") Background Image
+        label.form-label(for="background") Background Image (Optional)
         input.form-input(
           type="text"
           name="quest_world[background]"
           id="background"
-          placeholder="e.g., 'enchanted-forest.jpg'"
-          required
+          placeholder="e.g., 'enchanted-forest.jpg' (leave blank for no background)"
           value="#{@form_values&.[](:background)}"
         )
         .form-help
-          | Filename of the background image for this quest world (should be in the assets folder)
+          | Filename of the background image for this quest world (optional - leave blank if no background needed)
 
       .form-actions
         input.blue-button(

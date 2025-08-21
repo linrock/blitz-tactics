@@ -80,16 +80,35 @@
     .current-puzzles-count
       strong Current Total Puzzles: 
       span= @quest_level.puzzle_count
+    .valid-puzzles-count
+      strong Valid Lichess Puzzles Found: 
+      span.valid-count= "#{@valid_puzzle_count || 0} / #{@quest_level.puzzle_count}"
     
-    .current-puzzle-ids
-      h5 Current Puzzle IDs
-      .puzzle-ids-preview
-        - @quest_level.puzzle_ids.first(10).each_with_index do |puzzle_id, index|
-          .puzzle-id-preview
-            span= "#{index + 1}. #{puzzle_id}"
-        - if @quest_level.puzzle_ids.length > 10
-          .puzzle-id-preview
-            span= "... and #{@quest_level.puzzle_ids.length - 10} more"
+    .current-puzzle-data
+      h5 Puzzle Details
+      .puzzle-data-list
+        - (@puzzle_data || []).each_with_index do |puzzle, index|
+          .puzzle-data-item
+            .puzzle-header
+              span.puzzle-number= "#{index + 1}."
+              span.puzzle-id= puzzle[:puzzle_id]
+              - if puzzle[:error]
+                span.puzzle-error= "(#{puzzle[:error]})"
+              - else
+                span.puzzle-valid ✓
+            - if puzzle[:fen]
+              .puzzle-details
+                .puzzle-fen
+                  strong FEN: 
+                  span.fen-string= puzzle[:fen]
+                .puzzle-meta
+                  - if puzzle[:rating]
+                    span.puzzle-rating Rating: #{puzzle[:rating]}
+                  - if puzzle[:themes]
+                    span.puzzle-themes Themes: #{puzzle[:themes].join(', ')}
+            - else
+              .puzzle-error-details
+                span This puzzle ID was not found in the LichessV2Puzzle database
 
   .back-links
     a(href="/quest/worlds/#{@quest_level.quest_world.id}/edit") ← Back to Quest World
