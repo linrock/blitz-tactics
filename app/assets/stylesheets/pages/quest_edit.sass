@@ -179,43 +179,69 @@ body[data-controller="game_modes/quest"][data-action="new_quest_level"]
               &.dark
                 background-color: #b58863
 
-        .quest-level-link
+        .quest-level-actions
           flex: 1
-          text-decoration: none
-          color: inherit
+          display: flex
+          justify-content: space-between
+          align-items: flex-start
+          gap: 20px
 
-          &:hover
+          .quest-level-link
+            flex: 1
+            text-decoration: none
+            color: inherit
+
+            &:hover
+              .quest-level-info
+                .quest-level-id span,
+                .quest-level-criteria span
+                  color: #2C9BEA
+
             .quest-level-info
-              .quest-level-id span,
-              .quest-level-criteria span
-                color: #2C9BEA
+              display: flex
+              flex-direction: column
+              gap: 8px
 
-          .quest-level-info
-            display: flex
-            flex-direction: column
-            gap: 8px
+              .quest-level-id,
+              .quest-level-criteria,
+              .quest-level-puzzles,
+              .quest-level-completed-by
+                span
+                  font-size: 14px
+                  line-height: 1.4
 
-            .quest-level-id,
-            .quest-level-criteria,
-            .quest-level-puzzles,
-            .quest-level-completed-by
-              span
-                font-size: 14px
-                line-height: 1.4
+              .quest-level-id
+                span
+                  font-weight: 600
+                  color: #2C9BEA
 
-            .quest-level-id
-              span
-                font-weight: 600
-                color: #2C9BEA
+              .quest-level-criteria
+                span
+                  color: #333
 
-            .quest-level-criteria
-              span
-                color: #333
+              .quest-level-puzzles,
+              .quest-level-completed-by
+                span
+                  color: #666
 
-            .quest-level-puzzles,
-            .quest-level-completed-by
-              span
-                color: #666
+          .quest-level-delete
+            flex-shrink: 0
+
+            .red-button
+              background: #dc3545
+              color: white
+              border: none
+              padding: 8px 16px
+              border-radius: 4px
+              font-size: 12px
+              cursor: pointer
+              transition: background-color 0.2s ease
+
+              &:hover
+                background: #c82333
+
+              &:active
+                background: #bd2130
 
     .quest-world-link
       display: block
@@ -376,6 +402,13 @@ body[data-controller="game_modes/quest"][data-action="new_quest_level"]
             width: 100px
             height: 100px
             align-self: center
+
+          .quest-level-actions
+            flex-direction: column
+            gap: 15px
+
+            .quest-level-delete
+              align-self: flex-end
 
 @media (max-width: 480px)
   .quest-edit-page,

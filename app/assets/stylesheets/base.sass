@@ -41,3 +41,35 @@ button
 // fix chessground board shapes affecting scrollbar height
 .cg-shapes
   height: 0 !important
+
+// Flash messages
+.flash-notice,
+.flash-alert
+  position: fixed
+  top: 20px
+  right: 20px
+  padding: 15px 20px
+  border-radius: 6px
+  font-weight: 500
+  z-index: 1000
+  max-width: 400px
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3)
+  animation: slideInRight 0.3s ease-out
+
+.flash-notice
+  background: #28a745
+  color: white
+  border-left: 4px solid #1e7e34
+
+.flash-alert
+  background: #dc3545
+  color: white
+  border-left: 4px solid #c82333
+
+@keyframes slideInRight
+  from
+    transform: translateX(100%)
+    opacity: 0
+  to
+    transform: translateX(0)
+    opacity: 1

@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get '/quest/levels/:id/edit' => 'game_modes/quest#edit_quest_level'
   put '/quest/levels/:id' => 'game_modes/quest#update_quest_level'
   patch '/quest/levels/:id' => 'game_modes/quest#update_quest_level'
+  delete '/quest/levels/:id' => 'game_modes/quest#destroy_quest_level'
 
   # infinity mode
   get '/infinity'                => 'game_modes/infinity#index'

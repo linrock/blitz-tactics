@@ -379,6 +379,25 @@ class GameModes::QuestController < ApplicationController
     end
   end
 
+  def destroy_quest_level
+    # Check if user has privilege to access this page
+    unless privileged_user?
+      render plain: "Access denied", status: :forbidden
+      return
+    end
+    
+    @quest_level = QuestWorldLevel.find(params[:id])
+    quest_world_id = @quest_level.quest_world.id
+    
+    if @quest_level.destroy
+      redirect_to "/quest/worlds/#{quest_world_id}/edit", notice: "Quest level deleted successfully!"
+    else
+      redirect_to "/quest/worlds/#{quest_world_id}/edit", alert: "Failed to delete quest level."
+    end
+  rescue ActiveRecord::RecordNotFound
+    render plain: "Quest level not found", status: :not_found
+  end
+
   private
 
   def privileged_user?

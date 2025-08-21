@@ -21,6 +21,18 @@
 <body data-controller="<%= params[:controller] %>" data-action="<%= params[:action] %>">
   <%= render partial: "layouts/main_header" %>
 
+  <% if notice %>
+    <div class="flash-notice">
+      <%= notice %>
+    </div>
+  <% end %>
+  
+  <% if alert %>
+    <div class="flash-alert">
+      <%= alert %>
+    </div>
+  <% end %>
+
   <%= yield %>
 
   <% if current_user&.user_chessboard && params[:controller] != 'users' %>

@@ -61,16 +61,21 @@
                                  initial_move: initial_move,
                                  title: "Level #{level_data['number']} - First Puzzle" })
             
-            a.quest-level-link(href="/quest/levels/#{level_data['id']}/edit")
-              .quest-level-info
-                .quest-level-id
-                  span Level ID: #{level_data['id']}
-                .quest-level-criteria
-                  span= level_data['success_criteria_description']
-                .quest-level-puzzles
-                  span= "#{level_data['puzzle_ids'].length} puzzles"
-                .quest-level-completed-by
-                  span= "Completed by #{level_data['completed_count']} users"
+            .quest-level-actions
+              a.quest-level-link(href="/quest/levels/#{level_data['id']}/edit")
+                .quest-level-info
+                  .quest-level-id
+                    span Level ID: #{level_data['id']}
+                  .quest-level-criteria
+                    span= level_data['success_criteria_description']
+                  .quest-level-puzzles
+                    span= "#{level_data['puzzle_ids'].length} puzzles"
+                  .quest-level-completed-by
+                    span= "Completed by #{level_data['completed_count']} users"
+              
+              .quest-level-delete
+                = form_tag "/quest/levels/#{level_data['id']}", method: :delete, style: "display: inline;", data: { confirm: "Are you sure you want to delete this quest level? This action cannot be undone." } do
+                  button.red-button(type="submit") Delete Level
 
   .back-link
     a(href="/quest/edit") ← Back to Quest Worlds List
