@@ -134,6 +134,89 @@ body[data-controller="game_modes/quest"][data-action="new_quest_level"]
     &:hover
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15)
 
+// Quest world edit page - levels with mini chessboards
+.quest-world-edit-page
+  .quest-levels-list
+    .quest-level
+      margin-bottom: 20px
+      border: 1px solid #e0e0e0
+      border-radius: 6px
+      background: white
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+      transition: all 0.2s ease
+
+      &:hover
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15)
+        transform: translateY(-1px)
+
+      .quest-level-content
+        display: flex
+        align-items: flex-start
+        gap: 20px
+        padding: 20px
+
+        .mini-chessboard-container
+          flex-shrink: 0
+          width: 120px
+          height: 120px
+
+          .mini-chessboard
+            width: 100%
+            height: 100%
+            border: 2px solid #ddd
+            border-radius: 4px
+            overflow: hidden
+
+            .square
+              width: calc(100% / 8)
+              height: calc(100% / 8)
+              float: left
+              position: relative
+
+              &.light
+                background-color: #f0d9b5
+
+              &.dark
+                background-color: #b58863
+
+        .quest-level-link
+          flex: 1
+          text-decoration: none
+          color: inherit
+
+          &:hover
+            .quest-level-info
+              .quest-level-id span,
+              .quest-level-criteria span
+                color: #2C9BEA
+
+          .quest-level-info
+            display: flex
+            flex-direction: column
+            gap: 8px
+
+            .quest-level-id,
+            .quest-level-criteria,
+            .quest-level-puzzles,
+            .quest-level-completed-by
+              span
+                font-size: 14px
+                line-height: 1.4
+
+            .quest-level-id
+              span
+                font-weight: 600
+                color: #2C9BEA
+
+            .quest-level-criteria
+              span
+                color: #333
+
+            .quest-level-puzzles,
+            .quest-level-completed-by
+              span
+                color: #666
+
     .quest-world-link
       display: block
       padding: 20px
@@ -280,6 +363,19 @@ body[data-controller="game_modes/quest"][data-action="new_quest_level"]
         .no-puzzle-message
           width: 150px
           height: 150px
+
+  .quest-world-edit-page
+    .quest-levels-list
+      .quest-level
+        .quest-level-content
+          flex-direction: column
+          gap: 15px
+          padding: 15px
+
+          .mini-chessboard-container
+            width: 100px
+            height: 100px
+            align-self: center
 
 @media (max-width: 480px)
   .quest-edit-page,

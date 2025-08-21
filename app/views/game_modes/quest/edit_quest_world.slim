@@ -46,18 +46,29 @@
       = "#{@quest_world_levels.count} levels in this world"
 
     .quest-levels-list
-      - @quest_world_levels.each do |quest_level|
+      - @quest_world_levels_with_puzzles.each do |level_data|
         .quest-level
-          a.quest-level-link(href="/quest/levels/#{quest_level.id}/edit")
-            .quest-level-info
-              .quest-level-id
-                span Level ID: #{quest_level.id}
-              .quest-level-criteria
-                span= quest_level.success_criteria_description
-              .quest-level-puzzles
-                span= "#{quest_level.puzzle_count} puzzles"
-              .quest-level-completed-by
-                span= "Completed by #{quest_level.completed_quest_world_levels.count} users"
+          .quest-level-content
+            - if level_data['first_puzzle']
+              .mini-chessboard-container
+                - puzzle_data = level_data['first_puzzle']
+                - puzzle_fen = puzzle_data[:fen] if puzzle_data
+                - puzzle_flip = puzzle_fen&.include?(" w ") || false
+                = render(partial: "static/snippets/miniboard",
+                        locals: { fen: puzzle_fen,
+                                 flip: puzzle_flip,
+                                 title: "Level #{level_data['number']} - First Puzzle" })
+            
+            a.quest-level-link(href="/quest/levels/#{level_data['id']}/edit")
+              .quest-level-info
+                .quest-level-id
+                  span Level ID: #{level_data['id']}
+                .quest-level-criteria
+                  span= level_data['success_criteria_description']
+                .quest-level-puzzles
+                  span= "#{level_data['puzzle_ids'].length} puzzles"
+                .quest-level-completed-by
+                  span= "Completed by #{level_data['completed_count']} users"
 
   .back-link
     a(href="/quest/edit") ← Back to Quest Worlds List

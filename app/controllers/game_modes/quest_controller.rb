@@ -160,6 +160,16 @@ class GameModes::QuestController < ApplicationController
     
     @quest_world = QuestWorld.find(params[:id])
     @quest_world_levels = @quest_world.quest_world_levels
+
+    # Prepare first puzzle data for each quest level
+    @quest_world_levels_with_puzzles = @quest_world_levels.map do |level|
+      first_puzzle = get_first_puzzle_for_level(level)
+      level_data = level.attributes
+      level_data['first_puzzle'] = first_puzzle
+      level_data['success_criteria_description'] = level.success_criteria_description
+      level_data['completed_count'] = level.completed_quest_world_levels.count
+      level_data
+    end
   rescue ActiveRecord::RecordNotFound
     render plain: "Quest world not found", status: :not_found
   end
