@@ -9,6 +9,13 @@ class QuestWorldLevel < ActiveRecord::Base
   # Validate success criteria structure
   validate :validate_success_criteria_format
   
+  # Scopes for querying by criteria
+  scope :with_time_limit, -> { where("success_criteria ? 'time_limit'") }
+  scope :without_time_limit, -> { where("NOT (success_criteria ? 'time_limit')") }
+  scope :requiring_puzzles, ->(count) { where("(success_criteria->>'puzzles_solved')::int = ?", count) }
+  scope :with_time_limit_under, ->(seconds) { where("(success_criteria->>'time_limit')::int < ?", seconds) }
+  scope :containing_puzzle, ->(puzzle_id) { where("? = ANY(puzzle_ids)", puzzle_id) }
+  
   private
   
   def validate_success_criteria_format
