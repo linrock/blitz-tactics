@@ -8,12 +8,13 @@
   .quest-worlds-list
     - @quest_worlds.each do |quest_world|
       .quest-world
-        .quest-world-info
-          .quest-world-id
-            span ID: #{quest_world.id}
-          .quest-world-description
-            span= quest_world.description
-          .quest-world-background
-            span Background: #{quest_world.background}
-          .quest-world-levels-count
-            span= "#{quest_world.quest_world_levels.count} levels"
+        a.quest-world-link(href="/quest/worlds/#{quest_world.id}/edit")
+          .quest-world-info
+            .quest-world-id
+              span ID: #{quest_world.id}
+            .quest-world-description
+              span= quest_world.description
+            .quest-world-background
+              span Background: #{quest_world.background}
+            .quest-world-levels-count
+              span= "#{quest_world.quest_world_levels.count} levels"

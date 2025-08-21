@@ -1,0 +1,37 @@
+.container.quest-level-new-page
+  h2 Create New Quest Level
+  h3 For Quest World: "#{@quest_world.description}"
+
+  .quest-world-info
+    .quest-world-id
+      strong Quest World ID: 
+      span= @quest_world.id
+    .quest-world-description
+      strong Description: 
+      span= @quest_world.description
+    .quest-world-current-levels
+      strong Current Levels: 
+      span= @quest_world.quest_world_levels.count
+
+  .new-level-form
+    h4 New Level Configuration
+    p This is a placeholder for the quest level creation form.
+    p You would need to add form fields for:
+    
+    ul
+      li Puzzle IDs (array of strings/numbers)
+      li Success criteria:
+        ul
+          li Puzzles required to solve
+          li Optional time limit (in seconds)
+      li Any additional level metadata
+
+    .form-placeholder
+      p 
+        strong Note: 
+        | Form implementation would require additional routes for POST/PUT actions and proper form handling.
+
+  .back-links
+    a(href="/quest/worlds/#{@quest_world.id}/edit") ← Back to Quest World
+    span &nbsp;|&nbsp;
+    a(href="/quest/edit") ← Back to Quest Worlds List

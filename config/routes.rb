@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   get '/quest/levels/:id' => 'game_modes/quest#show'
   post '/quest/levels/:id/complete' => 'game_modes/quest#complete'
   get '/quest/edit' => 'game_modes/quest#edit'
+  get '/quest/worlds/:id/edit' => 'game_modes/quest#edit_quest_world'
+  get '/quest/worlds/:quest_world_id/levels/new' => 'game_modes/quest#new_quest_level'
+  get '/quest/levels/:id/edit' => 'game_modes/quest#edit_quest_level'
 
   # infinity mode
   get '/infinity'                => 'game_modes/infinity#index'

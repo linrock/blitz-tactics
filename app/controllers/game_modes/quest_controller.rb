@@ -42,6 +42,44 @@ class GameModes::QuestController < ApplicationController
     @quest_worlds_count = @quest_worlds.count
   end
 
+  def edit_quest_world
+    # Check if user has privilege to access this page
+    unless privileged_user?
+      render plain: "Access denied", status: :forbidden
+      return
+    end
+    
+    @quest_world = QuestWorld.find(params[:id])
+    @quest_world_levels = @quest_world.quest_world_levels.order(:id)
+  rescue ActiveRecord::RecordNotFound
+    render plain: "Quest world not found", status: :not_found
+  end
+
+  def edit_quest_level
+    # Check if user has privilege to access this page
+    unless privileged_user?
+      render plain: "Access denied", status: :forbidden
+      return
+    end
+    
+    @quest_level = QuestWorldLevel.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render plain: "Quest level not found", status: :not_found
+  end
+
+  def new_quest_level
+    # Check if user has privilege to access this page
+    unless privileged_user?
+      render plain: "Access denied", status: :forbidden
+      return
+    end
+    
+    @quest_world = QuestWorld.find(params[:quest_world_id])
+    @quest_level = @quest_world.quest_world_levels.build
+  rescue ActiveRecord::RecordNotFound
+    render plain: "Quest world not found", status: :not_found
+  end
+
   def complete
     # Extract completion data from request
     puzzles_solved = params[:puzzles_solved].to_i

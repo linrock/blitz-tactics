@@ -1,0 +1,54 @@
+.container.quest-level-edit-page
+  h2 Edit Quest Level
+  h3 Level #{@quest_level.id} from "#{@quest_level.quest_world.description}"
+
+  .quest-level-details
+    .quest-level-id
+      strong Level ID: 
+      span= @quest_level.id
+    .quest-level-world
+      strong Quest World: 
+      span= @quest_level.quest_world.description
+    .quest-level-criteria
+      strong Success Criteria: 
+      span= @quest_level.success_criteria_description
+    .quest-level-puzzles-count
+      strong Total Puzzles: 
+      span= @quest_level.puzzle_count
+    .quest-level-completion-stats
+      strong Completed By: 
+      span= "#{@quest_level.completed_quest_world_levels.count} users"
+
+  .quest-level-success-criteria
+    h4 Success Criteria Details
+    .criteria-puzzles
+      strong Puzzles Required: 
+      span= @quest_level.puzzles_required
+    - if @quest_level.has_time_limit?
+      .criteria-time
+        strong Time Limit: 
+        span= "#{@quest_level.time_limit_seconds} seconds"
+    - else
+      .criteria-time
+        span No time limit
+
+  .quest-level-puzzles
+    h4 Puzzle IDs
+    .puzzle-ids-list
+      - @quest_level.puzzle_ids.each_with_index do |puzzle_id, index|
+        .puzzle-id
+          span= "#{index + 1}. #{puzzle_id}"
+
+  .quest-level-raw-data
+    h4 Raw Data (JSON)
+    .success-criteria-json
+      strong Success Criteria: 
+      pre= JSON.pretty_generate(@quest_level.success_criteria)
+    .puzzle-ids-json
+      strong Puzzle IDs: 
+      pre= JSON.pretty_generate(@quest_level.puzzle_ids)
+
+  .back-links
+    a(href="/quest/worlds/#{@quest_level.quest_world.id}/edit") ← Back to Quest World
+    span &nbsp;|&nbsp;
+    a(href="/quest/edit") ← Back to Quest Worlds List
