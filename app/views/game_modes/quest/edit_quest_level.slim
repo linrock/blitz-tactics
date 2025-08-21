@@ -106,6 +106,9 @@
                     span.puzzle-rating Rating: #{puzzle[:rating]}
                   - if puzzle[:themes]
                     span.puzzle-themes Themes: #{puzzle[:themes].join(', ')}
+                - if puzzle[:puzzle_object]
+                  .puzzle-board
+                    = linked_puzzle_miniboard(puzzle[:puzzle_object])
             - else
               .puzzle-error-details
                 span This puzzle ID was not found in the LichessV2Puzzle database

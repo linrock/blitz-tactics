@@ -342,7 +342,8 @@ class GameModes::QuestController < ApplicationController
             puzzle_id: puzzle_id,
             fen: puzzle.initial_fen,
             rating: puzzle.rating,
-            themes: puzzle.themes
+            themes: puzzle.themes,
+            puzzle_object: puzzle
           }
           @valid_puzzle_count += 1
         else
