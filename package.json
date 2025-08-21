@@ -2,8 +2,6 @@
   "scripts": {
     "dev": "./bin/dev",
     "tsc": "tsc --noEmit",
-    "eye:load": "eye l eye.rb",
-    "eye:info": "eye i",
     "blitz:game_modes:fetch": "rails runner 'GameModePuzzleImporter.fetch_puzzles_json'",
     "blitz:game_modes:import": "rails runner 'GameModePuzzleImporter.import_puzzles'",
     "blitz:game_modes:check": "rails runner 'GameModePuzzleImporter.check_db_puzzles'",
