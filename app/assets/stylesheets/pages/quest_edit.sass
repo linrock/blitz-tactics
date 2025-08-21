@@ -1,0 +1,146 @@
+// Quest Edit Pages - Additional page-specific styles
+
+// Page-specific container styling
+body[data-controller="game_modes/quest"][data-action="edit"],
+body[data-controller="game_modes/quest"][data-action="edit_quest_world"],
+body[data-controller="game_modes/quest"][data-action="edit_quest_level"],
+body[data-controller="game_modes/quest"][data-action="new_quest_level"]
+  background: #f5f6fa
+  min-height: 100vh
+
+  .container
+    background: transparent
+    padding: 30px 20px
+
+// Enhanced visual hierarchy for quest edit pages
+.quest-edit-page
+  .quest-worlds-count
+    animation: fadeIn 0.3s ease-in-out
+
+  .quest-world
+    animation: slideInUp 0.3s ease-in-out
+    animation-fill-mode: both
+
+    &:nth-child(1)
+      animation-delay: 0.1s
+    &:nth-child(2)
+      animation-delay: 0.2s
+    &:nth-child(3)
+      animation-delay: 0.3s
+
+.quest-world-edit-page
+  .quest-world-details
+    animation: fadeIn 0.3s ease-in-out
+
+  .quest-levels-section
+    animation: slideInUp 0.3s ease-in-out 0.1s
+    animation-fill-mode: both
+
+  .quest-level
+    animation: slideInUp 0.3s ease-in-out
+    animation-fill-mode: both
+
+    &:nth-child(1)
+      animation-delay: 0.2s
+    &:nth-child(2)
+      animation-delay: 0.3s
+    &:nth-child(3)
+      animation-delay: 0.4s
+
+.quest-level-edit-page
+  .quest-level-details,
+  .quest-level-success-criteria,
+  .quest-level-puzzles,
+  .quest-level-raw-data
+    animation: fadeIn 0.3s ease-in-out
+    animation-fill-mode: both
+
+    &:nth-child(2)
+      animation-delay: 0.1s
+    &:nth-child(3)
+      animation-delay: 0.2s
+    &:nth-child(4)
+      animation-delay: 0.3s
+    &:nth-child(5)
+      animation-delay: 0.4s
+
+// Animation keyframes
+@keyframes fadeIn
+  from
+    opacity: 0
+    transform: translateY(10px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+@keyframes slideInUp
+  from
+    opacity: 0
+    transform: translateY(20px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+// Enhanced hover states
+.quest-world-link:hover .quest-world-description,
+.quest-level-link:hover .quest-level-criteria span
+  color: #2C9BEA
+  transition: color 0.2s ease
+
+// Status indicators for quest levels
+.quest-level-info
+  .quest-level-completed-by
+    position: relative
+
+    &::before
+      content: "👥"
+      margin-right: 5px
+      opacity: 0.7
+
+  .quest-level-puzzles
+    position: relative
+
+    &::before
+      content: "🧩"
+      margin-right: 5px
+      opacity: 0.7
+
+// Better button styling in context
+.quest-levels-header .blue-button
+  box-shadow: 0 2px 4px rgba(44, 155, 234, 0.2)
+  transition: all 0.2s ease
+
+  &:hover
+    box-shadow: 0 4px 8px rgba(44, 155, 234, 0.3)
+    transform: translateY(-1px)
+
+// Enhanced code display in quest level details
+.quest-level-raw-data pre
+  max-height: 300px
+  overflow-y: auto
+  border-left: 3px solid #2C9BEA
+
+// Improved mobile experience
+@media (max-width: 480px)
+  .quest-edit-page,
+  .quest-world-edit-page,
+  .quest-level-edit-page,
+  .quest-level-new-page
+    padding: 15px 10px
+
+  .quest-world,
+  .quest-level,
+  .quest-world-details,
+  .quest-level-details,
+  .quest-levels-section
+    margin-bottom: 15px
+
+  .quest-world-link,
+  .quest-level-link
+    padding: 15px
+
+  h2
+    font-size: 24px
+
+  h3
+    font-size: 16px
