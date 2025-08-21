@@ -1,0 +1,38 @@
+.container.quest-level-show-page
+  h2 Quest Level
+  h3 = "Level #{@quest_world_level.id} from \"#{@quest_world_level.quest_world.description}\""
+
+  .quest-level-summary
+    .summary-row
+      strong World:
+      span = @quest_world_level.quest_world.description
+    .summary-row
+      strong Success Criteria:
+      span = @quest_world_level.success_criteria_description
+    .summary-row
+      strong Puzzles:
+      span = "#{@valid_puzzle_count} valid / #{@total_puzzle_count} total"
+
+  - if @invalid_puzzle_ids.present?
+    .invalid-puzzles
+      strong Invalid puzzle IDs:
+      span = @invalid_puzzle_ids.join(", ")
+
+  .puzzles-grid
+    - @valid_lichess_puzzles.each do |p|
+      .puzzle-card
+        .puzzle-header
+          .puzzle-id = p.puzzle_id
+          .puzzle-rating = ("Rating: #{p.rating}" if p.respond_to?(:rating))
+        .puzzle-fen
+          strong FEN:
+          span = p.initial_fen
+        .puzzle-board
+          = linked_puzzle_miniboard(p)
+
+  .back-links
+    a(href="/quest/worlds/#{@quest_world_level.quest_world.id}/edit") ← Back to Quest World
+    span &nbsp;|&nbsp;
+    a(href="/quest/edit") ← Back to Quest Worlds List
+
+
