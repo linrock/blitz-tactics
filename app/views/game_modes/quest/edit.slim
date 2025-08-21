@@ -41,9 +41,11 @@
                   - puzzle_data = level_data['first_puzzle']
                   - puzzle_fen = puzzle_data[:fen] if puzzle_data
                   - puzzle_flip = puzzle_fen&.include?(" w ") || false
+                  - initial_move = puzzle_data[:initial_move] if puzzle_data
                   = render(partial: "static/snippets/miniboard",
                           locals: { fen: puzzle_fen,
                                    flip: puzzle_flip,
+                                   initial_move: initial_move,
                                    title: "Level #{level_data['number']} - First Puzzle" })
               - else
                 .no-puzzle-message

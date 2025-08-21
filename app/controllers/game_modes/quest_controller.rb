@@ -441,8 +441,9 @@ class GameModes::QuestController < ApplicationController
 
     {
       puzzle_id: puzzle.puzzle_id,
-      fen: puzzle_fen,
+      fen: puzzle.initial_fen, # Use initial FEN like quest level edit page
       initial_fen: puzzle.initial_fen,
+      initial_move: puzzle.moves_uci[0], # Setup move (first move in sequence) like quest level edit page
       rating: puzzle.rating,
       themes: puzzle.themes
     }
