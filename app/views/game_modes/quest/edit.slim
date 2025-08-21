@@ -2,8 +2,11 @@
   h2 Edit Quest Worlds
   h3 Manage all quest worlds in the system
 
-  .quest-worlds-count
-    = "#{@quest_worlds_count} quest worlds total"
+  .quest-worlds-header
+    .quest-worlds-count
+      = "#{@quest_worlds_count} quest worlds total"
+    .quest-worlds-actions
+      a.blue-button(href="/quest/worlds/new") Create New Quest World
 
   .quest-worlds-list
     - @quest_worlds.each do |quest_world|

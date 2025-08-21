@@ -1,0 +1,61 @@
+.container.quest-world-new-page
+  h2 Create New Quest World
+  h3 Add a new quest world to the system
+
+  .new-world-form
+    = form_tag "/quest/worlds", method: :post, authenticity_token: true do
+      h4 New Quest World Configuration
+      
+      - if @quest_world && @quest_world.errors.any?
+        .form-errors
+          h5= "#{@quest_world.errors.count} error(s) prevented this quest world from being saved:"
+          ul
+            - @quest_world.errors.full_messages.each do |message|
+              li= message
+
+      .form-group
+        label.form-label(for="description") Quest World Description
+        input.form-input(
+          type="text"
+          name="quest_world[description]"
+          id="description"
+          placeholder="e.g., 'Enchanted Forest - Ancient puzzles hidden in magical woods'"
+          required
+          value="#{@form_values&.[](:description)}"
+        )
+        .form-help
+          | A descriptive name for the quest world that players will see
+
+      .form-group
+        label.form-label(for="background") Background Image
+        input.form-input(
+          type="text"
+          name="quest_world[background]"
+          id="background"
+          placeholder="e.g., 'enchanted-forest.jpg'"
+          required
+          value="#{@form_values&.[](:background)}"
+        )
+        .form-help
+          | Filename of the background image for this quest world (should be in the assets folder)
+
+      .form-actions
+        input.blue-button(
+          type="submit" 
+          value="Create Quest World"
+          onclick="this.disabled = true; this.form.submit();"
+        )
+        span &nbsp;
+        a.cancel-link(href="/quest/edit") Cancel
+
+  .background-info
+    h4 Background Image Guidelines
+    p Background images should be:
+    ul
+      li High quality images (preferably 1920x1080 or similar)
+      li Placed in the appropriate assets directory
+      li Named descriptively (e.g., 'forest-background.jpg', 'castle-theme.png')
+      li Optimized for web display
+
+  .back-links
+    a(href="/quest/edit") ← Back to Quest Worlds List

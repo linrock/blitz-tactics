@@ -42,6 +42,55 @@ class GameModes::QuestController < ApplicationController
     @quest_worlds_count = @quest_worlds.count
   end
 
+  def new_quest_world
+    # Check if user has privilege to access this page
+    unless privileged_user?
+      render plain: "Access denied", status: :forbidden
+      return
+    end
+    
+    @quest_world = QuestWorld.new
+  end
+
+  def create_quest_world
+    # Check if user has privilege to access this page
+    unless privileged_user?
+      render plain: "Access denied", status: :forbidden
+      return
+    end
+    
+    @quest_world = QuestWorld.new
+    
+    # Get form parameters
+    description = params[:quest_world][:description].to_s.strip
+    background = params[:quest_world][:background].to_s.strip
+    
+    # Validate and assign parameters
+    if description.blank?
+      @quest_world.errors.add(:description, "can't be blank")
+    else
+      @quest_world.description = description
+    end
+    
+    if background.blank?
+      @quest_world.errors.add(:background, "can't be blank")
+    else
+      @quest_world.background = background
+    end
+    
+    # Store form values for redisplay on error
+    @form_values = {
+      description: description,
+      background: background
+    }
+    
+    if @quest_world.errors.empty? && @quest_world.save
+      redirect_to "/quest/edit", notice: "Quest world created successfully!"
+    else
+      render :new_quest_world
+    end
+  end
+
   def edit_quest_world
     # Check if user has privilege to access this page
     unless privileged_user?

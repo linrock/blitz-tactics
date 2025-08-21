@@ -122,14 +122,28 @@
 
 // Main quest worlds list page
 .quest-edit-page
-  .quest-worlds-count
-    font-size: 16px
+  .quest-worlds-header
+    display: flex
+    justify-content: space-between
+    align-items: center
     margin-bottom: 30px
-    padding: 15px 20px
-    background: #f8f9fa
-    border-radius: 5px
-    border-left: 4px solid #2C9BEA
-    color: #666
+    padding: 20px 25px
+    background: white
+    border-radius: 8px
+    border: 1px solid #e0e0e0
+
+    .quest-worlds-count
+      font-size: 16px
+      color: #666
+      padding: 10px 15px
+      background: #f8f9fa
+      border-radius: 5px
+      border-left: 4px solid #2C9BEA
+
+    .quest-worlds-actions
+      .blue-button
+        font-size: 14px
+        padding: 10px 20px
 
   .quest-worlds-list
     display: grid
@@ -551,6 +565,135 @@
     span
       color: #999
       margin: 0 10px
+
+// New quest world page
+.quest-world-new-page
+  .new-world-form
+    background: white
+    padding: 25px
+    border-radius: 8px
+    border: 1px solid #e0e0e0
+    margin-bottom: 30px
+
+    h4
+      margin-top: 0
+      padding-bottom: 15px
+      border-bottom: 1px solid #e0e0e0
+
+    .form-errors
+      background: #fff5f5
+      border: 1px solid #feb2b2
+      border-radius: 4px
+      padding: 15px
+      margin-bottom: 20px
+
+      h5
+        color: #e53e3e
+        margin: 0 0 10px 0
+        font-size: 14px
+
+      ul
+        margin: 0
+        padding-left: 20px
+
+      li
+        color: #e53e3e
+        font-size: 14px
+        margin-bottom: 5px
+
+    .form-group
+      margin-bottom: 25px
+
+      &:last-child
+        margin-bottom: 0
+
+    .form-label
+      display: block
+      font-weight: 600
+      color: #333
+      font-size: 14px
+      margin-bottom: 8px
+
+    .form-input
+      width: 100%
+      max-width: 500px
+      padding: 10px 12px
+      border: 1px solid #d1d5db
+      border-radius: 4px
+      font-size: 14px
+      font-family: inherit
+      transition: border-color 0.2s ease
+
+      &:focus
+        outline: none
+        border-color: #2C9BEA
+        box-shadow: 0 0 0 3px rgba(44, 155, 234, 0.1)
+
+      &[required]
+        border-left: 3px solid #2C9BEA
+
+    .form-help
+      margin-top: 5px
+      font-size: 12px
+      color: #666
+      line-height: 1.4
+
+    .form-actions
+      margin-top: 30px
+      padding-top: 20px
+      border-top: 1px solid #e0e0e0
+      display: flex
+      align-items: center
+      gap: 15px
+
+      .blue-button
+        font-size: 16px
+        padding: 12px 24px
+
+      .cancel-link
+        color: #666
+        text-decoration: none
+        font-size: 14px
+
+        &:hover
+          color: #333
+          text-decoration: underline
+
+  .background-info
+    background: #f8f9fa
+    padding: 25px
+    border-radius: 8px
+    border: 1px solid #e0e0e0
+    margin-bottom: 30px
+
+    h4
+      margin-top: 0
+      margin-bottom: 15px
+      color: #333
+
+    p
+      margin-bottom: 15px
+      color: #666
+      line-height: 1.5
+
+    ul
+      margin-left: 20px
+      color: #666
+
+      li
+        margin-bottom: 8px
+        line-height: 1.4
+
+  .back-links
+    margin-top: 30px
+
+    a
+      color: #2C9BEA
+      text-decoration: none
+      font-size: 16px
+
+      &:hover
+        text-decoration: underline
 
 // New quest level page
 .quest-level-new-page
