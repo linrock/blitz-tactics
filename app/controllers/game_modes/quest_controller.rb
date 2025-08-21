@@ -67,6 +67,64 @@ class GameModes::QuestController < ApplicationController
     render plain: "Quest level not found", status: :not_found
   end
 
+  def update_quest_level
+    # Check if user has privilege to access this page
+    unless privileged_user?
+      render plain: "Access denied", status: :forbidden
+      return
+    end
+    
+    @quest_level = QuestWorldLevel.find(params[:id])
+    
+    # Parse puzzle IDs from form input
+    puzzle_ids_input = params[:quest_level][:puzzle_ids_input].to_s.strip
+    if puzzle_ids_input.present?
+      # Split by comma, space, or newline and clean up
+      @quest_level.puzzle_ids = puzzle_ids_input.split(/[\s,\n]+/).reject(&:blank?)
+    else
+      @quest_level.puzzle_ids = []
+    end
+    
+    # Build success criteria from form inputs
+    success_criteria = {}
+    puzzles_required = params[:quest_level][:puzzles_required].to_i
+    time_limit = params[:quest_level][:time_limit].to_i
+    
+    # Validate puzzles required
+    if puzzles_required <= 0
+      @quest_level.errors.add(:puzzles_required, "must be a positive number")
+    else
+      success_criteria['puzzles_solved'] = puzzles_required
+    end
+    
+    # Validate that we have enough puzzles for the requirement
+    if @quest_level.puzzle_ids.length < puzzles_required
+      @quest_level.errors.add(:puzzle_ids_input, "must contain at least #{puzzles_required} puzzle IDs (currently has #{@quest_level.puzzle_ids.length})")
+    end
+    
+    # Add time limit if specified
+    if time_limit > 0
+      success_criteria['time_limit'] = time_limit
+    end
+    
+    @quest_level.success_criteria = success_criteria
+    
+    # Store form values for redisplay on error
+    @form_values = {
+      puzzle_ids_input: puzzle_ids_input,
+      puzzles_required: puzzles_required,
+      time_limit: time_limit > 0 ? time_limit : nil
+    }
+    
+    if @quest_level.errors.empty? && @quest_level.save
+      redirect_to "/quest/worlds/#{@quest_level.quest_world.id}/edit", notice: "Quest level updated successfully!"
+    else
+      render :edit_quest_level
+    end
+  rescue ActiveRecord::RecordNotFound
+    render plain: "Quest level not found", status: :not_found
+  end
+
   def new_quest_level
     # Check if user has privilege to access this page
     unless privileged_user?

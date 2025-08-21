@@ -298,7 +298,7 @@
 
 // Individual quest level edit page
 .quest-level-edit-page
-  .quest-level-details
+  .quest-level-info
     background: white
     padding: 25px
     border-radius: 8px
@@ -321,6 +321,151 @@
       span
         color: #666
         font-size: 16px
+
+  .edit-level-form
+    background: white
+    padding: 25px
+    border-radius: 8px
+    border: 1px solid #e0e0e0
+    margin-bottom: 30px
+
+    h4
+      margin-top: 0
+      padding-bottom: 15px
+      border-bottom: 1px solid #e0e0e0
+
+    .form-errors
+      background: #fff5f5
+      border: 1px solid #feb2b2
+      border-radius: 4px
+      padding: 15px
+      margin-bottom: 20px
+
+      h5
+        color: #e53e3e
+        margin: 0 0 10px 0
+        font-size: 14px
+
+      ul
+        margin: 0
+        padding-left: 20px
+
+      li
+        color: #e53e3e
+        font-size: 14px
+        margin-bottom: 5px
+
+    .form-group
+      margin-bottom: 25px
+
+      &:last-child
+        margin-bottom: 0
+
+    .form-label
+      display: block
+      font-weight: 600
+      color: #333
+      font-size: 14px
+      margin-bottom: 8px
+
+    .form-input,
+    .form-textarea
+      width: 100%
+      max-width: 500px
+      padding: 10px 12px
+      border: 1px solid #d1d5db
+      border-radius: 4px
+      font-size: 14px
+      font-family: inherit
+      transition: border-color 0.2s ease
+
+      &:focus
+        outline: none
+        border-color: #2C9BEA
+        box-shadow: 0 0 0 3px rgba(44, 155, 234, 0.1)
+
+      &[required]
+        border-left: 3px solid #2C9BEA
+
+    .form-textarea
+      min-height: 120px
+      resize: vertical
+      font-family: 'Courier New', monospace
+
+    .form-help
+      margin-top: 5px
+      font-size: 12px
+      color: #666
+      line-height: 1.4
+
+    .form-actions
+      margin-top: 30px
+      padding-top: 20px
+      border-top: 1px solid #e0e0e0
+      display: flex
+      align-items: center
+      gap: 15px
+
+      .blue-button
+        font-size: 16px
+        padding: 12px 24px
+
+      .cancel-link
+        color: #666
+        text-decoration: none
+        font-size: 14px
+
+        &:hover
+          color: #333
+          text-decoration: underline
+
+  .quest-level-current-data
+    background: #f8f9fa
+    padding: 25px
+    border-radius: 8px
+    border: 1px solid #e0e0e0
+    margin-bottom: 30px
+
+    h4
+      margin-top: 0
+      margin-bottom: 20px
+      color: #333
+      padding-bottom: 15px
+      border-bottom: 1px solid #e0e0e0
+
+    h5
+      margin: 20px 0 15px 0
+      color: #444
+      font-size: 16px
+
+    .current-criteria,
+    .current-puzzles-count
+      margin-bottom: 15px
+      display: flex
+      align-items: center
+
+      strong
+        min-width: 200px
+        color: #333
+        font-size: 14px
+
+      span
+        color: #666
+        font-size: 16px
+
+    .puzzle-ids-preview
+      display: grid
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))
+      gap: 8px
+      margin-top: 10px
+
+    .puzzle-id-preview
+      background: white
+      padding: 6px 10px
+      border-radius: 4px
+      border: 1px solid #d1d5db
+      font-family: 'Courier New', monospace
+      font-size: 12px
 
   .quest-level-success-criteria,
   .quest-level-puzzles,

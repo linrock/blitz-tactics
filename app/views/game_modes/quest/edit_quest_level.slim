@@ -2,51 +2,94 @@
   h2 Edit Quest Level
   h3 Level #{@quest_level.id} from "#{@quest_level.quest_world.description}"
 
-  .quest-level-details
+  .quest-level-info
     .quest-level-id
       strong Level ID: 
       span= @quest_level.id
     .quest-level-world
       strong Quest World: 
       span= @quest_level.quest_world.description
-    .quest-level-criteria
-      strong Success Criteria: 
-      span= @quest_level.success_criteria_description
-    .quest-level-puzzles-count
-      strong Total Puzzles: 
-      span= @quest_level.puzzle_count
     .quest-level-completion-stats
       strong Completed By: 
       span= "#{@quest_level.completed_quest_world_levels.count} users"
 
-  .quest-level-success-criteria
-    h4 Success Criteria Details
-    .criteria-puzzles
-      strong Puzzles Required: 
-      span= @quest_level.puzzles_required
-    - if @quest_level.has_time_limit?
-      .criteria-time
-        strong Time Limit: 
-        span= "#{@quest_level.time_limit_seconds} seconds"
-    - else
-      .criteria-time
-        span No time limit
+  .edit-level-form
+    = form_tag "/quest/levels/#{@quest_level.id}", method: :patch, authenticity_token: true do
+      h4 Edit Level Configuration
+      
+      - if @quest_level && @quest_level.errors.any?
+        .form-errors
+          h5= "#{@quest_level.errors.count} error(s) prevented this quest level from being saved:"
+          ul
+            - @quest_level.errors.full_messages.each do |message|
+              li= message
 
-  .quest-level-puzzles
-    h4 Puzzle IDs
-    .puzzle-ids-list
-      - @quest_level.puzzle_ids.each_with_index do |puzzle_id, index|
-        .puzzle-id
-          span= "#{index + 1}. #{puzzle_id}"
+      .form-group
+        label.form-label(for="puzzle_ids_input") Puzzle IDs
+        textarea.form-textarea(
+          name="quest_level[puzzle_ids_input]" 
+          id="puzzle_ids_input"
+          placeholder="Enter puzzle IDs separated by commas, spaces, or newlines"
+          rows="6"
+          required
+        )= @form_values&.[](:puzzle_ids_input) || (@quest_level.puzzle_ids.join(", "))
+        .form-help
+          | Enter puzzle IDs (e.g., "puzzle1, puzzle2, AbCd3fG, 12345")
 
-  .quest-level-raw-data
-    h4 Raw Data (JSON)
-    .success-criteria-json
-      strong Success Criteria: 
-      pre= JSON.pretty_generate(@quest_level.success_criteria)
-    .puzzle-ids-json
-      strong Puzzle IDs: 
-      pre= JSON.pretty_generate(@quest_level.puzzle_ids)
+      .form-group
+        label.form-label(for="puzzles_required") Puzzles Required to Solve
+        input.form-input(
+          type="number"
+          name="quest_level[puzzles_required]"
+          id="puzzles_required"
+          placeholder="e.g., 5"
+          min="1"
+          required
+          value="#{@form_values&.[](:puzzles_required) || @quest_level.puzzles_required}"
+        )
+        .form-help
+          | Number of puzzles the user must solve to complete this level
+
+      .form-group
+        label.form-label(for="time_limit") Time Limit (seconds) - Optional
+        input.form-input(
+          type="number"
+          name="quest_level[time_limit]"
+          id="time_limit"
+          placeholder="e.g., 60 (leave blank for no time limit)"
+          min="1"
+          value="#{@form_values&.[](:time_limit) || @quest_level.time_limit_seconds}"
+        )
+        .form-help
+          | Maximum time allowed to complete the level. Leave blank for no time limit.
+
+      .form-actions
+        input.blue-button(
+          type="submit" 
+          value="Update Quest Level"
+          onclick="this.disabled = true; this.form.submit();"
+        )
+        span &nbsp;
+        a.cancel-link(href="/quest/levels/#{@quest_level.id}/edit") Cancel Changes
+
+  .quest-level-current-data
+    h4 Current Configuration Summary
+    .current-criteria
+      strong Current Success Criteria: 
+      span= @quest_level.success_criteria_description
+    .current-puzzles-count
+      strong Current Total Puzzles: 
+      span= @quest_level.puzzle_count
+    
+    .current-puzzle-ids
+      h5 Current Puzzle IDs
+      .puzzle-ids-preview
+        - @quest_level.puzzle_ids.first(10).each_with_index do |puzzle_id, index|
+          .puzzle-id-preview
+            span= "#{index + 1}. #{puzzle_id}"
+        - if @quest_level.puzzle_ids.length > 10
+          .puzzle-id-preview
+            span= "... and #{@quest_level.puzzle_ids.length - 10} more"
 
   .back-links
     a(href="/quest/worlds/#{@quest_level.quest_world.id}/edit") ← Back to Quest World
