@@ -23,7 +23,6 @@
     "esbuild": "^0.25.9",
     "esbuild-plugin-vue3": "^0.4.2",
     "esbuild-sass-plugin": "^3.3.1",
-    "fastclick": "^1.0.6",
     "mithril": "^2.2.9",
     "mousetrap": "^1.6.2",
     "pug": "^3.0.3",

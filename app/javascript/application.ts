@@ -1,6 +1,7 @@
 // This script runs on every page after DOM load
 
-import FastClick from 'fastclick'
+// FastClick is no longer needed in modern browsers
+// Use CSS touch-action: manipulation instead
 
 import SoundPlayer from './components/sound_player'
 import MiniChessboard from './components/mini_chessboard'
@@ -37,5 +38,6 @@ document.addEventListener(`DOMContentLoaded`, () => {
   // initialize global views/components
   new SoundPlayer()
 
-  FastClick.attach(document.body)
+  // Modern browsers handle touch events properly with CSS touch-action
+  // No need for FastClick.attach(document.body)
 })
