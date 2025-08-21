@@ -18,6 +18,21 @@ class User < ActiveRecord::Base
   has_many :completed_repetition_rounds
   has_many :completed_repetition_levels
   has_many :positions
+  has_many :completed_quest_world_levels
+  has_many :completed_quest_worlds
+  
+  # Quest-related helper methods
+  def completed_quest_world?(world)
+    completed_quest_worlds.exists?(quest_world: world)
+  end
+  
+  def completed_quest_world_level?(level)
+    completed_quest_world_levels.exists?(quest_world_level: level)
+  end
+  
+  def quest_world_completion_percentage(world)
+    world.completion_percentage(self)
+  end
 
   has_one :user_chessboard
   has_one :user_rating

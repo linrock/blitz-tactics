@@ -1,6 +1,7 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -8,6 +9,13 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+-- *not* creating schema, since initdb creates it
+
 
 SET default_tablespace = '';
 
@@ -88,6 +96,72 @@ CREATE SEQUENCE public.completed_haste_rounds_id_seq
 --
 
 ALTER SEQUENCE public.completed_haste_rounds_id_seq OWNED BY public.completed_haste_rounds.id;
+
+
+--
+-- Name: completed_quest_world_levels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_quest_world_levels (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    quest_world_level_id bigint NOT NULL,
+    completed_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_quest_world_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_quest_world_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_quest_world_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_quest_world_levels_id_seq OWNED BY public.completed_quest_world_levels.id;
+
+
+--
+-- Name: completed_quest_worlds; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_quest_worlds (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    quest_world_id bigint NOT NULL,
+    completed_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_quest_worlds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_quest_worlds_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_quest_worlds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_quest_worlds_id_seq OWNED BY public.completed_quest_worlds.id;
 
 
 --
@@ -676,6 +750,71 @@ ALTER SEQUENCE public.puzzles_id_seq OWNED BY public.puzzles.id;
 
 
 --
+-- Name: quest_world_levels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.quest_world_levels (
+    id bigint NOT NULL,
+    quest_world_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    puzzle_ids character varying[] DEFAULT '{}'::character varying[],
+    success_criteria jsonb DEFAULT '{}'::jsonb
+);
+
+
+--
+-- Name: quest_world_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.quest_world_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: quest_world_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.quest_world_levels_id_seq OWNED BY public.quest_world_levels.id;
+
+
+--
+-- Name: quest_worlds; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.quest_worlds (
+    id bigint NOT NULL,
+    description character varying,
+    background character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: quest_worlds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.quest_worlds_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: quest_worlds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.quest_worlds_id_seq OWNED BY public.quest_worlds.id;
+
+
+--
 -- Name: rated_puzzle_attempts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1066,6 +1205,20 @@ ALTER TABLE ONLY public.completed_haste_rounds ALTER COLUMN id SET DEFAULT nextv
 
 
 --
+-- Name: completed_quest_world_levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_quest_world_levels ALTER COLUMN id SET DEFAULT nextval('public.completed_quest_world_levels_id_seq'::regclass);
+
+
+--
+-- Name: completed_quest_worlds id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_quest_worlds ALTER COLUMN id SET DEFAULT nextval('public.completed_quest_worlds_id_seq'::regclass);
+
+
+--
 -- Name: completed_repetition_levels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1185,6 +1338,20 @@ ALTER TABLE ONLY public.puzzles ALTER COLUMN id SET DEFAULT nextval('public.puzz
 
 
 --
+-- Name: quest_world_levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.quest_world_levels ALTER COLUMN id SET DEFAULT nextval('public.quest_world_levels_id_seq'::regclass);
+
+
+--
+-- Name: quest_worlds id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.quest_worlds ALTER COLUMN id SET DEFAULT nextval('public.quest_worlds_id_seq'::regclass);
+
+
+--
 -- Name: rated_puzzle_attempts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1276,6 +1443,22 @@ ALTER TABLE ONLY public.completed_countdown_levels
 
 ALTER TABLE ONLY public.completed_haste_rounds
     ADD CONSTRAINT completed_haste_rounds_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: completed_quest_world_levels completed_quest_world_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_quest_world_levels
+    ADD CONSTRAINT completed_quest_world_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: completed_quest_worlds completed_quest_worlds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_quest_worlds
+    ADD CONSTRAINT completed_quest_worlds_pkey PRIMARY KEY (id);
 
 
 --
@@ -1415,6 +1598,22 @@ ALTER TABLE ONLY public.puzzles
 
 
 --
+-- Name: quest_world_levels quest_world_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.quest_world_levels
+    ADD CONSTRAINT quest_world_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: quest_worlds quest_worlds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.quest_worlds
+    ADD CONSTRAINT quest_worlds_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: rated_puzzle_attempts rated_puzzle_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1521,6 +1720,48 @@ CREATE INDEX index_completed_haste_rounds_on_created_at ON public.completed_hast
 --
 
 CREATE INDEX index_completed_haste_rounds_on_user_id ON public.completed_haste_rounds USING btree (user_id);
+
+
+--
+-- Name: index_completed_quest_world_levels_on_quest_world_level_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_quest_world_levels_on_quest_world_level_id ON public.completed_quest_world_levels USING btree (quest_world_level_id);
+
+
+--
+-- Name: index_completed_quest_world_levels_on_user_and_level; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_completed_quest_world_levels_on_user_and_level ON public.completed_quest_world_levels USING btree (user_id, quest_world_level_id);
+
+
+--
+-- Name: index_completed_quest_world_levels_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_quest_world_levels_on_user_id ON public.completed_quest_world_levels USING btree (user_id);
+
+
+--
+-- Name: index_completed_quest_worlds_on_quest_world_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_quest_worlds_on_quest_world_id ON public.completed_quest_worlds USING btree (quest_world_id);
+
+
+--
+-- Name: index_completed_quest_worlds_on_user_and_world; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_completed_quest_worlds_on_user_and_world ON public.completed_quest_worlds USING btree (user_id, quest_world_id);
+
+
+--
+-- Name: index_completed_quest_worlds_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_quest_worlds_on_user_id ON public.completed_quest_worlds USING btree (user_id);
 
 
 --
@@ -1685,6 +1926,27 @@ CREATE UNIQUE INDEX index_puzzles_on_puzzle_id ON public.puzzles USING btree (pu
 
 
 --
+-- Name: index_quest_world_levels_on_puzzle_ids; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_quest_world_levels_on_puzzle_ids ON public.quest_world_levels USING gin (puzzle_ids);
+
+
+--
+-- Name: index_quest_world_levels_on_quest_world_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_quest_world_levels_on_quest_world_id ON public.quest_world_levels USING btree (quest_world_id);
+
+
+--
+-- Name: index_quest_world_levels_on_success_criteria; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_quest_world_levels_on_success_criteria ON public.quest_world_levels USING gin (success_criteria);
+
+
+--
 -- Name: index_rated_puzzle_attempts_on_rated_puzzle_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1797,50 +2059,92 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: completed_quest_world_levels fk_rails_0b0079a9d6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_quest_world_levels
+    ADD CONSTRAINT fk_rails_0b0079a9d6 FOREIGN KEY (quest_world_level_id) REFERENCES public.quest_world_levels(id);
+
+
+--
+-- Name: quest_world_levels fk_rails_26da1962fd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.quest_world_levels
+    ADD CONSTRAINT fk_rails_26da1962fd FOREIGN KEY (quest_world_id) REFERENCES public.quest_worlds(id);
+
+
+--
+-- Name: completed_quest_worlds fk_rails_7a711e831d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_quest_worlds
+    ADD CONSTRAINT fk_rails_7a711e831d FOREIGN KEY (quest_world_id) REFERENCES public.quest_worlds(id);
+
+
+--
+-- Name: completed_quest_world_levels fk_rails_7e98468adc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_quest_world_levels
+    ADD CONSTRAINT fk_rails_7e98468adc FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: completed_quest_worlds fk_rails_7eed6afe0e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_quest_worlds
+    ADD CONSTRAINT fk_rails_7eed6afe0e FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20160223082005'),
-('20160313063315'),
-('20160313063553'),
-('20160313074604'),
-('20160313074949'),
-('20160313200604'),
-('20160313213221'),
-('20160411003705'),
-('20160417190025'),
-('20161125221817'),
-('20180620032206'),
-('20180620084825'),
-('20180621081826'),
-('20180623113358'),
-('20180623114045'),
-('20180623125613'),
-('20180624063512'),
-('20180625160707'),
-('20180625160722'),
-('20180626024019'),
-('20180626024026'),
-('20180626052132'),
-('20181206064113'),
-('20181206064149'),
-('20181207065925'),
-('20181207070038'),
-('20181207070049'),
-('20181211070754'),
-('20181211073138'),
-('20190220052623'),
-('20190221152057'),
-('20190221152105'),
-('20190221152109'),
-('20201002022940'),
-('20201021035332'),
-('20201207014332'),
-('20201229001317'),
+('20250821044449'),
+('20250821043552'),
+('20250821043546'),
+('20250821042209'),
+('20250821042208'),
+('20210417123508'),
 ('20210417123507'),
-('20210417123508');
-
+('20201229001317'),
+('20201207014332'),
+('20201021035332'),
+('20201002022940'),
+('20190221152109'),
+('20190221152105'),
+('20190221152057'),
+('20190220052623'),
+('20181211073138'),
+('20181211070754'),
+('20181207070049'),
+('20181207070038'),
+('20181207065925'),
+('20181206064149'),
+('20181206064113'),
+('20180626024026'),
+('20180626024019'),
+('20180625160722'),
+('20180625160707'),
+('20180624063512'),
+('20180623125613'),
+('20180623114045'),
+('20180623113358'),
+('20180621081826'),
+('20180620084825'),
+('20180620032206'),
+('20161125221817'),
+('20160417190025'),
+('20160411003705'),
+('20160313213221'),
+('20160313200604'),
+('20160313074949'),
+('20160313074604'),
+('20160313063553'),
+('20160313063315');
 
