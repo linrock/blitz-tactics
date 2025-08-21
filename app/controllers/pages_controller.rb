@@ -7,6 +7,21 @@ class PagesController < ApplicationController
     @background_overlay = "rgba(0, 0, 0, 0.1)"
     @world_number = 1
     @world_name = "Just getting started"
+    
+    # Load the first QuestWorld and its levels
+    @quest_world = QuestWorld.first
+    if @quest_world
+      @quest_world_levels = @quest_world.quest_world_levels
+      # Prepare first puzzle data for each level
+      @quest_world_levels_with_puzzles = @quest_world_levels.map do |level|
+        first_puzzle = get_first_puzzle_for_level(level)
+        level_data = level.attributes
+        level_data['first_puzzle'] = first_puzzle
+        level_data['success_criteria_description'] = level.success_criteria_description
+        level_data
+      end
+    end
+    
     render "/home"
   end
 
@@ -95,6 +110,26 @@ class PagesController < ApplicationController
   end
 
   private
+
+  def get_first_puzzle_for_level(level)
+    return nil unless level.puzzle_ids.present? && level.puzzle_ids.is_a?(Array)
+
+    first_puzzle_id = level.puzzle_ids.first
+    return nil if first_puzzle_id.blank?
+
+    # Try to find the puzzle by puzzle_id
+    puzzle = LichessV2Puzzle.find_by(puzzle_id: first_puzzle_id.to_s)
+    return nil unless puzzle
+
+    {
+      puzzle_id: puzzle.puzzle_id,
+      fen: puzzle.initial_fen, # Use initial FEN like quest level edit page
+      initial_fen: puzzle.initial_fen,
+      initial_move: puzzle.moves_uci[0], # Setup move (first move in sequence) like quest level edit page
+      rating: puzzle.rating,
+      themes: puzzle.themes
+    }
+  end
 
   def set_homepage_puzzles
     @hours_until_tomorrow = 24 - DateTime.now.hour
