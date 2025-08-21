@@ -9,15 +9,42 @@
       a.blue-button(href="/quest/worlds/new") Create New Quest World
 
   .quest-worlds-list
-    - @quest_worlds.each do |quest_world|
+    - @quest_worlds_with_puzzle_data.each do |quest_world_data|
       .quest-world
-        a.quest-world-link(href="/quest/worlds/#{quest_world.id}/edit")
+        a.quest-world-link(href="/quest/worlds/#{quest_world_data['id']}/edit")
           .quest-world-info
             .quest-world-id
-              span ID: #{quest_world.id}
+              span ID: #{quest_world_data['id']}
             .quest-world-description
-              span= quest_world.description
+              span= quest_world_data['description']
             .quest-world-background
-              span Background: #{quest_world.background}
+              span Background: #{quest_world_data['background']}
             .quest-world-levels-count
-              span= "#{quest_world.quest_world_levels.count} levels"
+              span= "#{quest_world_data['levels_with_puzzles'].count} levels"
+
+        .quest-world-levels-preview
+          - quest_world_data['levels_with_puzzles'].each do |level_data|
+            .quest-level-preview
+              .level-info
+                .level-number
+                  span Level #{level_data['number']}
+                .level-puzzle-count
+                  span #{level_data['puzzle_ids'].length} puzzles
+                - if level_data['first_puzzle']
+                  .puzzle-info
+                    span Rating: #{level_data['first_puzzle'][:rating] || 'Unknown'}
+                    br
+                    span Themes: #{level_data['first_puzzle'][:themes]&.join(', ') || 'None'}
+
+              - if level_data['first_puzzle']
+                .mini-chessboard-container
+                  - puzzle_data = level_data['first_puzzle']
+                  - puzzle_fen = puzzle_data[:fen] if puzzle_data
+                  - puzzle_flip = puzzle_fen&.include?(" w ") || false
+                  = render(partial: "static/snippets/miniboard",
+                          locals: { fen: puzzle_fen,
+                                   flip: puzzle_flip,
+                                   title: "Level #{level_data['number']} - First Puzzle" })
+              - else
+                .no-puzzle-message
+                  span No puzzle data available

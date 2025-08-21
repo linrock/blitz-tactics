@@ -51,9 +51,20 @@ class GameModes::QuestController < ApplicationController
       render plain: "Access denied", status: :forbidden
       return
     end
-    
+
     @quest_worlds = QuestWorld.all
     @quest_worlds_count = @quest_worlds.count
+
+    # Prepare first puzzle data for each quest world level
+    @quest_worlds_with_puzzle_data = @quest_worlds.map do |quest_world|
+      quest_world_levels_with_puzzles = quest_world.quest_world_levels.map do |level|
+        first_puzzle = get_first_puzzle_for_level(level)
+        level_data = level.attributes
+        level_data['first_puzzle'] = first_puzzle
+        level_data
+      end
+      quest_world.attributes.merge('levels_with_puzzles' => quest_world_levels_with_puzzles)
+    end
   end
 
   def new_quest_world
@@ -377,13 +388,13 @@ class GameModes::QuestController < ApplicationController
     # Initialize puzzle data arrays
     @puzzle_data = []
     @valid_puzzle_count = 0
-    
+
     # Fetch puzzle data from LichessV2Puzzle if puzzle_ids exist
     if @quest_level&.puzzle_ids.present? && @quest_level.puzzle_ids.is_a?(Array)
       @quest_level.puzzle_ids.each do |puzzle_id|
         # Skip empty/nil puzzle IDs
         next if puzzle_id.blank?
-        
+
         puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id.to_s)
         if puzzle
           @puzzle_data << {
@@ -402,6 +413,44 @@ class GameModes::QuestController < ApplicationController
           }
         end
       end
+    end
+  end
+
+  def get_first_puzzle_for_level(level)
+    return nil unless level.puzzle_ids.present? && level.puzzle_ids.is_a?(Array)
+
+    first_puzzle_id = level.puzzle_ids.first
+    return nil if first_puzzle_id.blank?
+
+    # Try to find the puzzle by puzzle_id
+    puzzle = LichessV2Puzzle.find_by(puzzle_id: first_puzzle_id.to_s)
+    return nil unless puzzle
+
+    # Calculate the actual puzzle position by applying the initial move
+    puzzle_fen = calculate_puzzle_position(puzzle)
+
+    {
+      puzzle_id: puzzle.puzzle_id,
+      fen: puzzle_fen,
+      initial_fen: puzzle.initial_fen,
+      rating: puzzle.rating,
+      themes: puzzle.themes
+    }
+  end
+
+  def calculate_puzzle_position(puzzle)
+    return puzzle.initial_fen unless puzzle.moves_uci.present? && puzzle.moves_uci.length > 0
+
+    # The first move in moves_uci sets up the puzzle position
+    initial_move = puzzle.moves_uci[0]
+    return puzzle.initial_fen unless initial_move.present?
+
+    # Apply the initial move to get the puzzle position
+    begin
+      ChessJs.fen_after_move_uci(puzzle.initial_fen, initial_move)
+    rescue => e
+      Rails.logger.error "Error calculating puzzle position: #{e.message}"
+      puzzle.initial_fen
     end
   end
 end
