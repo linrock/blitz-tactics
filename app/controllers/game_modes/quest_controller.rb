@@ -52,7 +52,7 @@ class GameModes::QuestController < ApplicationController
       return
     end
     
-    @quest_worlds = QuestWorld.all.order(:id)
+    @quest_worlds = QuestWorld.all
     @quest_worlds_count = @quest_worlds.count
   end
 
@@ -72,34 +72,72 @@ class GameModes::QuestController < ApplicationController
       render plain: "Access denied", status: :forbidden
       return
     end
-    
+
     @quest_world = QuestWorld.new
-    
+
     # Get form parameters
     description = params[:quest_world][:description].to_s.strip
     background = params[:quest_world][:background].to_s.strip
-    
+    number = params[:quest_world][:number].to_i
+
     # Validate and assign parameters
     if description.blank?
       @quest_world.errors.add(:description, "can't be blank")
     else
       @quest_world.description = description
     end
-    
+
     # Background is optional - assign even if blank
     @quest_world.background = background
-    
+    @quest_world.number = number > 0 ? number : 1
+
     # Store form values for redisplay on error
     @form_values = {
       description: description,
-      background: background
+      background: background,
+      number: number > 0 ? number : 1
     }
-    
+
     if @quest_world.errors.empty? && @quest_world.save
       redirect_to "/quest/edit", notice: "Quest world created successfully!"
     else
       render :new_quest_world
     end
+  end
+
+  def update_quest_world
+    # Check if user has privilege to access this page
+    unless privileged_user?
+      render plain: "Access denied", status: :forbidden
+      return
+    end
+
+    @quest_world = QuestWorld.find(params[:id])
+
+    # Get form parameters
+    description = params[:quest_world][:description].to_s.strip
+    background = params[:quest_world][:background].to_s.strip
+    number = params[:quest_world][:number].to_i
+
+    # Validate and assign parameters
+    if description.blank?
+      @quest_world.errors.add(:description, "can't be blank")
+    else
+      @quest_world.description = description
+    end
+
+    # Background is optional - assign even if blank
+    @quest_world.background = background
+    @quest_world.number = number > 0 ? number : 1
+
+    if @quest_world.errors.empty? && @quest_world.save
+      redirect_to "/quest/worlds/#{@quest_world.id}/edit", notice: "Quest world updated successfully!"
+    else
+      @quest_world_levels = @quest_world.quest_world_levels
+      render :edit_quest_world
+    end
+  rescue ActiveRecord::RecordNotFound
+    render plain: "Quest world not found", status: :not_found
   end
 
   def edit_quest_world
@@ -110,7 +148,7 @@ class GameModes::QuestController < ApplicationController
     end
     
     @quest_world = QuestWorld.find(params[:id])
-    @quest_world_levels = @quest_world.quest_world_levels.order(:id)
+    @quest_world_levels = @quest_world.quest_world_levels
   rescue ActiveRecord::RecordNotFound
     render plain: "Quest world not found", status: :not_found
   end
@@ -138,7 +176,7 @@ class GameModes::QuestController < ApplicationController
     end
     
     @quest_level = QuestWorldLevel.find(params[:id])
-    
+
     # Parse puzzle IDs from form input
     puzzle_ids_input = params[:quest_level][:puzzle_ids_input].to_s.strip
     if puzzle_ids_input.present?
@@ -147,7 +185,11 @@ class GameModes::QuestController < ApplicationController
     else
       @quest_level.puzzle_ids = []
     end
-    
+
+    # Get order parameter
+    number = params[:quest_level][:number].to_i
+    @quest_level.number = number > 0 ? number : 1
+
     # Build success criteria from form inputs
     success_criteria = {}
     puzzles_required = params[:quest_level][:puzzles_required].to_i
@@ -176,9 +218,10 @@ class GameModes::QuestController < ApplicationController
     @form_values = {
       puzzle_ids_input: puzzle_ids_input,
       puzzles_required: puzzles_required,
-      time_limit: time_limit > 0 ? time_limit : nil
+      time_limit: time_limit > 0 ? time_limit : nil,
+      number: number
     }
-    
+
     if @quest_level.errors.empty? && @quest_level.save
       redirect_to "/quest/worlds/#{@quest_level.quest_world.id}/edit", notice: "Quest level updated successfully!"
     else
@@ -212,7 +255,7 @@ class GameModes::QuestController < ApplicationController
     
     @quest_world = QuestWorld.find(params[:quest_world_id])
     @quest_level = @quest_world.quest_world_levels.build
-    
+
     # Parse puzzle IDs from form input
     puzzle_ids_input = params[:quest_level][:puzzle_ids_input].to_s.strip
     if puzzle_ids_input.present?
@@ -221,7 +264,11 @@ class GameModes::QuestController < ApplicationController
     else
       @quest_level.puzzle_ids = []
     end
-    
+
+    # Get order parameter
+    number = params[:quest_level][:number].to_i
+    @quest_level.number = number > 0 ? number : 1
+
     # Build success criteria from form inputs
     success_criteria = {}
     puzzles_required = params[:quest_level][:puzzles_required].to_i
@@ -250,9 +297,10 @@ class GameModes::QuestController < ApplicationController
     @form_values = {
       puzzle_ids_input: puzzle_ids_input,
       puzzles_required: puzzles_required,
-      time_limit: time_limit > 0 ? time_limit : nil
+      time_limit: time_limit > 0 ? time_limit : nil,
+      number: number
     }
-    
+
     if @quest_level.save
       redirect_to "/quest/worlds/#{@quest_world.id}/edit", notice: "Quest level created successfully!"
     else

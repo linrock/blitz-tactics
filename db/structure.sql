@@ -759,7 +759,8 @@ CREATE TABLE public.quest_world_levels (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     puzzle_ids character varying[] DEFAULT '{}'::character varying[],
-    success_criteria jsonb DEFAULT '{}'::jsonb
+    success_criteria jsonb DEFAULT '{}'::jsonb,
+    number integer DEFAULT 0 NOT NULL
 );
 
 
@@ -791,7 +792,8 @@ CREATE TABLE public.quest_worlds (
     description character varying,
     background character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    number integer DEFAULT 0 NOT NULL
 );
 
 
@@ -2105,6 +2107,10 @@ ALTER TABLE ONLY public.completed_quest_worlds
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250821173256'),
+('20250821171916'),
+('20250821171012'),
+('20250821171005'),
 ('20250821044449'),
 ('20250821043552'),
 ('20250821043546'),

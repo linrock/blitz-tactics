@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   get '/quest/worlds/new' => 'game_modes/quest#new_quest_world'
   post '/quest/worlds' => 'game_modes/quest#create_quest_world'
   get '/quest/worlds/:id/edit' => 'game_modes/quest#edit_quest_world'
+  patch '/quest/worlds/:id' => 'game_modes/quest#update_quest_world'
+  put '/quest/worlds/:id' => 'game_modes/quest#update_quest_world'
   get '/quest/worlds/:quest_world_id/levels/new' => 'game_modes/quest#new_quest_level'
   post '/quest/worlds/:quest_world_id/levels' => 'game_modes/quest#create_quest_level'
   get '/quest/levels/:id/edit' => 'game_modes/quest#edit_quest_level'

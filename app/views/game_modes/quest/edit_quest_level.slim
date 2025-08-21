@@ -63,6 +63,19 @@
         .form-help
           | Maximum time allowed to complete the level. Leave blank for no time limit.
 
+      .form-group
+        label.form-label(for="number") Display Number
+        input.form-input(
+          type="number"
+          name="quest_level[number]"
+          id="number"
+          placeholder="e.g., 1, 2, 3 (lower numbers appear first)"
+          min="1"
+          value="#{@form_values&.[](:number) || @quest_level.number}"
+        )
+        .form-help
+          | Number in which this quest level appears in its world (lower numbers appear first)
+
       .form-actions
         input.blue-button(
           type="submit" 

@@ -5,7 +5,10 @@ class QuestWorldLevel < ActiveRecord::Base
   validates :quest_world, presence: true
   validates :puzzle_ids, presence: true
   validates :success_criteria, presence: true
-  
+
+  # Default scope for ordering
+  default_scope -> { order(:number, :id) }
+
   # Validate success criteria structure
   validate :validate_success_criteria_format
   

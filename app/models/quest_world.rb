@@ -2,9 +2,12 @@ class QuestWorld < ActiveRecord::Base
   has_many :quest_world_levels, dependent: :destroy
   has_many :completed_quest_worlds, dependent: :destroy
   has_many :completed_quest_world_levels, through: :quest_world_levels
-  
+
   validates :description, presence: true
   # Background is optional - can be empty
+
+  # Default ordering by number field, then by id
+  default_scope { order(:number, :id) }
   
   # Check if a user has completed this world
   def completed_by?(user)

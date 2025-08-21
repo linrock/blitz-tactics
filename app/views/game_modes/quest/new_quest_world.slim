@@ -38,6 +38,19 @@
         .form-help
           | Filename of the background image for this quest world (optional - leave blank if no background needed)
 
+      .form-group
+        label.form-label(for="number") Display Number
+        input.form-input(
+          type="number"
+          name="quest_world[number]"
+          id="number"
+          placeholder="e.g., 1, 2, 3 (lower numbers appear first)"
+          value="#{@form_values&.[](:number) || 1}"
+          min="1"
+        )
+        .form-help
+          | Number in which this quest world appears in lists (lower numbers appear first)
+
       .form-actions
         input.blue-button(
           type="submit" 

@@ -4,14 +4,38 @@
 
   .quest-world-details
     .quest-world-id
-      strong ID: 
+      strong ID:
       span= @quest_world.id
     .quest-world-description
-      strong Description: 
+      strong Description:
       span= @quest_world.description
     .quest-world-background
-      strong Background: 
-      span= @quest_world.background
+      strong Background:
+      span= @quest_world.background.present? ? @quest_world.background : "(none)"
+    .quest-world-number
+      strong Display Number:
+      span= @quest_world.number
+
+  .edit-quest-world-form
+    h4 Edit Quest World Details
+    = form_for @quest_world, url: "/quest/worlds/#{@quest_world.id}", method: :patch, authenticity_token: true do |f|
+      .form-group
+        = f.label :description, class: "form-label"
+        = f.text_field :description, class: "form-input", placeholder: "Quest world description"
+        .form-help A descriptive name for the quest world that players will see
+
+      .form-group
+        = f.label :background, "Background Image (Optional)", class: "form-label"
+        = f.text_field :background, class: "form-input", placeholder: "e.g., 'enchanted-forest.jpg'"
+        .form-help Filename of the background image for this quest world (optional)
+
+      .form-group
+        = f.label :number, class: "form-label"
+        = f.number_field :number, class: "form-input", placeholder: "e.g., 1, 2, 3", min: 1
+        .form-help Number in which this quest world appears in lists (lower numbers appear first)
+
+      .form-actions
+        = f.submit "Update Quest World", class: "blue-button"
 
   .quest-levels-section
     .quest-levels-header
