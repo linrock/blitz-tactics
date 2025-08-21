@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/quest/puzzles' => 'game_modes/quest#puzzles_json'
   get '/quest/levels/:id' => 'game_modes/quest#show'
   post '/quest/levels/:id/complete' => 'game_modes/quest#complete'
+  get '/quest/edit' => 'game_modes/quest#edit'
 
   # infinity mode
   get '/infinity'                => 'game_modes/infinity#index'

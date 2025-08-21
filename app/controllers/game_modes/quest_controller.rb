@@ -31,6 +31,17 @@ class GameModes::QuestController < ApplicationController
     }, status: :not_found
   end
 
+  def edit
+    # Check if user has privilege to access this page
+    unless privileged_user?
+      render plain: "Access denied", status: :forbidden
+      return
+    end
+    
+    @quest_worlds = QuestWorld.all.order(:id)
+    @quest_worlds_count = @quest_worlds.count
+  end
+
   def complete
     # Extract completion data from request
     puzzles_solved = params[:puzzles_solved].to_i
@@ -80,6 +91,10 @@ class GameModes::QuestController < ApplicationController
   end
 
   private
+
+  def privileged_user?
+    Rails.env.development? || (current_user && current_user.id == 1)
+  end
 
   def find_quest_world_level
     @quest_world_level = QuestWorldLevel.find(params[:id])
