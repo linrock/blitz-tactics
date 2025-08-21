@@ -14,22 +14,63 @@
       span= @quest_world.quest_world_levels.count
 
   .new-level-form
-    h4 New Level Configuration
-    p This is a placeholder for the quest level creation form.
-    p You would need to add form fields for:
-    
-    ul
-      li Puzzle IDs (array of strings/numbers)
-      li Success criteria:
-        ul
-          li Puzzles required to solve
-          li Optional time limit (in seconds)
-      li Any additional level metadata
+    = form_tag "/quest/worlds/#{@quest_world.id}/levels", method: :post, authenticity_token: true do
+      h4 New Level Configuration
+      
+      - if @quest_level && @quest_level.errors.any?
+        .form-errors
+          h5= "#{@quest_level.errors.count} error(s) prevented this quest level from being saved:"
+          ul
+            - @quest_level.errors.full_messages.each do |message|
+              li= message
 
-    .form-placeholder
-      p 
-        strong Note: 
-        | Form implementation would require additional routes for POST/PUT actions and proper form handling.
+      .form-group
+        label.form-label(for="puzzle_ids_input") Puzzle IDs
+        textarea.form-textarea(
+          name="quest_level[puzzle_ids_input]" 
+          id="puzzle_ids_input"
+          placeholder="Enter puzzle IDs separated by commas, spaces, or newlines"
+          rows="6"
+          required
+        )= @form_values&.[](:puzzle_ids_input) || (@quest_level&.puzzle_ids&.join(", "))
+        .form-help
+          | Enter puzzle IDs (e.g., "puzzle1, puzzle2, AbCd3fG, 12345")
+
+      .form-group
+        label.form-label(for="puzzles_required") Puzzles Required to Solve
+        input.form-input(
+          type="number"
+          name="quest_level[puzzles_required]"
+          id="puzzles_required"
+          placeholder="e.g., 5"
+          min="1"
+          required
+          value="#{@form_values&.[](:puzzles_required) || @quest_level&.puzzles_required}"
+        )
+        .form-help
+          | Number of puzzles the user must solve to complete this level
+
+      .form-group
+        label.form-label(for="time_limit") Time Limit (seconds) - Optional
+        input.form-input(
+          type="number"
+          name="quest_level[time_limit]"
+          id="time_limit"
+          placeholder="e.g., 60 (leave blank for no time limit)"
+          min="1"
+          value="#{@form_values&.[](:time_limit) || @quest_level&.time_limit_seconds}"
+        )
+        .form-help
+          | Maximum time allowed to complete the level. Leave blank for no time limit.
+
+      .form-actions
+        input.blue-button(
+          type="submit" 
+          value="Create Quest Level"
+          onclick="this.disabled = true; this.form.submit();"
+        )
+        span &nbsp;
+        a.cancel-link(href="/quest/worlds/#{@quest_world.id}/edit") Cancel
 
   .back-links
     a(href="/quest/worlds/#{@quest_world.id}/edit") ← Back to Quest World
