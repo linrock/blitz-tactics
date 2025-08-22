@@ -8,7 +8,11 @@ body[data-controller="game_modes/quest"][data-action="new_quest_level"]
   background: #f5f6fa
   min-height: 100vh
 
-  .container
+  // Target only page content containers, not the main header
+  .quest-edit-page,
+  .quest-world-edit-page,
+  .quest-level-edit-page,
+  .quest-level-new-page
     background: transparent
     padding: 30px 20px
 
