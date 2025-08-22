@@ -1,40 +1,29 @@
-.container.quest-puzzle-player-page
-  .quest-level-header
-    h2= @quest_world.description
-    h3 Level #{@quest_level.number} - #{@quest_level.success_criteria_description}
-    .quest-level-info
-      span= "#{@puzzles.length} puzzles in this level"
+- content_for(:title) { "Quest mode" }
 
-  .puzzle-player-container
+section.game-mode.quest-mode
+  .container
+    .quest-level-header
+      h2= @quest_world.description
+      h3 Level #{@quest_level.number} - #{@quest_level.success_criteria_description}
+      .quest-level-info
+        span= "#{@puzzles.length} puzzles in this level"
+
+    = render partial: "puzzle_player/above_board"
     .board-area-container
       .board-area
         .chessground-board
           .piece-promotion-modal-mount
           .chessground
           .board-modal-container.invisible(style="display: none")
-        svg.new-chessboard-resizer-icon
-          use(xlink:href="#resize-bottom-right")
-        .new-chessboard-resizer
-
-    .new-puzzle-player-instructions
-      .whose-turn
-        div(v-if="true")
-          svg(style="width: 40px; height: 40px; margin-right: 12px")
-            use(xlink:href="#wk")
-          | White to move
-        div(v-if="false")
-          svg(style="width: 40px; height: 40px; margin-right: 12px")
-            use(xlink:href="#bk")
-          | Black to move
-      .goal= "Solve #{@puzzles.length} puzzles"
+    .vue-app-mount
 
     #puzzle-player(
       data-puzzles=@puzzle_data.to_json
       data-level-info=@puzzle_data[:level_info].to_json
     )
 
-  .quest-navigation
-    .back-link
-      a(href="/") ← Back to Homepage
-    .quest-progress
-      span Quest Progress: Level #{@quest_level.number} of #{@quest_world.quest_world_levels.count}
+    .quest-navigation
+      .back-link
+        a(href="/") ← Back to Homepage
+      .quest-progress
+        span Quest Progress: Level #{@quest_level.number} of #{@quest_world.quest_world_levels.count}
