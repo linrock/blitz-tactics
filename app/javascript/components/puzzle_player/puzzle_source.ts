@@ -51,7 +51,11 @@ export default class PuzzleSource {
     this.shuffle = options.shuffle
     this.loopPuzzles = options.loopPuzzles
     this.mode = options.mode
-    this.fetchPuzzles(options.source)
+    if (options.source) {
+      this.fetchPuzzles(options.source)
+    } else {
+      console.log('PuzzleSource: no options.source provided')
+    }
     subscribe({
       'source:changed': path => this.fetchPuzzles(path),
       'source:changed:add': path => this.fetchAndAddPuzzles(path),
