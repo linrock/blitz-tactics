@@ -10,9 +10,6 @@ Rails.application.routes.draw do
   get '/world-6' => 'pages#world6'
   get '/puzzle-player' => 'pages#puzzle_player'
   get '/quest/puzzles' => 'game_modes/quest#puzzles_json'
-  get '/quest/levels/:id' => 'game_modes/quest#show'
-  get '/quest/:world_id/:world_level_id' => 'game_modes/quest#play_quest_level'
-  post '/quest/levels/:id/complete' => 'game_modes/quest#complete'
   get '/quest/edit' => 'game_modes/quest#edit'
   get '/quest/worlds/new' => 'game_modes/quest#new_quest_world'
   post '/quest/worlds' => 'game_modes/quest#create_quest_world'
@@ -25,6 +22,9 @@ Rails.application.routes.draw do
   put '/quest/levels/:id' => 'game_modes/quest#update_quest_level'
   patch '/quest/levels/:id' => 'game_modes/quest#update_quest_level'
   delete '/quest/levels/:id' => 'game_modes/quest#destroy_quest_level'
+  get '/quest/levels/:id' => 'game_modes/quest#show'
+  post '/quest/levels/:id/complete' => 'game_modes/quest#complete'
+  get '/quest/:world_id/:world_level_id' => 'game_modes/quest#play_quest_level'
 
   # infinity mode
   get '/infinity'                => 'game_modes/infinity#index'
