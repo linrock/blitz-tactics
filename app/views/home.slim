@@ -7,10 +7,6 @@ section.homepage
       .quest-above-bg(
         style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
 
-      header.container
-        .quest-next
-          | Complete levels to unlock the next world
-
       .quest-container.container
         header.world-intro
           .world-name= @quest_world.description
@@ -19,7 +15,6 @@ section.homepage
           - @quest_world_levels_with_puzzles.each do |level_data|
             a.quest-level-link(href="/quest/#{@quest_world.id}/#{level_data['id']}")
               .quest-level
-                .level-info-top= level_data['success_criteria_description']
                 - if level_data['first_puzzle']
                   - puzzle_data = level_data['first_puzzle']
                   - puzzle_fen = puzzle_data[:fen] if puzzle_data
@@ -30,11 +25,10 @@ section.homepage
                                              flip: puzzle_flip,
                                              initial_move: initial_move,
                                              title: "Level #{level_data['number']} - First Puzzle" })
-                .level-info-bottom
-                  .level-best-score= "#{level_data['puzzle_ids'].length} puzzles in this level"
+                .level-info-bottom= level_data['success_criteria_description']
 
       .quest-container-bottom.container
-        div Complete all levels to unlock the next world
+        div Complete all levels to continue
     - else
       = render partial: "worlds/world-#{@world_number}"
 
