@@ -80,3 +80,13 @@ export async function toggleSound(enabled: boolean) {
   }
   return client.patch(`/settings`, params).then(resp => resp.data)
 }
+
+export async function questLevelCompleted(levelId: number, puzzlesSolved: number, timeTaken?: number) {
+  const params = {
+    puzzles_solved: puzzlesSolved,
+    time_taken: timeTaken
+  }
+  return client.post(`/quest/levels/${levelId}/complete`, params).then(resp => resp.data)
+}
+
+

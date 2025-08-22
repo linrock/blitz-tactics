@@ -4,7 +4,7 @@
     .level-info
       .level-number Level {{ levelNumber }}
       .success-criteria {{ successCriteria }}
-    .puzzle-progress {{ numPuzzlesSolved }} / {{ totalPuzzles }} puzzles solved
+    .puzzle-progress {{ numPuzzlesSolved }} / {{ puzzlesRequired }} puzzles solved
 
   .quest-complete(v-if="hasFinished")
     .completion-message
@@ -21,6 +21,8 @@
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
 import { subscribe, dispatch } from '@blitz/events'
+import { questLevelCompleted } from '@blitz/api/requests'
+
 
 
 
@@ -31,8 +33,12 @@ export default {
     return {
       numPuzzlesSolved: 0,
       totalPuzzles: 0,
+      puzzlesRequired: 0,
       levelNumber: 0,
       successCriteria: '',
+      levelId: 0,
+      startTime: null,
+      completionSent: false,
     }
   },
 
@@ -52,6 +58,10 @@ export default {
           this.totalPuzzles = puzzles.puzzles.length
           this.levelNumber = levelInfo.level_number
           this.successCriteria = levelInfo.success_criteria
+          this.levelId = levelInfo.level_id
+          
+          // Parse success criteria to extract required puzzles
+          this.puzzlesRequired = this.parsePuzzlesRequired(levelInfo.success_criteria)
           
           // Create puzzle player with quest data
           const puzzlePlayer = new PuzzlePlayer({
@@ -73,14 +83,52 @@ export default {
     
     subscribe({
       ...commonSubscriptions,
-      'puzzles:status': ({ i }) => {
+      'puzzles:status': async ({ i }) => {
         this.numPuzzlesSolved = i + 1
+        
+        // Check if we've reached the required number of puzzles
+        if (this.numPuzzlesSolved >= this.puzzlesRequired && !this.completionSent && this.levelId) {
+          this.completionSent = true
+          this.hasFinished = true
+          console.log(`Quest level completed! Solved ${this.numPuzzlesSolved}/${this.puzzlesRequired} required puzzles`)
+          
+          // Send completion request to server
+          const timeTaken = this.startTime ? (Date.now() - this.startTime) / 1000 : undefined
+          
+          try {
+            const result = await questLevelCompleted(this.levelId, this.numPuzzlesSolved, timeTaken)
+            console.log('Quest level completion result:', result)
+            
+            if (result.success) {
+              if (result.world_completed) {
+                console.log('🎉 World completed!', result.message)
+              } else {
+                console.log('✅ Level completed!', result.message)
+              }
+            } else {
+              console.log('Quest completion failed:', result.error)
+            }
+          } catch (error) {
+            console.error('Error completing quest level:', error)
+          }
+        }
       },
-      'puzzles:complete': () => {
-        this.hasFinished = true
-        console.log('Quest level completed!')
+      'puzzles:start': () => {
+        this.startTime = Date.now()
       }
     })
   },
+  
+  methods: {
+    parsePuzzlesRequired(successCriteria: string): number {
+      // Parse "Solve X puzzles" format
+      const match = successCriteria.match(/Solve (\d+) puzzle/)
+      if (match) {
+        return parseInt(match[1], 10)
+      }
+      // Fallback to total puzzles if parsing fails
+      return this.totalPuzzles
+    }
+  }
 }
 </script>
