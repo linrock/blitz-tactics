@@ -8,8 +8,12 @@ class PagesController < ApplicationController
     @world_number = 1
     @world_name = "Just getting started"
     
-    # Load the first QuestWorld and its levels
-    @quest_world = QuestWorld.first
+    # Load the appropriate QuestWorld based on user's progress or URL parameter
+    if params[:world].present?
+      @quest_world = QuestWorld.find(params[:world])
+    else
+      @quest_world = get_next_quest_world_for_user(current_user)
+    end
     if @quest_world
       @quest_world_levels = @quest_world.quest_world_levels
       # Prepare first puzzle data for each level
@@ -107,6 +111,15 @@ class PagesController < ApplicationController
   end
 
   def about
+  end
+
+  def get_next_quest_world_for_user(user)
+    return QuestWorld.first unless user
+    
+    # Find the first quest world that the user hasn't completed
+    QuestWorld.order(:number, :id).find do |world|
+      !world.completed_by?(user)
+    end || QuestWorld.last # If all worlds completed, show the last one
   end
 
   private

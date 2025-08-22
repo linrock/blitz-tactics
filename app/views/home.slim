@@ -28,7 +28,19 @@ section.homepage
                 .level-info-bottom= level_data['success_criteria_description']
 
       .quest-container-bottom.container
-        div Complete all levels to continue
+        - if user_signed_in? && @quest_world.completed_by?(current_user)
+          .quest-completed
+            .completion-message
+              .title World Complete!
+              .description You've completed all levels in this world
+            .action-buttons
+              - next_world = get_next_quest_world_for_user(current_user)
+              - if next_world && next_world != @quest_world
+                a.blue-button(href="/?world=#{next_world.id}") Continue to Next World
+              - else
+                a.blue-button(href="/") Back to Homepage
+        - else
+          div Complete all levels to continue
     - else
       = render partial: "worlds/world-#{@world_number}"
 
