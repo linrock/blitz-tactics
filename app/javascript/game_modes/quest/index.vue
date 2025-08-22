@@ -2,7 +2,6 @@
 .quest-under-board.game-under-board
   .quest-info
     .level-info
-      .level-number Level {{ levelNumber }}
       .success-criteria {{ successCriteria }}
     .puzzle-progress {{ numPuzzlesSolved }} / {{ puzzlesRequired }} puzzles solved
 
@@ -13,8 +12,6 @@
     .action-buttons
       a.blue-button(href="/") Back to Homepage
 
-  .make-a-move(v-if="!hasStarted") Make a move to start solving puzzles
-
 </template>
 
 <script lang="ts">
@@ -22,8 +19,6 @@ import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
 import { subscribe, dispatch } from '@blitz/events'
 import { questLevelCompleted } from '@blitz/api/requests'
-
-
 
 
 export default {
