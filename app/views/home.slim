@@ -17,20 +17,21 @@ section.homepage
 
         main.world-levels
           - @quest_world_levels_with_puzzles.each do |level_data|
-            .quest-level
-              .level-info-top= level_data['success_criteria_description']
-              - if level_data['first_puzzle']
-                - puzzle_data = level_data['first_puzzle']
-                - puzzle_fen = puzzle_data[:fen] if puzzle_data
-                - puzzle_flip = puzzle_fen&.include?(" w ") || false
-                - initial_move = puzzle_data[:initial_move] if puzzle_data
-                .board-link= render(partial: "static/snippets/miniboard",
-                                  locals: { fen: puzzle_fen,
-                                           flip: puzzle_flip,
-                                           initial_move: initial_move,
-                                           title: "Level #{level_data['number']} - First Puzzle" })
-              .level-info-bottom
-                .level-best-score= "#{level_data['puzzle_ids'].length} puzzles in this level"
+            a.quest-level-link(href="/quest/#{@quest_world.id}/#{level_data['id']}")
+              .quest-level
+                .level-info-top= level_data['success_criteria_description']
+                - if level_data['first_puzzle']
+                  - puzzle_data = level_data['first_puzzle']
+                  - puzzle_fen = puzzle_data[:fen] if puzzle_data
+                  - puzzle_flip = puzzle_fen&.include?(" w ") || false
+                  - initial_move = puzzle_data[:initial_move] if puzzle_data
+                  .board-link= render(partial: "static/snippets/miniboard",
+                                    locals: { fen: puzzle_fen,
+                                             flip: puzzle_flip,
+                                             initial_move: initial_move,
+                                             title: "Level #{level_data['number']} - First Puzzle" })
+                .level-info-bottom
+                  .level-best-score= "#{level_data['puzzle_ids'].length} puzzles in this level"
 
       .quest-container-bottom.container
         div Complete all levels to unlock the next world

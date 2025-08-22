@@ -398,6 +398,39 @@ class GameModes::QuestController < ApplicationController
     render plain: "Quest level not found", status: :not_found
   end
 
+  def play_quest_level
+    @quest_world = QuestWorld.find(params[:world_id])
+    @quest_level = @quest_world.quest_world_levels.find(params[:world_level_id])
+    
+    # Prepare puzzle data for the puzzle player
+    @puzzles = []
+    if @quest_level.puzzle_ids.present? && @quest_level.puzzle_ids.is_a?(Array)
+      @quest_level.puzzle_ids.each do |puzzle_id|
+        puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id.to_s)
+        if puzzle
+          @puzzles << puzzle.bt_puzzle_data
+        end
+      end
+    end
+    
+    # Set up puzzle player data
+    @puzzle_data = {
+      puzzles: @puzzles,
+      level_info: {
+        world_id: @quest_world.id,
+        world_description: @quest_world.description,
+        level_id: @quest_level.id,
+        level_number: @quest_level.number,
+        success_criteria: @quest_level.success_criteria_description,
+        puzzle_count: @puzzles.length
+      }
+    }
+    
+    render :play_quest_level
+  rescue ActiveRecord::RecordNotFound
+    render plain: "Quest level not found", status: :not_found
+  end
+
   private
 
   def privileged_user?

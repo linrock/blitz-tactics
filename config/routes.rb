@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/puzzle-player' => 'pages#puzzle_player'
   get '/quest/puzzles' => 'game_modes/quest#puzzles_json'
   get '/quest/levels/:id' => 'game_modes/quest#show'
+  get '/quest/:world_id/:world_level_id' => 'game_modes/quest#play_quest_level'
   post '/quest/levels/:id/complete' => 'game_modes/quest#complete'
   get '/quest/edit' => 'game_modes/quest#edit'
   get '/quest/worlds/new' => 'game_modes/quest#new_quest_world'
