@@ -25,7 +25,11 @@ section.homepage
                                              flip: puzzle_flip,
                                              initial_move: initial_move,
                                              title: "Level #{level_data['number']} - First Puzzle" })
-                .level-info-bottom= level_data['success_criteria_description']
+                .level-info-bottom
+                  .success-criteria= level_data['success_criteria_description']
+                  - if level_data['completed']
+                    .completion-indicator
+                      .checkmark ✓
 
       .quest-container-bottom.container
         - if user_signed_in? && @quest_world.completed_by?(current_user)

@@ -22,6 +22,7 @@ class PagesController < ApplicationController
         level_data = level.attributes
         level_data['first_puzzle'] = first_puzzle
         level_data['success_criteria_description'] = level.success_criteria_description
+        level_data['completed'] = current_user ? level.completed_by?(current_user) : false
         level_data
       end
     end
