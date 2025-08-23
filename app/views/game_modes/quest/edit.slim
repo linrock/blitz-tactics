@@ -47,6 +47,8 @@
                                    flip: puzzle_flip,
                                    initial_move: initial_move,
                                    title: "Level #{level_data['number']} - First Puzzle" })
+                .level-success-criteria(style="color: #2C9BEA !important; font-size: 14px; font-weight: 500; margin-top: 8px; display: block !important; visibility: visible !important;")
+                  span Success: #{level_data['success_criteria_description']}
               - else
                 .no-puzzle-message
                   span No puzzle data available

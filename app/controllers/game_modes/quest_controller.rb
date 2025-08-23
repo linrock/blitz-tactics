@@ -61,6 +61,7 @@ class GameModes::QuestController < ApplicationController
         first_puzzle = get_first_puzzle_for_level(level)
         level_data = level.attributes
         level_data['first_puzzle'] = first_puzzle
+        level_data['success_criteria_description'] = level.success_criteria_description
         level_data
       end
       quest_world.attributes.merge('levels_with_puzzles' => quest_world_levels_with_puzzles)
