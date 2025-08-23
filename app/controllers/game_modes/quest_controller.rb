@@ -75,6 +75,12 @@ class GameModes::QuestController < ApplicationController
     end
     
     @quest_world = QuestWorld.new
+    
+    # Set default form values with next available number
+    max_number = QuestWorld.maximum(:number) || 0
+    @form_values = {
+      number: max_number + 1
+    }
   end
 
   def create_quest_world
