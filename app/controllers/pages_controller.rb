@@ -14,7 +14,9 @@ class PagesController < ApplicationController
     else
       @quest_world = get_next_quest_world_for_user(current_user)
     end
-    if @quest_world
+    
+    # Only prepare quest data if we have a quest world and it's not completed
+    if @quest_world && (!current_user || !@quest_world.completed_by?(current_user))
       @quest_world_levels = @quest_world.quest_world_levels
       # Prepare first puzzle data for each level
       @quest_world_levels_with_puzzles = @quest_world_levels.map do |level|
@@ -25,6 +27,13 @@ class PagesController < ApplicationController
         level_data['completed'] = current_user ? level.completed_by?(current_user) : false
         level_data
       end
+      @all_quest_worlds_complete = false
+    else
+      # If all worlds completed or no quest world, don't show quest section
+      @quest_world = nil
+      @quest_world_levels = nil
+      @quest_world_levels_with_puzzles = nil
+      @all_quest_worlds_complete = current_user && QuestWorld.all.all? { |w| w.completed_by?(current_user) }
     end
     
     render "/home"
@@ -120,7 +129,7 @@ class PagesController < ApplicationController
     # Find the first quest world that the user hasn't completed
     QuestWorld.order(:number, :id).find do |world|
       !world.completed_by?(user)
-    end || QuestWorld.last # If all worlds completed, show the last one
+    end # Return nil if all worlds completed
   end
 
   private
