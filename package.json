@@ -19,7 +19,7 @@
     "@types/backbone": "^1.4.5",
     "@types/chess.js": "^0.10.1",
     "@vue/compiler-sfc": "^3.5.12",
-    "axios": "^1.7.7",
+    "axios": "^1.12.0",
     "backbone": "^1.4.0",
     "backbone.native": "^1.0.0",
     "chess.js": "^0.13.4",
