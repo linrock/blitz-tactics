@@ -1,107 +1,77 @@
-# Three mode puzzle. Uses LichessV2Puzzle with specific filtering criteria
-# and increasing difficulty progression.
+# Three mode puzzle. Uses precomputed text files from game-modes/three/
+# for ultra-fast puzzle selection with increasing difficulty progression.
 #
-# Filtering criteria:
-# - popularity > 95
-# - num_plays > 1000
-# - Rating ranges: 600-800, 800-1000, 1000-1200, 1200-1400, 1400-1600, 1600-1800
+# Features:
+# - Uses text files created by ThreeLevelCreator
+# - 10 pools per color (20 total pools)
+# - Rating ranges: 600-800, 800-1000, ..., 2000-2100
 # - All puzzles in a level must start with the same color to move (randomly chosen)
+# - 10 puzzles from each pool = 100 total puzzles by default
 
 class ThreePuzzle
 
-  # Rating ranges for difficulty progression (7 pools with ascending difficulty)
-  RATING_RANGES = [
-    (600..800),   # Pool 1: 600-800
-    (800..1000),  # Pool 2: 800-1000
-    (1000..1200), # Pool 3: 1000-1200
-    (1200..1400), # Pool 4: 1200-1400
-    (1400..1600), # Pool 5: 1400-1600
-    (1600..1800), # Pool 6: 1600-1800
-    (1800..2000)  # Pool 7: 1800-2000 (may have fewer puzzles)
-  ].freeze
+  # Pool configuration matching ThreeLevelCreator
+  POOLS_PER_COLOR = 10
+  PUZZLES_PER_POOL = 10
+  DEFAULT_TOTAL_PUZZLES = 100
 
   # Get a random easy puzzle to show on the homepage
   def self.random
-    LichessV2Puzzle
-      .where(popularity: 96..)
-      .where(num_plays: 1001..)
-      .where(rating: 600..800)  # Easy rating range
-      .order(Arel.sql('RANDOM()'))
-      .first
+    # Load from the easiest white pool
+    puzzle_ids = load_pool_ids('w', 1)
+    return nil if puzzle_ids.empty?
+    
+    puzzle_id = puzzle_ids.sample
+    LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
   end
 
-  # Ultra-fast puzzle selection using single query with Ruby-side random sampling
-  # Returns puzzles distributed across 7 rating range pools
+  # Create a random level using text files
+  # Returns puzzles distributed across 10 rating range pools
   # All puzzles in a level must start with the same color to move
-  def self.random_level(total_puzzles = 112)
+  def self.random_level(total_puzzles = DEFAULT_TOTAL_PUZZLES)
     # Randomly choose between white to move and black to move
     color_to_move = %w(w b).sample
-    puzzles_per_pool = 16  # 16 puzzles per pool = 112 total puzzles
+    puzzles_per_pool = total_puzzles / POOLS_PER_COLOR
     
-    # Ultra-fast query with smart randomization
-    # Use a random offset without counting (much faster!)
-    random_offset = rand(10000)  # Start from a random position (up to 10k offset)
+    selected_puzzle_ids = []
     
-    all_puzzles_data = LichessV2Puzzle
-      .where(popularity: 96..)  # popularity > 95
-      .where(num_plays: 1001..) # num_plays > 1000
-      .where(rating: 600..1800)  # All rating ranges
-      .offset(random_offset)  # Start from a random position
-      .limit(total_puzzles * 4)  # Get 4x what we need (reduced from 6x)
-      .pluck(:puzzle_id, :initial_fen, :moves_uci, :lines_tree, :rating)
-      .select { |puzzle_id, initial_fen, moves_uci, lines_tree, rating|
-        # Filter by color using FEN string (6th field: "w" or "b")
-        initial_fen.split(' ')[1] == color_to_move
-      }
-    
-    # Group puzzles by rating range
-    puzzles_by_range = Hash.new { |h, k| h[k] = [] }
-    all_puzzles_data.each do |puzzle_data|
-      puzzle_id, initial_fen, moves_uci, lines_tree, rating = puzzle_data
+    # Get 10 puzzles from each of the 10 pools for the chosen color
+    (1..POOLS_PER_COLOR).each do |pool_number|
+      pool_ids = load_pool_ids(color_to_move, pool_number)
+      next if pool_ids.empty?
       
-      # Find which rating range this puzzle belongs to
-      range_index = RATING_RANGES.find_index { |range| range.include?(rating) }
-      next unless range_index
-      
-      puzzles_by_range[range_index] << puzzle_data
+      # Randomly sample puzzles from this pool
+      selected_from_pool = pool_ids.sample(puzzles_per_pool)
+      selected_puzzle_ids.concat(selected_from_pool)
     end
     
-    # Randomly sample puzzles from each range
-    selected_puzzles = []
-    RATING_RANGES.each_with_index do |range, index|
-      range_puzzles = puzzles_by_range[index] || []
-      # Randomly sample puzzles_per_pool from this range
-      selected_from_range = range_puzzles.sample(puzzles_per_pool)
-      selected_puzzles.concat(selected_from_range)
-    end
+    # Fetch puzzle data from database
+    puzzles = LichessV2Puzzle.where(puzzle_id: selected_puzzle_ids)
     
-    # Convert to final format with rating preserved for sorting
-    final_puzzles = selected_puzzles.first(total_puzzles).map { |puzzle_id, initial_fen, moves_uci, lines_tree, rating|
-      # Convert UCI to SAN for the initial move
-      initial_move_uci = moves_uci[0]
-      begin
-        move_obj = ChessJs.get_move_from_move_uci(initial_fen, initial_move_uci)
-        initial_move_san = move_obj ? move_obj['san'] : initial_move_uci
-      rescue => e
-        Rails.logger.warn "Failed to convert UCI to SAN for puzzle #{puzzle_id}: #{e.message}"
-        initial_move_san = initial_move_uci # Fallback to UCI
-      end
-      
-      {
-        id: puzzle_id,
-        fen: initial_fen,
-        lines: lines_tree,
-        rating: rating,  # Keep rating for sorting
-        initialMove: {
-          san: initial_move_san,
-          uci: initial_move_uci
-        }
-      }
-    }
+    # Convert to blitz tactics format with rating included
+    puzzles.map do |puzzle|
+      puzzle_data = puzzle.bt_puzzle_data
+      puzzle_data[:rating] = puzzle.rating  # Add rating for sorting
+      puzzle_data
+    end.sort_by { |puzzle| puzzle[:rating] || 0 }
+  end
+
+  private
+
+  # Load puzzle IDs from a specific pool text file
+  def self.load_pool_ids(color_to_move, pool_number)
+    filename = "#{color_to_move}_pool_#{pool_number}_*.txt"
+    file_path = Rails.root.join("data", "game-modes", "three", filename)
     
-    # Sort by rating to maintain ascending difficulty
-    # The randomization comes from: 1) random offset, 2) random sampling within pools
-    final_puzzles.sort_by { |puzzle| puzzle[:rating] }
+    # Find the actual file (since we don't know the exact rating range in filename)
+    actual_file = Dir.glob(file_path).first
+    return [] unless actual_file && File.exist?(actual_file)
+    
+    # Read puzzle IDs from file (one per line)
+    File.readlines(actual_file).map(&:strip).reject(&:empty?)
+  rescue => e
+    Rails.logger.warn "Failed to load pool #{color_to_move}_#{pool_number}: #{e.message}"
+    []
   end
 
 end
