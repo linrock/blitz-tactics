@@ -23,8 +23,10 @@ section.game-mode.puzzle-mode
             | Analyze on Lichess
 
       .puzzle-info
-        - unless @puzzle.is_a? LichessV2Puzzle
-          div Puzzle FEN
+        div Puzzle FEN
+        - if @puzzle.is_a? LichessV2Puzzle
+          input.fen(type="text" readonly="readonly" value="#{@puzzle.initial_fen}")
+        - else
           input.fen(type="text" readonly="readonly" value="#{@puzzle.puzzle_data["puzzle_fen"]}")
 
         table.metadata
