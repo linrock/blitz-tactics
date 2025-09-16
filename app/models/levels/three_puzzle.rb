@@ -9,14 +9,15 @@
 
 class ThreePuzzle
 
-  # Rating ranges for difficulty progression (6 sections as specified)
+  # Rating ranges for difficulty progression (7 pools with ascending difficulty)
   RATING_RANGES = [
-    (600..800),
-    (800..1000),
-    (1000..1200),
-    (1200..1400),
-    (1400..1600),
-    (1600..1800)
+    (600..800),   # Pool 1: 600-800
+    (800..1000),  # Pool 2: 800-1000
+    (1000..1200), # Pool 3: 1000-1200
+    (1200..1400), # Pool 4: 1200-1400
+    (1400..1600), # Pool 5: 1400-1600
+    (1600..1800), # Pool 6: 1600-1800
+    (1800..2000)  # Pool 7: 1800-2000 (may have fewer puzzles)
   ].freeze
 
   # Get a random easy puzzle to show on the homepage
@@ -29,81 +30,69 @@ class ThreePuzzle
       .first
   end
 
-  # Random set of puzzles with increasing difficulty
+  # Ultra-fast puzzle selection using single query with Ruby-side random sampling
+  # Returns puzzles distributed across 7 rating range pools
   # All puzzles in a level must start with the same color to move
-  def self.random_level(n)
+  def self.random_level(total_puzzles = 112)
     # Randomly choose between white to move and black to move
     color_to_move = %w(w b).sample
+    puzzles_per_pool = 16  # 16 puzzles per pool = 112 total puzzles
     
-    # Single optimized query using a more efficient approach
-    # Get a larger sample and then distribute by rating ranges in Ruby
-    # This is much faster than multiple database queries
-    
-    # Get a large sample of puzzles that match our criteria
-    # We'll get more than needed and then distribute by rating ranges
-    sample_size = n * 3 # Get 3x more than needed for better distribution
-    
-    all_puzzles = LichessV2Puzzle
+    # Single fast query without ORDER BY RANDOM (much faster!)
+    all_puzzles_data = LichessV2Puzzle
       .where(popularity: 96..)  # popularity > 95
       .where(num_plays: 1001..) # num_plays > 1000
-      .where("initial_fen LIKE ?", "% #{color_to_move} %")  # same color to move
-      .order(Arel.sql('RANDOM()'))
-      .limit(sample_size)
-      .to_a
+      .where(rating: 600..1800)  # All rating ranges
+      .limit(total_puzzles * 4)  # Get 4x what we need for better sampling
+      .pluck(:puzzle_id, :initial_fen, :moves_uci, :lines_tree, :rating)
+      .select { |puzzle_id, initial_fen, moves_uci, lines_tree, rating|
+        # Filter by color using FEN string (6th field: "w" or "b")
+        initial_fen.split(' ')[1] == color_to_move
+      }
     
     # Group puzzles by rating range
-    puzzles_by_range = RATING_RANGES.map.with_index do |rating_range, index|
-      range_puzzles = all_puzzles.select { |p| rating_range.cover?(p.rating) }
-      # Take up to 7 puzzles from each range, or all if less than 7
-      range_puzzles.sample([7, range_puzzles.size].min)
-    end.flatten
-    
-    # If we need more puzzles, add more from the highest rating range
-    if puzzles_by_range.length < n
-      remaining_needed = n - puzzles_by_range.length
-      highest_range_puzzles = all_puzzles.select { |p| (1600..1800).cover?(p.rating) }
-      additional_puzzles = highest_range_puzzles.sample(remaining_needed)
-      puzzles_by_range.concat(additional_puzzles)
+    puzzles_by_range = Hash.new { |h, k| h[k] = [] }
+    all_puzzles_data.each do |puzzle_data|
+      puzzle_id, initial_fen, moves_uci, lines_tree, rating = puzzle_data
+      
+      # Find which rating range this puzzle belongs to
+      range_index = RATING_RANGES.find_index { |range| range.include?(rating) }
+      next unless range_index
+      
+      puzzles_by_range[range_index] << puzzle_data
     end
     
-    # Limit to requested number and ensure we have enough
-    puzzles = puzzles_by_range.first(n)
-    
-    # If we still don't have enough, get more from any rating range
-    if puzzles.length < n
-      remaining_needed = n - puzzles.length
-      additional_puzzles = all_puzzles.sample(remaining_needed)
-      puzzles.concat(additional_puzzles)
+    # Randomly sample puzzles from each range
+    selected_puzzles = []
+    RATING_RANGES.each_with_index do |range, index|
+      range_puzzles = puzzles_by_range[index] || []
+      # Randomly sample puzzles_per_pool from this range
+      selected_from_range = range_puzzles.sample(puzzles_per_pool)
+      selected_puzzles.concat(selected_from_range)
     end
     
-    # Convert to the expected format efficiently
-    puzzles.map do |lichess_puzzle|
+    # Convert to final format
+    selected_puzzles.first(total_puzzles).map { |puzzle_id, initial_fen, moves_uci, lines_tree, rating|
+      # Convert UCI to SAN for the initial move
+      initial_move_uci = moves_uci[0]
       begin
-        # Convert UCI move to chess.js move object to get proper SAN
-        move_obj = ChessJs.get_move_from_move_uci(lichess_puzzle.initial_fen, lichess_puzzle.initial_move_uci)
-        
-        {
-          id: lichess_puzzle.puzzle_id.to_i,
-          fen: lichess_puzzle.initial_fen,
-          lines: lichess_puzzle.lines_tree,
-          initialMove: {
-            san: move_obj["san"],
-            uci: lichess_puzzle.initial_move_uci
-          }
-        }
+        move_obj = ChessJs.get_move_from_move_uci(initial_fen, initial_move_uci)
+        initial_move_san = move_obj ? move_obj['san'] : initial_move_uci
       rescue => e
-        # Fallback: if move conversion fails, use UCI as SAN (temporary fix)
-        Rails.logger.warn "Failed to convert move for puzzle #{lichess_puzzle.puzzle_id}: #{e.message}. Using UCI as SAN."
-        {
-          id: lichess_puzzle.puzzle_id.to_i,
-          fen: lichess_puzzle.initial_fen,
-          lines: lichess_puzzle.lines_tree,
-          initialMove: {
-            san: lichess_puzzle.initial_move_uci, # Fallback to UCI
-            uci: lichess_puzzle.initial_move_uci
-          }
-        }
+        Rails.logger.warn "Failed to convert UCI to SAN for puzzle #{puzzle_id}: #{e.message}"
+        initial_move_san = initial_move_uci # Fallback to UCI
       end
-    end
+      
+      {
+        id: puzzle_id,
+        fen: initial_fen,
+        lines: lines_tree,
+        initialMove: {
+          san: initial_move_san,
+          uci: initial_move_uci
+        }
+      }
+    }
   end
+
 end
