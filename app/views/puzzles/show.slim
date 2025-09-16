@@ -1,53 +1,55 @@
 - content_for(:title) { "Lichess puzzle #{@puzzle.puzzle_id}" }
 -# TS in app/javascript/components/puzzle_page/index.ts
-.container
-  .left
-    .board-area-container
-    .chessground-board
-      .piece-promotion-modal-mount
-      .chessground
+section.game-mode.puzzle-mode
+  .container
     = render partial: "puzzle_player/above_board"
+    .board-area-container
+      .board-area
+        .chessground-board
+          .piece-promotion-modal-mount
+          .chessground
+          .board-modal-container.invisible(style="display: none")
     .actions
       button.button.restart Reset position
+      button.button.show-solution Show solution
+    .puzzle-info-section
+      h2 Puzzle #{@puzzle.puzzle_id}
+      div
+        - if @puzzle.is_a? LichessV2Puzzle
+          a.ext-link(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
+            | View puzzle on Lichess
+        - unless @puzzle.is_a? LichessV2Puzzle
+          a.ext-link(href="https://lichess.org/analysis/standard/#{@puzzle.puzzle_data["puzzle_fen"].gsub(/\s+/, '_')}" target="_blank")
+            | Analyze on Lichess
 
-  .right
-    h2 Puzzle #{@puzzle.puzzle_id}
-    div
-      - if @puzzle.is_a? LichessV2Puzzle
-        a.ext-link(href="https://lichess.org/training/#{@puzzle.puzzle_id}" target="_blank")
-          | View puzzle on Lichess
-      - unless @puzzle.is_a? LichessV2Puzzle
-        a.ext-link(href="https://lichess.org/analysis/standard/#{@puzzle.puzzle_data["puzzle_fen"].gsub(/\s+/, '_')}" target="_blank")
-          | Analyze on Lichess
+      .puzzle-info
+        - unless @puzzle.is_a? LichessV2Puzzle
+          div Puzzle FEN
+          input.fen(type="text" readonly="readonly" value="#{@puzzle.puzzle_data["puzzle_fen"]}")
 
-    .puzzle-info
-      - unless @puzzle.is_a? LichessV2Puzzle
-        div Puzzle FEN
-        input.fen(type="text" readonly="readonly" value="#{@puzzle.puzzle_data["puzzle_fen"]}")
+        table.metadata
+          - @puzzle.metadata.each do |field_name, field_value|
+            tr
+              td= field_name
+              - if field_name == :themes
+                td
+                  - field_value.each do |theme_name|
+                    = theme_name
+                    br
+              - else
+                td= field_value.to_s
 
-      table.metadata
-        - @puzzle.metadata.each do |field_name, field_value|
-          tr
-            td= field_name
-            - if field_name == :themes
-              td
-                - field_value.each do |theme_name|
-                  = theme_name
-                  br
-            - else
-              td= field_value.to_s
-
-    - if current_user && @puzzle.is_reportable?
-      - if @has_reported_puzzle
-        .puzzle-report-status Puzzle reported!
-      - else
-        a.dark-button.report-puzzle Report puzzle
-        form.puzzle-report-form(action="/puzzle_reports" method="POST")
-          = hidden_field_tag :authenticity_token, form_authenticity_token
-          = hidden_field_tag "puzzle_report[puzzle_id]", @puzzle.puzzle_id
-          textarea.puzzle-report-message(name="puzzle_report[message]" placeholder="Why are you reporting this puzzle?")
-          input.cancel-puzzle-report.dark-button.small(type="button" value="Cancel")
-          input.dark-button.small(type="submit" value="Submit report")
+      - if current_user && @puzzle.is_reportable?
+        - if @has_reported_puzzle
+          .puzzle-report-status Puzzle reported!
+        - else
+          a.dark-button.report-puzzle Report puzzle
+          form.puzzle-report-form(action="/puzzle_reports" method="POST")
+            = hidden_field_tag :authenticity_token, form_authenticity_token
+            = hidden_field_tag "puzzle_report[puzzle_id]", @puzzle.puzzle_id
+            textarea.puzzle-report-message(name="puzzle_report[message]" placeholder="Why are you reporting this puzzle?")
+            input.cancel-puzzle-report.dark-button.small(type="button" value="Cancel")
+            input.dark-button.small(type="submit" value="Submit report")
 
 script#puzzle-data(type="application/json")
   = @puzzle.to_json.html_safe
