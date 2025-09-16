@@ -72,7 +72,7 @@ Rails.application.routes.draw do
   # more pages
   get '/scoreboard'              => 'pages#scoreboard'
   get '/about'                   => 'pages#about'
-  get '/types-of-chess-tactics'  => 'pages#chess_tactics'
+  get '/types-of-chess-tactics'  => 'pages#types_of_chess_tactics'
 
   # puzzle pages
   get '/puzzles'                 => 'puzzles#index'
