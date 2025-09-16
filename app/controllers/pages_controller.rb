@@ -8,32 +8,44 @@ class PagesController < ApplicationController
     @world_number = 1
     @world_name = "Just getting started"
     
-    # Load the appropriate QuestWorld based on user's progress or URL parameter
-    if params[:world].present?
-      @quest_world = QuestWorld.find(params[:world])
-    else
-      @quest_world = get_next_quest_world_for_user(current_user)
-    end
+    # Quest mode enabled flag - set to false by default
+    @quest_mode_enabled = false
     
-    # Only prepare quest data if we have a quest world and it's not completed
-    if @quest_world && (!current_user || !@quest_world.completed_by?(current_user))
-      @quest_world_levels = @quest_world.quest_world_levels
-      # Prepare first puzzle data for each level
-      @quest_world_levels_with_puzzles = @quest_world_levels.map do |level|
-        first_puzzle = get_first_puzzle_for_level(level)
-        level_data = level.attributes
-        level_data['first_puzzle'] = first_puzzle
-        level_data['success_criteria_description'] = level.success_criteria_description
-        level_data['completed'] = current_user ? level.completed_by?(current_user) : false
-        level_data
+    # Only load quest data if quest mode is enabled
+    if @quest_mode_enabled
+      # Load the appropriate QuestWorld based on user's progress or URL parameter
+      if params[:world].present?
+        @quest_world = QuestWorld.find(params[:world])
+      else
+        @quest_world = get_next_quest_world_for_user(current_user)
       end
-      @all_quest_worlds_complete = false
+      
+      # Only prepare quest data if we have a quest world and it's not completed
+      if @quest_world && (!current_user || !@quest_world.completed_by?(current_user))
+        @quest_world_levels = @quest_world.quest_world_levels
+        # Prepare first puzzle data for each level
+        @quest_world_levels_with_puzzles = @quest_world_levels.map do |level|
+          first_puzzle = get_first_puzzle_for_level(level)
+          level_data = level.attributes
+          level_data['first_puzzle'] = first_puzzle
+          level_data['success_criteria_description'] = level.success_criteria_description
+          level_data['completed'] = current_user ? level.completed_by?(current_user) : false
+          level_data
+        end
+        @all_quest_worlds_complete = false
+      else
+        # If all worlds completed or no quest world, don't show quest section
+        @quest_world = nil
+        @quest_world_levels = nil
+        @quest_world_levels_with_puzzles = nil
+        @all_quest_worlds_complete = current_user && QuestWorld.all.all? { |w| w.completed_by?(current_user) }
+      end
     else
-      # If all worlds completed or no quest world, don't show quest section
+      # Quest mode disabled - set all quest variables to nil
       @quest_world = nil
       @quest_world_levels = nil
       @quest_world_levels_with_puzzles = nil
-      @all_quest_worlds_complete = current_user && QuestWorld.all.all? { |w| w.completed_by?(current_user) }
+      @all_quest_worlds_complete = false
     end
     
     render "/home"

@@ -1,67 +1,68 @@
 section.homepage
 
-  .quest-section
-    - if @quest_world && @quest_world_levels_with_puzzles
-      .quest-bg(
-        style="background-image: url(/backgrounds/#{@background_img})")
-      .quest-above-bg(
-        style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
+  - if @quest_mode_enabled
+    .quest-section
+      - if @quest_world && @quest_world_levels_with_puzzles
+        .quest-bg(
+          style="background-image: url(/backgrounds/#{@background_img})")
+        .quest-above-bg(
+          style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
 
-      .quest-container.container
-        header.world-intro
-          .world-name= @quest_world.description
+        .quest-container.container
+          header.world-intro
+            .world-name= @quest_world.description
 
-        main.world-levels
-          - if @quest_world_levels_with_puzzles&.any?
-            - @quest_world_levels_with_puzzles.each do |level_data|
-              - if level_data && level_data['id']
-                a.quest-level-link(href="/quest/#{@quest_world.id}/#{level_data['id']}" class="#{'completed' if level_data['completed']}")
-                  .quest-level
-                    - if level_data['first_puzzle']
-                      - puzzle_data = level_data['first_puzzle']
-                      - puzzle_fen = puzzle_data[:fen] if puzzle_data
-                      - puzzle_flip = puzzle_fen&.include?(" w ") || false
-                      - initial_move = puzzle_data[:initial_move] if puzzle_data
-                      .board-link= render(partial: "static/snippets/miniboard",
-                                        locals: { fen: puzzle_fen,
-                                                 flip: puzzle_flip,
-                                                 initial_move: initial_move,
-                                                 title: "Level #{level_data['number']} - First Puzzle" })
-                    .level-info-bottom
-                      .success-criteria= level_data['success_criteria_description']
-                      - if level_data['completed']
-                        .completion-indicator
-                          .checkmark ✓
+          main.world-levels
+            - if @quest_world_levels_with_puzzles&.any?
+              - @quest_world_levels_with_puzzles.each do |level_data|
+                - if level_data && level_data['id']
+                  a.quest-level-link(href="/quest/#{@quest_world.id}/#{level_data['id']}" class="#{'completed' if level_data['completed']}")
+                    .quest-level
+                      - if level_data['first_puzzle']
+                        - puzzle_data = level_data['first_puzzle']
+                        - puzzle_fen = puzzle_data[:fen] if puzzle_data
+                        - puzzle_flip = puzzle_fen&.include?(" w ") || false
+                        - initial_move = puzzle_data[:initial_move] if puzzle_data
+                        .board-link= render(partial: "static/snippets/miniboard",
+                                          locals: { fen: puzzle_fen,
+                                                   flip: puzzle_flip,
+                                                   initial_move: initial_move,
+                                                   title: "Level #{level_data['number']} - First Puzzle" })
+                      .level-info-bottom
+                        .success-criteria= level_data['success_criteria_description']
+                        - if level_data['completed']
+                          .completion-indicator
+                            .checkmark ✓
 
-      .quest-container-bottom.container
-        - if user_signed_in? && @quest_world.completed_by?(current_user)
-          .quest-completed
-            .completion-message
-              .title World Complete!
-              .description You've completed all levels in this world
-            .action-buttons
-              - next_world = get_next_quest_world_for_user(current_user)
-              - if next_world && next_world != @quest_world
-                a.blue-button(href="/?world=#{next_world.id}") Continue to Next World
-              - else
-                a.blue-button(href="/") Back to Homepage
-        - else
-          div Complete all levels to continue
-    - elsif @all_quest_worlds_complete
-      .quest-bg(
-        style="background-image: url(/backgrounds/#{@background_img})")
-      .quest-above-bg(
-        style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
+        .quest-container-bottom.container
+          - if user_signed_in? && @quest_world.completed_by?(current_user)
+            .quest-completed
+              .completion-message
+                .title World Complete!
+                .description You've completed all levels in this world
+              .action-buttons
+                - next_world = get_next_quest_world_for_user(current_user)
+                - if next_world && next_world != @quest_world
+                  a.blue-button(href="/?world=#{next_world.id}") Continue to Next World
+                - else
+                  a.blue-button(href="/") Back to Homepage
+          - else
+            div Complete all levels to continue
+      - elsif @all_quest_worlds_complete
+        .quest-bg(
+          style="background-image: url(/backgrounds/#{@background_img})")
+        .quest-above-bg(
+          style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
 
-      .quest-container.container
-        header.world-intro
-          .world-name All quest worlds complete!
-        main.world-levels
-          .quest-level
-            .level-info-top 🎉 Congratulations! 🎉
-            .level-info-bottom You've completed all available quest worlds.
-    - else
-      = render partial: "worlds/world-#{@world_number}"
+        .quest-container.container
+          header.world-intro
+            .world-name All quest worlds complete!
+          main.world-levels
+            .quest-level
+              .level-info-top 🎉 Congratulations! 🎉
+              .level-info-bottom You've completed all available quest worlds.
+      - else
+        = render partial: "worlds/world-#{@world_number}"
 
   .game-modes-section
     .container
