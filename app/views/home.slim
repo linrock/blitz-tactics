@@ -15,7 +15,7 @@ section.homepage
           - if @quest_world_levels_with_puzzles&.any?
             - @quest_world_levels_with_puzzles.each do |level_data|
               - if level_data && level_data['id']
-                a.quest-level-link(href="/quest/#{@quest_world.id}/#{level_data['id']}")
+                a.quest-level-link(href="/quest/#{@quest_world.id}/#{level_data['id']}" class="#{'completed' if level_data['completed']}")
                   .quest-level
                     - if level_data['first_puzzle']
                       - puzzle_data = level_data['first_puzzle']
