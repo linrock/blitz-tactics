@@ -38,12 +38,16 @@ class ThreePuzzle
     color_to_move = %w(w b).sample
     puzzles_per_pool = 16  # 16 puzzles per pool = 112 total puzzles
     
-    # Single fast query without ORDER BY RANDOM (much faster!)
+    # Ultra-fast query with smart randomization
+    # Use a random offset without counting (much faster!)
+    random_offset = rand(10000)  # Start from a random position (up to 10k offset)
+    
     all_puzzles_data = LichessV2Puzzle
       .where(popularity: 96..)  # popularity > 95
       .where(num_plays: 1001..) # num_plays > 1000
       .where(rating: 600..1800)  # All rating ranges
-      .limit(total_puzzles * 4)  # Get 4x what we need for better sampling
+      .offset(random_offset)  # Start from a random position
+      .limit(total_puzzles * 4)  # Get 4x what we need (reduced from 6x)
       .pluck(:puzzle_id, :initial_fen, :moves_uci, :lines_tree, :rating)
       .select { |puzzle_id, initial_fen, moves_uci, lines_tree, rating|
         # Filter by color using FEN string (6th field: "w" or "b")
@@ -71,8 +75,8 @@ class ThreePuzzle
       selected_puzzles.concat(selected_from_range)
     end
     
-    # Convert to final format
-    selected_puzzles.first(total_puzzles).map { |puzzle_id, initial_fen, moves_uci, lines_tree, rating|
+    # Convert to final format with rating preserved for sorting
+    final_puzzles = selected_puzzles.first(total_puzzles).map { |puzzle_id, initial_fen, moves_uci, lines_tree, rating|
       # Convert UCI to SAN for the initial move
       initial_move_uci = moves_uci[0]
       begin
@@ -87,12 +91,17 @@ class ThreePuzzle
         id: puzzle_id,
         fen: initial_fen,
         lines: lines_tree,
+        rating: rating,  # Keep rating for sorting
         initialMove: {
           san: initial_move_san,
           uci: initial_move_uci
         }
       }
     }
+    
+    # Sort by rating to maintain ascending difficulty
+    # The randomization comes from: 1) random offset, 2) random sampling within pools
+    final_puzzles.sort_by { |puzzle| puzzle[:rating] }
   end
 
 end
