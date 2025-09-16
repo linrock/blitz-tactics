@@ -1,8 +1,8 @@
 # ThreeLevelCreator - Generates precomputed puzzle lists for fast retrieval
 #
 # Usage Examples:
-#   # Generate 10 levels with 100 puzzles each (10 per pool)
-#   ThreeLevelCreator.generate_and_save_levels(10, 100, "three_levels.json")
+#   # Generate 10 levels with 200 puzzles each (10 per pool)
+#   ThreeLevelCreator.generate_and_save_levels(10, 200, "three_levels.json")
 #
 #   # Load a random level
 #   puzzle_ids = ThreeLevelCreator.get_random_level("three_levels.json")
@@ -11,33 +11,44 @@
 #   analysis = ThreeLevelCreator.analyze_pool_sizes
 #
 # Rake Tasks:
-#   rake three:generate[10,100,three_levels.json]  # Generate levels
+#   rake three:generate[10,200,three_levels.json]  # Generate levels
 #   rake three:analyze                              # Analyze pool sizes
 #   rake three:test_load[three_levels.json]        # Test loading
+#   rake three:export_pools[data/game-modes/three/] # Export pools to text files
 #
 class ThreeLevelCreator
-  # 10 pools: 5 for white to move, 5 for black to move
-  # Each pool has ascending rating ranges
+  # 20 pools: 10 for white to move, 10 for black to move
+  # Each pool has ascending rating ranges starting from 600
   RATING_RANGES = {
     'w' => [
-      (600..800),   # Pool 1: White, Easy
-      (800..1000),  # Pool 2: White, Medium-Easy
-      (1000..1200), # Pool 3: White, Medium
-      (1200..1400), # Pool 4: White, Medium-Hard
-      (1400..1600)  # Pool 5: White, Hard
+      (600..800),   # Pool 1: White, 600-800
+      (800..1000),  # Pool 2: White, 800-1000
+      (1000..1200), # Pool 3: White, 1000-1200
+      (1200..1400), # Pool 4: White, 1200-1400
+      (1400..1600), # Pool 5: White, 1400-1600
+      (1600..1700), # Pool 6: White, 1600-1700
+      (1700..1800), # Pool 7: White, 1700-1800
+      (1800..1900), # Pool 8: White, 1800-1900
+      (1900..2000), # Pool 9: White, 1900-2000
+      (2000..2100)  # Pool 10: White, 2000-2100
     ],
     'b' => [
-      (600..800),   # Pool 6: Black, Easy
-      (800..1000),  # Pool 7: Black, Medium-Easy
-      (1000..1200), # Pool 8: Black, Medium
-      (1200..1400), # Pool 9: Black, Medium-Hard
-      (1400..1600)  # Pool 10: Black, Hard
+      (600..800),   # Pool 11: Black, 600-800
+      (800..1000),  # Pool 12: Black, 800-1000
+      (1000..1200), # Pool 13: Black, 1000-1200
+      (1200..1400), # Pool 14: Black, 1200-1400
+      (1400..1600), # Pool 15: Black, 1400-1600
+      (1600..1700), # Pool 16: Black, 1600-1700
+      (1700..1800), # Pool 17: Black, 1700-1800
+      (1800..1900), # Pool 18: Black, 1800-1900
+      (1900..2000), # Pool 19: Black, 1900-2000
+      (2000..2100)  # Pool 20: Black, 2000-2100
     ]
   }.freeze
 
-  def self.generate_level(n = 100)
-    # 10 puzzles from each of the 10 pools = 100 total puzzles
-    puzzles_per_pool = n / 10
+  def self.generate_level(n = 200)
+    # 10 puzzles from each of the 20 pools = 200 total puzzles
+    puzzles_per_pool = n / 20
     
     level_puzzle_ids = []
     
@@ -135,8 +146,62 @@ class ThreeLevelCreator
     analysis
   end
 
+  # Export puzzle IDs to separate text files for each pool
+  def self.export_pools_to_files(output_dir = "data/game-modes/three/")
+    puts "Exporting puzzle pools to text files..."
+    puts "Output directory: #{output_dir}"
+    
+    # Ensure output directory exists
+    full_output_dir = Rails.root.join(output_dir)
+    FileUtils.mkdir_p(full_output_dir)
+    
+    exported_files = []
+    
+    RATING_RANGES.each do |color_to_move, rating_ranges|
+      puts "\nExporting #{color_to_move.upcase} to move pools..."
+      
+      rating_ranges.each_with_index do |rating_range, index|
+        pool_number = index + 1
+        filename = "#{color_to_move}_pool_#{pool_number}_#{rating_range.min}-#{rating_range.max}.txt"
+        file_path = File.join(full_output_dir, filename)
+        
+        # Get all puzzle IDs for this pool
+        puzzle_ids = LichessV2Puzzle
+          .where(popularity: 96..)  # popularity > 95
+          .where(num_plays: 1001..) # num_plays > 1000
+          .where(rating: rating_range)
+          .where("initial_fen LIKE ?", "% #{color_to_move} %")  # Filter by color to move
+          .pluck(:puzzle_id)
+        
+        # Write to file (one ID per line)
+        File.write(file_path, puzzle_ids.join("\n"))
+        
+        exported_files << {
+          file: filename,
+          path: file_path,
+          pool: "#{color_to_move.upcase} Pool #{pool_number}",
+          rating_range: rating_range,
+          count: puzzle_ids.length
+        }
+        
+        puts "  #{filename}: #{puzzle_ids.length} puzzles (#{rating_range})"
+      end
+    end
+    
+    puts "\n✅ Export complete!"
+    puts "Exported #{exported_files.length} files to #{full_output_dir}"
+    
+    # Summary
+    puts "\nSummary:"
+    exported_files.each do |file_info|
+      puts "  #{file_info[:file]}: #{file_info[:count]} puzzles"
+    end
+    
+    exported_files
+  end
+
   # Utility method to generate and save levels
-  def self.generate_and_save_levels(count = 10, puzzles_per_level = 100, filename = "three_levels.json")
+  def self.generate_and_save_levels(count = 10, puzzles_per_level = 200, filename = "three_levels.json")
     puts "Generating #{count} levels with #{puzzles_per_level} puzzles each..."
     puts "Analyzing pool sizes first..."
     
