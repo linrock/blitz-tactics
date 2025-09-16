@@ -8,6 +8,16 @@ body[data-controller=puzzles][data-action=show]
   .below-board
     display: none
 
+  // Force fixed width for show solution button
+  .actions .button.show-solution
+    width: 180px !important
+    min-width: 180px !important
+    max-width: 180px !important
+    background: #007bff !important
+
+    &:hover:not(:disabled)
+      background: #0056b3 !important
+
   .puzzle-info-section
     margin-top: 40px
     width: 100%
@@ -35,6 +45,24 @@ body[data-controller=puzzles][data-action=show]
     .fen
       margin: 10px 0
       width: 100%
+      background: rgba(255, 255, 255, 0.1)
+      border: 1px solid rgba(255, 255, 255, 0.2)
+      border-radius: 4px
+      color: #ffffff
+      font-family: 'Courier New', monospace
+      font-size: 14px
+      padding: 8px 12px
+      transition: all 0.2s ease
+
+      &:focus
+        outline: none
+        border-color: #007bff
+        background: rgba(255, 255, 255, 0.15)
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25)
+
+      &:hover
+        background: rgba(255, 255, 255, 0.15)
+        border-color: rgba(255, 255, 255, 0.3)
 
     .puzzle-info
       margin-top: 20px
@@ -97,9 +125,4 @@ body[data-controller=puzzles][data-action=show]
         background: #666
 
       &.show-solution
-        background: #007bff
-        width: 160px  // Fixed width to prevent resizing
         text-align: center
-
-        &:hover:not(:disabled)
-          background: #0056b3
