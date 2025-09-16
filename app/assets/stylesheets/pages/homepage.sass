@@ -166,6 +166,21 @@
       text-decoration: none
       color: inherit
       margin-bottom: 20px
+      transition: opacity 0.3s ease
+
+      // Fade completed levels
+      &.completed
+        opacity: 0.75
+        
+        .quest-level
+          background: rgba(255, 255, 255, 0.1)
+          border: 1px solid rgba(255, 255, 255, 0.2)
+          
+          .board-link
+            opacity: 0.8
+            
+          .level-info-bottom
+            opacity: 0.85
 
       .quest-level
         cursor: pointer
@@ -173,6 +188,11 @@
         border-radius: 8px
         padding: 20px
         border: 1px solid rgba(255, 255, 255, 0.2)
+        transition: all 0.3s ease
+        height: 320px // Increased height for better card size
+        display: flex
+        flex-direction: column
+        justify-content: space-between
 
 @media (max-width: 980px)
   .homepage .game-modes-container
