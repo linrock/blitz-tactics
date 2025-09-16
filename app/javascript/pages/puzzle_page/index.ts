@@ -3,6 +3,7 @@ import { FEN, PuzzleLines, UciMove } from '@blitz/types'
 import { moveToUci, uciToMove } from '@blitz/utils'
 
 import ChessgroundBoard from '@blitz/components/chessground_board'
+import ChessboardResizer from '@blitz/components/puzzle_player/views/chessboard_resizer'
 import MoveStatus from '@blitz/components/move_status'
 import './style.sass'
 
@@ -24,6 +25,7 @@ interface PuzzleData {
 let originalInstructions: string;
 
 export default () => {
+  
   const puzzleJsonDataEl: HTMLScriptElement = document.querySelector("#puzzle-data")
 
   // Select FEN input upon click for convenient copying
@@ -61,10 +63,13 @@ export default () => {
   console.dir(puzzleData)
 
   const chessgroundBoard = new ChessgroundBoard({ fen });
+  new ChessboardResizer;
   new MoveStatus;
 
   const instructionsEl: HTMLElement = document.querySelector('.instructions')
   const resetPositionEl: HTMLElement = document.querySelector('.button.restart')
+  const showSolutionEl: HTMLElement = document.querySelector('.show-solution')
+
 
   originalInstructions = instructionsEl.textContent
 
@@ -111,11 +116,23 @@ export default () => {
   })
 
   let firstMoveT
+  let solutionTimeouts: number[] = [] // Track solution playback timeouts
 
   // Initializes the board position. Makes initial opponent move if there is one
   const resetPosition = (puzzleMovesData: PuzzleMovesData) => {
     chessgroundBoard.unfreeze()
     clearTimeout(firstMoveT)
+    
+    // Clear any pending solution playback timeouts
+    solutionTimeouts.forEach(timeoutId => clearTimeout(timeoutId))
+    solutionTimeouts = []
+    
+    // Reset the "Show solution" button state
+    if (showSolutionEl) {
+      showSolutionEl.textContent = 'Show solution'
+      showSolutionEl.disabled = false
+    }
+    
     dispatch('fen:set', puzzleMovesData.initial_fen)
     let firstMove
     if (puzzleMovesData.initial_move_san) {
@@ -134,10 +151,90 @@ export default () => {
     }, 500)
   }
 
+  // Extract all moves from the puzzle lines tree
+  const extractSolutionMoves = (lines: PuzzleLines): string[] => {
+    const moves: string[] = []
+    
+    const traverse = (currentLines: PuzzleLines | 'win' | 'retry'): void => {
+      if (currentLines === 'win' || currentLines === 'retry') {
+        return
+      }
+      
+      // Get the first key from the current level (the main solution line)
+      const keys = Object.keys(currentLines)
+      if (keys.length > 0) {
+        const move = keys[0]
+        moves.push(move)
+        
+        // Recursively traverse the next level
+        traverse(currentLines[move])
+      }
+    }
+    
+    traverse(lines)
+    return moves
+  }
+
+  // Play the solution moves with 0.7 second delays, continuing from current position
+  const playSolution = () => {
+    
+    // Extract all solution moves
+    const solutionMoves = extractSolutionMoves(initialPuzzleState.lines)
+    
+    // Check if we have any solution moves
+    if (solutionMoves.length === 0) {
+      instructionsEl.textContent = 'No solution moves found'
+      instructionsEl.classList.remove('invisible')
+      return
+    }
+    
+    // Disable the button during playback
+    showSolutionEl.textContent = 'Playing solution...'
+    showSolutionEl.disabled = true
+    
+    // Play each solution move with 0.7 second delays, starting immediately from current position
+    solutionMoves.forEach((moveUci, index) => {
+      const delay = 500 + (index * 700) // Start after 0.5s, then 0.7s between each move
+      const timeoutId = setTimeout(() => {
+        // Mark the last move as an opponent move so it gets highlighted
+        const isLastMove = index === solutionMoves.length - 1
+        dispatch('move:make', uciToMove(moveUci), { opponent: isLastMove })
+        
+        // If this is the last move, re-enable the button
+        if (isLastMove) {
+          const finalTimeoutId = setTimeout(() => {
+            showSolutionEl.textContent = 'Show solution'
+            showSolutionEl.disabled = false
+            instructionsEl.textContent = 'Solution complete!'
+            instructionsEl.classList.remove('invisible')
+          }, 500)
+          solutionTimeouts.push(finalTimeoutId)
+        }
+      }, delay)
+      solutionTimeouts.push(timeoutId)
+    })
+  }
+
   // reset position upon pageload and when clicking "Reset Position"
   resetPosition(initialPuzzleState)
   resetPositionEl.addEventListener('click', () => {
     resetPosition(initialPuzzleState)
     puzzleStateLines = Object.assign({}, initialPuzzleState.lines)
   })
+
+  // Show solution when clicking "Show solution" - use event delegation
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement
+    if (target && target.classList.contains('show-solution')) {
+      event.preventDefault()
+      playSolution()
+    }
+  })
+
+  // Also try direct event listener as backup
+  if (showSolutionEl) {
+    showSolutionEl.addEventListener('click', () => {
+      playSolution()
+    })
+  }
 }
