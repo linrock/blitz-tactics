@@ -123,6 +123,10 @@ class PagesController < ApplicationController
   def about
   end
 
+  def chess_tactics
+    # This method handles the /types-of-chess-tactics route
+  end
+
   def get_next_quest_world_for_user(user)
     return QuestWorld.first unless user
     
