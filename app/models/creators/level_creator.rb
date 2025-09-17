@@ -269,9 +269,46 @@ class LevelCreator
         pool_puzzle_data = File.readlines(file_path).map(&:strip).reject(&:empty?)
         
         if pool_puzzle_data.any?
-          # FAST: Simple random sampling without theme variety
-          sampled_lines = pool_puzzle_data.sample(sample_count)
+          # FAST: Simple random sampling with basic checkmate limiting
+          max_checkmates = (sample_count * 0.33).floor
+          checkmate_count = 0
+          sampled_lines = []
           
+          # Shuffle and sample with checkmate limiting
+          pool_puzzle_data.shuffle.each do |line|
+            break if sampled_lines.length >= sample_count
+            
+            # Quick checkmate detection (only if we need to limit)
+            if checkmate_count < max_checkmates || sampled_lines.length < sample_count - max_checkmates
+              parts = line.split("|", 3)
+              is_checkmate = false
+              
+              if parts.length == 3
+                themes_str = parts[2]
+                is_checkmate = themes_str&.include?("mate") || false
+              end
+              
+              # Add if it's a checkmate and we haven't hit the limit, or if it's not a checkmate
+              if (is_checkmate && checkmate_count < max_checkmates) || !is_checkmate
+                sampled_lines << line
+                checkmate_count += 1 if is_checkmate
+              end
+            else
+              # Add non-checkmate puzzles to fill remaining slots
+              parts = line.split("|", 3)
+              is_checkmate = false
+              if parts.length == 3
+                themes_str = parts[2]
+                is_checkmate = themes_str&.include?("mate") || false
+              end
+              
+              if !is_checkmate
+                sampled_lines << line
+              end
+            end
+          end
+          
+          # Parse and add selected puzzles
           sampled_lines.each do |line|
             parts = line.split("|", 3)
             
@@ -294,7 +331,19 @@ class LevelCreator
             }
           end
           
-          puts "  #{filename}: #{sampled_lines.length}/#{pool_puzzle_data.length} puzzles selected" if verbose
+          if verbose
+            actual_checkmate_count = sampled_lines.count do |line|
+              parts = line.split("|", 3)
+              if parts.length == 3
+                themes_str = parts[2]
+                themes_str&.include?("mate") || false
+              else
+                false
+              end
+            end
+            checkmate_percentage = (actual_checkmate_count * 100.0 / sampled_lines.length).round(1)
+            puts "  #{filename}: #{sampled_lines.length}/#{pool_puzzle_data.length} puzzles selected (#{actual_checkmate_count} checkmates, #{checkmate_percentage}%)"
+          end
         else
           puts "  #{filename}: No puzzles in pool" if verbose
         end
@@ -356,8 +405,46 @@ class LevelCreator
       if File.exist?(file_path)
         pool_puzzle_data = File.readlines(file_path).map(&:strip).reject(&:empty?)
         if pool_puzzle_data.any?
-          # FAST: Simple random sampling - just get puzzle IDs
-          sampled_lines = pool_puzzle_data.sample(sample_count)
+          # FAST: Simple random sampling with basic checkmate limiting
+          max_checkmates = (sample_count * 0.33).floor
+          checkmate_count = 0
+          sampled_lines = []
+          
+          # Shuffle and sample with checkmate limiting
+          pool_puzzle_data.shuffle.each do |line|
+            break if sampled_lines.length >= sample_count
+            
+            # Quick checkmate detection (only if we need to limit)
+            if checkmate_count < max_checkmates || sampled_lines.length < sample_count - max_checkmates
+              parts = line.split("|", 3)
+              is_checkmate = false
+              
+              if parts.length == 3
+                themes_str = parts[2]
+                is_checkmate = themes_str&.include?("mate") || false
+              end
+              
+              # Add if it's a checkmate and we haven't hit the limit, or if it's not a checkmate
+              if (is_checkmate && checkmate_count < max_checkmates) || !is_checkmate
+                sampled_lines << line
+                checkmate_count += 1 if is_checkmate
+              end
+            else
+              # Add non-checkmate puzzles to fill remaining slots
+              parts = line.split("|", 3)
+              is_checkmate = false
+              if parts.length == 3
+                themes_str = parts[2]
+                is_checkmate = themes_str&.include?("mate") || false
+              end
+              
+              if !is_checkmate
+                sampled_lines << line
+              end
+            end
+          end
+          
+          # Extract puzzle IDs
           sampled_lines.each do |line|
             puzzle_id = line.split("|", 3)[0] # Just get the puzzle_id
             selected_puzzle_ids << puzzle_id
