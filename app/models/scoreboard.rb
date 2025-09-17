@@ -4,6 +4,7 @@ class Scoreboard
 
   def initialize
     @recent_time = 24.hours.ago
+    @week_time = 7.days.ago
     @n_homepage = 5
     @n_scoreboard = 10
   end
@@ -63,6 +64,29 @@ class Scoreboard
       CompletedRepetitionLevel.unscoped.where('created_at > ?', @recent_time),
       @n_homepage
     )
+  end
+
+  # past 7 days
+
+  def week_scores?
+    top_infinity_week.present? or
+    top_haste_scores_week.present? or
+    top_three_scores_week.present?
+  end
+
+  def top_infinity_week
+    @top_infinity_week ||= group_and_count(
+      SolvedInfinityPuzzle.unscoped.where('created_at > ?', @week_time),
+      @n_homepage
+    )
+  end
+
+  def top_haste_scores_week
+    @top_haste_scores_week ||= CompletedHasteRound.high_scores(@week_time)
+  end
+
+  def top_three_scores_week
+    @top_three_scores_week ||= CompletedThreeRound.high_scores(@week_time)
   end
 
   # scoreboard standalone page
