@@ -30,10 +30,9 @@ class HastePuzzle
     # Fallback: use old haste_puzzles table if pool files don't exist
     old_haste_puzzle = HastePuzzleOld.where(difficulty: 0).order(Arel.sql('RANDOM()')).first
     if old_haste_puzzle
-      print 'old haste puzzle'
       # Convert old format to LichessV2Puzzle format
       puzzle_data = old_haste_puzzle.data
-      LichessV2Puzzle.new(
+      puzzle = LichessV2Puzzle.new(
         puzzle_id: puzzle_data["id"],
         initial_fen: puzzle_data["fen"],
         moves_uci: [puzzle_data["initialMove"]["uci"]],
@@ -42,6 +41,9 @@ class HastePuzzle
         popularity: 95,
         num_plays: 1000
       )
+      # Pre-compute SAN to avoid ChessJs calls
+      puzzle.instance_variable_set(:@initial_move_san, puzzle_data["initialMove"]["san"])
+      puzzle
     else
       nil
     end

@@ -13,6 +13,19 @@ class LichessV2Puzzle < ActiveRecord::Base
     moves_uci[0]
   end
 
+  # Compatibility methods for existing helper methods
+  def fen
+    initial_fen
+  end
+
+  def initial_move_san
+    # Cache the SAN conversion to avoid repeated ChessJs calls
+    @initial_move_san ||= begin
+      move_obj = ChessJs.get_move_from_move_uci(initial_fen, initial_move_uci)
+      move_obj["san"]
+    end
+  end
+
   # puzzle format used by blitz tactics game modes
   def bt_puzzle_data
     # TODO clean this up
