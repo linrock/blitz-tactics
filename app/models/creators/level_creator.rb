@@ -28,7 +28,7 @@ class LevelCreator
     (1200..1400) => 15,
     (1400..1600) => 15,
     (1600..1800) => 15,
-    (1800..2000) => 10,
+    (1800..2000) => 15,
     (2000..2100) => 10,
     (2100..2300) => 5,
     (2300..3200) => 5,
@@ -235,6 +235,8 @@ class LevelCreator
   # Create a level by sampling puzzles from pre-computed pool files
   # Chooses a random color to move and ensures theme diversity within each pool
   def self.create_level_from_pools(puzzle_counts: DEFAULT_PUZZLE_COUNTS, pools_dir: "data/puzzle-pools/")
+    start_time = Time.now
+    
     # Choose random color to move
     color_to_move = %w[w b].sample
     
@@ -270,9 +272,54 @@ class LevelCreator
       end
     end
     
+    # Get theme and rating information for selected puzzles (single efficient query)
+    puzzle_data = {}
+    if selected_puzzle_ids.any?
+      puzzles_with_data = LichessV2Puzzle
+        .where(puzzle_id: selected_puzzle_ids)
+        .select(:puzzle_id, :themes, :rating)
+      
+      puzzles_with_data.each do |puzzle|
+        puzzle_data[puzzle.puzzle_id] = {
+          themes: puzzle.themes,
+          rating: puzzle.rating
+        }
+      end
+    end
+    
+    end_time = Time.now
+    total_time = ((end_time - start_time) * 1000).round(2)  # Convert to milliseconds
+    
     puts "\n✅ Level creation complete!"
     puts "Color to move: #{color_to_move.upcase}"
     puts "Total puzzles selected: #{selected_puzzle_ids.length}"
+    puts "Total time: #{total_time}ms"
+    
+    # Print themes and ratings for each selected puzzle
+    puts "\nSelected puzzles:"
+    selected_puzzle_ids.each_with_index do |puzzle_id, index|
+      data = puzzle_data[puzzle_id] || { themes: ["unknown"], rating: 0 }
+      themes = data[:themes] || ["unknown"]
+      rating = data[:rating] || 0
+      primary_theme = themes.first || "unknown"
+      all_themes = themes.join(", ")
+      puts "  #{index + 1}. #{puzzle_id} (rating: #{rating}): #{primary_theme} (#{all_themes})"
+    end
+    
+    # Theme distribution summary
+    theme_counts = Hash.new(0)
+    selected_puzzle_ids.each do |puzzle_id|
+      data = puzzle_data[puzzle_id] || { themes: ["unknown"] }
+      themes = data[:themes] || ["unknown"]
+      primary_theme = themes.first || "unknown"
+      theme_counts[primary_theme] += 1
+    end
+    
+    puts "\nTheme distribution:"
+    theme_counts.sort_by { |theme, count| -count }.each do |theme, count|
+      percentage = (count * 100.0 / selected_puzzle_ids.length).round(1)
+      puts "  #{theme}: #{count} puzzles (#{percentage}%)"
+    end
     
     selected_puzzle_ids
   end
