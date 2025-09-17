@@ -18,15 +18,32 @@ class GameModes::InfinityController < ApplicationController
   # shows a list of puzzles you've seen recently
   def puzzles
     if current_user
+      @per_page = 30
+      @page = params[:page].to_i
+      @page = 1 if @page < 1
+      @offset = (@page - 1) * @per_page
+      
       solved_puzzle_ids = @user.solved_infinity_puzzles.
-        order('id DESC').limit(30).
+        order('id DESC').limit(@per_page).offset(@offset).
         includes(:infinity_puzzle).
         map do |solved|
           solved.infinity_puzzle.data['id']
         end
       @puzzles = Puzzle.find_by_sorted(solved_puzzle_ids)
+      
+      # Calculate total count and pages for pagination
+      @total_count = @user.solved_infinity_puzzles.count
+      @total_pages = (@total_count.to_f / @per_page).ceil
+      @has_next_page = @page < @total_pages
+      @has_prev_page = @page > 1
     else
       @puzzles = []
+      @per_page = 30
+      @page = 1
+      @total_count = 0
+      @total_pages = 0
+      @has_next_page = false
+      @has_prev_page = false
     end
   end
 

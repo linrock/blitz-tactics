@@ -1,11 +1,43 @@
 .puzzle-page.container
   - if current_user
     h2 Infinity puzzles you've solved recently
+    - if @total_count > 0
+      .pagination-info
+        | Showing #{(@page - 1) * @per_page + 1}-#{[@page * @per_page, @total_count].min} of #{@total_count} puzzles
 
     .puzzles
       - @puzzles.each_with_index do |puzzle, i|
         div
           = linked_puzzle_miniboard(puzzle)
-          .puzzle-num= i + 1
+          .puzzle-num= (@page - 1) * @per_page + i + 1
+
+    - if @total_pages > 1
+      .pagination
+        - if @has_prev_page
+          a.pagination-link.prev(href="/infinity/puzzles?page=#{@page - 1}") ← Previous
+        - else
+          span.pagination-link.prev.disabled ← Previous
+        
+        .pagination-pages
+          - start_page = [@page - 2, 1].max
+          - end_page = [@page + 2, @total_pages].min
+          - if start_page > 1
+            a.pagination-link(href="/infinity/puzzles?page=1") 1
+            - if start_page > 2
+              span.pagination-ellipsis ...
+          - (start_page..end_page).each do |page_num|
+            - if page_num == @page
+              span.pagination-link.current= page_num
+            - else
+              a.pagination-link(href="/infinity/puzzles?page=#{page_num}")= page_num
+          - if end_page < @total_pages
+            - if end_page < @total_pages - 1
+              span.pagination-ellipsis ...
+            a.pagination-link(href="/infinity/puzzles?page=#{@total_pages}")= @total_pages
+        
+        - if @has_next_page
+          a.pagination-link.next(href="/infinity/puzzles?page=#{@page + 1}") Next →
+        - else
+          span.pagination-link.next.disabled Next →
   - else
     div Log in or sign up to view the recent puzzles you've seen!
