@@ -33,9 +33,13 @@ class SolutionPlayer {
     if (this.playingSolutions.has(puzzleId)) {
       return
     }
+    
+    // Change button text to indicate what's happening
+    const originalText = button.textContent
+    button.textContent = 'Playing...'
 
-    // Update button state
-    button.textContent = 'Loading...'
+    // Update button state - fade out instead of changing text
+    button.style.opacity = '0.5'
     button.disabled = true
     this.playingSolutions.add(puzzleId)
 
@@ -54,7 +58,8 @@ class SolutionPlayer {
       
       if (!solutionLines) {
         console.warn('No solution data available')
-        button.textContent = 'No solution'
+        button.textContent = originalText || 'Show solution'
+        button.style.opacity = '1'
         button.disabled = false
         this.playingSolutions.delete(puzzleId)
         return
@@ -64,7 +69,8 @@ class SolutionPlayer {
       
       if (solutionMoves.length === 0) {
         console.warn('No solution moves found')
-        button.textContent = 'No moves'
+        button.textContent = originalText || 'Show solution'
+        button.style.opacity = '1'
         button.disabled = false
         this.playingSolutions.delete(puzzleId)
         return
@@ -76,26 +82,28 @@ class SolutionPlayer {
       
       if (!miniboard) {
         console.error('Could not find miniboard for puzzle')
-        button.textContent = 'View solution'
+        button.textContent = originalText || 'Show solution'
+        button.style.opacity = '1'
         button.disabled = false
         this.playingSolutions.delete(puzzleId)
         return
       }
 
-      // Update button state
-      button.textContent = 'Playing...'
+      // Button remains faded during playback
 
       // Play the solution
       this.playMovesInMiniboard(miniboard, initialFen, solutionMoves, () => {
-        // Reset button when done
-        button.textContent = 'View solution'
+        // Reset button when done - fade back in
+        button.textContent = originalText || 'Show solution'
+        button.style.opacity = '1'
         button.disabled = false
         this.playingSolutions.delete(puzzleId)
       })
 
     } catch (error) {
       console.error('Failed to load or parse solution data:', error)
-      button.textContent = 'Error'
+      button.textContent = originalText || 'Show solution'
+      button.style.opacity = '1'
       button.disabled = false
       this.playingSolutions.delete(puzzleId)
     }
@@ -107,6 +115,12 @@ class SolutionPlayer {
       return
     }
 
+    // Reset board to original position before playing solution
+    this.resetBoardToOriginalPosition(miniboard)
+    
+    // Clear any existing move highlighting before starting solution
+    this.clearExistingHighlights(miniboard)
+
     let currentMoveIndex = 0
     
     const playNextMove = () => {
@@ -114,15 +128,130 @@ class SolutionPlayer {
         const moveUci = moves[currentMoveIndex]
         this.animateMoveOnMiniboard(miniboard, moveUci)
         currentMoveIndex++
-        setTimeout(playNextMove, 1000) // 1 second delay between moves
+        setTimeout(playNextMove, 700) // 0.7 second delay between moves
       } else {
         onComplete()
       }
     }
     
-    // Start playing moves after a short delay
-    setTimeout(playNextMove, 500)
+    // Start playing moves after reset completes
+    setTimeout(playNextMove, 200)
   }
+
+  private clearExistingHighlights(miniboard: Element) {
+    // Remove any existing move-from and move-to classes from all squares
+    const highlightedSquares = miniboard.querySelectorAll('.square.move-from, .square.move-to')
+    highlightedSquares.forEach(square => {
+      square.classList.remove('move-from', 'move-to')
+    })
+  }
+
+  private resetBoardToOriginalPosition(miniboard: Element) {
+    // Store original state before any manipulation
+    const originalFen = miniboard.getAttribute('data-fen')
+    const originalMove = miniboard.getAttribute('data-initial-move')
+    
+    if (!originalFen) {
+      console.warn('No original FEN data found for reset')
+      return
+    }
+
+    console.log('Resetting board to original position using simple piece restoration')
+    console.log('Original FEN:', originalFen)
+
+    // Store the current state first time we see this board
+    if (!this.originalBoardStates.has(originalFen)) {
+      this.storeOriginalBoardState(miniboard, originalFen)
+    }
+
+    // Restore from stored state
+    this.restoreFromStoredState(miniboard, originalFen, originalMove)
+  }
+
+  // Store original board states to avoid re-parsing FEN
+  private originalBoardStates = new Map<string, {
+    pieces: { square: Element, piece: Element }[],
+    initialMove: string | null
+  }>()
+
+  private storeOriginalBoardState(miniboard: Element, fen: string) {
+    console.log('Storing original board state for FEN:', fen)
+    
+    const squares = miniboard.querySelectorAll('.square')
+    const pieces: { square: Element, piece: Element }[] = []
+    
+    squares.forEach(square => {
+      const piece = square.querySelector('.piece')
+      if (piece) {
+        // Clone the piece to store its exact state
+        const pieceClone = piece.cloneNode(true) as Element
+        pieces.push({ square, piece: pieceClone })
+      }
+    })
+    
+    console.log(`Stored ${pieces.length} pieces for FEN:`, fen)
+    
+    this.originalBoardStates.set(fen, {
+      pieces,
+      initialMove: miniboard.getAttribute('data-initial-move')
+    })
+  }
+
+  private restoreFromStoredState(miniboard: Element, fen: string, originalMove: string | null) {
+    const storedState = this.originalBoardStates.get(fen)
+    if (!storedState) {
+      console.warn('No stored state found for FEN:', fen)
+      return
+    }
+
+    console.log(`Restoring ${storedState.pieces.length} pieces from stored state`)
+
+    // Clear all current pieces
+    const squares = miniboard.querySelectorAll('.square')
+    squares.forEach(square => {
+      const pieces = square.querySelectorAll('.piece')
+      pieces.forEach(piece => piece.remove())
+    })
+
+    // Restore pieces to their original positions
+    storedState.pieces.forEach(({ square, piece }) => {
+      // Find the corresponding square in the current board
+      const squareIndex = Array.from(squares).indexOf(square)
+      if (squareIndex >= 0 && squares[squareIndex]) {
+        const pieceClone = piece.cloneNode(true) as Element
+        squares[squareIndex].appendChild(pieceClone)
+      }
+    })
+
+    // Restore initial move highlighting
+    if (originalMove) {
+      setTimeout(() => {
+        this.restoreInitialMoveHighlighting(miniboard, originalMove)
+      }, 50)
+    }
+
+    console.log('Board state restored successfully')
+  }
+
+
+  private restoreInitialMoveHighlighting(miniboard: Element, moveUci: string) {
+    if (moveUci.length < 4) return
+    
+    const fromSquare = moveUci.substring(0, 2)
+    const toSquare = moveUci.substring(2, 4)
+    
+    const squares = miniboard.querySelectorAll('.square')
+    const fromSquareEl = this.getSquareByPosition(squares, fromSquare)
+    const toSquareEl = this.getSquareByPosition(squares, toSquare)
+    
+    if (fromSquareEl) fromSquareEl.classList.add('move-from')
+    if (toSquareEl) toSquareEl.classList.add('move-to')
+  }
+
+
+
+
+
 
   private animateMoveOnMiniboard(miniboard: Element, moveUci: string) {
     const fromSquare = moveUci.substring(0, 2)
