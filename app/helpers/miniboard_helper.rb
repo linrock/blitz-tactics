@@ -30,7 +30,7 @@ module MiniboardHelper
   def homepage_miniboard_link(path, puzzle)
     render_miniboard_link({
       fen: puzzle.fen,
-      initial_move_san: puzzle.initial_move_san,
+      initial_move: puzzle.initial_move_uci,
       flip: puzzle.fen.include?(" w "),
       path: path,
     })
@@ -47,7 +47,7 @@ module MiniboardHelper
       path: "/p/#{puzzle_id}"
     }
     if puzzle.is_a? Puzzle
-      board_options[:initial_move_san] = puzzle.puzzle_data["initial_move_san"]
+      board_options[:initial_move] = puzzle.puzzle_data["initial_move_uci"]
     else
       board_options[:initial_move] = puzzle.initial_move_uci
     end

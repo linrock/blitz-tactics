@@ -86,6 +86,10 @@ class Puzzle < ActiveRecord::Base
     puzzle_data["initial_move_san"]
   end
 
+  def initial_move_uci
+    puzzle_data["initial_move_uci"]
+  end
+
   def is_reportable?
     true
   end
