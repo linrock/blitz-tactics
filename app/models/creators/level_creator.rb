@@ -19,6 +19,8 @@
 #   # Analyze pool sizes
 #   analysis = LevelCreator.analyze_pool_sizes
 #
+require 'set'
+
 class LevelCreator
   # Default rating ranges and puzzle counts
   DEFAULT_PUZZLE_COUNTS = {
@@ -78,26 +80,31 @@ class LevelCreator
         filename = "#{color_to_move}_pool_#{padded_pool_number}_#{rating_range.min}-#{rating_range.max}.txt"
         file_path = File.join(full_output_dir, filename)
         
-        # Get ALL puzzle IDs for this pool (no sampling)
-        all_puzzle_ids = LichessV2Puzzle
+        # Get ALL puzzle data for this pool (puzzle_id, themes, rating)
+        all_puzzles = LichessV2Puzzle
           .where(popularity: 95..)  # popularity > 95
           .where(num_plays: 1000..) # num_plays > 1000
           .where(rating: rating_range)
           .where("initial_fen LIKE ?", "% #{color_to_move} %")  # Filter by color to move
-          .pluck(:puzzle_id)
+          .select(:puzzle_id, :themes, :rating)
         
-        # Write ALL puzzle IDs to file (one ID per line)
-        File.write(file_path, all_puzzle_ids.join("\n"))
+        # Write puzzle data to file (one puzzle per line: puzzle_id|themes|rating)
+        puzzle_lines = all_puzzles.map do |puzzle|
+          themes_str = (puzzle.themes || []).join(",")
+          "#{puzzle.puzzle_id}|#{themes_str}|#{puzzle.rating}"
+        end
+        
+        File.write(file_path, puzzle_lines.join("\n"))
         
         exported_files << {
           file: filename,
           path: file_path,
           pool: "#{color_to_move.upcase} Pool #{padded_pool_number}",
           rating_range: rating_range,
-          total_count: all_puzzle_ids.length
+          total_count: all_puzzles.length
         }
         
-        puts "  #{filename}: #{all_puzzle_ids.length} puzzles (#{rating_range})"
+        puts "  #{filename}: #{all_puzzles.length} puzzles (#{rating_range})"
       end
     end
     
@@ -254,16 +261,40 @@ class LevelCreator
       filename = "#{color_to_move}_pool_#{padded_pool_number}_#{rating_range.min}-#{rating_range.max}.txt"
       file_path = Rails.root.join(pools_dir, filename)
       
-      # Read puzzle IDs from file
+      # Read puzzle data from file
       if File.exist?(file_path)
-        pool_puzzle_ids = File.readlines(file_path).map(&:strip).reject(&:empty?)
+        pool_puzzle_data = File.readlines(file_path).map(&:strip).reject(&:empty?)
         
-        if pool_puzzle_ids.any?
-          # Fast sampling with limited theme variety (no database queries)
-          sampled_ids = sample_with_limited_theme_variety(pool_puzzle_ids, sample_count)
+        if pool_puzzle_data.any?
+          # Parse puzzle data (format: puzzle_id|themes|rating or just puzzle_id for backward compatibility)
+          parsed_puzzles = pool_puzzle_data.map do |line|
+            parts = line.split("|", 3)
+            
+            if parts.length == 3
+              # New format: puzzle_id|themes|rating
+              puzzle_id, themes_str, rating_str = parts
+              themes = (themes_str.nil? || themes_str.empty?) ? [] : themes_str.split(",")
+              rating = rating_str.to_i
+            else
+              # Old format: just puzzle_id (backward compatibility)
+              puzzle_id = parts[0]
+              themes = []
+              rating = 0
+            end
+            
+            {
+              puzzle_id: puzzle_id,
+              themes: themes,
+              rating: rating
+            }
+          end
+          
+          # Fast sampling with theme variety using file data
+          sampled_puzzles = sample_with_theme_variety_from_file(parsed_puzzles, sample_count)
+          sampled_ids = sampled_puzzles.map { |p| p[:puzzle_id] }
           
           selected_puzzle_ids.concat(sampled_ids)
-          puts "  #{filename}: #{sampled_ids.length}/#{pool_puzzle_ids.length} puzzles selected"
+          puts "  #{filename}: #{sampled_ids.length}/#{parsed_puzzles.length} puzzles selected"
         else
           puts "  #{filename}: No puzzles in pool"
         end
@@ -306,13 +337,13 @@ class LevelCreator
       puts "  #{index + 1}. #{puzzle_id} (rating: #{rating}): #{primary_theme} (#{all_themes})"
     end
     
-    # Theme distribution summary
+    # Theme distribution summary (count ALL themes per puzzle)
     theme_counts = Hash.new(0)
     selected_puzzle_ids.each do |puzzle_id|
       data = puzzle_data[puzzle_id] || { themes: ["unknown"] }
       themes = data[:themes] || ["unknown"]
-      primary_theme = themes.first || "unknown"
-      theme_counts[primary_theme] += 1
+      # Count each theme in the puzzle
+      themes.each { |theme| theme_counts[theme] += 1 }
     end
     
     puts "\nTheme distribution:"
@@ -347,20 +378,104 @@ class LevelCreator
 
   private
 
-  # Fast sampling with limited theme variety (no database queries)
-  # Uses puzzle ID patterns to estimate theme diversity
+  # Fast sampling with theme variety using file data (NO database queries)
+  def self.sample_with_theme_variety_from_file(parsed_puzzles, sample_count)
+    return parsed_puzzles.sample(sample_count) if parsed_puzzles.length <= sample_count
+    
+    # Create a theme frequency map for the entire pool
+    pool_theme_frequency = Hash.new(0)
+    parsed_puzzles.each do |puzzle|
+      puzzle[:themes].each { |theme| pool_theme_frequency[theme] += 1 }
+    end
+    
+    # Sort themes by frequency (least common first for variety)
+    themes_by_rarity = pool_theme_frequency.sort_by { |theme, count| count }
+    
+    selected_puzzles = []
+    remaining_count = sample_count
+    
+    # Strategy: Prioritize puzzles with rare themes first
+    themes_by_rarity.each do |theme, _frequency|
+      break if remaining_count <= 0
+      
+      # Find puzzles that contain this theme and haven't been selected yet
+      available_puzzles_with_theme = parsed_puzzles.select do |puzzle|
+        !selected_puzzles.include?(puzzle) && 
+        puzzle[:themes].include?(theme)
+      end
+      
+      if available_puzzles_with_theme.any?
+        # Take one puzzle with this theme
+        selected_puzzle = available_puzzles_with_theme.sample
+        selected_puzzles << selected_puzzle
+        remaining_count -= 1
+      end
+    end
+    
+    # Fill remaining slots with puzzles that add the most theme diversity
+    while remaining_count > 0 && selected_puzzles.length < parsed_puzzles.length
+      best_puzzle = find_most_diverse_puzzle_from_file(parsed_puzzles, selected_puzzles)
+      if best_puzzle
+        selected_puzzles << best_puzzle
+        remaining_count -= 1
+      else
+        # Fallback to random selection
+        available_puzzles = parsed_puzzles - selected_puzzles
+        selected_puzzles << available_puzzles.sample
+        remaining_count -= 1
+      end
+    end
+    
+    selected_puzzles.shuffle
+  end
+
+  # Find the puzzle that would add the most theme diversity to the current selection
+  def self.find_most_diverse_puzzle_from_file(available_puzzles, selected_puzzles)
+    return nil if available_puzzles.empty?
+    
+    best_puzzle = nil
+    best_diversity_score = -1
+    
+    available_puzzles.each do |puzzle|
+      next if selected_puzzles.include?(puzzle)
+      
+      # Calculate diversity score for this puzzle
+      puzzle_themes = puzzle[:themes]
+      
+      # Count how many new themes this puzzle would add
+      selected_themes = Set.new
+      selected_puzzles.each do |selected_puzzle|
+        selected_puzzle[:themes].each { |theme| selected_themes.add(theme) }
+      end
+      
+      new_themes = puzzle_themes.reject { |theme| selected_themes.include?(theme) }
+      diversity_score = new_themes.length
+      
+      # Bonus for puzzles with multiple themes
+      diversity_score += puzzle_themes.length * 0.1
+      
+      if diversity_score > best_diversity_score
+        best_diversity_score = diversity_score
+        best_puzzle = puzzle
+      end
+    end
+    
+    best_puzzle
+  end
+
+  # Fast sampling with limited theme variety (NO database queries)
+  # Uses puzzle ID patterns and smart distribution for variety
   def self.sample_with_limited_theme_variety(puzzle_ids, sample_count)
     return puzzle_ids.sample(sample_count) if puzzle_ids.length <= sample_count
     
     # Shuffle the pool to randomize order
     shuffled_ids = puzzle_ids.shuffle
     
-    # Use a simple distribution strategy to ensure variety
-    # Take puzzles from different parts of the shuffled list
+    # Use a smart distribution strategy to ensure variety
     selected_ids = []
     
     if sample_count <= 3
-      # For small samples, just take from different parts
+      # For small samples, take from different parts of the shuffled list
       step = [shuffled_ids.length / sample_count, 1].max
       (0...sample_count).each do |i|
         index = (i * step) % shuffled_ids.length
@@ -369,7 +484,7 @@ class LevelCreator
     else
       # For larger samples, use a more sophisticated distribution
       # Divide the pool into segments and sample from each
-      num_segments = [sample_count / 3, 5].min  # Use 3-5 segments
+      num_segments = [sample_count / 2, 6].min  # Use 2-6 segments for better variety
       segment_size = shuffled_ids.length / num_segments
       
       puzzles_per_segment = sample_count / num_segments
@@ -401,6 +516,7 @@ class LevelCreator
     # Shuffle the final selection to avoid any patterns
     selected_ids.shuffle
   end
+
 
   # Sample puzzles with theme variety to avoid getting all puzzles of the same theme
   def self.sample_with_theme_variety(puzzles, sample_count)
