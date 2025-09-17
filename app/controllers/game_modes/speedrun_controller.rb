@@ -16,8 +16,16 @@ class GameModes::SpeedrunController < ApplicationController
   # page for viewing the list of puzzles in the game mode
   def puzzles
     speedrun_level = SpeedrunLevel.todays_level
-    lichess_puzzle_ids = speedrun_level.puzzles.map { |p| p["id"] }
-    @puzzles = Puzzle.find_by_sorted(lichess_puzzle_ids)
+    puzzle_ids = speedrun_level.puzzles.map { |p| p["id"] }
+    
+    # Check if we have string IDs (Lichess V2) or numeric IDs (legacy)
+    if puzzle_ids.any? { |id| id =~ /[a-z]/i }
+      # Handle Lichess V2 puzzle IDs (strings)
+      @puzzles = LichessV2Puzzle.find_by_sorted_lichess(puzzle_ids)
+    else
+      # Handle legacy numeric puzzle IDs
+      @puzzles = Puzzle.find_by_sorted(puzzle_ids)
+    end
   end
 
   # user has completed a speedrun
