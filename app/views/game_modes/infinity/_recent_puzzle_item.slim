@@ -1,0 +1,17 @@
+- puzzle = puzzle_data[:puzzle]
+- solved_at = puzzle_data[:solved_at]
+- difficulty = puzzle_data[:difficulty]
+
+.recent-puzzle-item(data-puzzle-id=puzzle.puzzle_id)
+  .puzzle-miniboard
+    = linked_puzzle_miniboard(puzzle)
+  .puzzle-info
+    .puzzle-meta
+      .puzzle-time= time_ago_in_words(solved_at) + " ago"
+      .puzzle-difficulty Difficulty: #{difficulty}
+    .puzzle-actions
+      button.view-solution-btn(
+        data-puzzle-id=puzzle.puzzle_id
+        data-initial-fen=puzzle.initial_fen
+        data-solution-lines=puzzle_data[:solution_lines].to_json
+      ) Show solution

@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   get '/infinity/puzzles.json'   => 'game_modes/infinity#puzzles_json'
   get '/infinity/puzzles'        => 'game_modes/infinity#puzzles'
   post '/infinity/puzzles'       => 'game_modes/infinity#puzzle_solved'
+  get '/infinity/recent_puzzle_item' => 'game_modes/infinity#recent_puzzle_item'
 
   # speedrun mode
   get '/speedrun'                => 'game_modes/speedrun#index'

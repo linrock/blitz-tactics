@@ -36,7 +36,7 @@ class SolutionPlayer {
     
     // Change button text to indicate what's happening
     const originalText = button.textContent
-    button.textContent = 'Playing...'
+    button.textContent = 'Showing solution...'
 
     // Update button state - fade out instead of changing text
     button.style.opacity = '0.5'
@@ -118,16 +118,21 @@ class SolutionPlayer {
     // Reset board to original position before playing solution
     this.resetBoardToOriginalPosition(miniboard)
     
-    // Clear any existing move highlighting before starting solution
-    this.clearExistingHighlights(miniboard)
+    // Note: We don't clear initial move highlighting here - let it show until first move
 
     let currentMoveIndex = 0
     
     const playNextMove = () => {
       if (currentMoveIndex < moves.length) {
+        // Clear initial move highlighting before the first solution move
+        if (currentMoveIndex === 0) {
+          this.clearExistingHighlights(miniboard)
+        }
+        
         const moveUci = moves[currentMoveIndex]
         this.animateMoveOnMiniboard(miniboard, moveUci)
         currentMoveIndex++
+        
         setTimeout(playNextMove, 700) // 0.7 second delay between moves
       } else {
         onComplete()
@@ -156,8 +161,6 @@ class SolutionPlayer {
       return
     }
 
-    console.log('Resetting board to original position using simple piece restoration')
-    console.log('Original FEN:', originalFen)
 
     // Store the current state first time we see this board
     if (!this.originalBoardStates.has(originalFen)) {
@@ -170,26 +173,22 @@ class SolutionPlayer {
 
   // Store original board states to avoid re-parsing FEN
   private originalBoardStates = new Map<string, {
-    pieces: { square: Element, piece: Element }[],
+    pieces: { squareIndex: number, piece: Element }[],
     initialMove: string | null
   }>()
 
   private storeOriginalBoardState(miniboard: Element, fen: string) {
-    console.log('Storing original board state for FEN:', fen)
-    
     const squares = miniboard.querySelectorAll('.square')
-    const pieces: { square: Element, piece: Element }[] = []
+    const pieces: { squareIndex: number, piece: Element }[] = []
     
-    squares.forEach(square => {
+    squares.forEach((square, index) => {
       const piece = square.querySelector('.piece')
       if (piece) {
         // Clone the piece to store its exact state
         const pieceClone = piece.cloneNode(true) as Element
-        pieces.push({ square, piece: pieceClone })
+        pieces.push({ squareIndex: index, piece: pieceClone })
       }
     })
-    
-    console.log(`Stored ${pieces.length} pieces for FEN:`, fen)
     
     this.originalBoardStates.set(fen, {
       pieces,
@@ -204,8 +203,6 @@ class SolutionPlayer {
       return
     }
 
-    console.log(`Restoring ${storedState.pieces.length} pieces from stored state`)
-
     // Clear all current pieces
     const squares = miniboard.querySelectorAll('.square')
     squares.forEach(square => {
@@ -213,11 +210,9 @@ class SolutionPlayer {
       pieces.forEach(piece => piece.remove())
     })
 
-    // Restore pieces to their original positions
-    storedState.pieces.forEach(({ square, piece }) => {
-      // Find the corresponding square in the current board
-      const squareIndex = Array.from(squares).indexOf(square)
-      if (squareIndex >= 0 && squares[squareIndex]) {
+    // Restore pieces to their original positions using square indices
+    storedState.pieces.forEach(({ squareIndex, piece }) => {
+      if (squareIndex >= 0 && squareIndex < squares.length) {
         const pieceClone = piece.cloneNode(true) as Element
         squares[squareIndex].appendChild(pieceClone)
       }
@@ -229,8 +224,6 @@ class SolutionPlayer {
         this.restoreInitialMoveHighlighting(miniboard, originalMove)
       }, 50)
     }
-
-    console.log('Board state restored successfully')
   }
 
 
@@ -286,36 +279,27 @@ class SolutionPlayer {
     // Clone the piece element
     const pieceClone = pieceEl.cloneNode(true) as Element
     
-    // Step 1: Highlight the from square and fade out the original piece
+    // Simply move the piece without animations - just highlight squares
     fromSquareEl.classList.add('move-from')
-    pieceEl.classList.add('moving-piece')
+    toSquareEl.classList.add('move-to')
     
-    // Step 2: After a short delay, move the piece to the destination
+    // Move the piece immediately
+    pieceEl.remove()
+    
+    // Remove any existing piece from destination square
+    const existingPiece = toSquareEl.querySelector('.piece')
+    if (existingPiece) {
+      existingPiece.remove()
+    }
+    
+    // Add the piece to the destination square
+    toSquareEl.appendChild(pieceClone)
+    
+    // Clean up square highlighting after a delay
     setTimeout(() => {
-      // Remove piece from original square
-      pieceEl.remove()
-      
-      // Remove any existing piece from destination square
-      const existingPiece = toSquareEl.querySelector('.piece')
-      if (existingPiece) {
-        existingPiece.remove()
-      }
-      
-      // Add the piece to the destination square
-      toSquareEl.appendChild(pieceClone)
-      toSquareEl.classList.add('move-to')
-      
-      // Add arrival animation
-      pieceClone.classList.add('piece-arrived')
-      
-      // Step 3: Clean up after animation
-      setTimeout(() => {
-        fromSquareEl.classList.remove('move-from')
-        toSquareEl.classList.remove('move-to')
-        pieceClone.classList.remove('piece-arrived')
-      }, 600)
-      
-    }, 200)
+      fromSquareEl.classList.remove('move-from')
+      toSquareEl.classList.remove('move-to')
+    }, 600)
   }
 
   private highlightSquares(fromSquareEl: Element, toSquareEl: Element) {
@@ -330,14 +314,23 @@ class SolutionPlayer {
   }
 
   private getSquareByPosition(squares: NodeListOf<Element>, squareId: string): Element | null {
+    // Get the miniboard element to check if it's flipped
+    const miniboard = squares[0]?.closest('.mini-chessboard')
+    const isFlipped = miniboard?.getAttribute('data-flip') === 'true'
+    
     // Convert square notation (e.g., "e4") to board index
-    // The MiniChessboard creates squares in row-by-row order: a8, b8, c8, ..., h8, a7, b7, ..., h1
     const file = squareId.charAt(0) // 'a' to 'h'
     const rank = parseInt(squareId.charAt(1)) // 1 to 8
     
     // Convert to 0-based indices
-    const fileIndex = file.charCodeAt(0) - 'a'.charCodeAt(0) // 0 to 7
-    const rankIndex = 8 - rank // 0 to 7 (rank 8 = index 0, rank 1 = index 7)
+    let fileIndex = file.charCodeAt(0) - 'a'.charCodeAt(0) // 0 to 7
+    let rankIndex = 8 - rank // 0 to 7 (rank 8 = index 0, rank 1 = index 7)
+    
+    // If the board is flipped, reverse both file and rank indices
+    if (isFlipped) {
+      fileIndex = 7 - fileIndex // Flip horizontally
+      rankIndex = 7 - rankIndex // Flip vertically
+    }
     
     // Calculate the index in the squares array
     const squareIndex = rankIndex * 8 + fileIndex

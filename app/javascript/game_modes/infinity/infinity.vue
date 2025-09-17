@@ -51,78 +51,49 @@ aside.infinity-under-board.game-under-board
         this.noMoreLeft = false
       },
 
-      addSolvedPuzzleToList(puzzle: any, difficulty: string) {
-        // Create the new puzzle item HTML
-        const puzzleItem = this.createPuzzleItemHTML(puzzle, difficulty)
-        
-        // Get the recent puzzles list container
-        const recentPuzzlesList = document.getElementById('recent-puzzles-list')
-        if (!recentPuzzlesList) return
-        
-        // Remove the "no recent puzzles" message if it exists
-        const noRecentPuzzles = recentPuzzlesList.querySelector('.no-recent-puzzles')
-        if (noRecentPuzzles) {
-          noRecentPuzzles.remove()
-        }
-        
-        // Add the new puzzle item at the top
-        recentPuzzlesList.insertAdjacentHTML('afterbegin', puzzleItem)
-        
-        // Update puzzle numbers for all items
-        this.updatePuzzleNumbers()
-        
-        // Remove excess items (keep only 5)
-        const items = recentPuzzlesList.querySelectorAll('.recent-puzzle-item')
-        if (items.length > 5) {
-          for (let i = 5; i < items.length; i++) {
-            items[i].remove()
+        async addSolvedPuzzleToList(puzzle: any, difficulty: string) {
+          try {
+            console.log('Fetching puzzle item for ID:', puzzle.id, 'difficulty:', difficulty)
+            // Fetch the server-rendered puzzle item HTML
+            const url = `/infinity/recent_puzzle_item?puzzle_id=${puzzle.id}&difficulty=${difficulty}`
+            console.log('Request URL:', url)
+            const response = await fetch(url)
+            console.log('Response status:', response.status, response.statusText)
+            if (!response.ok) {
+              console.error('Failed to fetch puzzle item, response not ok')
+              return
+            }
+            
+            const puzzleItemHTML = await response.text()
+            
+            // Get the recent puzzles list container
+            const recentPuzzlesList = document.getElementById('recent-puzzles-list')
+            if (!recentPuzzlesList) return
+            
+            // Remove the "no recent puzzles" message if it exists
+            const noRecentPuzzles = recentPuzzlesList.querySelector('.no-recent-puzzles')
+            if (noRecentPuzzles) {
+              noRecentPuzzles.remove()
+            }
+            
+            // Add the new puzzle item at the top
+            recentPuzzlesList.insertAdjacentHTML('afterbegin', puzzleItemHTML)
+            
+            // Remove excess items (keep only 5)
+            const items = recentPuzzlesList.querySelectorAll('.recent-puzzle-item')
+            if (items.length > 5) {
+              for (let i = 5; i < items.length; i++) {
+                items[i].remove()
+              }
+            }
+            
+            // Re-initialize mini chessboards for the new item
+            this.initializeMiniChessboards()
+          } catch (error) {
+            console.error('Failed to add solved puzzle to list:', error)
           }
-        }
-        
-        // Re-initialize mini chessboards for the new item
-        this.initializeMiniChessboards()
-      },
+        },
 
-      createPuzzleItemHTML(puzzle: any, difficulty: string) {
-        const now = new Date()
-        const timeAgo = 'just now'
-        
-        // Try to get solution lines from the puzzle object
-        const solutionLines = puzzle.lines || puzzle.solution_lines || null
-        const solutionLinesJson = solutionLines ? JSON.stringify(solutionLines) : ''
-        
-        // Get FEN and initial move data safely
-        const fen = puzzle.fen || puzzle.initial_fen || ''
-        const initialMoveUci = puzzle.initialMove?.uci || puzzle.initial_move_uci || ''
-        const initialMoveSan = puzzle.initialMove?.san || puzzle.initial_move_san || ''
-        
-        return `
-          <div class="recent-puzzle-item" data-puzzle-id="${puzzle.id}">
-            <div class="puzzle-miniboard">
-              <a class="miniboard-link" href="/p/${puzzle.id}">
-                <div class="mini-chessboard" 
-                     data-fen="${fen}" 
-                     data-initial-move="${initialMoveUci}"
-                     data-initial-move-san="${initialMoveSan}">
-                </div>
-              </a>
-            </div>
-            <div class="puzzle-info">
-              <div class="puzzle-meta">
-                <div class="puzzle-number">1</div>
-                <div class="puzzle-difficulty">Difficulty: ${difficulty}</div>
-                <div class="puzzle-time">${timeAgo}</div>
-              </div>
-              <div class="puzzle-actions">
-                <button class="view-solution-btn" 
-                        data-puzzle-id="${puzzle.id}"
-                        data-initial-fen="${fen}"
-                        data-solution-lines="${solutionLinesJson}">View solution</button>
-              </div>
-            </div>
-          </div>
-        `
-      },
 
       updatePuzzleNumbers() {
         const items = document.querySelectorAll('#recent-puzzles-list .recent-puzzle-item')
@@ -166,6 +137,10 @@ aside.infinity-under-board.game-under-board
         },
 
         'puzzle:solved': puzzle => {
+          console.log('Puzzle solved event:', puzzle)
+          console.log('Puzzle ID:', puzzle.id)
+          console.log('Puzzle object keys:', Object.keys(puzzle))
+          
           const puzzleData = {
             puzzle_id: puzzle.id,
             difficulty: this.currentDifficulty
@@ -178,6 +153,7 @@ aside.infinity-under-board.game-under-board
             }
             
             // Add the solved puzzle to the recent puzzles list
+            console.log('Adding solved puzzle to list with ID:', puzzle.id)
             this.addSolvedPuzzleToList(puzzle, this.currentDifficulty)
           })
         },
