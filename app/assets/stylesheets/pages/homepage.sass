@@ -1,4 +1,6 @@
 .homepage 
+  overflow-x: hidden  // Prevent horizontal scrollbar
+  
   .container
     padding: 0 10px
 
@@ -14,6 +16,7 @@
     justify-content: space-evenly
     margin: 0 auto
     width: 980px
+    max-width: 100%
 
   .mode 
     text-align: center
@@ -83,9 +86,6 @@
 
   // scores at the bottom of the page
   .scoreboard-section
-    width: 100vw
-    margin-left: calc(-50vw + 50%)
-    margin-right: calc(-50vw + 50%)
     background: rgba(0, 0, 0, 0.08)
     padding: 40px 0 10px
 
@@ -94,6 +94,7 @@
     margin: 0 auto
     justify-content: space-between
     width: 980px
+    max-width: 100%
 
     // past 7 days, yesterday, today
     h6
