@@ -4,7 +4,10 @@
   <div class="container">
     <header class="player-info">
       <h2 class="username"><%= @user.username %></h2>
-      <h3 class="tagline"><%= @user.tagline %></h3>
+      <% if @user.tagline.present? %>
+        <h3 class="tagline"><%= @user.tagline %></h3>
+      <% end %>
+      <p class="member-since">Member since <%= @user.created_at&.strftime("%b %d, %Y") || "Unknown" %></p>
     </header>
 
     <%= render partial: "users/puzzle_stats" %>

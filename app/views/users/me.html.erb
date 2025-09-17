@@ -14,6 +14,7 @@
       </aside>
 
       <h2 class="username"><%= @user.username %></h2>
+      <p class="member-since">Member since <%= @user.created_at&.strftime("%b %d, %Y") || "Unknown" %></p>
 
       <%= form_tag "/users/me", method: :put do %>
         <input type="text" value="<%= @user.tagline %>"
