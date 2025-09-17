@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 
 import Infinity from './infinity.vue'
+import SolutionViewer from '../../pages/infinity'
 
 import './style.sass'
 import './responsive.sass'
@@ -14,4 +15,7 @@ export interface InfinityPuzzleSolved {
 
 export default function InfinityMode() {
   createApp(Infinity).mount('.infinity-mode .vue-app-mount')
+  
+  // Initialize solution viewer for recent puzzles
+  SolutionViewer()
 }

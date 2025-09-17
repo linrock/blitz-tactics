@@ -9,3 +9,31 @@ section.game-mode.infinity-mode
           .piece-promotion-modal-mount
           .chessground
     .vue-app-mount
+    
+    - if current_user
+      .recent-puzzles-section#recent-puzzles-section
+        h3 Recent Infinity Puzzles
+        .recent-puzzles-list#recent-puzzles-list
+          - if @recent_puzzles.any?
+            - @recent_puzzles.each_with_index do |puzzle_data, i|
+              - puzzle = puzzle_data[:puzzle]
+              - puzzle_data_json = puzzle_data[:puzzle_data]
+              - solution_lines = puzzle_data[:solution_lines]
+              - solved_at = puzzle_data[:solved_at]
+              - difficulty = puzzle_data[:difficulty]
+              .recent-puzzle-item(data-puzzle-id=puzzle.puzzle_id)
+                .puzzle-miniboard
+                  = linked_puzzle_miniboard(puzzle)
+                .puzzle-info
+                  .puzzle-meta
+                    .puzzle-number= i + 1
+                    .puzzle-difficulty Difficulty: #{difficulty}
+                    .puzzle-time= time_ago_in_words(solved_at) + " ago"
+                  .puzzle-actions
+                    button.view-solution-btn(
+                      data-puzzle-id=puzzle.puzzle_id
+                      data-initial-fen=puzzle.initial_fen
+                      data-solution-lines=solution_lines.to_json
+                    ) View solution
+          - else
+            .no-recent-puzzles No puzzles solved yet. Start solving to see them here!

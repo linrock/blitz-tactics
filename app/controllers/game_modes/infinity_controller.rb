@@ -4,6 +4,46 @@ class GameModes::InfinityController < ApplicationController
   before_action :set_user
 
   def index
+    # Get the last 5 infinity puzzles solved by the user with timing info
+    if current_user
+      @recent_solved_puzzles = @user.solved_infinity_puzzles.
+        order('id DESC').limit(5).
+        includes(:infinity_puzzle)
+      
+      # Get the puzzle data for each solved puzzle
+      @recent_puzzles = @recent_solved_puzzles.map do |solved|
+        puzzle_id = solved.infinity_puzzle.data['id']
+        
+        # Try to find in LichessV2Puzzle first
+        puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
+        if puzzle
+          {
+            puzzle: puzzle,
+            puzzle_data: puzzle.bt_puzzle_data,
+            solution_lines: puzzle.lines_tree,
+            solved_at: solved.created_at,
+            difficulty: solved.difficulty
+          }
+        else
+          # Fallback to legacy Puzzle model
+          puzzle = Puzzle.find_by(id: puzzle_id)
+          if puzzle
+            {
+              puzzle: puzzle,
+              puzzle_data: puzzle.bt_puzzle_data,
+              solution_lines: puzzle.puzzle_data["lines"],
+              solved_at: solved.created_at,
+              difficulty: solved.difficulty
+            }
+          else
+            nil
+          end
+        end
+      end.compact
+    else
+      @recent_puzzles = []
+    end
+    
     render "game_modes/infinity"
   end
 
@@ -61,6 +101,32 @@ class GameModes::InfinityController < ApplicationController
       render json: { n: @user.solved_infinity_puzzles.count }
     else
       render json: {}
+    end
+  end
+
+  # Get recent puzzles for the list view
+  def recent_puzzles
+    if current_user
+      recent_solved_puzzles = @user.solved_infinity_puzzles.
+        order('id DESC').limit(5).
+        includes(:infinity_puzzle)
+      
+      recent_puzzles = recent_solved_puzzles.map do |solved|
+        puzzle = Puzzle.find_by(id: solved.infinity_puzzle.data['id'])
+        if puzzle
+          {
+            puzzle: puzzle.bt_puzzle_data,
+            solved_at: solved.created_at,
+            difficulty: solved.difficulty
+          }
+        else
+          nil
+        end
+      end.compact
+      
+      render json: { puzzles: recent_puzzles }
+    else
+      render json: { puzzles: [] }
     end
   end
 
