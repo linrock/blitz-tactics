@@ -391,9 +391,9 @@ class LevelCreator
   end
 
   # Ultra-fast version that only returns puzzle IDs (no output processing)
-  def self.create_level_from_pools_fast(puzzle_counts: DEFAULT_PUZZLE_COUNTS, pools_dir: "data/puzzle-pools/")
-    # Choose random color to move
-    color_to_move = %w[w b].sample
+  def self.create_level_from_pools_fast(puzzle_counts: DEFAULT_PUZZLE_COUNTS, pools_dir: "data/puzzle-pools/", color_to_move: nil)
+    # Choose random color to move if not specified
+    color_to_move ||= %w[w b].sample
     selected_puzzle_ids = []
     
     puzzle_counts.each_with_index do |(rating_range, sample_count), index|
