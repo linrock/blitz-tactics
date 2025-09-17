@@ -88,10 +88,10 @@ class LevelCreator
           .where("initial_fen LIKE ?", "% #{color_to_move} %")  # Filter by color to move
           .select(:puzzle_id, :themes, :rating)
         
-        # Write puzzle data to file (one puzzle per line: puzzle_id|themes|rating)
+        # Write puzzle data to file (one puzzle per line: puzzle_id|rating|themes)
         puzzle_lines = all_puzzles.map do |puzzle|
           themes_str = (puzzle.themes || []).join(",")
-          "#{puzzle.puzzle_id}|#{themes_str}|#{puzzle.rating}"
+          "#{puzzle.puzzle_id}|#{puzzle.rating}|#{themes_str}"
         end
         
         File.write(file_path, puzzle_lines.join("\n"))
@@ -240,20 +240,23 @@ class LevelCreator
   end
 
   # Create a level by sampling puzzles from pre-computed pool files
-  # Chooses a random color to move and ensures theme diversity within each pool
-  def self.create_level_from_pools(puzzle_counts: DEFAULT_PUZZLE_COUNTS, pools_dir: "data/puzzle-pools/")
+  # Chooses a random color to move - OPTIMIZED FOR SPEED (no theme variety)
+  def self.create_level_from_pools(puzzle_counts: DEFAULT_PUZZLE_COUNTS, pools_dir: "data/puzzle-pools/", verbose: true)
     start_time = Time.now
     
     # Choose random color to move
     color_to_move = %w[w b].sample
     
-    puts "Creating level with #{color_to_move.upcase} to move..."
-    puts "Puzzle counts per range:"
-    puzzle_counts.each do |range, count|
-      puts "  #{range}: #{count} puzzles"
+    if verbose
+      puts "Creating level with #{color_to_move.upcase} to move..."
+      puts "Puzzle counts per range:"
+      puzzle_counts.each do |range, count|
+        puts "  #{range}: #{count} puzzles"
+      end
     end
     
     selected_puzzle_ids = []
+    puzzle_data_for_output = {} # Store data for output
     
     puzzle_counts.each_with_index do |(rating_range, sample_count), index|
       pool_number = index + 1
@@ -266,13 +269,15 @@ class LevelCreator
         pool_puzzle_data = File.readlines(file_path).map(&:strip).reject(&:empty?)
         
         if pool_puzzle_data.any?
-          # Parse puzzle data (format: puzzle_id|themes|rating or just puzzle_id for backward compatibility)
-          parsed_puzzles = pool_puzzle_data.map do |line|
+          # FAST: Simple random sampling without theme variety
+          sampled_lines = pool_puzzle_data.sample(sample_count)
+          
+          sampled_lines.each do |line|
             parts = line.split("|", 3)
             
             if parts.length == 3
-              # New format: puzzle_id|themes|rating
-              puzzle_id, themes_str, rating_str = parts
+              # New format: puzzle_id|rating|themes
+              puzzle_id, rating_str, themes_str = parts
               themes = (themes_str.nil? || themes_str.empty?) ? [] : themes_str.split(",")
               rating = rating_str.to_i
             else
@@ -282,74 +287,83 @@ class LevelCreator
               rating = 0
             end
             
-            {
-              puzzle_id: puzzle_id,
+            selected_puzzle_ids << puzzle_id
+            puzzle_data_for_output[puzzle_id] = {
               themes: themes,
               rating: rating
             }
           end
           
-          # Fast sampling with theme variety using file data
-          sampled_puzzles = sample_with_theme_variety_from_file(parsed_puzzles, sample_count)
-          sampled_ids = sampled_puzzles.map { |p| p[:puzzle_id] }
-          
-          selected_puzzle_ids.concat(sampled_ids)
-          puts "  #{filename}: #{sampled_ids.length}/#{parsed_puzzles.length} puzzles selected"
+          puts "  #{filename}: #{sampled_lines.length}/#{pool_puzzle_data.length} puzzles selected" if verbose
         else
-          puts "  #{filename}: No puzzles in pool"
+          puts "  #{filename}: No puzzles in pool" if verbose
         end
       else
-        puts "  #{filename}: File not found"
-      end
-    end
-    
-    # Get theme and rating information for selected puzzles (single efficient query)
-    puzzle_data = {}
-    if selected_puzzle_ids.any?
-      puzzles_with_data = LichessV2Puzzle
-        .where(puzzle_id: selected_puzzle_ids)
-        .select(:puzzle_id, :themes, :rating)
-      
-      puzzles_with_data.each do |puzzle|
-        puzzle_data[puzzle.puzzle_id] = {
-          themes: puzzle.themes,
-          rating: puzzle.rating
-        }
+        puts "  #{filename}: File not found" if verbose
       end
     end
     
     end_time = Time.now
     total_time = ((end_time - start_time) * 1000).round(2)  # Convert to milliseconds
     
-    puts "\n✅ Level creation complete!"
-    puts "Color to move: #{color_to_move.upcase}"
-    puts "Total puzzles selected: #{selected_puzzle_ids.length}"
-    puts "Total time: #{total_time}ms"
-    
-    # Print themes and ratings for each selected puzzle
-    puts "\nSelected puzzles:"
-    selected_puzzle_ids.each_with_index do |puzzle_id, index|
-      data = puzzle_data[puzzle_id] || { themes: ["unknown"], rating: 0 }
-      themes = data[:themes] || ["unknown"]
-      rating = data[:rating] || 0
-      primary_theme = themes.first || "unknown"
-      all_themes = themes.join(", ")
-      puts "  #{index + 1}. #{puzzle_id} (rating: #{rating}): #{primary_theme} (#{all_themes})"
+    if verbose
+      puts "\n✅ Level creation complete!"
+      puts "Color to move: #{color_to_move.upcase}"
+      puts "Total puzzles selected: #{selected_puzzle_ids.length}"
+      puts "Total time: #{total_time}ms"
+      
+      # Print themes and ratings for each selected puzzle
+      puts "\nSelected puzzles:"
+      selected_puzzle_ids.each_with_index do |puzzle_id, index|
+        data = puzzle_data_for_output[puzzle_id] || { themes: ["unknown"], rating: 0 }
+        themes = data[:themes] || ["unknown"]
+        rating = data[:rating] || 0
+        themes_sorted = themes.sort.join(", ")
+        puts "  #{index + 1}. #{puzzle_id} (rating: #{rating}): #{themes_sorted}"
+      end
+      
+      # Theme distribution summary (count ALL themes per puzzle)
+      theme_counts = Hash.new(0)
+      selected_puzzle_ids.each do |puzzle_id|
+        data = puzzle_data_for_output[puzzle_id] || { themes: ["unknown"] }
+        themes = data[:themes] || ["unknown"]
+        # Count each theme in the puzzle
+        themes.each { |theme| theme_counts[theme] += 1 }
+      end
+      
+      puts "\nTheme distribution:"
+      theme_counts.sort_by { |theme, count| -count }.each do |theme, count|
+        percentage = (count * 100.0 / selected_puzzle_ids.length).round(1)
+        puts "  #{theme}: #{count} puzzles (#{percentage}%)"
+      end
     end
     
-    # Theme distribution summary (count ALL themes per puzzle)
-    theme_counts = Hash.new(0)
-    selected_puzzle_ids.each do |puzzle_id|
-      data = puzzle_data[puzzle_id] || { themes: ["unknown"] }
-      themes = data[:themes] || ["unknown"]
-      # Count each theme in the puzzle
-      themes.each { |theme| theme_counts[theme] += 1 }
-    end
+    selected_puzzle_ids
+  end
+
+  # Ultra-fast version that only returns puzzle IDs (no output processing)
+  def self.create_level_from_pools_fast(puzzle_counts: DEFAULT_PUZZLE_COUNTS, pools_dir: "data/puzzle-pools/")
+    # Choose random color to move
+    color_to_move = %w[w b].sample
+    selected_puzzle_ids = []
     
-    puts "\nTheme distribution:"
-    theme_counts.sort_by { |theme, count| -count }.each do |theme, count|
-      percentage = (count * 100.0 / selected_puzzle_ids.length).round(1)
-      puts "  #{theme}: #{count} puzzles (#{percentage}%)"
+    puzzle_counts.each_with_index do |(rating_range, sample_count), index|
+      pool_number = index + 1
+      padded_pool_number = format("%02d", pool_number)
+      filename = "#{color_to_move}_pool_#{padded_pool_number}_#{rating_range.min}-#{rating_range.max}.txt"
+      file_path = Rails.root.join(pools_dir, filename)
+      
+      if File.exist?(file_path)
+        pool_puzzle_data = File.readlines(file_path).map(&:strip).reject(&:empty?)
+        if pool_puzzle_data.any?
+          # FAST: Simple random sampling - just get puzzle IDs
+          sampled_lines = pool_puzzle_data.sample(sample_count)
+          sampled_lines.each do |line|
+            puzzle_id = line.split("|", 3)[0] # Just get the puzzle_id
+            selected_puzzle_ids << puzzle_id
+          end
+        end
+      end
     end
     
     selected_puzzle_ids
