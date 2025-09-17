@@ -1,35 +1,50 @@
 # Haste mode puzzle using the LevelCreator system
 # Uses LevelCreator.create_level_from_pools for level generation
 
+# Temporary model to access old haste_puzzles table
+class HastePuzzleOld < ActiveRecord::Base
+  self.table_name = 'haste_puzzles'
+end
+
 class HastePuzzle
   # Get a random easy puzzle to show on the homepage
   def self.random
     # Get a random puzzle from the easiest pool file (600-800 rating range)
     pools_dir = "data/puzzle-pools/"
+   
+    # Randomly choose a color for the easiest pool
+    color = %w[w b].sample
+    filename = "#{color}_pool_01_600-800.txt"
+    file_path = Rails.root.join(pools_dir, filename)
     
-    # Try both colors for the easiest pool
-    %w[w b].each do |color|
-      filename = "#{color}_pool_01_600-800.txt"
-      file_path = Rails.root.join(pools_dir, filename)
-      
-      if File.exist?(file_path)
-        pool_puzzle_data = File.readlines(file_path).map(&:strip).reject(&:empty?)
-        if pool_puzzle_data.any?
-          # Pick a random puzzle from the easiest pool
-          random_line = pool_puzzle_data.sample
-          puzzle_id = random_line.split("|", 3)[0] # Get puzzle_id
-          return LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
-        end
+    if File.exist?(file_path)
+      pool_puzzle_data = File.readlines(file_path).map(&:strip).reject(&:empty?)
+      if pool_puzzle_data.any?
+        # Pick a random puzzle from the easiest pool
+        random_line = pool_puzzle_data.sample
+        puzzle_id = random_line.split("|", 3)[0] # Get puzzle_id
+        return LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
       end
     end
-    
-    # Fallback: database query if pool files don't exist
-    LichessV2Puzzle
-      .where(popularity: 95..)
-      .where(num_plays: 1000..)
-      .where(rating: 600..800)
-      .order(Arel.sql('RANDOM()'))
-      .first
+
+    # Fallback: use old haste_puzzles table if pool files don't exist
+    old_haste_puzzle = HastePuzzleOld.where(difficulty: 0).order(Arel.sql('RANDOM()')).first
+    if old_haste_puzzle
+      print 'old haste puzzle'
+      # Convert old format to LichessV2Puzzle format
+      puzzle_data = old_haste_puzzle.data
+      LichessV2Puzzle.new(
+        puzzle_id: puzzle_data["id"],
+        initial_fen: puzzle_data["fen"],
+        moves_uci: [puzzle_data["initialMove"]["uci"]],
+        themes: [],
+        rating: 600, # Default rating for old puzzles
+        popularity: 95,
+        num_plays: 1000
+      )
+    else
+      nil
+    end
   end
 
   # Create a random level using LevelCreator
