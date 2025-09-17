@@ -41,7 +41,14 @@ class SpeedrunLevel < ActiveRecord::Base
   end
 
   def first_puzzle
-    Puzzle.find(puzzles.first["id"])
+    puzzle_id = puzzles.first["id"]
+    
+    # Try to find by puzzle_id first (for LichessV2Puzzle)
+    puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
+    return puzzle if puzzle
+    
+    # Fallback to finding by database ID (for legacy Puzzle model)
+    Puzzle.find_by(id: puzzle_id)
   end
 
   def num_puzzles
