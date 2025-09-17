@@ -34,17 +34,31 @@
 
   form
     display: flex
+    margin-top: 20px
 
     input[type="text"]
       font-family: vars.$main-font
       font-size: 16px
-      border: 0
+      border: 1px solid rgba(255, 255, 255, 0.2)
+      background: rgba(255, 255, 255, 0.05)
+      color: rgba(250, 250, 250, 0.9)
       width: 380px
       padding: 8px 16px
       display: block
+      border-radius: 4px
+      transition: all 0.2s ease
+      
+      &::placeholder
+        color: rgba(250, 250, 250, 0.4)
+        
+      &:focus
+        outline: none
+        border-color: rgba(255, 255, 255, 0.4)
+        background: rgba(255, 255, 255, 0.08)
 
     .blue-button
       font-size: 16px
+      margin-left: 12px
 
   .right-side
     float: right
