@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   get '/world-5' => 'pages#world5'
   get '/world-6' => 'pages#world6'
   get '/puzzle-player' => 'pages#puzzle_player'
+  
+  # Puzzle tracking
+  post '/solved-puzzles' => 'solved_puzzles#create'
   get '/quest/puzzles' => 'game_modes/quest#puzzles_json'
   get '/quest/edit' => 'game_modes/quest#edit'
   get '/quest/worlds/new' => 'game_modes/quest#new_quest_world'

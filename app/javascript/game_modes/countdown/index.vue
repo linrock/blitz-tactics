@@ -24,7 +24,7 @@ aside.countdown-under-board.game-under-board
 </template>
 
 <script lang="ts">
-import { countdownCompleted } from '@blitz/api/requests'
+import { countdownCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
 import { subscribe } from '@blitz/events'
@@ -57,6 +57,15 @@ export default {
       'config:init': data => levelName = data.level_name,
       'puzzles:status': ({ i }) => {
         this.nPuzzlesSolved = i + 1
+      },
+      'puzzle:solved': (puzzle) => {
+        // Track individual puzzle solve
+        console.log('Countdown puzzle solved:', puzzle)
+        if (puzzle && puzzle.id) {
+          trackSolvedPuzzle(puzzle.id).catch(error => {
+            console.error('Failed to track solved puzzle:', error)
+          })
+        }
       },
       'timer:stopped': () => {
         this.showBoardOverlay()

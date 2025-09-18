@@ -59,19 +59,19 @@ class UsersController < ApplicationController
   private
 
   def load_recent_solved_puzzles
-    # Get the last 6 puzzles solved by the user
-    if @user.present? && @user.solved_puzzles.any?
-      recent_solved_puzzles = @user.solved_puzzles.order('updated_at DESC').limit(6)
+    # Get the last 6 puzzles solved by the user from the simple tracking system
+    if @user.present?
+      recent_puzzle_data = SolvedPuzzle.recent_with_details(@user.id, 6)
       
       # Get the puzzle data for each solved puzzle
-      @recent_puzzles = recent_solved_puzzles.map do |solved_puzzle|
-        puzzle = LichessV2Puzzle.find_by(puzzle_id: solved_puzzle.puzzle_id)
+      @recent_puzzles = recent_puzzle_data.map do |puzzle_data|
+        puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_data[:puzzle_id])
         if puzzle
           {
             puzzle: puzzle,
             puzzle_data: puzzle.bt_puzzle_data,
             solution_lines: puzzle.lines_tree,
-            solved_at: solved_puzzle.updated_at
+            solved_at: puzzle_data[:solved_at]
           }
         else
           nil

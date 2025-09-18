@@ -7,6 +7,17 @@ class SolvedPuzzle < ActiveRecord::Base
   validates :user_id, presence: true
   validates :puzzle_id, uniqueness: { scope: :user_id }
 
+  # Simple tracking - just update the timestamp when a puzzle is solved
+  def self.track_solve(user_id, puzzle_id)
+    solved_puzzle = find_or_initialize_by(user_id: user_id, puzzle_id: puzzle_id)
+    if solved_puzzle.persisted?
+      solved_puzzle.touch  # Updates updated_at timestamp for existing records
+    else
+      solved_puzzle.save!  # Create new record
+    end
+    solved_puzzle
+  end
+
   # Bulk insert/update solved puzzles for a user (minimizes database requests)
   def self.bulk_create_for_user(user_id, puzzle_ids)
     return if puzzle_ids.blank?
@@ -43,6 +54,19 @@ class SolvedPuzzle < ActiveRecord::Base
   # Get most recently solved puzzles for a user
   def self.recently_solved_for_user(user_id, limit = 10)
     where(user_id: user_id).order(updated_at: :desc).limit(limit)
+  end
+
+  # Get recent puzzles - simple version using existing fields
+  def self.recent_with_details(user_id, limit = 10)
+    where(user_id: user_id)
+      .order(updated_at: :desc)
+      .limit(limit)
+      .map do |solved_puzzle|
+        {
+          puzzle_id: solved_puzzle.puzzle_id,
+          solved_at: solved_puzzle.updated_at
+        }
+      end
   end
 
   # Get puzzles first solved by a user on a specific date

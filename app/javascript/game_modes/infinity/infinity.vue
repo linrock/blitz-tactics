@@ -22,7 +22,7 @@ aside.infinity-under-board.game-under-board
 </template>
 
 <script lang="ts">
-  import { infinityPuzzleSolved } from '@blitz/api/requests'
+  import { infinityPuzzleSolved, trackSolvedPuzzle } from '@blitz/api/requests'
   import PuzzlePlayer from '@blitz/components/puzzle_player'
   import { dispatch, subscribe } from '@blitz/events'
 
@@ -145,6 +145,12 @@ aside.infinity-under-board.game-under-board
             puzzle_id: puzzle.id,
             difficulty: this.currentDifficulty
           }
+          
+          // Track with unified system
+          trackSolvedPuzzle(puzzle.id).catch(error => {
+            console.error('Failed to track solved puzzle:', error)
+          })
+          
           infinityPuzzleSolved(puzzleData).then(data => {
             if (data.n) {
               this.nPuzzlesSolved = data.n 

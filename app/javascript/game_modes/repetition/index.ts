@@ -1,6 +1,7 @@
 import {
   repetitionLevelAttempted,
-  repetitionLevelCompleted
+  repetitionLevelCompleted,
+  trackSolvedPuzzle
 } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
@@ -46,6 +47,15 @@ export default function RepetitionMode() {
     // In repetition mode, hints should drop the combo indicator
     'puzzle:hint': () => {
       dispatch('combo:drop')
+    },
+
+    // Track individual puzzle solves
+    'puzzle:solved': (puzzle) => {
+      if (puzzle && puzzle.id) {
+        trackSolvedPuzzle(puzzle.id).catch(error => {
+          console.error('Failed to track solved puzzle:', error)
+        })
+      }
     },
     // level and round completion events
     'round:complete': elapsedTimeMs => {

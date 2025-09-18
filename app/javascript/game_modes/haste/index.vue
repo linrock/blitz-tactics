@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { hasteRoundCompleted } from '@blitz/api/requests'
+import { hasteRoundCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
 import { subscribe } from '@blitz/events'
@@ -105,23 +105,13 @@ export default {
 
   methods: {
     async trackSolvedPuzzle(puzzleId) {
-      // Send individual puzzle ID to server for real-time tracking
-      const response = await fetch('/haste/track-puzzle', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-          puzzle_id: puzzleId
-        })
-      })
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      // Use the simplified puzzle tracking system
+      try {
+        return await trackSolvedPuzzle(puzzleId)
+      } catch (error) {
+        console.error('Failed to track solved puzzle:', error)
+        throw error
       }
-      
-      return response.json()
     }
   }
 }

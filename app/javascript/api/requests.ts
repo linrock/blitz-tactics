@@ -6,6 +6,11 @@ export async function infinityPuzzleSolved(puzzle: InfinityPuzzleSolved) {
   return client.post(`/infinity/puzzles`, { puzzle }).then(resp => resp.data)
 }
 
+export async function trackSolvedPuzzle(puzzleId: string) {
+  const params = { puzzle_id: puzzleId }
+  return client.post(`/solved-puzzles`, params).then(resp => resp.data)
+}
+
 export async function repetitionLevelAttempted(levelPath: string, elapsedTimeMs: number) {
   const params = {
     round: {

@@ -25,7 +25,7 @@ aside.speedrun-under-board.game-under-board
 </template>
 
 <script lang="ts">
-  import { speedrunCompleted } from '@blitz/api/requests'
+  import { speedrunCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
   import PuzzlePlayer from '@blitz/components/puzzle_player'
   import GameModeMixin from '@blitz/components/game_mode_mixin'
   import { subscribe } from '@blitz/events'
@@ -77,6 +77,15 @@ aside.speedrun-under-board.game-under-board
           // Handle hasStarted for speedrun mode
           if (!this.hasStarted) {
             this.hasStarted = true
+          }
+        },
+
+        'puzzle:solved': (puzzle) => {
+          // Track individual puzzle solve
+          if (puzzle && puzzle.id) {
+            trackSolvedPuzzle(puzzle.id).catch(error => {
+              console.error('Failed to track solved puzzle:', error)
+            })
           }
         },
         

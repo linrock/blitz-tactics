@@ -50,7 +50,7 @@ aside.three-under-board.game-under-board
 </template>
 
 <script lang="ts">
-import { threeRoundCompleted } from '@blitz/api/requests'
+import { threeRoundCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
 import { dispatch, subscribe } from '@blitz/events'
@@ -183,23 +183,13 @@ export default {
     },
 
     async trackSolvedPuzzle(puzzleId) {
-      // Send individual puzzle ID to server for real-time tracking
-      const response = await fetch('/three/track-puzzle', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-          puzzle_id: puzzleId
-        })
-      })
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      // Use the simplified puzzle tracking system
+      try {
+        return await trackSolvedPuzzle(puzzleId)
+      } catch (error) {
+        console.error('Failed to track solved puzzle:', error)
+        throw error
       }
-      
-      return response.json()
     }
   },
 
