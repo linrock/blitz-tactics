@@ -122,6 +122,7 @@
           <% puzzle = puzzle_data[:puzzle] %>
           <% solution_lines = puzzle_data[:solution_lines] %>
           <% solved_at = puzzle_data[:solved_at] %>
+          <% game_mode = puzzle_data[:game_mode] %>
           <div class="recent-puzzle-item" data-puzzle-id="<%= puzzle.puzzle_id %>">
             <div class="puzzle-miniboard">
               <%= linked_puzzle_miniboard(puzzle) %>
@@ -129,6 +130,11 @@
             <div class="puzzle-timestamp">
               <%= time_ago_in_words(solved_at) %> ago
             </div>
+            <% if game_mode.present? %>
+              <div class="puzzle-game-mode">
+                <%= game_mode.capitalize %>
+              </div>
+            <% end %>
             <button class="view-solution-btn"
                     data-puzzle-id="<%= puzzle.puzzle_id %>"
                     data-initial-fen="<%= puzzle.initial_fen %>"

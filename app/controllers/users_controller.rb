@@ -71,7 +71,8 @@ class UsersController < ApplicationController
             puzzle: puzzle,
             puzzle_data: puzzle.bt_puzzle_data,
             solution_lines: puzzle.lines_tree,
-            solved_at: puzzle_data[:solved_at]
+            solved_at: puzzle_data[:solved_at],
+            game_mode: puzzle_data[:game_mode]
           }
         else
           nil
