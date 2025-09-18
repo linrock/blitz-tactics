@@ -135,8 +135,8 @@ class PagesController < ApplicationController
   def about
   end
 
-  def chess_tactics
-    # This method handles the /types-of-chess-tactics route
+  def puzzle_themes
+    # This method handles the /puzzle-themes route
   end
 
   def get_next_quest_world_for_user(user)
