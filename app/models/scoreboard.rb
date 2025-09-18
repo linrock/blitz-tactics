@@ -42,6 +42,7 @@ class Scoreboard
     top_infinity_recent.present? or
     top_haste_scores_recent.present? or
     top_mate_in_one_scores_recent.present? or
+    top_rook_endgames_scores_recent.present? or
     top_three_scores_recent.present?
   end
 
@@ -101,6 +102,10 @@ class Scoreboard
 
   def top_three_scores_week
     @top_three_scores_week ||= CompletedThreeRound.high_scores(@week_time)
+  end
+
+  def top_rook_endgames_scores_week
+    @top_rook_endgames_scores_week ||= CompletedRookEndgamesRound.high_scores(@week_time)
   end
 
   # scoreboard standalone page
