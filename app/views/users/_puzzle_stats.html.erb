@@ -126,20 +126,15 @@
             <div class="puzzle-miniboard">
               <%= linked_puzzle_miniboard(puzzle) %>
             </div>
-            <div class="puzzle-info">
-              <div class="puzzle-meta">
-                <div class="puzzle-time"><%= time_ago_in_words(solved_at) %> ago</div>
-                <div class="puzzle-rating">Rating: <%= puzzle.rating %></div>
-              </div>
-              <div class="puzzle-actions">
-                <button class="view-solution-btn"
-                        data-puzzle-id="<%= puzzle.puzzle_id %>"
-                        data-initial-fen="<%= puzzle.initial_fen %>"
-                        data-solution-lines="<%= solution_lines.to_json %>">
-                  Show solution
-                </button>
-              </div>
+            <div class="puzzle-timestamp">
+              <%= time_ago_in_words(solved_at) %> ago
             </div>
+            <button class="view-solution-btn"
+                    data-puzzle-id="<%= puzzle.puzzle_id %>"
+                    data-initial-fen="<%= puzzle.initial_fen %>"
+                    data-solution-lines="<%= solution_lines.to_json %>">
+              Show solution
+            </button>
           </div>
         <% end %>
       </div>
