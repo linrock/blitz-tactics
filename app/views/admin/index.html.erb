@@ -19,6 +19,11 @@
       <canvas id="activityChart" width="800" height="400"></canvas>
     </div>
 
+    <div class="chart-container">
+      <h2>Solved Puzzles Chart</h2>
+      <canvas id="solvedPuzzlesChart" width="800" height="400"></canvas>
+    </div>
+
     <div class="stats-table">
       <table>
         <thead>
@@ -231,6 +236,91 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   });
+
+  // Solved Puzzles Chart
+  const solvedPuzzlesCtx = document.getElementById('solvedPuzzlesChart').getContext('2d');
+  
+  const solvedPuzzlesData = {
+    labels: dates,
+    datasets: [
+      {
+        label: 'Unique Puzzles Solved',
+        data: <%= raw @solved_puzzle_stats.values.to_json %>,
+        borderColor: '#ff6b6b',
+        backgroundColor: 'rgba(255, 107, 107, 0.1)',
+        tension: 0.1,
+        fill: true
+      }
+    ]
+  };
+
+  new Chart(solvedPuzzlesCtx, {
+    type: 'line',
+    data: solvedPuzzlesData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Unique Puzzles Solved Over Time',
+          color: '#ffffff',
+          font: {
+            size: 16,
+            weight: 'bold'
+          }
+        },
+        legend: {
+          labels: {
+            color: '#e0e0e0',
+            usePointStyle: true,
+            padding: 20
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Date',
+            color: '#e0e0e0',
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          },
+          ticks: {
+            color: '#e0e0e0'
+          },
+          grid: {
+            color: '#404040'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Number of Unique Puzzles Solved',
+            color: '#e0e0e0',
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          },
+          ticks: {
+            color: '#e0e0e0',
+            beginAtZero: true
+          },
+          grid: {
+            color: '#404040'
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  });
 });
 </script>
 
@@ -382,7 +472,8 @@ document.addEventListener('DOMContentLoaded', function() {
   margin-bottom: 20px;
 }
 
-#activityChart {
+#activityChart,
+#solvedPuzzlesChart {
   background: #1a1a1a;
   border-radius: 4px;
   max-height: 400px;

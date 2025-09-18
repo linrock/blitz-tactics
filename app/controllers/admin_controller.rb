@@ -4,6 +4,7 @@ class AdminController < ApplicationController
   def index
     @time_period = params[:period] || 'week'
     @stats = game_mode_stats(@time_period)
+    @solved_puzzle_stats = solved_puzzle_stats(@time_period)
   end
 
   private
@@ -50,6 +51,28 @@ class AdminController < ApplicationController
       day_stats[:total] = day_stats.values.sum
       
       stats[date] = day_stats
+    end
+    
+    stats
+  end
+
+  def solved_puzzle_stats(period = 'week')
+    end_date = Date.current
+    
+    # Determine the date range based on period
+    if period == 'month'
+      start_date = end_date - 29.days  # Past 30 days
+    else
+      start_date = end_date - 6.days   # Past 7 days
+    end
+    
+    stats = {}
+    
+    # For each day in the selected period
+    (start_date..end_date).each do |date|
+      # Count unique puzzles solved on this day (using created_at for first-time solves)
+      day_count = SolvedPuzzle.where(created_at: date.beginning_of_day..date.end_of_day).count
+      stats[date] = day_count
     end
     
     stats
