@@ -57,6 +57,25 @@ export async function threeRoundCompleted(score: number) {
   return client.post(`/three`, params).then(resp => resp.data)
 }
 
+export async function mateInOneRoundCompleted(score: number, elapsedTimeMs: number) {
+  const params = {
+    mate_in_one: {
+      score,
+      elapsed_time_ms: elapsedTimeMs,
+    }
+  }
+  return client.post(`/mate-in-one`, params).then(resp => resp.data)
+}
+
+export async function rookEndgamesRoundCompleted(score: number) {
+  const params = {
+    rook_endgames: {
+      score,
+    }
+  }
+  return client.post(`/rook-endgames`, params).then(resp => resp.data)
+}
+
 export async function ratedPuzzleAttempted(puzzleId: number, uciMoves: any[], elapsedTimeMs: number) {
   const params = {
     puzzle_attempt: {

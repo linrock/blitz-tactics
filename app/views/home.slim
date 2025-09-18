@@ -86,6 +86,7 @@ section.homepage
           .daily-level
             | New puzzles each run
 
+
       .mode.threes
         h3
           a(href="/three") Three
@@ -172,6 +173,20 @@ section.homepage
               | Quickly solve puzzles without mistakes to unlock the next level.
             = homepage_miniboard_link(@repetition_level.path, @repetition_level.first_puzzle)
             .under-mini-board= @repetition_level.display_name
+
+      .mode.mate-in-one
+        h3
+          a(href="/mate-in-one") Mate in one
+        h4.game-mode-description
+          | Practice checkmate in one move. Perfect for beginners.
+        = homepage_miniboard_link("/mate-in-one", @mate_in_one_puzzle)
+        .under-mini-board
+          - if user_signed_in?
+            .your-best-times
+              | Best score today:
+              span.best-time<= @mate_in_one_best_score
+          .daily-level
+            | New puzzles each run
 
     .scoreboard-section
       .mini-scoreboard

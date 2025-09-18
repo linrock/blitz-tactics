@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :completed_speedruns
   has_many :completed_countdown_levels
   has_many :completed_haste_rounds
+  has_many :completed_mate_in_one_rounds
   has_many :completed_three_rounds
   has_many :completed_repetition_rounds
   has_many :completed_repetition_levels
@@ -91,6 +92,16 @@ class User < ActiveRecord::Base
 
   def num_haste_rounds_completed
     @num_haste_rounds_completed ||= completed_haste_rounds.count
+  end
+
+  # mate-in-one mode methods
+
+  def mate_in_one_round_high_score(date)
+    completed_mate_in_one_rounds.personal_best(date)
+  end
+
+  def num_mate_in_one_rounds_completed
+    @num_mate_in_one_rounds_completed ||= completed_mate_in_one_rounds.count
   end
 
   # three mode methods

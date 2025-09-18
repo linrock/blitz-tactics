@@ -5,7 +5,9 @@ import RepetitionMode from './game_modes/repetition'
 import SpeedrunMode from './game_modes/speedrun/index.vue'
 import CountdownMode from './game_modes/countdown/index.vue'
 import HasteMode from './game_modes/haste/index.vue'
+import MateInOneMode from './game_modes/mate_in_one/index.vue'
 import ThreeMode from './game_modes/three/index.vue'
+import RookEndgamesMode from './game_modes/rook-endgames/index.vue'
 import RatedMode from './game_modes/rated'
 
 import CustomizeBoard from './pages/customize_board'
@@ -30,7 +32,9 @@ const routes: RouteMap = {
   "game_modes/speedrun#index": () => mountVue(SpeedrunMode, '.speedrun-mode .vue-app-mount'),
   "game_modes/countdown#index": () => mountVue(CountdownMode, '.countdown-mode .vue-app-mount'),
   "game_modes/haste#index": () => mountVue(HasteMode, '.haste-mode .vue-app-mount'),
+  "game_modes/mate_in_one#index": () => mountVue(MateInOneMode, '.mate-in-one-mode .vue-app-mount'),
   "game_modes/three#index": () => mountVue(ThreeMode, '.three-mode .vue-app-mount'),
+  "game_modes/rook_endgames#index": () => mountVue(RookEndgamesMode, '.rook-endgames-mode .vue-app-mount'),
   "game_modes/infinity#index": () => InfinityMode(),
   "game_modes/repetition#index": () => RepetitionMode(),
   "game_modes/rated#index": () => RatedMode(),

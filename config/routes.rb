@@ -49,6 +49,16 @@ Rails.application.routes.draw do
   get '/haste/puzzles'           => 'game_modes/haste#puzzles'
   post '/haste'                  => 'game_modes/haste#complete'
 
+  # mate-in-one mode
+  get '/mate-in-one'             => 'game_modes/mate_in_one#index'
+  get '/mate-in-one/puzzles'     => 'game_modes/mate_in_one#puzzles'
+  post '/mate-in-one'            => 'game_modes/mate_in_one#complete'
+
+  # rook-endgames mode
+  get '/rook-endgames'           => 'game_modes/rook_endgames#index'
+  get '/rook-endgames/puzzles'   => 'game_modes/rook_endgames#puzzles'
+  post '/rook-endgames'          => 'game_modes/rook_endgames#complete'
+
   # threes mode
   get '/three'                  => 'game_modes/three#index'
   get '/three/puzzles'          => 'game_modes/three#puzzles'
@@ -79,6 +89,7 @@ Rails.application.routes.draw do
   get '/puzzles'                 => 'puzzles#index'
   get '/puzzles/:puzzle_ids'     => 'puzzles#index'
   get '/p/:puzzle_id'            => 'puzzles#show'
+  get '/p/:puzzle_id/solution'   => 'puzzles#solution'
   get '/p/:puzzle_id/edit'       => 'puzzles#edit'
   put '/p/:puzzle_id'            => 'puzzles#update'
 
@@ -100,7 +111,6 @@ Rails.application.routes.draw do
   get '/positions/:id'           => 'pages#position'
   get '/position'                => 'pages#position'
   get '/pawn-endgames'           => 'pages#pawn_endgames'
-  get '/rook-endgames'           => 'pages#rook_endgames'
   get '/endgame-studies'         => 'pages#endgame_studies'
   get '/mate-in-two'             => 'pages#mate_in_two'
 

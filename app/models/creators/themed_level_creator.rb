@@ -105,7 +105,7 @@ class ThemedLevelCreator
     puts "Note: Files contain ALL available puzzles in each rating range (not sampled)"
     
     # Ensure output directory exists
-    theme_output_dir = Rails.root.join(output_dir, theme)
+    theme_output_dir = File.join(Rails.root, output_dir, theme)
     FileUtils.mkdir_p(theme_output_dir)
     
     exported_files = []
@@ -221,7 +221,7 @@ class ThemedLevelCreator
         pool_number = index + 1
         padded_pool_number = format("%02d", pool_number)
         filename = "#{color_to_move}_pool_#{padded_pool_number}_#{rating_range.min}-#{rating_range.max}.txt"
-        file_path = Rails.root.join(pools_dir, theme, filename)
+        file_path = File.join(Rails.root, pools_dir, theme, filename)
         
         # Read puzzle IDs from file
         if File.exist?(file_path)
@@ -288,13 +288,49 @@ class ThemedLevelCreator
         pool_number = index + 1
         padded_pool_number = format("%02d", pool_number)
         filename = "#{color_to_move}_pool_#{padded_pool_number}_#{rating_range.min}-#{rating_range.max}.txt"
-        file_path = Rails.root.join(pools_dir, theme, filename)
+        file_path = File.join(Rails.root, pools_dir, theme, filename)
         
         if File.exist?(file_path)
-          pool_puzzle_ids = File.readlines(file_path).map(&:strip).reject(&:empty?)
+          pool_puzzle_lines = File.readlines(file_path).map(&:strip).reject(&:empty?)
+          pool_puzzle_ids = pool_puzzle_lines.map { |line| line.split("|", 3)[0] }
           sampled_ids = pool_puzzle_ids.sample(sample_count)
           selected_puzzle_ids.concat(sampled_ids)
         end
+      end
+    end
+    
+    # Create puzzle data for the selected puzzles
+    puzzle_data = selected_puzzle_ids.map do |puzzle_id|
+      puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
+      puzzle&.bt_puzzle_data
+    end.compact
+    
+    puzzle_data
+  end
+
+  # Fast puzzle set creation from theme pools for a single color only
+  def self.create_theme_puzzle_set_fast_single_color(theme:, color_to_move:, puzzle_counts: DEFAULT_THEMED_PUZZLE_COUNTS, pools_dir: "data/themes/")
+    unless VALID_THEMES.include?(theme)
+      raise ArgumentError, "Invalid theme '#{theme}'. Valid themes: #{VALID_THEMES.join(', ')}"
+    end
+
+    unless %w[w b].include?(color_to_move)
+      raise ArgumentError, "Invalid color_to_move '#{color_to_move}'. Must be 'w' or 'b'"
+    end
+
+    selected_puzzle_ids = []
+    
+    puzzle_counts.each_with_index do |(rating_range, sample_count), index|
+      pool_number = index + 1
+      padded_pool_number = format("%02d", pool_number)
+      filename = "#{color_to_move}_pool_#{padded_pool_number}_#{rating_range.min}-#{rating_range.max}.txt"
+      file_path = File.join(Rails.root, pools_dir, theme, filename)
+      
+      if File.exist?(file_path)
+        pool_puzzle_lines = File.readlines(file_path).map(&:strip).reject(&:empty?)
+        pool_puzzle_ids = pool_puzzle_lines.map { |line| line.split("|", 3)[0] }
+        sampled_ids = pool_puzzle_ids.sample(sample_count)
+        selected_puzzle_ids.concat(sampled_ids)
       end
     end
     
