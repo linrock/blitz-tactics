@@ -2,7 +2,8 @@ class AdminController < ApplicationController
   before_action :require_admin_access!
 
   def index
-    @stats = game_mode_stats
+    @time_period = params[:period] || 'week'
+    @stats = game_mode_stats(@time_period)
   end
 
   private
@@ -13,14 +14,23 @@ class AdminController < ApplicationController
     end
   end
 
-  def game_mode_stats
-    # Get the past 7 days
+  def game_mode_stats(period = 'week')
     end_date = Date.current
-    start_date = end_date - 6.days
+    
+    # Determine the date range based on period
+    if period == 'month'
+      start_date = end_date - 29.days  # Past 30 days
+      @period_label = "Past 30 Days"
+      @period_days = 30
+    else
+      start_date = end_date - 6.days   # Past 7 days
+      @period_label = "Past 7 Days"
+      @period_days = 7
+    end
     
     stats = {}
     
-    # For each day in the past 7 days
+    # For each day in the selected period
     (start_date..end_date).each do |date|
       day_stats = {}
       

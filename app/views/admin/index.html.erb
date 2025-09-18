@@ -2,7 +2,22 @@
 
 <div class="admin-dashboard">
     <h1>Admin Dashboard</h1>
-    <p class="admin-subtitle">Game Mode Statistics - Past 7 Days</p>
+    
+    <div class="period-toggle">
+        <a href="/admin?period=week" class="toggle-btn <%= 'active' if @time_period == 'week' %>">
+            Past Week
+        </a>
+        <a href="/admin?period=month" class="toggle-btn <%= 'active' if @time_period == 'month' %>">
+            Past Month
+        </a>
+    </div>
+    
+    <p class="admin-subtitle">Game Mode Statistics - <%= @period_label %></p>
+
+    <div class="chart-container">
+      <h2>Activity Chart</h2>
+      <canvas id="activityChart" width="800" height="400"></canvas>
+    </div>
 
     <div class="stats-table">
       <table>
@@ -56,15 +71,10 @@
       </table>
     </div>
 
-    <div class="chart-container">
-      <h2>Activity Chart</h2>
-      <canvas id="activityChart" width="800" height="400"></canvas>
-    </div>
-
     <div class="admin-summary">
       <h2>Summary</h2>
-      <p>Total game mode completions over the past 7 days: <strong><%= @stats.values.sum { |s| s[:total] } %></strong></p>
-      <p>Average per day: <strong><%= (@stats.values.sum { |s| s[:total] } / 7.0).round(1) %></strong></p>
+      <p>Total game mode completions over the <%= @period_label.downcase %>: <strong><%= @stats.values.sum { |s| s[:total] } %></strong></p>
+      <p>Average per day: <strong><%= (@stats.values.sum { |s| s[:total] } / @period_days.to_f).round(1) %></strong></p>
     </div>
 </div>
 
@@ -229,6 +239,35 @@ document.addEventListener('DOMContentLoaded', function() {
 .admin-dashboard h1 {
   color: #ffffff;
   margin-bottom: 10px;
+}
+
+.period-toggle {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.toggle-btn {
+  padding: 10px 20px;
+  background: #2d2d2d;
+  color: #e0e0e0;
+  text-decoration: none;
+  border-radius: 6px;
+  border: 1px solid #404040;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+  background: #3a3a3a;
+  color: #ffffff;
+  border-color: #555;
+}
+
+.toggle-btn.active {
+  background: #4a90e2;
+  color: #ffffff;
+  border-color: #4a90e2;
 }
 
 .admin-subtitle {
