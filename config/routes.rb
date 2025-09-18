@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   get '/haste'                   => 'game_modes/haste#index'
   get '/haste/puzzles'           => 'game_modes/haste#puzzles'
   post '/haste'                  => 'game_modes/haste#complete'
+  post '/haste/track-puzzle'     => 'game_modes/haste#track_puzzle'
 
   # mate-in-one mode
   get '/mate-in-one'             => 'game_modes/mate_in_one#index'

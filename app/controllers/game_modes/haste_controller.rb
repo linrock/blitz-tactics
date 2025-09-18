@@ -23,7 +23,7 @@ class GameModes::HasteController < ApplicationController
     if user_signed_in?
       if score > 0
         current_user.completed_haste_rounds.create!(score: score)
-        # Track unique puzzles solved
+        # Track unique puzzles solved (fallback for any missed real-time tracking)
         Rails.logger.info "Tracking #{puzzle_ids.length} puzzle IDs for user #{current_user.username}"
         current_user.track_solved_puzzles(puzzle_ids)
       end
@@ -39,6 +39,19 @@ class GameModes::HasteController < ApplicationController
         [user.username, score]
       end
     }
+  end
+
+  # track individual puzzle solved in real-time
+  def track_puzzle
+    puzzle_id = params[:puzzle_id]
+    
+    if user_signed_in? && puzzle_id.present?
+      Rails.logger.info "Real-time tracking puzzle #{puzzle_id} for user #{current_user.username}"
+      current_user.track_solved_puzzles([puzzle_id])
+      render json: { success: true, puzzle_id: puzzle_id }
+    else
+      render json: { success: false, error: 'User not signed in or puzzle_id missing' }, status: 400
+    end
   end
 
   private

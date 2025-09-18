@@ -62,11 +62,18 @@ export default {
       'puzzles:status': ({ i }) => {
         this.numPuzzlesSolved = i + 1
       },
-      'puzzle:solved': (puzzle) => {
+      'puzzle:solved': async (puzzle) => {
         console.log('Puzzle solved:', puzzle)
         if (puzzle && puzzle.id) {
           this.solvedPuzzleIds.push(puzzle.id)
           console.log('Added puzzle ID:', puzzle.id, 'Total solved:', this.solvedPuzzleIds.length)
+          
+          // Send puzzle ID to server immediately for real-time tracking
+          try {
+            await this.trackSolvedPuzzle(puzzle.id)
+          } catch (error) {
+            console.error('Failed to track solved puzzle:', error)
+          }
         } else {
           console.log('No puzzle ID found in puzzle:', puzzle)
         }
@@ -95,5 +102,27 @@ export default {
   components: {
     Timer,
   },
+
+  methods: {
+    async trackSolvedPuzzle(puzzleId) {
+      // Send individual puzzle ID to server for real-time tracking
+      const response = await fetch('/haste/track-puzzle', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+          puzzle_id: puzzleId
+        })
+      })
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
+      return response.json()
+    }
+  }
 }
 </script>
