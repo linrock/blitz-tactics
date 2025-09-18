@@ -8,16 +8,18 @@
     font-size: 20px
     opacity: 0.6
     text-align: center
-    margin: 28px 0 48px
+    margin: 28px 0 0
     line-height: 2rem
+
+  .game-modes-section header
+    margin-bottom: 40px
 
   .themed-puzzle-sets-section .description
     font-size: 14px
     opacity: 0.5
     text-align: center
     line-height: 1.5rem
-    margin-top: -48px
-    margin-bottom: 38px
+    margin: 0 0 38px
 
   .game-modes-container
     display: grid
@@ -155,6 +157,54 @@
         &:hover
           text-decoration: underline
 
+  .themed-scoreboard-section .mini-scoreboard
+    .scores
+      display: grid
+      grid-template-columns: repeat(3, 1fr)
+      gap: 20px 60px
+      justify-content: center
+      max-width: 800px
+      margin: 0 auto
+
+      // past 7 days, yesterday, today
+      h6
+        color: rgba(250, 250, 250, 0.25)
+        margin-bottom: 30px
+        grid-column: 1 / -1
+        text-align: center
+
+      .top-players
+        margin: 10px 0 30px
+        font-size: 14px
+
+        // headings for stats
+        h5
+          color: rgba(250, 250, 250, 0.4)
+          margin-bottom: 6px
+
+        .ranking
+          padding: 4px 0
+          display: flex
+          color: rgba(250, 250, 250, 0.8)
+
+          .player-name
+            width: 150px
+            overflow: hidden
+            text-overflow: ellipsis
+            white-space: nowrap
+            padding-bottom: 2px
+
+          .stats
+            width: 50px
+            text-align: right
+
+          a
+            color: rgba(250, 250, 250, 0.8)
+            text-decoration: none
+
+            &:hover
+              text-decoration: underline
+
   // bottom section with updates and links
   .bottom
     background: #171717
@@ -251,22 +301,11 @@
       width: 100%
       max-width: 500px
       margin-bottom: 2rem
-      display: grid
-      grid-template-columns: 1fr 1fr
-      gap: 30px
 
-      &:first-child
-        margin-top: 0
-
-      // Section headers span full width at top
-      h6
-        grid-column: 1 / -1
-        text-align: center
-        margin-bottom: 20px
-        margin-top: 1.5rem
-
-        &:first-child
-          margin-top: 0
+  .themed-scoreboard-section .mini-scoreboard
+    .scores
+      grid-template-columns: 1fr
+      gap: 15px
 
       .top-players,
       .top-infinity
@@ -306,6 +345,11 @@
       max-width: 350px
       grid-template-columns: 1fr
       gap: 20px
+
+  .themed-scoreboard-section .mini-scoreboard
+    .scores
+      grid-template-columns: 1fr
+      gap: 10px
 
       .top-players
         .ranking

@@ -66,10 +66,11 @@ section.homepage
 
   .game-modes-section
     .container
-      - if @quest_mode_enabled
-        h2 Practice fast-paced chess puzzles in another game mode.
-      - else
-        h2 Fast-paced chess puzzles. Choose a game mode to get started.
+      header
+        - if @quest_mode_enabled
+          h2 Practice fast-paced chess puzzles in another game mode.
+        - else
+          h2 Fast-paced chess puzzles. Choose a game mode to get started.
 
     .game-modes-container
       .mode.haste
