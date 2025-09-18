@@ -63,17 +63,32 @@ class UsersController < ApplicationController
     if @user.present?
       recent_puzzle_data = SolvedPuzzle.recent_with_details(@user.id, 6)
       
-      # Get the puzzle data for each solved puzzle
+      # Get the puzzle data for each solved puzzle, with fallback to legacy Puzzle model
       @recent_puzzles = recent_puzzle_data.map do |puzzle_data|
-        puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_data[:puzzle_id])
+        # Try LichessV2Puzzle first, then fall back to legacy Puzzle model
+        puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_data[:puzzle_id]) ||
+                 Puzzle.find_by(id: puzzle_data[:puzzle_id])
+        
         if puzzle
-          {
-            puzzle: puzzle,
-            puzzle_data: puzzle.bt_puzzle_data,
-            solution_lines: puzzle.lines_tree,
-            solved_at: puzzle_data[:solved_at],
-            game_mode: puzzle_data[:game_mode]
-          }
+          # Handle different puzzle models (LichessV2Puzzle vs legacy Puzzle)
+          if puzzle.is_a?(LichessV2Puzzle)
+            {
+              puzzle: puzzle,
+              puzzle_data: puzzle.bt_puzzle_data,
+              solution_lines: puzzle.lines_tree,
+              solved_at: puzzle_data[:solved_at],
+              game_mode: puzzle_data[:game_mode]
+            }
+          else
+            # Legacy Puzzle model
+            {
+              puzzle: puzzle,
+              puzzle_data: puzzle.bt_puzzle_data,
+              solution_lines: puzzle.puzzle_data["lines"],
+              solved_at: puzzle_data[:solved_at],
+              game_mode: puzzle_data[:game_mode]
+            }
+          end
         else
           nil
         end
