@@ -1,7 +1,6 @@
 <% content_for(:title) { "Admin Dashboard" } %>
 
-<div class="container">
-  <div class="admin-dashboard">
+<div class="admin-dashboard">
     <h1>Admin Dashboard</h1>
     <p class="admin-subtitle">Game Mode Statistics - Past 7 Days</p>
 
@@ -19,8 +18,6 @@
             <th>Three</th>
             <th>Repetition Rounds</th>
             <th>Repetition Levels</th>
-            <th>Quest Levels</th>
-            <th>Quest Worlds</th>
             <th>Total</th>
           </tr>
         </thead>
@@ -37,8 +34,6 @@
               <td><%= day_stats[:three] %></td>
               <td><%= day_stats[:repetition_rounds] %></td>
               <td><%= day_stats[:repetition_levels] %></td>
-              <td><%= day_stats[:quest_world_levels] %></td>
-              <td><%= day_stats[:quest_worlds] %></td>
               <td class="total-cell"><strong><%= day_stats[:total] %></strong></td>
             </tr>
           <% end %>
@@ -55,12 +50,15 @@
             <td><strong><%= @stats.values.sum { |s| s[:three] } %></strong></td>
             <td><strong><%= @stats.values.sum { |s| s[:repetition_rounds] } %></strong></td>
             <td><strong><%= @stats.values.sum { |s| s[:repetition_levels] } %></strong></td>
-            <td><strong><%= @stats.values.sum { |s| s[:quest_world_levels] } %></strong></td>
-            <td><strong><%= @stats.values.sum { |s| s[:quest_worlds] } %></strong></td>
             <td class="total-cell"><strong><%= @stats.values.sum { |s| s[:total] } %></strong></td>
           </tr>
         </tfoot>
       </table>
+    </div>
+
+    <div class="chart-container">
+      <h2>Activity Chart</h2>
+      <canvas id="activityChart" width="800" height="400"></canvas>
     </div>
 
     <div class="admin-summary">
@@ -68,17 +66,164 @@
       <p>Total game mode completions over the past 7 days: <strong><%= @stats.values.sum { |s| s[:total] } %></strong></p>
       <p>Average per day: <strong><%= (@stats.values.sum { |s| s[:total] } / 7.0).round(1) %></strong></p>
     </div>
-  </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const ctx = document.getElementById('activityChart').getContext('2d');
+  
+  // Prepare data from Rails
+  const dates = <%= raw @stats.keys.map { |date| date.strftime("%m/%d") }.to_json %>;
+  const data = {
+    labels: dates,
+    datasets: [
+      {
+        label: 'Infinity',
+        data: <%= raw @stats.values.map { |s| s[:infinity] }.to_json %>,
+        borderColor: '#4a90e2',
+        backgroundColor: 'rgba(74, 144, 226, 0.1)',
+        tension: 0.1
+      },
+      {
+        label: 'Speedrun',
+        data: <%= raw @stats.values.map { |s| s[:speedrun] }.to_json %>,
+        borderColor: '#e74c3c',
+        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+        tension: 0.1
+      },
+      {
+        label: 'Countdown',
+        data: <%= raw @stats.values.map { |s| s[:countdown] }.to_json %>,
+        borderColor: '#f39c12',
+        backgroundColor: 'rgba(243, 156, 18, 0.1)',
+        tension: 0.1
+      },
+      {
+        label: 'Haste',
+        data: <%= raw @stats.values.map { |s| s[:haste] }.to_json %>,
+        borderColor: '#27ae60',
+        backgroundColor: 'rgba(39, 174, 96, 0.1)',
+        tension: 0.1
+      },
+      {
+        label: 'Mate in One',
+        data: <%= raw @stats.values.map { |s| s[:mate_in_one] }.to_json %>,
+        borderColor: '#9b59b6',
+        backgroundColor: 'rgba(155, 89, 182, 0.1)',
+        tension: 0.1
+      },
+      {
+        label: 'Rook Endgames',
+        data: <%= raw @stats.values.map { |s| s[:rook_endgames] }.to_json %>,
+        borderColor: '#34495e',
+        backgroundColor: 'rgba(52, 73, 94, 0.1)',
+        tension: 0.1
+      },
+      {
+        label: 'Three',
+        data: <%= raw @stats.values.map { |s| s[:three] }.to_json %>,
+        borderColor: '#e67e22',
+        backgroundColor: 'rgba(230, 126, 34, 0.1)',
+        tension: 0.1
+      },
+      {
+        label: 'Repetition Rounds',
+        data: <%= raw @stats.values.map { |s| s[:repetition_rounds] }.to_json %>,
+        borderColor: '#1abc9c',
+        backgroundColor: 'rgba(26, 188, 156, 0.1)',
+        tension: 0.1
+      },
+      {
+        label: 'Repetition Levels',
+        data: <%= raw @stats.values.map { |s| s[:repetition_levels] }.to_json %>,
+        borderColor: '#95a5a6',
+        backgroundColor: 'rgba(149, 165, 166, 0.1)',
+        tension: 0.1
+      }
+    ]
+  };
+
+  new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Game Mode Activity Over Time',
+          color: '#ffffff',
+          font: {
+            size: 16,
+            weight: 'bold'
+          }
+        },
+        legend: {
+          labels: {
+            color: '#e0e0e0',
+            usePointStyle: true,
+            padding: 20
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Date',
+            color: '#e0e0e0',
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          },
+          ticks: {
+            color: '#e0e0e0'
+          },
+          grid: {
+            color: '#404040'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Number of Completions',
+            color: '#e0e0e0',
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          },
+          ticks: {
+            color: '#e0e0e0',
+            beginAtZero: true
+          },
+          grid: {
+            color: '#404040'
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  });
+});
+</script>
 
 <style>
 .admin-dashboard {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 960px;
   margin: 0 auto;
   padding: 20px;
   background: #1a1a1a;
   color: #e0e0e0;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .admin-dashboard h1 {
@@ -172,5 +317,25 @@
 
 .admin-summary strong {
   color: #4a90e2;
+}
+
+.chart-container {
+  background: #2d2d2d;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  border: 1px solid #404040;
+}
+
+.chart-container h2 {
+  margin-top: 0;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+#activityChart {
+  background: #1a1a1a;
+  border-radius: 4px;
+  max-height: 400px;
 }
 </style>

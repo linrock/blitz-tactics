@@ -34,8 +34,6 @@ class AdminController < ApplicationController
       day_stats[:three] = CompletedThreeRound.where(created_at: date.beginning_of_day..date.end_of_day).count
       day_stats[:repetition_rounds] = CompletedRepetitionRound.where(created_at: date.beginning_of_day..date.end_of_day).count
       day_stats[:repetition_levels] = CompletedRepetitionLevel.where(created_at: date.beginning_of_day..date.end_of_day).count
-      day_stats[:quest_world_levels] = CompletedQuestWorldLevel.where(created_at: date.beginning_of_day..date.end_of_day).count
-      day_stats[:quest_worlds] = CompletedQuestWorld.where(created_at: date.beginning_of_day..date.end_of_day).count
       
       # Calculate total for the day
       day_stats[:total] = day_stats.values.sum
