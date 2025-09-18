@@ -9,9 +9,9 @@ module ThemedSpeedrunLevelCreator
   # Only use the first 3 pools (easiest difficulty ranges) for speedrun
   # 10 puzzles from each pool = 30 total puzzles
   THEMED_SPEEDRUN_PUZZLE_COUNTS = {
-    (600..1000) => 10,  # Pool 1
-    (800..1000) => 10,  # Pool 2  
-    (1000..1200) => 10, # Pool 3
+    (600..1000) => 10,   # Pool 1
+    (1000..1400) => 10,  # Pool 2  
+    (1400..1800) => 10,  # Pool 3
   }.freeze
 
   # Get available themes dynamically from data/themes/ directories
