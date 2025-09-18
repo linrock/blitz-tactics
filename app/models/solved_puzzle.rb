@@ -6,7 +6,7 @@ class SolvedPuzzle < ActiveRecord::Base
   validates :puzzle_id, presence: true
   validates :user_id, presence: true
   validates :puzzle_id, uniqueness: { scope: :user_id }
-  validates :game_mode, inclusion: { in: %w[countdown speedrun infinity repetition haste three] }, allow_nil: true
+  validates :game_mode, inclusion: { in: %w[countdown speedrun infinity repetition haste three mate_in_one rook_endgames openings] }, allow_nil: true
 
   # Track a puzzle solve with game mode - updates timestamp and game mode for existing records
   def self.track_solve(user_id, puzzle_id, game_mode = nil)

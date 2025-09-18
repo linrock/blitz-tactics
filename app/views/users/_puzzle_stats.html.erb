@@ -89,7 +89,7 @@
   <% end %>
 
   <div class="activity-feed">
-    <h2>Recent Activity</h2>
+        <h2>Recent activity</h2>
     <% recent_activities = @user.recent_activity(10) %>
     <% if recent_activities.any? %>
       <div class="activity-list">
@@ -116,7 +116,7 @@
 
   <% if @recent_puzzles.any? %>
     <div class="recent-puzzles-section">
-      <h2>Recent Puzzles Solved</h2>
+             <h2>Recent puzzles solved</h2>
       <div class="recent-puzzles-list">
         <% @recent_puzzles.each do |puzzle_data| %>
           <% puzzle = puzzle_data[:puzzle] %>
@@ -132,7 +132,11 @@
             </div>
             <% if game_mode.present? %>
               <div class="puzzle-game-mode">
-                <%= game_mode.capitalize %>
+                <%= case game_mode
+                    when 'mate_in_one' then 'Mate in one'
+                    when 'rook_endgames' then 'Rook endgames'
+                    else game_mode.capitalize
+                    end %>
               </div>
             <% end %>
             <button class="view-solution-btn"

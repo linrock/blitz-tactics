@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { openingsRoundCompleted } from '@blitz/api/requests'
+import { openingsRoundCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
 import { subscribe } from '@blitz/events'
@@ -60,6 +60,14 @@ export default {
       ...commonSubscriptions,
       'puzzles:status': ({ i }) => {
         this.numPuzzlesSolved = i + 1
+      },
+      'puzzle:solved': (puzzle) => {
+        // Track individual puzzle solve
+        if (puzzle && puzzle.id) {
+          trackSolvedPuzzle(puzzle.id, 'openings').catch(error => {
+            console.error('Failed to track solved puzzle:', error)
+          })
+        }
       },
       'timer:stopped': async () => {
         this.showBoardOverlay()
