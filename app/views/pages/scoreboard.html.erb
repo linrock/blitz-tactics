@@ -77,6 +77,38 @@
         </div>
       </div>
 
+      <div class="recent-scores scores">
+        <div class="game-mode-scores">
+          <h3>Highest three scores</h3>
+          <% @scoreboard.top_three_scores_recent.each do |user, score| %>
+            <div class="user-score">
+              <%= user_link user %>
+              <div class="score"><%= score %></div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="game-mode-scores">
+          <h3>Mate in one</h3>
+          <% @scoreboard.top_mate_in_one_scores_recent.each do |user, score| %>
+            <div class="user-score">
+              <%= user_link user %>
+              <div class="score"><%= score %></div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="game-mode-scores">
+          <h3>Rook endgames</h3>
+          <% @scoreboard.top_rook_endgames_scores_recent.each do |user, score| %>
+            <div class="user-score">
+              <%= user_link user %>
+              <div class="score"><%= score %></div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
       <h2>All-time high scores</h2>
       <div class="recent-scores scores">
         <div class="game-mode-scores">

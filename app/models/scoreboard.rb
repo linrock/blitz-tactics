@@ -64,6 +64,10 @@ class Scoreboard
     @top_three_scores_recent ||= CompletedThreeRound.high_scores(@recent_time)
   end
 
+  def top_rook_endgames_scores_recent
+    @top_rook_endgames_scores_recent ||= CompletedRookEndgamesRound.high_scores(@recent_time)
+  end
+
   def top_repetition_recent
     @top_repetition_recent ||= group_and_count(
       CompletedRepetitionLevel.unscoped.where('created_at > ?', @recent_time),
