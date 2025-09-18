@@ -1,7 +1,7 @@
 import { uciToMove } from '@blitz/utils'
 
 // Solution player for recent puzzles - plays directly in miniboards
-class SolutionPlayer {
+export class SolutionPlayer {
   private playingSolutions: Set<string> = new Set()
 
   constructor() {

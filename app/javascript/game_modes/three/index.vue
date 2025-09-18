@@ -122,9 +122,16 @@ export default {
           setTimeout(() => this.isGainingScore = false, 300)
         }
       },
-      'puzzle:solved': (puzzle) => {
+      'puzzle:solved': async (puzzle) => {
         if (puzzle && puzzle.id) {
           this.solvedPuzzleIds.push(puzzle.id)
+          
+          // Send puzzle ID to server immediately for real-time tracking
+          try {
+            await this.trackSolvedPuzzle(puzzle.id)
+          } catch (error) {
+            console.error('Failed to track solved puzzle:', error)
+          }
         }
       },
       'timer:stopped': () => {
@@ -173,11 +180,31 @@ export default {
   methods: {
     viewHint() {
       dispatch('puzzle:get_hint')
+    },
+
+    async trackSolvedPuzzle(puzzleId) {
+      // Send individual puzzle ID to server for real-time tracking
+      const response = await fetch('/three/track-puzzle', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+          puzzle_id: puzzleId
+        })
+      })
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
+      return response.json()
     }
- },
+  },
 
   components: {
     Timer,
-  },
+  }
 }
 </script>

@@ -114,6 +114,38 @@
     <% end %>
   </div>
 
+  <% if @recent_puzzles.any? %>
+    <div class="recent-puzzles-section">
+      <h2>Recent Puzzles Solved</h2>
+      <div class="recent-puzzles-list">
+        <% @recent_puzzles.each do |puzzle_data| %>
+          <% puzzle = puzzle_data[:puzzle] %>
+          <% solution_lines = puzzle_data[:solution_lines] %>
+          <% solved_at = puzzle_data[:solved_at] %>
+          <div class="recent-puzzle-item" data-puzzle-id="<%= puzzle.puzzle_id %>">
+            <div class="puzzle-miniboard">
+              <%= linked_puzzle_miniboard(puzzle) %>
+            </div>
+            <div class="puzzle-info">
+              <div class="puzzle-meta">
+                <div class="puzzle-time"><%= time_ago_in_words(solved_at) %> ago</div>
+                <div class="puzzle-rating">Rating: <%= puzzle.rating %></div>
+              </div>
+              <div class="puzzle-actions">
+                <button class="view-solution-btn"
+                        data-puzzle-id="<%= puzzle.puzzle_id %>"
+                        data-initial-fen="<%= puzzle.initial_fen %>"
+                        data-solution-lines="<%= solution_lines.to_json %>">
+                  Show solution
+                </button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
   <% if @user.hall_of_famer? %>
     <div class="achievements">
       <h4>Hall of famer</h4>
@@ -212,5 +244,6 @@
       </div>
     </div>
   <% end %>
+
 
 </div>

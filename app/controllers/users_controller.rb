@@ -11,6 +11,10 @@ class UsersController < ApplicationController
       render "pages/not_found", status: 404
       return
     end
+    
+    # Load recent solved puzzles for both show and me views
+    load_recent_solved_puzzles
+    
     if @user == current_user
       render "users/me"
       return
@@ -53,6 +57,30 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def load_recent_solved_puzzles
+    # Get the last 6 puzzles solved by the user
+    if @user.present? && @user.solved_puzzles.any?
+      recent_solved_puzzles = @user.solved_puzzles.order('updated_at DESC').limit(6)
+      
+      # Get the puzzle data for each solved puzzle
+      @recent_puzzles = recent_solved_puzzles.map do |solved_puzzle|
+        puzzle = LichessV2Puzzle.find_by(puzzle_id: solved_puzzle.puzzle_id)
+        if puzzle
+          {
+            puzzle: puzzle,
+            puzzle_data: puzzle.bt_puzzle_data,
+            solution_lines: puzzle.lines_tree,
+            solved_at: solved_puzzle.updated_at
+          }
+        else
+          nil
+        end
+      end.compact
+    else
+      @recent_puzzles = []
+    end
+  end
 
   def user_params
     params.require(:user).permit(:tagline)

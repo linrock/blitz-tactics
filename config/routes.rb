@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   get '/three'                  => 'game_modes/three#index'
   get '/three/puzzles'          => 'game_modes/three#puzzles'
   post '/three'                 => 'game_modes/three#complete'
+  post '/three/track-puzzle'    => 'game_modes/three#track_puzzle'
 
   # repetition mode
   get '/repetition'              => 'game_modes/repetition#index'

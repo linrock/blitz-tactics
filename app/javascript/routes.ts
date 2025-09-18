@@ -16,6 +16,7 @@ import PositionTrainer from './pages/position_trainer/index.vue'
 import PuzzleSet from './pages/puzzle_set'
 import PuzzleList from './pages/puzzle_list'
 import PuzzlePage from './pages/puzzle_page'
+import UserProfile from './pages/user_profile'
 
 import NewPuzzlePlayer from './components/new_puzzle_player/index.vue'
 import QuestMode from './game_modes/quest/index.vue'
@@ -66,6 +67,8 @@ const routes: RouteMap = {
 
   // user profile
   "users#customize_board": () => new CustomizeBoard,
+  "users#show": () => UserProfile(),
+  "users#me": () => UserProfile(),
 }
 
 export default routes
