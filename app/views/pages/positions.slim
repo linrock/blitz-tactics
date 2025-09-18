@@ -82,3 +82,5 @@
       - open(Rails.root.join("db/wj-baird-checkmates.txt"), "r").read.split(/\n/).take(9).each_with_index do |fen, i|
         = linked_miniboard "Puzzle #{i+1}", fen, "win"
     a.button.more-button(href="/mate-in-two") More mate-in-2 puzzles &raquo;
+
+= render 'shared/main_footer'
