@@ -19,6 +19,27 @@
     <br>• <strong>Absolute pin:</strong> Pinned to the king (cannot move at all)
     <br>• <strong>Relative pin:</strong> Pinned to a more valuable piece (can move but would lose material)
   </p>
+  
+  <% if @theme_examples['pin'] %>
+    <div class="theme-example">
+      <h4>Example Pin Puzzle</h4>
+      <div class="recent-puzzle-item" data-puzzle-id="<%= @theme_examples['pin'].puzzle_id %>">
+        <div class="puzzle-miniboard">
+          <%= linked_puzzle_miniboard(@theme_examples['pin']) %>
+        </div>
+        <div class="puzzle-info">
+          <div class="puzzle-actions">
+            <button class="show-solution-btn view-solution-btn" 
+                    data-puzzle-id="<%= @theme_examples['pin'].puzzle_id %>"
+                    data-initial-fen="<%= @theme_examples['pin'].initial_fen %>"
+                    data-solution-lines="<%= @theme_examples['pin'].lines_tree.to_json %>">
+              Show solution
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <h3 class="question">Skewers</h3>
   <p class="answer">
@@ -30,6 +51,27 @@
     <strong>Key difference from pins:</strong> In a skewer, the more valuable piece is attacked first, 
     while in a pin, the less valuable piece is attacked.
   </p>
+  
+  <% if @theme_examples['skewer'] %>
+    <div class="theme-example">
+      <h4>Example Skewer Puzzle</h4>
+      <div class="recent-puzzle-item" data-puzzle-id="<%= @theme_examples['skewer'].puzzle_id %>">
+        <div class="puzzle-miniboard">
+          <%= linked_puzzle_miniboard(@theme_examples['skewer']) %>
+        </div>
+        <div class="puzzle-info">
+          <div class="puzzle-actions">
+            <button class="show-solution-btn view-solution-btn" 
+                    data-puzzle-id="<%= @theme_examples['skewer'].puzzle_id %>"
+                    data-initial-fen="<%= @theme_examples['skewer'].initial_fen %>"
+                    data-solution-lines="<%= @theme_examples['skewer'].lines_tree.to_json %>">
+              Show solution
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <h3 class="question">Forks</h3>
   <p class="answer">
@@ -43,6 +85,27 @@
     <br>• <strong>Pawns:</strong> Can fork pieces diagonally
     <br>• <strong>Queens:</strong> Can fork multiple pieces in different directions
   </p>
+  
+  <% if @theme_examples['fork'] %>
+    <div class="theme-example">
+      <h4>Example Fork Puzzle</h4>
+      <div class="recent-puzzle-item" data-puzzle-id="<%= @theme_examples['fork'].puzzle_id %>">
+        <div class="puzzle-miniboard">
+          <%= linked_puzzle_miniboard(@theme_examples['fork']) %>
+        </div>
+        <div class="puzzle-info">
+          <div class="puzzle-actions">
+            <button class="show-solution-btn view-solution-btn" 
+                    data-puzzle-id="<%= @theme_examples['fork'].puzzle_id %>"
+                    data-initial-fen="<%= @theme_examples['fork'].initial_fen %>"
+                    data-solution-lines="<%= @theme_examples['fork'].lines_tree.to_json %>">
+              Show solution
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <h3 class="question">Discovered Attacks</h3>
   <p class="answer">
@@ -55,6 +118,27 @@
     <br>• <strong>Discovered attack:</strong> The revealed attack threatens a piece (not check)
     <br>• <strong>Double check:</strong> Both the moving piece and the revealed piece give check
   </p>
+  
+  <% if @theme_examples['discoveredAttack'] %>
+    <div class="theme-example">
+      <h4>Example Discovered Attack Puzzle</h4>
+      <div class="recent-puzzle-item" data-puzzle-id="<%= @theme_examples['discoveredAttack'].puzzle_id %>">
+        <div class="puzzle-miniboard">
+          <%= linked_puzzle_miniboard(@theme_examples['discoveredAttack']) %>
+        </div>
+        <div class="puzzle-info">
+          <div class="puzzle-actions">
+            <button class="show-solution-btn view-solution-btn" 
+                    data-puzzle-id="<%= @theme_examples['discoveredAttack'].puzzle_id %>"
+                    data-initial-fen="<%= @theme_examples['discoveredAttack'].initial_fen %>"
+                    data-solution-lines="<%= @theme_examples['discoveredAttack'].lines_tree.to_json %>">
+              Show solution
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <h3 class="question">Double Attacks</h3>
   <p class="answer">
@@ -68,6 +152,27 @@
     <br>• Attacking a piece while threatening mate
     <br>• Creating a tactical threat while defending your own piece
   </p>
+  
+  <% if @theme_examples['doubleAttack'] %>
+    <div class="theme-example">
+      <h4>Example Double Attack Puzzle</h4>
+      <div class="recent-puzzle-item" data-puzzle-id="<%= @theme_examples['doubleAttack'].puzzle_id %>">
+        <div class="puzzle-miniboard">
+          <%= linked_puzzle_miniboard(@theme_examples['doubleAttack']) %>
+        </div>
+        <div class="puzzle-info">
+          <div class="puzzle-actions">
+            <button class="show-solution-btn view-solution-btn" 
+                    data-puzzle-id="<%= @theme_examples['doubleAttack'].puzzle_id %>"
+                    data-initial-fen="<%= @theme_examples['doubleAttack'].initial_fen %>"
+                    data-solution-lines="<%= @theme_examples['doubleAttack'].lines_tree.to_json %>">
+              Show solution
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <h3 class="question">Deflection</h3>
   <p class="answer">
@@ -357,3 +462,376 @@
     Look for multiple tactical motifs in the same position!
   </p>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Handle "Show solution" buttons
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('view-solution-btn')) {
+      e.preventDefault();
+      playSolutionInMiniboard(e.target);
+    }
+  });
+  
+  function playSolutionInMiniboard(button) {
+    const puzzleId = button.getAttribute('data-puzzle-id');
+    const initialFen = button.getAttribute('data-initial-fen');
+    const solutionLinesJson = button.getAttribute('data-solution-lines');
+    
+    if (!puzzleId || !initialFen || !solutionLinesJson) {
+      console.error('Missing puzzle data for solution playback');
+      return;
+    }
+    
+    // Change button state
+    const originalText = button.textContent;
+    button.textContent = 'Showing solution...';
+    button.style.opacity = '0.5';
+    button.disabled = true;
+    
+    try {
+      // Parse solution lines
+      const solutionLines = JSON.parse(solutionLinesJson);
+      const solutionMoves = extractSolutionMoves(solutionLines);
+      
+      if (solutionMoves.length === 0) {
+        console.warn('No solution moves found');
+        resetButton(button, originalText);
+        return;
+      }
+      
+      // Find the miniboard
+      const puzzleItem = button.closest('.recent-puzzle-item');
+      const miniboard = puzzleItem?.querySelector('.mini-chessboard');
+      
+      if (!miniboard) {
+        console.error('Could not find miniboard for puzzle');
+        resetButton(button, originalText);
+        return;
+      }
+      
+      // Play the solution
+      playMovesInMiniboard(miniboard, solutionMoves, function() {
+        resetButton(button, originalText);
+      });
+      
+    } catch (error) {
+      console.error('Error playing solution:', error);
+      resetButton(button, originalText);
+    }
+  }
+  
+  function extractSolutionMoves(lines) {
+    const moves = [];
+    
+    function traverse(node) {
+      if (typeof node === 'string') {
+        return; // Reached a terminal node
+      }
+      
+      for (const [move, child] of Object.entries(node)) {
+        if (child === 'win') {
+          moves.push(move);
+          return;
+        } else if (typeof child === 'object') {
+          moves.push(move);
+          traverse(child);
+          return;
+        }
+      }
+    }
+    
+    traverse(lines);
+    return moves;
+  }
+  
+  function playMovesInMiniboard(miniboard, moves, onComplete) {
+    if (moves.length === 0) {
+      onComplete();
+      return;
+    }
+    
+    // Store original position if not already stored
+    if (!miniboard.hasAttribute('data-original-stored')) {
+      storeOriginalPosition(miniboard);
+      miniboard.setAttribute('data-original-stored', 'true');
+    }
+    
+    // Reset board to original position
+    resetToOriginalPosition(miniboard);
+    
+    let currentMoveIndex = 0;
+    
+    // Clear any existing highlights
+    clearHighlights(miniboard);
+    
+    function playNextMove() {
+      if (currentMoveIndex < moves.length) {
+        const moveUci = moves[currentMoveIndex];
+        highlightMove(miniboard, moveUci);
+        currentMoveIndex++;
+        
+        setTimeout(playNextMove, 700); // 0.7 second delay between moves
+      } else {
+        // Solution complete
+        setTimeout(function() {
+          clearHighlights(miniboard);
+          onComplete();
+        }, 1000);
+      }
+    }
+    
+    // Start playing moves
+    setTimeout(playNextMove, 200);
+  }
+  
+  function storeOriginalPosition(miniboard) {
+    const squares = miniboard.querySelectorAll('.square');
+    const originalPosition = [];
+    
+    squares.forEach((square, index) => {
+      const piece = square.querySelector('.piece');
+      if (piece) {
+        originalPosition.push({
+          squareIndex: index,
+          pieceHtml: piece.outerHTML
+        });
+      }
+    });
+    
+    // Store in a data attribute or global variable
+    miniboard.originalPosition = originalPosition;
+  }
+  
+  function resetToOriginalPosition(miniboard) {
+    if (!miniboard.originalPosition) return;
+    
+    // Clear all current pieces
+    const squares = miniboard.querySelectorAll('.square');
+    squares.forEach(square => {
+      const pieces = square.querySelectorAll('.piece');
+      pieces.forEach(piece => piece.remove());
+    });
+    
+    // Restore original pieces
+    miniboard.originalPosition.forEach(({ squareIndex, pieceHtml }) => {
+      if (squareIndex >= 0 && squareIndex < squares.length) {
+        squares[squareIndex].insertAdjacentHTML('beforeend', pieceHtml);
+      }
+    });
+    
+    // Restore initial move highlighting if it exists
+    const initialMove = miniboard.getAttribute('data-initial-move');
+    if (initialMove) {
+      setTimeout(() => {
+        restoreInitialMoveHighlighting(miniboard, initialMove);
+      }, 50);
+    }
+  }
+  
+  function restoreInitialMoveHighlighting(miniboard, moveUci) {
+    if (moveUci.length < 4) return;
+    
+    const fromSquare = moveUci.substring(0, 2);
+    const toSquare = moveUci.substring(2, 4);
+    
+    const squares = miniboard.querySelectorAll('.square');
+    const fromSquareEl = getSquareByPosition(squares, fromSquare, miniboard);
+    const toSquareEl = getSquareByPosition(squares, toSquare, miniboard);
+    
+    if (fromSquareEl) fromSquareEl.classList.add('move-from');
+    if (toSquareEl) toSquareEl.classList.add('move-to');
+  }
+  
+  function highlightMove(miniboard, moveUci) {
+    if (moveUci.length < 4) return;
+    
+    const fromSquare = moveUci.substring(0, 2);
+    const toSquare = moveUci.substring(2, 4);
+    
+    // Clear previous highlights
+    clearHighlights(miniboard);
+    
+    // Find squares by position
+    const squares = miniboard.querySelectorAll('.square');
+    const fromSquareEl = getSquareByPosition(squares, fromSquare, miniboard);
+    const toSquareEl = getSquareByPosition(squares, toSquare, miniboard);
+    
+    if (fromSquareEl && toSquareEl) {
+      // Highlight squares
+      fromSquareEl.classList.add('move-from');
+      toSquareEl.classList.add('move-to');
+      
+      // Move the piece
+      movePiece(fromSquareEl, toSquareEl);
+    }
+  }
+  
+  function movePiece(fromSquareEl, toSquareEl) {
+    // Get the piece from the 'from' square
+    const pieceEl = fromSquareEl.querySelector('.piece');
+    if (!pieceEl) {
+      // No piece to move, just highlight
+      return;
+    }
+    
+    // Clone the piece element
+    const pieceClone = pieceEl.cloneNode(true);
+    
+    // Remove the piece from the source square
+    pieceEl.remove();
+    
+    // Remove any existing piece from the destination square (capture)
+    const existingPiece = toSquareEl.querySelector('.piece');
+    if (existingPiece) {
+      existingPiece.remove();
+    }
+    
+    // Add the piece to the destination square
+    toSquareEl.appendChild(pieceClone);
+  }
+  
+  function clearHighlights(miniboard) {
+    const highlightedSquares = miniboard.querySelectorAll('.square.move-from, .square.move-to');
+    highlightedSquares.forEach(square => {
+      square.classList.remove('move-from', 'move-to');
+    });
+  }
+  
+  function getSquareByPosition(squares, squareId, miniboard) {
+    // Check if board is flipped
+    const isFlipped = miniboard.getAttribute('data-flip') === 'true';
+    
+    // Convert square notation (e.g., "e4") to board index
+    const file = squareId.charAt(0); // 'a' to 'h'
+    const rank = parseInt(squareId.charAt(1)); // 1 to 8
+    
+    // Convert to 0-based indices
+    let fileIndex = file.charCodeAt(0) - 'a'.charCodeAt(0); // 0 to 7
+    let rankIndex = 8 - rank; // 0 to 7 (rank 8 = index 0, rank 1 = index 7)
+    
+    // If the board is flipped, reverse both file and rank indices
+    if (isFlipped) {
+      fileIndex = 7 - fileIndex; // Flip horizontally
+      rankIndex = 7 - rankIndex; // Flip vertically
+    }
+    
+    // Calculate the index in the squares array
+    const squareIndex = rankIndex * 8 + fileIndex;
+    
+    return squares[squareIndex] || null;
+  }
+  
+  function resetButton(button, originalText) {
+    button.textContent = originalText;
+    button.style.opacity = '1';
+    button.disabled = false;
+  }
+});
+</script>
+
+<style>
+.theme-example {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+}
+
+.theme-example h4 {
+  margin-top: 0;
+  color: #fff;
+}
+
+.recent-puzzle-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.puzzle-miniboard {
+  flex-shrink: 0;
+}
+
+.puzzle-info {
+  flex-grow: 1;
+}
+
+.puzzle-actions {
+  margin-top: 10px;
+}
+
+.show-solution-btn {
+  background: rgba(27, 73, 171, 0.8);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease, opacity 0.3s ease;
+  opacity: 1;
+  min-width: 120px;
+  text-align: center;
+}
+
+.show-solution-btn:hover:not(:disabled) {
+  background: rgba(27, 73, 171, 1);
+}
+
+.show-solution-btn:active:not(:disabled) {
+  background: rgba(27, 73, 171, 0.9);
+}
+
+.show-solution-btn:disabled {
+  background: rgba(27, 73, 171, 0.4);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Miniboard styling for dark mode */
+.mini-chessboard {
+  background: #2a2a2a !important;
+}
+
+.mini-chessboard .square.light {
+  background: #3a3a3a !important;
+}
+
+.mini-chessboard .square.dark {
+  background: #2a2a2a !important;
+}
+
+.mini-chessboard .square.move-from {
+  background: #fffcdd !important;
+}
+
+.mini-chessboard .square.move-to {
+  background: #fff79b !important;
+}
+
+.miniboard-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.position-name {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #ccc;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .recent-puzzle-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .puzzle-actions {
+    margin-top: 15px;
+  }
+}
+</style>
