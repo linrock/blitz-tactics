@@ -1,0 +1,93 @@
+---
+- name: Update Blitz Tactics Systemd Service
+  hosts: app
+  become: true
+  vars:
+    app_user: rails
+    app_home: "/home/{{ app_user }}"
+    app_dir: "{{ app_home }}/blitz-tactics"
+    service_name: blitz-puma
+
+  tasks:
+    - name: Read Ruby version from .ruby-version
+      become_user: "{{ app_user }}"
+      command: bash -lc "grep -oE '[0-9\.]+' .ruby-version"
+      args:
+        chdir: "{{ app_dir }}"
+      register: ruby_version
+      changed_when: false
+
+    - name: Install updated Puma systemd unit
+      template:
+        src: "{{ playbook_dir }}/blitz-puma.service.j2"
+        dest: /etc/systemd/system/blitz-puma.service
+        mode: "0644"
+      vars:
+        ruby_ver: "{{ ruby_version.stdout }}"
+      notify: reload systemd
+
+    - name: Ensure PID directory exists
+      file:
+        path: "{{ app_dir }}/tmp/pids"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+        mode: "0755"
+
+    - name: Ensure tmp directory exists
+      file:
+        path: "{{ app_dir }}/tmp"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+        mode: "0755"
+
+    - name: Reload systemd daemon
+      systemd:
+        daemon_reload: true
+
+    - name: Check if service is running
+      systemd:
+        name: "{{ service_name }}"
+      register: service_status
+      failed_when: false
+
+    - name: Restart service if it was running
+      systemd:
+        name: "{{ service_name }}"
+        state: restarted
+        enabled: true
+      when: service_status.status.ActiveState == "active"
+
+    - name: Start and enable service if it was not running
+      systemd:
+        name: "{{ service_name }}"
+        state: started
+        enabled: true
+      when: service_status.status.ActiveState != "active"
+
+    - name: Verify service is running
+      systemd:
+        name: "{{ service_name }}"
+      register: final_service_status
+
+    - name: Check if PID file exists
+      stat:
+        path: "{{ app_dir }}/tmp/pids/puma.pid"
+      register: pid_file_check
+
+    - name: Display service status
+      debug:
+        msg: |
+          Service Status: {{ final_service_status.status.ActiveState }}
+          Service Enabled: {{ final_service_status.status.UnitFileState }}
+          PID File Exists: {{ pid_file_check.stat.exists }}
+          PID File Path: {{ app_dir }}/tmp/pids/puma.pid
+          {% if pid_file_check.stat.exists %}
+          PID File Contents: {{ lookup('file', app_dir + '/tmp/pids/puma.pid') }}
+          {% endif %}
+
+  handlers:
+    - name: reload systemd
+      systemd:
+        daemon_reload: true
