@@ -18,9 +18,13 @@ class GameModes::ThreeController < ApplicationController
   # player has completed a three round
   def complete
     score = completed_three_round_params[:score].to_i
+    puzzle_ids = completed_three_round_params[:puzzle_ids] || []
+    
     if user_signed_in?
       if score > 0
         current_user.completed_three_rounds.create!(score: score)
+        # Track unique puzzles solved
+        current_user.track_solved_puzzles(puzzle_ids)
       end
       best = current_user.best_three_score(Time.zone.today)
     else
@@ -39,6 +43,6 @@ class GameModes::ThreeController < ApplicationController
   private
 
   def completed_three_round_params
-    params.require(:three).permit(:score)
+    params.require(:three).permit(:score, puzzle_ids: [])
   end
 end

@@ -16,9 +16,13 @@ class GameModes::HasteController < ApplicationController
   # player has completed a haste round
   def complete
     score = completed_haste_round_params[:score].to_i
+    puzzle_ids = completed_haste_round_params[:puzzle_ids] || []
+    
     if user_signed_in?
       if score > 0
         current_user.completed_haste_rounds.create!(score: score)
+        # Track unique puzzles solved
+        current_user.track_solved_puzzles(puzzle_ids)
       end
       best = current_user.best_haste_score(Time.zone.today)
     else
@@ -37,6 +41,6 @@ class GameModes::HasteController < ApplicationController
   private
 
   def completed_haste_round_params
-    params.require(:haste).permit(:score)
+    params.require(:haste).permit(:score, puzzle_ids: [])
   end
 end
