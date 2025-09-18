@@ -65,6 +65,14 @@
       vars:
         ruby_ver: "{{ ruby_version.stdout }}"
 
+    - name: Ensure PID directory exists
+      file:
+        path: "{{ app_dir }}/tmp/pids"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+        mode: "0755"
+
     - name: Reload systemd daemon
       systemd:
         daemon_reload: true
