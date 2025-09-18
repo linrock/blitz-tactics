@@ -122,8 +122,8 @@ class ThemedLevelCreator
         
         # Get ALL puzzle data for this pool with theme filter
         all_puzzles = LichessV2Puzzle
-          .where(popularity: 95..)  # popularity > 95
-          .where(num_plays: 1000..) # num_plays > 1000
+          .where(popularity: 90..)  # popularity > 95
+          .where(num_plays: 800..) # num_plays > 1000
           .where(rating: rating_range)
           .where("initial_fen LIKE ?", "% #{color_to_move} %")  # Filter by color to move
           .where("themes @> ?", "{#{theme}}")  # Filter by theme
@@ -185,8 +185,8 @@ class ThemedLevelCreator
       
       puzzle_counts.each do |rating_range, _count|
         count = LichessV2Puzzle
-          .where(popularity: 95..)
-          .where(num_plays: 1000..)
+          .where(popularity: 90..)
+          .where(num_plays: 800..)
           .where(rating: rating_range)
           .where("initial_fen LIKE ?", "% #{color_to_move} %")
           .where("themes @> ?", "{#{theme}}")
