@@ -76,13 +76,13 @@ class User < ActiveRecord::Base
 
   def speedrun_stats
     level_ids = completed_speedruns.pluck(Arel.sql('distinct(speedrun_level_id)'))
-    SpeedrunLevel.where(id: level_ids).order('id DESC').map do |level|
+    SpeedrunLevel.where(id: level_ids).order('name DESC').map do |level|
       next if level.name == "quick"
       [
         format_level_date(level.name),
         completed_speedruns.formatted_personal_best(level.id)
       ]
-    end.compact.sort_by {|name, time| name }.reverse
+    end.compact
   end
 
   # haste mode methods
@@ -129,12 +129,12 @@ class User < ActiveRecord::Base
 
   def countdown_stats
     level_ids = completed_countdown_levels.pluck(Arel.sql('distinct(countdown_level_id)'))
-    CountdownLevel.where(id: level_ids).order('id DESC').map do |level|
+    CountdownLevel.where(id: level_ids).order('name DESC').map do |level|
       [
         format_level_date(level.name),
         completed_countdown_levels.personal_best(level.id)
       ]
-    end.sort_by {|name, time| name }.reverse
+    end
   end
 
   # old repetition mode methods
