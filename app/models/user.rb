@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :completed_countdown_levels
   has_many :completed_haste_rounds
   has_many :completed_mate_in_one_rounds
+  has_many :completed_rook_endgames_rounds
   has_many :completed_three_rounds
   has_many :completed_repetition_rounds
   has_many :completed_repetition_levels
@@ -102,6 +103,16 @@ class User < ActiveRecord::Base
 
   def num_mate_in_one_rounds_completed
     @num_mate_in_one_rounds_completed ||= completed_mate_in_one_rounds.count
+  end
+
+  # rook endgames mode methods
+
+  def rook_endgames_round_high_score(date)
+    completed_rook_endgames_rounds.personal_best(date)
+  end
+
+  def num_rook_endgames_rounds_completed
+    @num_rook_endgames_rounds_completed ||= completed_rook_endgames_rounds.count
   end
 
   # three mode methods

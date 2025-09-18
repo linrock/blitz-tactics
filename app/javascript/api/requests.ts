@@ -67,10 +67,11 @@ export async function mateInOneRoundCompleted(score: number, elapsedTimeMs: numb
   return client.post(`/mate-in-one`, params).then(resp => resp.data)
 }
 
-export async function rookEndgamesRoundCompleted(score: number) {
+export async function rookEndgamesRoundCompleted(score: number, elapsedTimeMs: number = 0) {
   const params = {
     rook_endgames: {
       score,
+      elapsed_time_ms: elapsedTimeMs,
     }
   }
   return client.post(`/rook-endgames`, params).then(resp => resp.data)

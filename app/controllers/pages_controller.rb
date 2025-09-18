@@ -136,7 +136,37 @@ class PagesController < ApplicationController
   end
 
   def puzzle_themes
-    # This method handles the /puzzle-themes route
+    # Hardcoded puzzle IDs for each theme (no database queries)
+    puzzle_ids = {
+      'pin' => '00sHx',
+      'skewer' => '00sJ9', 
+      'fork' => '00sJb',
+      'discoveredAttack' => '00sO1',
+      'doubleAttack' => '00sO2',
+      'deflection' => '00sO3',
+      'decoy' => '00sO4',
+      'zwischenzug' => '00sO5',
+      'removingTheDefender' => '00sO6',
+      'overloadedPiece' => '00sO7',
+      'interference' => '00sO8',
+      'windmill' => '00sO9',
+      'xRayAttack' => '00sPa',
+      'backRankMate' => '00sPb',
+      'smotheredMate' => '00sPc',
+      'battery' => '00sPd',
+      'clearanceSacrifice' => '00sPe',
+      'attraction' => '00sPf',
+      'blocking' => '00sPg',
+      'trappedPiece' => '00sPh',
+      'desperado' => '00sPi'
+    }
+    
+    # Fetch puzzle objects for the hardcoded IDs
+    @theme_examples = {}
+    puzzle_ids.each do |theme, puzzle_id|
+      puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
+      @theme_examples[theme] = puzzle if puzzle
+    end
   end
 
   def get_next_quest_world_for_user(user)
@@ -178,12 +208,16 @@ class PagesController < ApplicationController
     @countdown_level = CountdownLevel.todays_level
     @countdown_puzzle = @countdown_level.first_puzzle
     @haste_puzzle = HastePuzzle.random
+    @mate_in_one_puzzle = MateInOnePuzzle.random
+    @rook_endgames_puzzle = RookEndgamePuzzle.random
     @rated_puzzle = RatedPuzzle.order('rating ASC').take(10).shuffle.first
     @scoreboard = Scoreboard.new
 
     # user-specific
     @infinity_puzzle = @user.next_infinity_puzzle
     @haste_best_score = @user.best_haste_score(Date.today)
+    @mate_in_one_best_score = @user.best_mate_in_one_score(Date.today)
+    @rook_endgames_best_score = @user.best_rook_endgames_score(Date.today)
     @three_best_score = @user.best_three_score(Date.today)
     @best_speedrun_time = @user.best_speedrun_time(@speedrun_level)
     @repetition_level = @user.highest_repetition_level_unlocked

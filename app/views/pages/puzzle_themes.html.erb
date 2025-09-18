@@ -474,6 +474,11 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   function playSolutionInMiniboard(button) {
+    // Prevent multiple simultaneous plays
+    if (button.hasAttribute('data-playing')) {
+      return;
+    }
+    
     const puzzleId = button.getAttribute('data-puzzle-id');
     const initialFen = button.getAttribute('data-initial-fen');
     const solutionLinesJson = button.getAttribute('data-solution-lines');
@@ -482,6 +487,9 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Missing puzzle data for solution playback');
       return;
     }
+    
+    // Mark as playing to prevent race conditions
+    button.setAttribute('data-playing', 'true');
     
     // Change button state
     const originalText = button.textContent;
@@ -606,17 +614,30 @@ document.addEventListener('DOMContentLoaded', function() {
   function resetToOriginalPosition(miniboard) {
     if (!miniboard.originalPosition) return;
     
-    // Clear all current pieces
+    // Clear all current pieces safely
     const squares = miniboard.querySelectorAll('.square');
     squares.forEach(square => {
       const pieces = square.querySelectorAll('.piece');
-      pieces.forEach(piece => piece.remove());
+      pieces.forEach(piece => {
+        try {
+          if (piece.parentNode) {
+            piece.parentNode.removeChild(piece);
+          }
+        } catch (e) {
+          // Piece already removed, ignore error
+          console.debug('Piece already removed during reset');
+        }
+      });
     });
     
     // Restore original pieces
     miniboard.originalPosition.forEach(({ squareIndex, pieceHtml }) => {
       if (squareIndex >= 0 && squareIndex < squares.length) {
-        squares[squareIndex].insertAdjacentHTML('beforeend', pieceHtml);
+        try {
+          squares[squareIndex].insertAdjacentHTML('beforeend', pieceHtml);
+        } catch (e) {
+          console.error('Failed to restore piece:', e);
+        }
       }
     });
     
@@ -678,17 +699,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // Clone the piece element
     const pieceClone = pieceEl.cloneNode(true);
     
-    // Remove the piece from the source square
-    pieceEl.remove();
+    // Safely remove the piece from the source square
+    try {
+      if (pieceEl.parentNode) {
+        pieceEl.parentNode.removeChild(pieceEl);
+      }
+    } catch (e) {
+      // Piece already removed, ignore error
+      console.debug('Piece already removed from source square');
+    }
     
     // Remove any existing piece from the destination square (capture)
     const existingPiece = toSquareEl.querySelector('.piece');
     if (existingPiece) {
-      existingPiece.remove();
+      try {
+        if (existingPiece.parentNode) {
+          existingPiece.parentNode.removeChild(existingPiece);
+        }
+      } catch (e) {
+        // Piece already removed, ignore error
+        console.debug('Piece already removed from destination square');
+      }
     }
     
     // Add the piece to the destination square
-    toSquareEl.appendChild(pieceClone);
+    try {
+      toSquareEl.appendChild(pieceClone);
+    } catch (e) {
+      console.error('Failed to add piece to destination square:', e);
+    }
   }
   
   function clearHighlights(miniboard) {
@@ -726,6 +765,7 @@ document.addEventListener('DOMContentLoaded', function() {
     button.textContent = originalText;
     button.style.opacity = '1';
     button.disabled = false;
+    button.removeAttribute('data-playing');
   }
 });
 </script>

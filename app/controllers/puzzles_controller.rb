@@ -28,6 +28,18 @@ class PuzzlesController < ApplicationController
     end
   end
 
+  def solution
+    @puzzle = get_puzzle
+    unless @puzzle
+      render json: { error: "Puzzle not found" }, status: 404 and return
+    end
+    
+    render json: { 
+      solution: @puzzle.solution,
+      puzzle_id: @puzzle.puzzle_id || @puzzle.id
+    }
+  end
+
   def edit
     @puzzle = Puzzle.find_by_puzzle_id(parmas[:puzzle_id])
   end
