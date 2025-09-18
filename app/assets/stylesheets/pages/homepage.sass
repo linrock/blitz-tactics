@@ -4,6 +4,43 @@
   .container
     padding: 0 10px
 
+  .user-puzzle-indicator
+    background: rgba(0, 0, 0, 0.1)
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+    padding: 15px 0
+    margin-bottom: 20px
+
+    .puzzle-count-display
+      display: flex
+      justify-content: flex-end
+      align-items: center
+      gap: 8px
+      font-size: 14px
+      color: rgba(255, 255, 255, 0.8)
+
+      .puzzle-count-label
+        font-weight: normal
+        opacity: 0.7
+
+      .puzzle-count-number
+        font-weight: bold
+        color: #4a90e2
+        font-size: 16px
+
+      // Responsive design
+      @media (max-width: 768px)
+        justify-content: center
+        font-size: 13px
+        
+        .puzzle-count-number
+          font-size: 15px
+
+      @media (max-width: 480px)
+        font-size: 12px
+        
+        .puzzle-count-number
+          font-size: 14px
+
   h2 
     font-size: 20px
     opacity: 0.6

@@ -64,6 +64,14 @@ section.homepage
       - else
         = render partial: "worlds/world-#{@world_number}"
 
+  - if user_signed_in?
+    .user-puzzle-indicator
+      .container
+        .puzzle-count-display
+          span.puzzle-count-label You've solved
+          span.puzzle-count-number= current_user.unique_puzzles_solved_count
+          span.puzzle-count-label unique puzzles
+
   .game-modes-section
     .container
       header
