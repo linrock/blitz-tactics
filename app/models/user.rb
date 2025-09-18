@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   has_many :positions
   has_many :completed_quest_world_levels
   has_many :completed_quest_worlds
-  has_many :solved_puzzles, counter_cache: true
+  has_many :solved_puzzles, counter_cache: :solved_puzzles_count
   
   # Quest-related helper methods
   def completed_quest_world?(world)

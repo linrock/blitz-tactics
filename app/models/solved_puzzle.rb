@@ -1,7 +1,7 @@
 # Tracks unique chess puzzles solved by users across all game modes
 
 class SolvedPuzzle < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, counter_cache: true
 
   validates :puzzle_id, presence: true
   validates :user_id, presence: true
@@ -41,9 +41,9 @@ class SolvedPuzzle < ActiveRecord::Base
 
     # Insert new puzzles (using create to maintain counter cache)
     if new_puzzle_ids.any?
+      user = User.find(user_id)
       new_puzzle_ids.each do |puzzle_id|
-        create!(
-          user_id: user_id,
+        user.solved_puzzles.create!(
           puzzle_id: puzzle_id,
           created_at: Time.current,
           updated_at: Time.current
