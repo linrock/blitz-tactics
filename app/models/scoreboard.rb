@@ -5,6 +5,7 @@ class Scoreboard
   def initialize
     @recent_time = 24.hours.ago
     @week_time = 7.days.ago
+    @three_days_time = 3.days.ago
     @n_homepage = 5
     @n_scoreboard = 10
   end
@@ -151,6 +152,26 @@ class Scoreboard
 
   def hall_of_fame
     @hall_of_fame ||= User.where("jsonb_array_length(profile -> 'levels_unlocked') = 65")
+  end
+
+  # past 3 days themed scores
+
+  def themed_scores?
+    top_mate_in_one_scores_three_days.present? or
+    top_rook_endgames_scores_three_days.present? or
+    top_openings_scores_three_days.present?
+  end
+
+  def top_mate_in_one_scores_three_days
+    @top_mate_in_one_scores_three_days ||= CompletedMateInOneRound.high_scores(@three_days_time)
+  end
+
+  def top_rook_endgames_scores_three_days
+    @top_rook_endgames_scores_three_days ||= CompletedRookEndgamesRound.high_scores(@three_days_time)
+  end
+
+  def top_openings_scores_three_days
+    @top_openings_scores_three_days ||= CompletedOpeningsRound.high_scores(@three_days_time)
   end
 
   private

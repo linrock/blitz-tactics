@@ -86,7 +86,6 @@ section.homepage
           .daily-level
             | New puzzles each run
 
-
       .mode.threes
         h3
           a(href="/three") Three
@@ -114,7 +113,6 @@ section.homepage
             .your-best-times
               | Best score today:
               span.best-time<= @countdown_level_score
-
           .daily-level
             .next-day
               | Next level in #{@hours_until_tomorrow} hours
@@ -130,7 +128,6 @@ section.homepage
             .your-best-times
               | Best time today:
               span.best-time<= @best_speedrun_time
-
           .daily-level
             - if @speedrun_theme
               .next-day
@@ -138,7 +135,6 @@ section.homepage
             - else
               .next-day
                 | Next speedrun in #{@hours_until_tomorrow} hours
-
 
       - if @infinity_puzzle
         .mode.infinity
@@ -155,54 +151,12 @@ section.homepage
               | to track your progress
 
       .mode.repetition
-          h3
-            a(href="#{@repetition_level.path}") Repetition
-            h4.game-mode-description
-              | Quickly solve puzzles without mistakes to unlock the next level.
-            = homepage_miniboard_link(@repetition_level.path, @repetition_level.first_puzzle)
-            .under-mini-board= @repetition_level.display_name
-
-      .mode.mate-in-one
         h3
-          a(href="/mate-in-one") Mate in one
+          a(href="#{@repetition_level.path}") Repetition
         h4.game-mode-description
-          | Practice checkmate in one move. Great for beginners.
-        = homepage_miniboard_link("/mate-in-one", @mate_in_one_puzzle)
-        .under-mini-board
-          - if user_signed_in?
-            .your-best-times
-              | Best score today:
-              span.best-time<= @mate_in_one_best_score
-          .daily-level
-            | New puzzles each run
-
-      .mode.rook-endgames
-        h3
-          a(href="/rook-endgames") Rook endgames
-        h4.game-mode-description
-          | The most common type of piece endgames.
-        = homepage_miniboard_link("/rook-endgames", @rook_endgames_puzzle)
-        .under-mini-board
-          - if user_signed_in?
-            .your-best-times
-              | Best score today:
-              span.best-time<= @rook_endgames_best_score
-          .daily-level
-            | New puzzles each run
-
-      .mode.openings
-        h3
-          a(href="/openings") Openings
-        h4.game-mode-description
-          | Practice tactical patterns from chess openings.
-        = homepage_miniboard_link("/openings", @openings_puzzle)
-        .under-mini-board
-          - if user_signed_in?
-            .your-best-times
-              | Best score today:
-              span.best-time<= @openings_best_score
-          .daily-level
-            | New puzzles each run
+          | Quickly solve puzzles without mistakes to unlock the next level.
+        = homepage_miniboard_link(@repetition_level.path, @repetition_level.first_puzzle)
+        .under-mini-board= @repetition_level.display_name
 
     .scoreboard-section
       .mini-scoreboard
@@ -233,13 +187,6 @@ section.homepage
                     .player-name= user_link(user)
                     .stats= puzzles_solved
 
-            - if @scoreboard.top_mate_in_one_scores_week.present?
-              .top-players
-                h5 Mate in one high scores
-                - @scoreboard.top_mate_in_one_scores_week.each do |user, high_score|
-                  .ranking
-                    .player-name= user_link(user)
-                    .stats= high_score
 
         - if @scoreboard.recent_scores?
           .scores
@@ -268,13 +215,6 @@ section.homepage
                     .player-name= user_link(user)
                     .stats= puzzles_solved
 
-            - if @scoreboard.top_mate_in_one_scores_recent.present?
-              .top-players
-                h5 Mate in one high scores
-                - @scoreboard.top_mate_in_one_scores_recent.each do |user, high_score|
-                  .ranking
-                    .player-name= user_link(user)
-                    .stats= high_score
 
         - fastest_speedruns = @scoreboard.fastest_speedruns(SpeedrunLevel.yesterdays_level)
         - countdown_high_scores = @scoreboard.countdown_high_scores(CountdownLevel.yesterdays_level)
@@ -313,6 +253,75 @@ section.homepage
               .countdown-high-scores.top-players
                 h5 Countdown high scores
                 - countdown_high_scores.each do |user, high_score|
+                  .ranking
+                    .player-name= user_link(user)
+                    .stats= high_score
+
+    .themed-puzzle-sets-section
+      h2 Themed chess puzzle sets.
+      .description Combos gain time. Mistakes lose time. New puzzles each run.
+      .themed-modes-container
+        .mode.mate-in-one
+          h3
+            a(href="/mate-in-one") Mate in one
+          h4.game-mode-description
+            | Practice checkmate in one move. Great for beginners.
+          = homepage_miniboard_link("/mate-in-one", @mate_in_one_puzzle)
+          .under-mini-board
+            - if user_signed_in?
+              .your-best-times
+                | Best score today:
+                span.best-time<= @mate_in_one_best_score
+
+        .mode.rook-endgames
+          h3
+            a(href="/rook-endgames") Rook endgames
+          h4.game-mode-description
+            | The most common type of piece endgames.
+          = homepage_miniboard_link("/rook-endgames", @rook_endgames_puzzle)
+          .under-mini-board
+            - if user_signed_in?
+              .your-best-times
+                | Best score today:
+                span.best-time<= @rook_endgames_best_score
+
+        .mode.openings
+          h3
+            a(href="/openings") Openings
+          h4.game-mode-description
+            | Practice tactical patterns from chess openings.
+          = homepage_miniboard_link("/openings", @openings_puzzle)
+          .under-mini-board
+            - if user_signed_in?
+              .your-best-times
+                | Best score today:
+                span.best-time<= @openings_best_score
+
+    .themed-scoreboard-section
+      .mini-scoreboard
+        - if @scoreboard.themed_scores?
+          .scores
+            h6 Past 3 days
+            - if @scoreboard.top_mate_in_one_scores_three_days.present?
+              .top-players
+                h5 Mate in one high scores
+                - @scoreboard.top_mate_in_one_scores_three_days.each do |user, high_score|
+                  .ranking
+                    .player-name= user_link(user)
+                    .stats= high_score
+
+            - if @scoreboard.top_rook_endgames_scores_three_days.present?
+              .top-players
+                h5 Rook endgames high scores
+                - @scoreboard.top_rook_endgames_scores_three_days.each do |user, high_score|
+                  .ranking
+                    .player-name= user_link(user)
+                    .stats= high_score
+
+            - if @scoreboard.top_openings_scores_three_days.present?
+              .top-players
+                h5 Openings high scores
+                - @scoreboard.top_openings_scores_three_days.each do |user, high_score|
                   .ranking
                     .player-name= user_link(user)
                     .stats= high_score

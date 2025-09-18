@@ -11,13 +11,33 @@
     margin: 28px 0 48px
     line-height: 2rem
 
+  .themed-puzzle-sets-section .description
+    font-size: 14px
+    opacity: 0.5
+    text-align: center
+    line-height: 1.5rem
+    margin-top: -48px
+    margin-bottom: 38px
+
   .game-modes-container
-    display: flex
-    flex-wrap: wrap
-    justify-content: space-evenly
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    grid-template-rows: repeat(2, 1fr)
+    gap: 20px
     margin: 0 auto
     width: 980px
     max-width: 100%
+    justify-items: center
+
+  .themed-modes-container
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    grid-template-rows: 1fr
+    gap: 20px
+    margin: 0 auto
+    width: 980px
+    max-width: 100%
+    justify-items: center
 
   .mode 
     text-align: center
@@ -86,8 +106,9 @@
     transition: border 0.15s ease
 
   // scores at the bottom of the page
-  .scoreboard-section
-    background: rgba(0, 0, 0, 0.08)
+  .scoreboard-section,
+  .themed-scoreboard-section
+    background: rgba(0, 0, 0, 0.09)
     padding: 40px 0 10px
 
   .mini-scoreboard
@@ -207,7 +228,16 @@
 // Responsive breakpoints
 @media (max-width: 720px)
   .homepage .game-modes-container
+    grid-template-columns: repeat(2, 1fr)
+    grid-template-rows: repeat(3, 1fr)
     padding: 0 20px
+    gap: 15px
+
+  .homepage .themed-modes-container
+    grid-template-columns: repeat(2, 1fr)
+    grid-template-rows: repeat(2, 1fr)
+    padding: 0 20px
+    gap: 15px
 
 @media (max-width: 800px)
   .mini-scoreboard
@@ -244,11 +274,19 @@
 
 @media (max-width: 480px)
   .homepage .game-modes-container
+    grid-template-columns: repeat(2, 1fr)
+    grid-template-rows: repeat(3, 1fr)
     padding: 0 15px
-    justify-content: space-around
+    gap: 15px
+
+  .homepage .themed-modes-container
+    grid-template-columns: repeat(2, 1fr)
+    grid-template-rows: repeat(2, 1fr)
+    padding: 0 15px
+    gap: 15px
     
   .homepage .mode
-    width: calc(50% - 10px)
+    width: 100%
     max-width: 170px
     padding: 0 2px
     
