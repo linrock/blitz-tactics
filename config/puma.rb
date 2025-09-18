@@ -53,3 +53,16 @@ workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+# PID file configuration
+pidfile ENV.fetch("PIDFILE") { "tmp/pids/puma.pid" }
+
+# Systemd integration
+plugin :systemd
+
+# Handle log rotation signals
+on_worker_boot do
+  Signal.trap("USR1") do
+    Rails.logger.reopen
+  end
+end
