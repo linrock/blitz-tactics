@@ -166,7 +166,7 @@ section.homepage
         h3
           a(href="/mate-in-one") Mate in one
         h4.game-mode-description
-          | Practice checkmate in one move. Perfect for beginners.
+          | Practice checkmate in one move. Great for beginners.
         = homepage_miniboard_link("/mate-in-one", @mate_in_one_puzzle)
         .under-mini-board
           - if user_signed_in?
@@ -178,9 +178,9 @@ section.homepage
 
       .mode.rook-endgames
         h3
-          a(href="/rook-endgames") Rook Endgames
+          a(href="/rook-endgames") Rook endgames
         h4.game-mode-description
-          | Master rook endgames. Essential technique for every player.
+          | The most common type of piece endgames.
         = homepage_miniboard_link("/rook-endgames", @rook_endgames_puzzle)
         .under-mini-board
           - if user_signed_in?
@@ -199,6 +199,14 @@ section.homepage
               .top-players
                 h5 Haste high scores
                 - @scoreboard.top_haste_scores_week.each do |user, high_score|
+                  .ranking
+                    .player-name= user_link(user)
+                    .stats= high_score
+
+            - if @scoreboard.top_rook_endgames_scores_week.present?
+              .top-players
+                h5 Rook endgames high scores
+                - @scoreboard.top_rook_endgames_scores_week.each do |user, high_score|
                   .ranking
                     .player-name= user_link(user)
                     .stats= high_score
@@ -226,6 +234,14 @@ section.homepage
               .top-players
                 h5 Haste high scores
                 - @scoreboard.top_haste_scores_recent.each do |user, high_score|
+                  .ranking
+                    .player-name= user_link(user)
+                    .stats= high_score
+
+            - if @scoreboard.top_rook_endgames_scores_recent.present?
+              .top-players
+                h5 Rook endgames high scores
+                - @scoreboard.top_rook_endgames_scores_recent.each do |user, high_score|
                   .ranking
                     .player-name= user_link(user)
                     .stats= high_score
