@@ -8,7 +8,8 @@
     font-size: 20px
     opacity: 0.6
     text-align: center
-    margin: 30px 0 50px
+    margin: 28px 0 48px
+    line-height: 2rem
 
   .game-modes-container
     display: flex
@@ -242,6 +243,24 @@
         margin-bottom: 0
 
 @media (max-width: 480px)
+  .homepage .game-modes-container
+    padding: 0 15px
+    justify-content: space-around
+    
+  .homepage .mode
+    width: calc(50% - 10px)
+    max-width: 170px
+    padding: 0 2px
+    
+    .game-mode-description,
+    .under-mini-board
+      width: 100%
+      font-size: 14px
+      
+    .mini-chessboard
+      width: 160px
+      height: 160px
+
   .mini-scoreboard
     padding: 0 15px
 
