@@ -61,7 +61,7 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/puma.pid" }
 plugin :systemd
 
 # Handle log rotation signals
-on_worker_boot do
+before_worker_boot do
   Signal.trap("USR1") do
     Rails.logger.reopen
   end
