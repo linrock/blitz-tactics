@@ -39,23 +39,22 @@ class SolvedPuzzle < ActiveRecord::Base
       existing_records.update_all(updated_at: Time.current)
     end
 
-    # Insert new puzzles
+    # Insert new puzzles (using create to maintain counter cache)
     if new_puzzle_ids.any?
-      records = new_puzzle_ids.map do |puzzle_id|
-        {
+      new_puzzle_ids.each do |puzzle_id|
+        create!(
           user_id: user_id,
           puzzle_id: puzzle_id,
           created_at: Time.current,
           updated_at: Time.current
-        }
+        )
       end
-      insert_all(records)
     end
   end
 
-  # Get count of unique puzzles solved by a user
+  # Get count of unique puzzles solved by a user (using counter cache for performance)
   def self.count_for_user(user_id)
-    where(user_id: user_id).count
+    User.find(user_id).solved_puzzles_count
   end
 
   # Get most recently solved puzzles for a user

@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   has_many :positions
   has_many :completed_quest_world_levels
   has_many :completed_quest_worlds
-  has_many :solved_puzzles
+  has_many :solved_puzzles, counter_cache: true
   
   # Quest-related helper methods
   def completed_quest_world?(world)
@@ -299,9 +299,9 @@ class User < ActiveRecord::Base
     SolvedPuzzle.bulk_create_for_user(id, puzzle_ids)
   end
 
-  # Get count of unique puzzles solved
+  # Get count of unique puzzles solved (using counter cache for performance)
   def unique_puzzles_solved_count
-    @unique_puzzles_solved_count ||= solved_puzzles.count
+    solved_puzzles_count
   end
 
   # Get most recently solved puzzles
