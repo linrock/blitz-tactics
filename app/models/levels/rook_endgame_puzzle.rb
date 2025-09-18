@@ -44,10 +44,7 @@ class RookEndgamePuzzle
       pools_dir: "data/themes/"
     )
     
-    # Format puzzles and sort by rating
-    puzzle_data.map do |puzzle|
-      puzzle[:rating] = puzzle[:rating] || 0
-      puzzle
-    end.sort_by { |puzzle| puzzle[:rating] }
+    # Sort puzzles by rating
+    puzzle_data.sort_by { |puzzle| puzzle[:rating] || 0 }
   end
 end

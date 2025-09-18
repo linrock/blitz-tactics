@@ -302,7 +302,12 @@ class ThemedLevelCreator
     # Create puzzle data for the selected puzzles
     puzzle_data = selected_puzzle_ids.map do |puzzle_id|
       puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
-      puzzle&.bt_puzzle_data
+      if puzzle
+        puzzle_data = puzzle.bt_puzzle_data
+        # Add rating from the puzzle
+        puzzle_data[:rating] = puzzle.rating
+        puzzle_data
+      end
     end.compact
     
     puzzle_data
@@ -337,7 +342,12 @@ class ThemedLevelCreator
     # Create puzzle data for the selected puzzles
     puzzle_data = selected_puzzle_ids.map do |puzzle_id|
       puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
-      puzzle&.bt_puzzle_data
+      if puzzle
+        puzzle_data = puzzle.bt_puzzle_data
+        # Add rating from the puzzle
+        puzzle_data[:rating] = puzzle.rating
+        puzzle_data
+      end
     end.compact
     
     puzzle_data
