@@ -77,6 +77,16 @@ export async function rookEndgamesRoundCompleted(score: number, elapsedTimeMs: n
   return client.post(`/rook-endgames`, params).then(resp => resp.data)
 }
 
+export async function openingsRoundCompleted(score: number, elapsedTimeMs: number = 0) {
+  const params = {
+    openings: {
+      score,
+      elapsed_time_ms: elapsedTimeMs,
+    }
+  }
+  return client.post(`/openings`, params).then(resp => resp.data)
+}
+
 export async function ratedPuzzleAttempted(puzzleId: number, uciMoves: any[], elapsedTimeMs: number) {
   const params = {
     puzzle_attempt: {

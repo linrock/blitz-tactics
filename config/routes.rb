@@ -59,6 +59,11 @@ Rails.application.routes.draw do
   get '/rook-endgames/puzzles'   => 'game_modes/rook_endgames#puzzles'
   post '/rook-endgames'          => 'game_modes/rook_endgames#complete'
 
+  # openings mode
+  get '/openings'                => 'game_modes/openings#index'
+  get '/openings/puzzles'        => 'game_modes/openings#puzzles'
+  post '/openings'               => 'game_modes/openings#complete'
+
   # threes mode
   get '/three'                  => 'game_modes/three#index'
   get '/three/puzzles'          => 'game_modes/three#puzzles'

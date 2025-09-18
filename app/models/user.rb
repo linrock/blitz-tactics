@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :completed_rook_endgames_rounds
   has_many :completed_three_rounds
   has_many :completed_repetition_rounds
+  has_many :completed_openings_rounds
   has_many :completed_repetition_levels
   has_many :positions
   has_many :completed_quest_world_levels
@@ -121,6 +122,10 @@ class User < ActiveRecord::Base
     @num_three_rounds_completed ||= completed_three_rounds.count
   end
 
+  def num_openings_rounds_completed
+    @num_openings_rounds_completed ||= completed_openings_rounds.count
+  end
+
   # countdown mode methods
 
   def num_countdowns_completed
@@ -188,7 +193,7 @@ class User < ActiveRecord::Base
   # user puzzle stats
 
   def recent_high_scores?
-    num_countdowns_completed > 0 or num_speedruns_completed
+    num_countdowns_completed > 0 or num_speedruns_completed or num_openings_rounds_completed > 0
   end
 
   def all_time_high_scores?

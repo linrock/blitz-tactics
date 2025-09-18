@@ -1,0 +1,12 @@
+- content_for(:title) { "Openings mode" }
+
+section.game-mode.openings-mode
+  .container
+    = render partial: "puzzle_player/above_board"
+    .board-area-container
+      .board-area
+        .chessground-board
+          .piece-promotion-modal-mount
+          .chessground
+          .board-modal-container.invisible(style="display: none")
+    .vue-app-mount

@@ -132,6 +132,39 @@ ALTER SEQUENCE public.completed_mate_in_one_rounds_id_seq OWNED BY public.comple
 
 
 --
+-- Name: completed_openings_rounds; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.completed_openings_rounds (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    score integer NOT NULL,
+    elapsed_time_ms integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: completed_openings_rounds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.completed_openings_rounds_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: completed_openings_rounds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.completed_openings_rounds_id_seq OWNED BY public.completed_openings_rounds.id;
+
+
+--
 -- Name: completed_quest_world_levels; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1280,6 +1313,13 @@ ALTER TABLE ONLY public.completed_mate_in_one_rounds ALTER COLUMN id SET DEFAULT
 
 
 --
+-- Name: completed_openings_rounds id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_openings_rounds ALTER COLUMN id SET DEFAULT nextval('public.completed_openings_rounds_id_seq'::regclass);
+
+
+--
 -- Name: completed_quest_world_levels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1533,6 +1573,14 @@ ALTER TABLE ONLY public.completed_haste_rounds
 
 ALTER TABLE ONLY public.completed_mate_in_one_rounds
     ADD CONSTRAINT completed_mate_in_1_rounds_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: completed_openings_rounds completed_openings_rounds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_openings_rounds
+    ADD CONSTRAINT completed_openings_rounds_pkey PRIMARY KEY (id);
 
 
 --
@@ -1832,6 +1880,20 @@ CREATE INDEX index_completed_mate_in_1_rounds_on_user_id ON public.completed_mat
 --
 
 CREATE INDEX index_completed_mate_in_1_rounds_on_user_id_and_created_at ON public.completed_mate_in_one_rounds USING btree (user_id, created_at);
+
+
+--
+-- Name: index_completed_openings_rounds_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_openings_rounds_on_user_id ON public.completed_openings_rounds USING btree (user_id);
+
+
+--
+-- Name: index_completed_openings_rounds_on_user_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_completed_openings_rounds_on_user_id_and_created_at ON public.completed_openings_rounds USING btree (user_id, created_at);
 
 
 --
@@ -2201,6 +2263,14 @@ ALTER TABLE ONLY public.quest_world_levels
 
 
 --
+-- Name: completed_openings_rounds fk_rails_28aa7d54cf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.completed_openings_rounds
+    ADD CONSTRAINT fk_rails_28aa7d54cf FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: completed_rook_endgames_rounds fk_rails_522efb233b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2257,6 +2327,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250821043546'),
 ('20250821042209'),
 ('20250821042208'),
+('20250120000000'),
 ('20250116000005'),
 ('20250116000004'),
 ('20210417123508'),

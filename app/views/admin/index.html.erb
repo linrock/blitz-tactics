@@ -30,6 +30,7 @@
             <th>Haste</th>
             <th>Mate in One</th>
             <th>Rook Endgames</th>
+            <th>Openings</th>
             <th>Three</th>
             <th>Repetition Rounds</th>
             <th>Repetition Levels</th>
@@ -46,6 +47,7 @@
               <td><%= day_stats[:haste] %></td>
               <td><%= day_stats[:mate_in_one] %></td>
               <td><%= day_stats[:rook_endgames] %></td>
+              <td><%= day_stats[:openings] %></td>
               <td><%= day_stats[:three] %></td>
               <td><%= day_stats[:repetition_rounds] %></td>
               <td><%= day_stats[:repetition_levels] %></td>
@@ -62,6 +64,7 @@
             <td><strong><%= @stats.values.sum { |s| s[:haste] } %></strong></td>
             <td><strong><%= @stats.values.sum { |s| s[:mate_in_one] } %></strong></td>
             <td><strong><%= @stats.values.sum { |s| s[:rook_endgames] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:openings] } %></strong></td>
             <td><strong><%= @stats.values.sum { |s| s[:three] } %></strong></td>
             <td><strong><%= @stats.values.sum { |s| s[:repetition_rounds] } %></strong></td>
             <td><strong><%= @stats.values.sum { |s| s[:repetition_levels] } %></strong></td>
@@ -128,6 +131,13 @@ document.addEventListener('DOMContentLoaded', function() {
         data: <%= raw @stats.values.map { |s| s[:rook_endgames] }.to_json %>,
         borderColor: '#34495e',
         backgroundColor: 'rgba(52, 73, 94, 0.1)',
+        tension: 0.1
+      },
+      {
+        label: 'Openings',
+        data: <%= raw @stats.values.map { |s| s[:openings] }.to_json %>,
+        borderColor: '#8e44ad',
+        backgroundColor: 'rgba(142, 68, 173, 0.1)',
         tension: 0.1
       },
       {

@@ -17,6 +17,7 @@ module UserDelegates
     delegate :best_mate_in_one_score, to: :user_mate_in_one_rounds
     delegate :best_rook_endgames_score, to: :user_rook_endgames_rounds
     delegate :best_three_score, to: :user_three_rounds
+    delegate :best_openings_score, to: :user_openings_rounds
 
     delegate :highest_repetition_level_unlocked, to: :user_repetition_levels
 
@@ -48,6 +49,10 @@ module UserDelegates
 
     def user_three_rounds
       UserThreeRounds.new(self)
+    end
+
+    def user_openings_rounds
+      UserOpeningsRounds.new(self)
     end
 
     def user_repetition_levels

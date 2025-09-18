@@ -210,6 +210,7 @@ class PagesController < ApplicationController
     @haste_puzzle = HastePuzzle.random
     @mate_in_one_puzzle = MateInOnePuzzle.random
     @rook_endgames_puzzle = RookEndgamePuzzle.random
+    @openings_puzzle = OpeningPuzzle.random
     @rated_puzzle = RatedPuzzle.order('rating ASC').take(10).shuffle.first
     @scoreboard = Scoreboard.new
 
@@ -218,6 +219,7 @@ class PagesController < ApplicationController
     @haste_best_score = @user.best_haste_score(Time.zone.today)
     @mate_in_one_best_score = @user.best_mate_in_one_score(Time.zone.today)
     @rook_endgames_best_score = @user.best_rook_endgames_score(Time.zone.today)
+    @openings_best_score = @user.best_openings_score(Time.zone.today)
     @three_best_score = @user.best_three_score(Time.zone.today)
     @best_speedrun_time = @user.best_speedrun_time(@speedrun_level)
     @repetition_level = @user.highest_repetition_level_unlocked

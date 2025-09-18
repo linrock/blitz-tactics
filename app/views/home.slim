@@ -190,6 +190,20 @@ section.homepage
           .daily-level
             | New puzzles each run
 
+      .mode.openings
+        h3
+          a(href="/openings") Openings
+        h4.game-mode-description
+          | Practice tactical patterns from chess openings.
+        = homepage_miniboard_link("/openings", @openings_puzzle)
+        .under-mini-board
+          - if user_signed_in?
+            .your-best-times
+              | Best score today:
+              span.best-time<= @openings_best_score
+          .daily-level
+            | New puzzles each run
+
     .scoreboard-section
       .mini-scoreboard
         - if @scoreboard.week_scores?

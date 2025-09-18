@@ -1,0 +1,92 @@
+@use "../../../assets/stylesheets/_colors" as *
+@use "../../../assets/stylesheets/_variables" as *
+
+.openings-mode
+  .openings-under-board
+    margin-top: 10px
+
+    .sidebar-label
+      font-size: 13px
+      color: rgba(255,255,255,0.5)
+      margin-bottom: 15px
+
+    .difficulties
+      margin-bottom: 30px
+
+      .difficulty
+        color: rgba(255,255,255,0.5)
+        padding: 8px 0
+        cursor: pointer
+        text-transform: capitalize
+        font-size: 18px
+        user-select: none
+        transition: all 0.2s ease
+
+        &:hover
+          color: rgba(255,255,255,0.7)
+
+        &.selected
+          color: white
+
+    .stats
+      margin-bottom: 30px
+      transition: opacity 0.5s ease
+
+      .n-puzzles
+        font-size: 30px
+        margin-top: 15px
+
+    .timers
+      height: 100%
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: space-evenly
+
+      .description
+        font-size: 16px
+        line-height: 22px
+        height: 44px
+        margin-left: 1px
+        opacity: 0.7
+
+    // openings-specific styles
+    .openings-bar
+      background-color: #2c7aa7
+      background: linear-gradient(to right, #2c7aa7, #5cbae5)
+      border-radius: 4px
+      height: 8px
+      margin-bottom: 15px
+      overflow: hidden
+      position: relative
+      width: 100%
+
+      .fill
+        background: rgba(255,255,255,0.1)
+        height: 100%
+        width: 100%
+        transition: width 0.1s ease
+
+      &.almost-empty .fill
+        background: rgba(255,100,100,0.3)
+
+    .no-more-left
+      line-height: 26px
+      opacity: 0.7
+
+  // shows up under the board after a level is complete
+  .openings-complete
+    display: flex
+    gap: 32px
+
+    .score-section
+      flex-direction: row
+      gap: 40px
+
+    .score-container
+      margin-bottom: 16px
+      align-items: center
+
+      .score
+        font-size: 28px
+        margin-top: 8px
