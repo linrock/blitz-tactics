@@ -268,6 +268,23 @@ class User < ActiveRecord::Base
       }
     end
 
+    # Add daily infinity puzzle activity
+    infinity_puzzle_days = solved_puzzles.where('created_at >= ? AND game_mode = ?', since, 'infinity')
+                                        .group('DATE(created_at)')
+                                        .order('DATE(created_at) DESC')
+                                        .limit(limit)
+                                        .count
+
+    activities += infinity_puzzle_days.map do |date_obj, count|
+      {
+        type: 'infinity',
+        type_display: 'Infinity',
+        date: date_obj.to_date.end_of_day,
+        score: "#{count} puzzle#{'s' if count != 1}",
+        url: '/infinity'
+      }
+    end
+
     # Sort by date descending and take the most recent
     activities.sort_by { |a| a[:date] }.reverse.take(limit)
   end
