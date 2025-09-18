@@ -1110,6 +1110,38 @@ ALTER SEQUENCE public.solved_infinity_puzzles_id_seq OWNED BY public.solved_infi
 
 
 --
+-- Name: solved_puzzles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solved_puzzles (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    puzzle_id character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: solved_puzzles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solved_puzzles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solved_puzzles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solved_puzzles_id_seq OWNED BY public.solved_puzzles.id;
+
+
+--
 -- Name: speedrun_levels; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1509,6 +1541,13 @@ ALTER TABLE ONLY public.solved_infinity_puzzles ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: solved_puzzles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solved_puzzles ALTER COLUMN id SET DEFAULT nextval('public.solved_puzzles_id_seq'::regclass);
+
+
+--
 -- Name: speedrun_levels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1805,6 +1844,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.solved_infinity_puzzles
     ADD CONSTRAINT solved_infinity_puzzles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solved_puzzles solved_puzzles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solved_puzzles
+    ADD CONSTRAINT solved_puzzles_pkey PRIMARY KEY (id);
 
 
 --
@@ -2198,6 +2245,27 @@ CREATE INDEX index_solved_infinity_puzzles_on_user_id_and_updated_at ON public.s
 
 
 --
+-- Name: index_solved_puzzles_on_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_solved_puzzles_on_puzzle_id ON public.solved_puzzles USING btree (puzzle_id);
+
+
+--
+-- Name: index_solved_puzzles_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_solved_puzzles_on_user_id ON public.solved_puzzles USING btree (user_id);
+
+
+--
+-- Name: index_solved_puzzles_on_user_id_and_puzzle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_solved_puzzles_on_user_id_and_puzzle_id ON public.solved_puzzles USING btree (user_id, puzzle_id);
+
+
+--
 -- Name: index_speedrun_puzzles_on_speedrun_level_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2311,6 +2379,14 @@ ALTER TABLE ONLY public.completed_quest_worlds
 
 
 --
+-- Name: solved_puzzles fk_rails_bf1ca37272; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solved_puzzles
+    ADD CONSTRAINT fk_rails_bf1ca37272 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -2327,6 +2403,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250821043546'),
 ('20250821042209'),
 ('20250821042208'),
+('20250122000000'),
 ('20250120000000'),
 ('20250116000005'),
 ('20250116000004'),
