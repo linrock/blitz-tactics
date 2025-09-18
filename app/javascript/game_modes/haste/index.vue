@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       numPuzzlesSolved: 0,
+      solvedPuzzleIds: [] as string[],
       yourScore: 0,
       highScore: 0,
       highScores: [] as [string, number][],
@@ -61,10 +62,20 @@ export default {
       'puzzles:status': ({ i }) => {
         this.numPuzzlesSolved = i + 1
       },
+      'puzzle:solved': (puzzle) => {
+        console.log('Puzzle solved:', puzzle)
+        if (puzzle && puzzle.id) {
+          this.solvedPuzzleIds.push(puzzle.id)
+          console.log('Added puzzle ID:', puzzle.id, 'Total solved:', this.solvedPuzzleIds.length)
+        } else {
+          console.log('No puzzle ID found in puzzle:', puzzle)
+        }
+      },
       'timer:stopped': async () => {
         this.showBoardOverlay()
+        console.log('Round completed. Sending puzzle IDs:', this.solvedPuzzleIds)
         // Notify the server that the round has finished. Show high scores
-        const data = await hasteRoundCompleted(this.numPuzzlesSolved)
+        const data = await hasteRoundCompleted(this.numPuzzlesSolved, this.solvedPuzzleIds)
         this.yourScore = data.score
         this.highScore = data.best
         this.highScores = data.high_scores

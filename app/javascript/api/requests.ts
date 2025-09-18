@@ -39,19 +39,21 @@ export async function countdownCompleted(levelName: string, score: number) {
   return client.post(`/countdown`, params).then(resp => resp.data)
 }
 
-export async function hasteRoundCompleted(score: number) {
+export async function hasteRoundCompleted(score: number, puzzleIds: string[] = []) {
   const params = {
     haste: {
       score,
+      puzzle_ids: puzzleIds,
     }
   }
   return client.post(`/haste`, params).then(resp => resp.data)
 }
 
-export async function threeRoundCompleted(score: number) {
+export async function threeRoundCompleted(score: number, puzzleIds: string[] = []) {
   const params = {
     three: {
       score,
+      puzzle_ids: puzzleIds,
     }
   }
   return client.post(`/three`, params).then(resp => resp.data)

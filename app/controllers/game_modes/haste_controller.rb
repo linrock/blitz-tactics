@@ -18,10 +18,13 @@ class GameModes::HasteController < ApplicationController
     score = completed_haste_round_params[:score].to_i
     puzzle_ids = completed_haste_round_params[:puzzle_ids] || []
     
+    Rails.logger.info "Haste round completed - Score: #{score}, Puzzle IDs: #{puzzle_ids.inspect}, User: #{user_signed_in? ? current_user.username : 'not signed in'}"
+    
     if user_signed_in?
       if score > 0
         current_user.completed_haste_rounds.create!(score: score)
         # Track unique puzzles solved
+        Rails.logger.info "Tracking #{puzzle_ids.length} puzzle IDs for user #{current_user.username}"
         current_user.track_solved_puzzles(puzzle_ids)
       end
       best = current_user.best_haste_score(Time.zone.today)

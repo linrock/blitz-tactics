@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   has_many :positions
   has_many :completed_quest_world_levels
   has_many :completed_quest_worlds
+  has_many :solved_puzzles
   
   # Quest-related helper methods
   def completed_quest_world?(world)
@@ -273,6 +274,27 @@ class User < ActiveRecord::Base
 
   def sound_enabled?
     !!self.profile["sound_enabled"]
+  end
+
+  # Track unique puzzles solved across all game modes
+  def track_solved_puzzles(puzzle_ids)
+    return if puzzle_ids.blank?
+    SolvedPuzzle.bulk_create_for_user(id, puzzle_ids)
+  end
+
+  # Get count of unique puzzles solved
+  def unique_puzzles_solved_count
+    @unique_puzzles_solved_count ||= solved_puzzles.count
+  end
+
+  # Get most recently solved puzzles
+  def recently_solved_puzzles(limit = 10)
+    SolvedPuzzle.recently_solved_for_user(id, limit)
+  end
+
+  # Get puzzles first solved on a specific date
+  def puzzles_first_solved_on(date)
+    SolvedPuzzle.first_solved_on(id, date)
   end
 
   private

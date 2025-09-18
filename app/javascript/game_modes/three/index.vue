@@ -71,6 +71,7 @@ export default {
       ignoreNextPuzzleScore: false,
       moveHint: null,
       numPuzzlesSolved: 0,
+      solvedPuzzleIds: [] as string[],
       numHints: 3,
       numLives: 3,
       yourScore: 0,
@@ -87,7 +88,7 @@ export default {
       }
       this.showBoardOverlay()
       // Notify the server that the round has finished. Show high scores
-      const data = await threeRoundCompleted(this.numPuzzlesSolved)
+      const data = await threeRoundCompleted(this.numPuzzlesSolved, this.solvedPuzzleIds)
       this.yourScore = data.score
       this.highScore = data.best
       this.highScores = data.high_scores
@@ -119,6 +120,11 @@ export default {
           this.numPuzzlesSolved += 1
           this.isGainingScore = true
           setTimeout(() => this.isGainingScore = false, 300)
+        }
+      },
+      'puzzle:solved': (puzzle) => {
+        if (puzzle && puzzle.id) {
+          this.solvedPuzzleIds.push(puzzle.id)
         }
       },
       'timer:stopped': () => {

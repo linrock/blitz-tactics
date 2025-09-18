@@ -4,6 +4,13 @@
     <div class="all-time-high-scores">
       <h2>All-time stats</h2>
 
+      <div class="unique-puzzles-stat">
+        <div class="stats-row total">
+          <div class="long-label">Unique puzzles solved</div>
+          <div class="count"><%= @user.unique_puzzles_solved_count %></div>
+        </div>
+      </div>
+
       <div class="training-mode-stats">
         <div class="all-time-stats-columns">
           <div class="left-column">
