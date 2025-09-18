@@ -52,7 +52,7 @@ export default function RepetitionMode() {
     // Track individual puzzle solves
     'puzzle:solved': (puzzle) => {
       if (puzzle && puzzle.id) {
-        trackSolvedPuzzle(puzzle.id).catch(error => {
+        trackSolvedPuzzle(puzzle.id, 'repetition').catch(error => {
           console.error('Failed to track solved puzzle:', error)
         })
       }

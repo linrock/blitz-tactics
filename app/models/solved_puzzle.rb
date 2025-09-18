@@ -6,15 +6,22 @@ class SolvedPuzzle < ActiveRecord::Base
   validates :puzzle_id, presence: true
   validates :user_id, presence: true
   validates :puzzle_id, uniqueness: { scope: :user_id }
+  validates :game_mode, inclusion: { in: %w[countdown speedrun infinity repetition haste three] }, allow_nil: true
 
-  # Simple tracking - just update the timestamp when a puzzle is solved
-  def self.track_solve(user_id, puzzle_id)
+  # Track a puzzle solve with game mode - updates timestamp and game mode for existing records
+  def self.track_solve(user_id, puzzle_id, game_mode = nil)
     solved_puzzle = find_or_initialize_by(user_id: user_id, puzzle_id: puzzle_id)
+    
+    # Always update the game mode and timestamp to reflect the most recent solve
+    solved_puzzle.game_mode = game_mode if game_mode.present?
+    solved_puzzle.updated_at = Time.current
+    
     if solved_puzzle.persisted?
-      solved_puzzle.touch  # Updates updated_at timestamp for existing records
+      solved_puzzle.save!  # Save changes to existing record
     else
       solved_puzzle.save!  # Create new record
     end
+    
     solved_puzzle
   end
 
@@ -56,7 +63,7 @@ class SolvedPuzzle < ActiveRecord::Base
     where(user_id: user_id).order(updated_at: :desc).limit(limit)
   end
 
-  # Get recent puzzles - simple version using existing fields
+  # Get recent puzzles with game mode information
   def self.recent_with_details(user_id, limit = 10)
     where(user_id: user_id)
       .order(updated_at: :desc)
@@ -64,7 +71,8 @@ class SolvedPuzzle < ActiveRecord::Base
       .map do |solved_puzzle|
         {
           puzzle_id: solved_puzzle.puzzle_id,
-          solved_at: solved_puzzle.updated_at
+          solved_at: solved_puzzle.updated_at,
+          game_mode: solved_puzzle.game_mode
         }
       end
   end

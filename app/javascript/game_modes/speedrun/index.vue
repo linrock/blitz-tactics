@@ -83,7 +83,7 @@ aside.speedrun-under-board.game-under-board
         'puzzle:solved': (puzzle) => {
           // Track individual puzzle solve
           if (puzzle && puzzle.id) {
-            trackSolvedPuzzle(puzzle.id).catch(error => {
+            trackSolvedPuzzle(puzzle.id, 'speedrun').catch(error => {
               console.error('Failed to track solved puzzle:', error)
             })
           }

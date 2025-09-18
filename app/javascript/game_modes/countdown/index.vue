@@ -62,7 +62,7 @@ export default {
         // Track individual puzzle solve
         console.log('Countdown puzzle solved:', puzzle)
         if (puzzle && puzzle.id) {
-          trackSolvedPuzzle(puzzle.id).catch(error => {
+          trackSolvedPuzzle(puzzle.id, 'countdown').catch(error => {
             console.error('Failed to track solved puzzle:', error)
           })
         }

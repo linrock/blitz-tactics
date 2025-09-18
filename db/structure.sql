@@ -1118,7 +1118,8 @@ CREATE TABLE public.solved_puzzles (
     user_id bigint NOT NULL,
     puzzle_id character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    game_mode character varying
 );
 
 
@@ -2393,6 +2394,7 @@ ALTER TABLE ONLY public.solved_puzzles
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250918195258'),
 ('20250918032709'),
 ('20250821173256'),
 ('20250821171916'),

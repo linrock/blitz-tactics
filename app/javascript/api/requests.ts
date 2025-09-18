@@ -6,8 +6,8 @@ export async function infinityPuzzleSolved(puzzle: InfinityPuzzleSolved) {
   return client.post(`/infinity/puzzles`, { puzzle }).then(resp => resp.data)
 }
 
-export async function trackSolvedPuzzle(puzzleId: string) {
-  const params = { puzzle_id: puzzleId }
+export async function trackSolvedPuzzle(puzzleId: string, gameMode?: string) {
+  const params = { puzzle_id: puzzleId, game_mode: gameMode }
   return client.post(`/solved-puzzles`, params).then(resp => resp.data)
 }
 

@@ -183,9 +183,9 @@ export default {
     },
 
     async trackSolvedPuzzle(puzzleId) {
-      // Use the simplified puzzle tracking system
+      // Track puzzle with game mode
       try {
-        return await trackSolvedPuzzle(puzzleId)
+        return await trackSolvedPuzzle(puzzleId, 'three')
       } catch (error) {
         console.error('Failed to track solved puzzle:', error)
         throw error

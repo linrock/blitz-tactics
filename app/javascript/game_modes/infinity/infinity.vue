@@ -147,7 +147,7 @@ aside.infinity-under-board.game-under-board
           }
           
           // Track with unified system
-          trackSolvedPuzzle(puzzle.id).catch(error => {
+          trackSolvedPuzzle(puzzle.id, 'infinity').catch(error => {
             console.error('Failed to track solved puzzle:', error)
           })
           
