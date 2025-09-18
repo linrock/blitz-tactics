@@ -203,14 +203,6 @@ section.homepage
                     .player-name= user_link(user)
                     .stats= high_score
 
-            - if @scoreboard.top_rook_endgames_scores_week.present?
-              .top-players
-                h5 Rook endgames high scores
-                - @scoreboard.top_rook_endgames_scores_week.each do |user, high_score|
-                  .ranking
-                    .player-name= user_link(user)
-                    .stats= high_score
-
             - if @scoreboard.top_three_scores_week.present?
               .top-players
                 h5 Three high scores
@@ -227,6 +219,14 @@ section.homepage
                     .player-name= user_link(user)
                     .stats= puzzles_solved
 
+            - if @scoreboard.top_mate_in_one_scores_week.present?
+              .top-players
+                h5 Mate in one high scores
+                - @scoreboard.top_mate_in_one_scores_week.each do |user, high_score|
+                  .ranking
+                    .player-name= user_link(user)
+                    .stats= high_score
+
         - if @scoreboard.recent_scores?
           .scores
             h6 Past 24 hours
@@ -234,14 +234,6 @@ section.homepage
               .top-players
                 h5 Haste high scores
                 - @scoreboard.top_haste_scores_recent.each do |user, high_score|
-                  .ranking
-                    .player-name= user_link(user)
-                    .stats= high_score
-
-            - if @scoreboard.top_rook_endgames_scores_recent.present?
-              .top-players
-                h5 Rook endgames high scores
-                - @scoreboard.top_rook_endgames_scores_recent.each do |user, high_score|
                   .ranking
                     .player-name= user_link(user)
                     .stats= high_score
@@ -261,6 +253,14 @@ section.homepage
                   .ranking
                     .player-name= user_link(user)
                     .stats= puzzles_solved
+
+            - if @scoreboard.top_mate_in_one_scores_recent.present?
+              .top-players
+                h5 Mate in one high scores
+                - @scoreboard.top_mate_in_one_scores_recent.each do |user, high_score|
+                  .ranking
+                    .player-name= user_link(user)
+                    .stats= high_score
 
         - fastest_speedruns = @scoreboard.fastest_speedruns(SpeedrunLevel.yesterdays_level)
         - countdown_high_scores = @scoreboard.countdown_high_scores(CountdownLevel.yesterdays_level)

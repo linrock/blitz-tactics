@@ -41,7 +41,7 @@ class Scoreboard
   def recent_scores?
     top_infinity_recent.present? or
     top_haste_scores_recent.present? or
-    top_rook_endgames_scores_recent.present? or
+    top_mate_in_one_scores_recent.present? or
     top_three_scores_recent.present?
   end
 
@@ -56,8 +56,8 @@ class Scoreboard
     @top_haste_scores_recent ||= CompletedHasteRound.high_scores(@recent_time)
   end
 
-  def top_rook_endgames_scores_recent
-    @top_rook_endgames_scores_recent ||= CompletedRookEndgamesRound.high_scores(@recent_time)
+  def top_mate_in_one_scores_recent
+    @top_mate_in_one_scores_recent ||= CompletedMateInOneRound.high_scores(@recent_time)
   end
 
   def top_three_scores_recent
@@ -76,7 +76,7 @@ class Scoreboard
   def week_scores?
     top_infinity_week.present? or
     top_haste_scores_week.present? or
-    top_rook_endgames_scores_week.present? or
+    top_mate_in_one_scores_week.present? or
     top_three_scores_week.present?
   end
 
@@ -91,8 +91,8 @@ class Scoreboard
     @top_haste_scores_week ||= CompletedHasteRound.high_scores(@week_time)
   end
 
-  def top_rook_endgames_scores_week
-    @top_rook_endgames_scores_week ||= CompletedRookEndgamesRound.high_scores(@week_time)
+  def top_mate_in_one_scores_week
+    @top_mate_in_one_scores_week ||= CompletedMateInOneRound.high_scores(@week_time)
   end
 
   def top_three_scores_week
