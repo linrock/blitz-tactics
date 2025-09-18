@@ -1300,7 +1300,8 @@ CREATE TABLE public.users (
     updated_at timestamp without time zone NOT NULL,
     username character varying,
     profile jsonb,
-    tagline character varying
+    tagline character varying,
+    solved_puzzles_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -2316,6 +2317,13 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: index_users_on_solved_puzzles_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_solved_puzzles_count ON public.users USING btree (solved_puzzles_count);
+
+
+--
 -- Name: completed_quest_world_levels fk_rails_0b0079a9d6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2407,6 +2415,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250821042208'),
 ('20250122000000'),
 ('20250120000000'),
+('20250118220001'),
+('20250118220000'),
 ('20250116000005'),
 ('20250116000004'),
 ('20210417123508'),

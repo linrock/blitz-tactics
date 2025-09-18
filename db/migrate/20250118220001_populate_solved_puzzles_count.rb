@@ -1,7 +1,10 @@
 class PopulateSolvedPuzzlesCount < ActiveRecord::Migration[7.1]
   def up
-    # Reset the counter cache for all users
-    User.reset_counters(User.all.pluck(:id), :solved_puzzles)
+    # Manually populate the counter cache for all users
+    User.find_each do |user|
+      count = user.solved_puzzles.count
+      user.update_column(:solved_puzzles_count, count)
+    end
   end
 
   def down
