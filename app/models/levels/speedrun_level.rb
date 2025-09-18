@@ -30,18 +30,49 @@ class SpeedrunLevel < ActiveRecord::Base
     find_by(name: 2.days.ago.to_date.to_s)
   end
 
-  def puzzles
-    # speedrun_puzzles.order('id ASC')
+  # Returns the raw JSON data (either array or themed object)
+  def raw_data
     json_data_filename = LEVELS_DIR.join("speedrun-#{name}.json")
     unless File.exist? json_data_filename
       # TODO fix race condition where concurrent requests will trigger this
-      SpeedrunLevelCreator.export_puzzles_for_date(Date.strptime(name))
+      # Use themed creator as primary method
+      ThemedSpeedrunLevelCreator.export_puzzles_for_date(Date.strptime(name))
     end
     open(json_data_filename, 'r') { |f| JSON.parse(f.read) }
   end
 
+  # Returns just the puzzles array (for backward compatibility)
+  def puzzles
+    data = raw_data
+    # Check if it's the new themed format or old array format
+    if data.is_a?(Hash) && data.key?("puzzles")
+      data["puzzles"]
+    else
+      # Old format - just an array of puzzles
+      data
+    end
+  end
+
+  # Returns the theme for themed speedruns (nil for old format)
+  def theme
+    data = raw_data
+    if data.is_a?(Hash) && data.key?("theme")
+      data["theme"]
+    else
+      nil
+    end
+  end
+
+  # Check if this is a themed speedrun
+  def themed?
+    !theme.nil?
+  end
+
   def first_puzzle
-    puzzle_id = puzzles.first["id"]
+    puzzle_list = puzzles
+    return nil if puzzle_list.empty?
+    
+    puzzle_id = puzzle_list.first["id"]
     
     # Try to find by puzzle_id first (for LichessV2Puzzle)
     puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
