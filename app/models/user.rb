@@ -208,6 +208,75 @@ class User < ActiveRecord::Base
     !!self.profile["sound_enabled"]
   end
 
+  def recent_activity(limit = 10)
+    activities = []
+    since = 30.days.ago
+
+    # Collect recent completions from different game modes
+    activities += completed_haste_rounds.where('created_at >= ?', since).order(created_at: :desc).limit(limit).map do |round|
+      {
+        type: 'haste',
+        type_display: 'Haste',
+        date: round.created_at,
+        score: round.score,
+        url: '/haste'
+      }
+    end
+
+    activities += completed_countdown_levels.where('created_at >= ?', since).order(created_at: :desc).limit(limit).map do |completion|
+      {
+        type: 'countdown',
+        type_display: 'Countdown',
+        date: completion.created_at,
+        score: completion.score,
+        url: '/countdown'
+      }
+    end
+
+    activities += completed_speedruns.where('created_at >= ?', since).order(created_at: :desc).limit(limit).map do |speedrun|
+      {
+        type: 'speedrun',
+        type_display: 'Speedrun',
+        date: speedrun.created_at,
+        score: speedrun.formatted_time_spent,
+        url: '/speedrun'
+      }
+    end
+
+    activities += completed_mate_in_one_rounds.where('created_at >= ?', since).order(created_at: :desc).limit(limit).map do |round|
+      {
+        type: 'mate-in-one',
+        type_display: 'Mate in One',
+        date: round.created_at,
+        score: round.score,
+        url: '/mate-in-one'
+      }
+    end
+
+    activities += completed_rook_endgames_rounds.where('created_at >= ?', since).order(created_at: :desc).limit(limit).map do |round|
+      {
+        type: 'rook-endgames',
+        type_display: 'Rook Endgames',
+        date: round.created_at,
+        score: round.score,
+        url: '/rook-endgames'
+      }
+    end
+
+    activities += completed_three_rounds.where('created_at >= ?', since).order(created_at: :desc).limit(limit).map do |round|
+      {
+        type: 'three',
+        type_display: 'Three',
+        date: round.created_at,
+        score: round.score,
+        url: '/three'
+      }
+    end
+
+    # Sort by date descending and take the most recent
+    activities.sort_by { |a| a[:date] }.reverse.take(limit)
+  end
+
   private
 
   def email_required?

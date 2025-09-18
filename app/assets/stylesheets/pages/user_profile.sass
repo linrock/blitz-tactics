@@ -59,6 +59,7 @@
     .blue-button
       font-size: 16px
       margin-left: 12px
+      background-color: #1b49abcc !important
 
   .right-side
     float: right
@@ -86,16 +87,20 @@
       opacity: 0.5
 
   .stats
-    display: flex
-    justify-content: space-between
     margin: 60px auto
 
     // recent high scores, all-time stats
     h2
       opacity: 0.2
 
+  .all-time-high-scores
+    margin-bottom: 40px
+
+  .activity-feed
+    margin-bottom: 40px
+
   .recent-high-scores
-    margin-right: 100px
+    margin-bottom: 40px
 
   // speedrun, countdown high scores sections
   .game-mode-stats
@@ -104,7 +109,6 @@
   // all-time stats
   .training-mode-stats
     margin: 20px 0
-    display: flex
 
   .game-mode-name
     width: 100px
@@ -117,7 +121,7 @@
 
     .long-label
       color: rgba(255,255,255,0.4)
-      width: 240px
+      width: 280px
 
     .label
       color: rgba(255,255,255,0.4)
@@ -126,3 +130,70 @@
     .count
       width: 70px
       text-align: right
+
+  // Activity feed styles - compact table layout
+  .activity-feed
+    margin-bottom: 40px
+
+    h2
+      color: rgba(255,255,255,0.9)
+      font-size: 24px
+      margin-bottom: 15px
+
+    .activity-list
+      background: rgba(255, 255, 255, 0.05)
+      border-radius: 8px
+      padding: 15px
+
+    .activity-item
+      display: flex
+      align-items: center
+      padding: 8px 0
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+
+      &:last-child
+        border-bottom: none
+
+    .activity-date
+      color: rgba(255,255,255,0.5)
+      font-size: 14px
+      width: 70px
+      flex-shrink: 0
+
+    .activity-game-mode
+      color: rgba(255,255,255,0.9)
+      font-weight: bold
+      text-decoration: none
+      width: 150px
+      flex-shrink: 0
+
+      &:hover
+        color: #ffe800
+        text-decoration: underline
+
+    .activity-score
+      color: rgba(255,255,255,0.6)
+      font-size: 14px
+      flex: 1
+      text-align: right
+
+    .no-activity
+      color: rgba(255,255,255,0.5)
+      text-align: center
+      padding: 30px
+      font-style: italic
+
+  // Two-column layout for recent high scores
+  .recent-scores-columns
+    display: flex
+    gap: 40px
+    margin-top: 20px
+
+    .left-column,
+    .right-column
+      flex: 1
+
+    // Responsive: stack columns on smaller screens
+    @media (max-width: 768px)
+      flex-direction: column
+      gap: 20px
