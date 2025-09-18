@@ -23,15 +23,10 @@ class ThemedLevelCreator
   # Default rating ranges and puzzle counts for themed puzzles
   DEFAULT_THEMED_PUZZLE_COUNTS = {
     (600..1000) => 10,
-    (800..1000) => 5,
-    (1000..1200) => 10,
-    (1200..1400) => 15,
-    (1400..1600) => 15,
-    (1600..1800) => 15,
-    (1800..2000) => 15,
-    (2000..2100) => 10,
-    (2100..2300) => 5,
-    (2300..3200) => 5,
+    (1000..1400) => 25,
+    (1400..1800) => 30,
+    (1800..2100) => 25,
+    (2100..3200) => 10,
   }.freeze
 
   # Valid chess themes
