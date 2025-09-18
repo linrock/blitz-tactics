@@ -174,6 +174,7 @@ class PagesController < ApplicationController
     @hours_until_tomorrow = 24 - DateTime.now.hour
     @speedrun_level = SpeedrunLevel.todays_level
     @speedrun_puzzle = @speedrun_level.first_puzzle
+    @speedrun_theme = @speedrun_level.theme
     @countdown_level = CountdownLevel.todays_level
     @countdown_puzzle = @countdown_level.first_puzzle
     @haste_puzzle = HastePuzzle.random

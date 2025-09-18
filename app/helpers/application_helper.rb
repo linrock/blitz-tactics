@@ -27,4 +27,23 @@ module ApplicationHelper
       session[:sound_enabled].nil? || session[:sound_enabled]  == true
     end
   end
+
+  def titleize_theme(theme)
+    return nil if theme.nil?
+    
+    # Handle different word boundary patterns
+    words = theme.split('_').flat_map do |part|
+      # Split camelCase into separate words
+      part = part.gsub(/([a-z])([A-Z])/, '\1 \2')
+      
+      # Split common chess theme patterns (e.g., "defensivemove" -> "defensive move")
+      # This handles cases where words are concatenated without separators
+      part = part.gsub(/([a-z])(move|mate|fork|pin|sacrifice|endgame|opening|tactic|pattern)$/, '\1 \2')
+      part = part.gsub(/^(defensive|offensive|back|queen|king|knight|bishop|rook|pawn)([a-z])/, '\1 \2')
+      
+      part.split(' ')
+    end
+    
+    words.map(&:capitalize).join(' ')
+  end
 end

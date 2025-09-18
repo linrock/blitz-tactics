@@ -131,8 +131,12 @@ section.homepage
               span.best-time<= @best_speedrun_time
 
           .daily-level
-            .next-day
-              | Next speedrun in #{@hours_until_tomorrow} hours
+            - if @speedrun_theme
+              .next-day
+                | Theme: #{titleize_theme(@speedrun_theme)}
+            - else
+              .next-day
+                | Next speedrun in #{@hours_until_tomorrow} hours
 
       .game-modes
         - begin
