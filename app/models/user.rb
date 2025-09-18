@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
     SpeedrunLevel.where(id: level_ids).order('id DESC').map do |level|
       next if level.name == "quick"
       [
-        level.name,
+        format_level_date(level.name),
         completed_speedruns.formatted_personal_best(level.id)
       ]
     end.compact.sort_by {|name, time| name }.reverse
@@ -131,7 +131,7 @@ class User < ActiveRecord::Base
     level_ids = completed_countdown_levels.pluck(Arel.sql('distinct(countdown_level_id)'))
     CountdownLevel.where(id: level_ids).order('id DESC').map do |level|
       [
-        level.name,
+        format_level_date(level.name),
         completed_countdown_levels.personal_best(level.id)
       ]
     end.sort_by {|name, time| name }.reverse
@@ -195,17 +195,6 @@ class User < ActiveRecord::Base
     recent_high_scores? \
       or num_repetition_levels_completed > 0 \
       or num_infinity_puzzles_solved > 0
-  end
-
-  # user settings
-
-  def set_sound_enabled(enabled)
-    self.profile["sound_enabled"] = enabled
-    self.save!
-  end
-
-  def sound_enabled?
-    !!self.profile["sound_enabled"]
   end
 
   def recent_activity(limit = 10)
@@ -275,6 +264,29 @@ class User < ActiveRecord::Base
 
     # Sort by date descending and take the most recent
     activities.sort_by { |a| a[:date] }.reverse.take(limit)
+  end
+
+  def sound_enabled?
+    !!self.profile["sound_enabled"]
+  end
+
+  private
+
+  def format_level_date(date_string)
+    # Handle date strings like "2025-09-18" and convert to "Sep 18, 2025"
+    begin
+      Date.parse(date_string).strftime("%b %d, %Y")
+    rescue
+      # Fallback to original string if parsing fails
+      date_string
+    end
+  end
+
+  # user settings
+
+  def set_sound_enabled(enabled)
+    self.profile["sound_enabled"] = enabled
+    self.save!
   end
 
   private

@@ -89,9 +89,13 @@
   .stats
     margin: 60px auto
 
-    // recent high scores, all-time stats
+    // recent high scores, all-time stats, activity feed
     h2
-      opacity: 0.2
+      color: rgba(255,255,255,0.9)
+      font-size: 24px
+      margin-bottom: 15px
+      padding-bottom: 10px
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2)
 
   .all-time-high-scores
     margin-bottom: 40px
@@ -128,17 +132,12 @@
       width: 140px
 
     .count
-      width: 70px
+      width: 55px
       text-align: right
 
   // Activity feed styles - compact table layout
   .activity-feed
     margin-bottom: 40px
-
-    h2
-      color: rgba(255,255,255,0.9)
-      font-size: 24px
-      margin-bottom: 15px
 
     .activity-list
       background: rgba(255, 255, 255, 0.05)
@@ -157,7 +156,7 @@
     .activity-date
       color: rgba(255,255,255,0.5)
       font-size: 14px
-      width: 70px
+      width: 100px
       flex-shrink: 0
 
     .activity-game-mode
@@ -185,6 +184,21 @@
 
   // Two-column layout for recent high scores
   .recent-scores-columns
+    display: flex
+    gap: 40px
+    margin-top: 20px
+
+    .left-column,
+    .right-column
+      flex: 1
+
+    // Responsive: stack columns on smaller screens
+    @media (max-width: 768px)
+      flex-direction: column
+      gap: 20px
+
+  // Two-column layout for all-time stats
+  .all-time-stats-columns
     display: flex
     gap: 40px
     margin-top: 20px

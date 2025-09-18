@@ -39,7 +39,7 @@
         <tbody>
           <% @stats.each do |date, day_stats| %>
             <tr>
-              <td class="date-cell"><%= date.strftime("%m/%d") %></td>
+              <td class="date-cell"><%= date.strftime("%b %d, %Y") %></td>
               <td><%= day_stats[:infinity] %></td>
               <td><%= day_stats[:speedrun] %></td>
               <td><%= day_stats[:countdown] %></td>
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const ctx = document.getElementById('activityChart').getContext('2d');
   
   // Prepare data from Rails
-  const dates = <%= raw @stats.keys.map { |date| date.strftime("%m/%d") }.to_json %>;
+  const dates = <%= raw @stats.keys.map { |date| date.strftime("%b %d, %Y") }.to_json %>;
   const data = {
     labels: dates,
     datasets: [
