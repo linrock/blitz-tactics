@@ -9,7 +9,8 @@ class GameModes::SpeedrunController < ApplicationController
     speedrun_level = SpeedrunLevel.todays_level
     render json: {
       level_name: speedrun_level.name,
-      puzzles: speedrun_level.puzzles
+      puzzles: speedrun_level.puzzles,
+      theme: speedrun_level.theme
     }
   end
 
@@ -17,6 +18,7 @@ class GameModes::SpeedrunController < ApplicationController
   def puzzles
     speedrun_level = SpeedrunLevel.todays_level
     puzzle_ids = speedrun_level.puzzles.map { |p| p["id"] }
+    @speedrun_theme = speedrun_level.theme
     
     # Check if we have string IDs (Lichess V2) or numeric IDs (legacy)
     if puzzle_ids.any? { |id| id =~ /[a-z]/i }

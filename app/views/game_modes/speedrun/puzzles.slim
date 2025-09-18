@@ -1,5 +1,7 @@
 .puzzle-page.container
   h2 Today's speedrun puzzles
+  - if @speedrun_theme
+    h3 Theme: #{titleize_theme(@speedrun_theme)}
 
   .puzzles
     - @puzzles.each_with_index do |puzzle, i|
