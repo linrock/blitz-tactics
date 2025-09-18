@@ -1,0 +1,176 @@
+<% content_for(:title) { "Admin Dashboard" } %>
+
+<div class="container">
+  <div class="admin-dashboard">
+    <h1>Admin Dashboard</h1>
+    <p class="admin-subtitle">Game Mode Statistics - Past 7 Days</p>
+
+    <div class="stats-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Infinity</th>
+            <th>Speedrun</th>
+            <th>Countdown</th>
+            <th>Haste</th>
+            <th>Mate in One</th>
+            <th>Rook Endgames</th>
+            <th>Three</th>
+            <th>Repetition Rounds</th>
+            <th>Repetition Levels</th>
+            <th>Quest Levels</th>
+            <th>Quest Worlds</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @stats.each do |date, day_stats| %>
+            <tr>
+              <td class="date-cell"><%= date.strftime("%m/%d") %></td>
+              <td><%= day_stats[:infinity] %></td>
+              <td><%= day_stats[:speedrun] %></td>
+              <td><%= day_stats[:countdown] %></td>
+              <td><%= day_stats[:haste] %></td>
+              <td><%= day_stats[:mate_in_one] %></td>
+              <td><%= day_stats[:rook_endgames] %></td>
+              <td><%= day_stats[:three] %></td>
+              <td><%= day_stats[:repetition_rounds] %></td>
+              <td><%= day_stats[:repetition_levels] %></td>
+              <td><%= day_stats[:quest_world_levels] %></td>
+              <td><%= day_stats[:quest_worlds] %></td>
+              <td class="total-cell"><strong><%= day_stats[:total] %></strong></td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr class="totals-row">
+            <td><strong>Totals</strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:infinity] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:speedrun] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:countdown] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:haste] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:mate_in_one] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:rook_endgames] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:three] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:repetition_rounds] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:repetition_levels] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:quest_world_levels] } %></strong></td>
+            <td><strong><%= @stats.values.sum { |s| s[:quest_worlds] } %></strong></td>
+            <td class="total-cell"><strong><%= @stats.values.sum { |s| s[:total] } %></strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="admin-summary">
+      <h2>Summary</h2>
+      <p>Total game mode completions over the past 7 days: <strong><%= @stats.values.sum { |s| s[:total] } %></strong></p>
+      <p>Average per day: <strong><%= (@stats.values.sum { |s| s[:total] } / 7.0).round(1) %></strong></p>
+    </div>
+  </div>
+</div>
+
+<style>
+.admin-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #1a1a1a;
+  color: #e0e0e0;
+  min-height: 100vh;
+}
+
+.admin-dashboard h1 {
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.admin-subtitle {
+  color: #b0b0b0;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+
+.stats-table {
+  overflow-x: auto;
+  margin-bottom: 30px;
+}
+
+.stats-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #2d2d2d;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  border: 1px solid #404040;
+}
+
+.stats-table th,
+.stats-table td {
+  padding: 12px 8px;
+  text-align: center;
+  border-bottom: 1px solid #404040;
+  color: #e0e0e0;
+}
+
+.stats-table th {
+  background: #3a3a3a;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 12px;
+  border-bottom: 2px solid #555;
+}
+
+.stats-table td {
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+.date-cell {
+  text-align: left !important;
+  font-weight: 500;
+  background: #3a3a3a;
+  color: #ffffff;
+}
+
+.total-cell {
+  background: #1e3a5f;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.totals-row {
+  background: #2a4a6b;
+  font-weight: 600;
+}
+
+.totals-row td {
+  border-top: 2px solid #4a90e2;
+  color: #ffffff;
+}
+
+.admin-summary {
+  background: #2d2d2d;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #4a90e2;
+  border: 1px solid #404040;
+}
+
+.admin-summary h2 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+.admin-summary p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #e0e0e0;
+}
+
+.admin-summary strong {
+  color: #4a90e2;
+}
+</style>

@@ -84,6 +84,9 @@ Rails.application.routes.draw do
   get '/scoreboard'              => 'pages#scoreboard'
   get '/about'                   => 'pages#about'
   get '/puzzle-themes'           => 'pages#puzzle_themes'
+  
+  # admin page
+  get '/admin'                   => 'admin#index'
 
   # puzzle pages
   get '/puzzles'                 => 'puzzles#index'
