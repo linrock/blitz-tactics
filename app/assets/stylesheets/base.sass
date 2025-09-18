@@ -78,11 +78,24 @@ button
   background: #111
   height: 60px
   width: 100%
+  box-sizing: border-box
+  overflow-x: hidden
   
   .container
     display: flex
     align-items: center
     height: 100%
+    // Use default container behavior (700px centered)
+    
+    // Override to full width only on responsive breakpoints
+    @media (max-width: 768px)
+      width: 100%
+      max-width: none
+      padding: 0 15px
+      box-sizing: border-box
+      
+    @media (max-width: 480px)
+      padding: 0 10px
     
   a
     color: #6D6D6D

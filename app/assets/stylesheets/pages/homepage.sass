@@ -203,7 +203,57 @@
         flex-direction: column
         justify-content: space-between
 
-
-@media (max-width: 980px)
+// Responsive breakpoints
+@media (max-width: 720px)
   .homepage .game-modes-container
-    width: 700px
+    padding: 0 20px
+
+@media (max-width: 800px)
+  .mini-scoreboard
+    flex-direction: column
+    align-items: center
+    width: 100%
+    padding: 0 20px
+    box-sizing: border-box
+
+    .scores
+      width: 100%
+      max-width: 500px
+      margin-bottom: 2rem
+      display: grid
+      grid-template-columns: 1fr 1fr
+      gap: 30px
+
+      &:first-child
+        margin-top: 0
+
+      // Section headers span full width at top
+      h6
+        grid-column: 1 / -1
+        text-align: center
+        margin-bottom: 20px
+        margin-top: 1.5rem
+
+        &:first-child
+          margin-top: 0
+
+      .top-players,
+      .top-infinity
+        margin-bottom: 0
+
+@media (max-width: 480px)
+  .mini-scoreboard
+    padding: 0 15px
+
+    .scores
+      max-width: 350px
+      grid-template-columns: 1fr
+      gap: 20px
+
+      .top-players
+        .ranking
+          .player-name
+            width: 200px
+
+          .stats
+            width: 60px
