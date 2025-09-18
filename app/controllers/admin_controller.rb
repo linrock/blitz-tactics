@@ -71,8 +71,17 @@ class AdminController < ApplicationController
     # For each day in the selected period
     (start_date..end_date).each do |date|
       # Count unique puzzles solved on this day (using created_at for first-time solves)
-      day_count = SolvedPuzzle.where(created_at: date.beginning_of_day..date.end_of_day).count
-      stats[date] = day_count
+      day_puzzle_count = SolvedPuzzle.where(created_at: date.beginning_of_day..date.end_of_day).count
+      
+      # Count unique users who solved puzzles on this day
+      day_user_count = SolvedPuzzle.where(created_at: date.beginning_of_day..date.end_of_day)
+                                   .distinct
+                                   .count(:user_id)
+      
+      stats[date] = {
+        puzzles: day_puzzle_count,
+        users: day_user_count
+      }
     end
     
     stats

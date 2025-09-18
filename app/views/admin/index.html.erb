@@ -20,7 +20,7 @@
     </div>
 
     <div class="chart-container">
-      <h2>Solved Puzzles Chart</h2>
+      <h2>Puzzle Solving Activity Chart</h2>
       <canvas id="solvedPuzzlesChart" width="800" height="400"></canvas>
     </div>
 
@@ -83,6 +83,14 @@
       <h2>Summary</h2>
       <p>Total game mode completions over the <%= @period_label.downcase %>: <strong><%= @stats.values.sum { |s| s[:total] } %></strong></p>
       <p>Average per day: <strong><%= (@stats.values.sum { |s| s[:total] } / @period_days.to_f).round(1) %></strong></p>
+    </div>
+
+    <div class="admin-summary">
+      <h2>Puzzle Solving Summary</h2>
+      <p>Total unique puzzles solved over the <%= @period_label.downcase %>: <strong><%= @solved_puzzle_stats.values.sum { |s| s[:puzzles] } %></strong></p>
+      <p>Average puzzles solved per day: <strong><%= (@solved_puzzle_stats.values.sum { |s| s[:puzzles] } / @period_days.to_f).round(1) %></strong></p>
+      <p>Total unique users who solved puzzles: <strong><%= @solved_puzzle_stats.values.sum { |s| s[:users] } %></strong></p>
+      <p>Average unique users per day: <strong><%= (@solved_puzzle_stats.values.sum { |s| s[:users] } / @period_days.to_f).round(1) %></strong></p>
     </div>
 </div>
 
@@ -245,9 +253,17 @@ document.addEventListener('DOMContentLoaded', function() {
     datasets: [
       {
         label: 'Unique Puzzles Solved',
-        data: <%= raw @solved_puzzle_stats.values.to_json %>,
+        data: <%= raw @solved_puzzle_stats.values.map { |s| s[:puzzles] }.to_json %>,
         borderColor: '#ff6b6b',
         backgroundColor: 'rgba(255, 107, 107, 0.1)',
+        tension: 0.1,
+        fill: true
+      },
+      {
+        label: 'Unique Users Solving Puzzles',
+        data: <%= raw @solved_puzzle_stats.values.map { |s| s[:users] }.to_json %>,
+        borderColor: '#4ecdc4',
+        backgroundColor: 'rgba(78, 205, 196, 0.1)',
         tension: 0.1,
         fill: true
       }
@@ -263,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
       plugins: {
         title: {
           display: true,
-          text: 'Unique Puzzles Solved Over Time',
+          text: 'Puzzle Solving Activity Over Time',
           color: '#ffffff',
           font: {
             size: 16,
@@ -299,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
         y: {
           title: {
             display: true,
-            text: 'Number of Unique Puzzles Solved',
+            text: 'Count',
             color: '#e0e0e0',
             font: {
               size: 14,
