@@ -139,18 +139,6 @@ section.homepage
               .next-day
                 | Next speedrun in #{@hours_until_tomorrow} hours
 
-      .game-modes
-        - begin
-          .mode.rated
-            h3
-              a(href="/rated") Rated
-            h4.game-mode-description
-              | Solve puzzles quickly to gain more rating points.
-            = homepage_miniboard_link("/rated", @rated_puzzle)
-            .under-mini-board
-              .your-best-times
-                | Your rating: #{@user_rating}
-        - rescue
 
       - if @infinity_puzzle
         .mode.infinity
