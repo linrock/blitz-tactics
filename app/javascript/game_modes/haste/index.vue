@@ -23,7 +23,6 @@
           .player-name {{ playerName }}
 
     .action-buttons
-      a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
       a.blue-button(href="/haste") Play again
 
   .make-a-move(v-if="!hasStarted") Make a move to start the timer
