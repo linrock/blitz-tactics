@@ -239,6 +239,46 @@ export default {
       }
     },
 
+    showSolutionWithButtonState(puzzleData, button) {
+      // Store original button state
+      const originalText = button.textContent
+      
+      // Update button to show progress state
+      button.textContent = 'Showing solution...'
+      button.style.opacity = '0.5'
+      button.disabled = true
+      
+      // Find the corresponding miniboard and replay the solution
+      const puzzleId = puzzleData.puzzle?.id
+      if (puzzleId) {
+        const miniboard = document.querySelector(`#missed-puzzles-section .mini-chessboard[data-puzzle-id="${puzzleId}"]`)
+        if (miniboard) {
+          // Use the puzzle lines for the solution
+          const solutionLines = puzzleData.puzzle?.lines
+          if (solutionLines) {
+            this.replaySolutionOnMiniboardWithCallback(miniboard, solutionLines, () => {
+              // Reset button state when solution playback is complete
+              button.textContent = originalText || 'Show solution'
+              button.style.opacity = '1'
+              button.disabled = false
+            })
+          } else {
+            console.log('No solution lines found for puzzle:', puzzleId)
+            // Reset button state on error
+            button.textContent = originalText || 'Show solution'
+            button.style.opacity = '1'
+            button.disabled = false
+          }
+        } else {
+          console.log('Miniboard not found for puzzle:', puzzleId)
+          // Reset button state on error
+          button.textContent = originalText || 'Show solution'
+          button.style.opacity = '1'
+          button.disabled = false
+        }
+      }
+    },
+
     async replaySolutionOnMiniboard(miniboardEl, solutionLines) {
       if (!solutionLines) {
         console.log('No solution lines available')
@@ -264,6 +304,34 @@ export default {
       this.playMovesInMiniboard(miniboardEl, initialFen, solutionMoves)
     },
 
+    async replaySolutionOnMiniboardWithCallback(miniboardEl, solutionLines, onComplete) {
+      if (!solutionLines) {
+        console.log('No solution lines available')
+        onComplete()
+        return
+      }
+
+      const solutionMoves = this.extractSolutionMoves(solutionLines)
+      
+      if (solutionMoves.length === 0) {
+        console.log('No solution moves found')
+        onComplete()
+        return
+      }
+
+      console.log('Playing solution moves:', solutionMoves)
+      
+      const initialFen = miniboardEl.getAttribute('data-fen')
+      if (!initialFen) {
+        console.error('No initial FEN found for miniboard')
+        onComplete()
+        return
+      }
+
+      // Play the solution moves with callback when complete
+      this.playMovesInMiniboardWithCallback(miniboardEl, initialFen, solutionMoves, onComplete)
+    },
+
     playMovesInMiniboard(miniboard, initialFen, moves) {
       if (moves.length === 0) {
         return
@@ -286,6 +354,39 @@ export default {
           currentMoveIndex++
           
           setTimeout(playNextMove, 700) // 0.7 second delay between moves
+        }
+      }
+      
+      // Start playing moves after reset completes
+      setTimeout(playNextMove, 200)
+    },
+
+    playMovesInMiniboardWithCallback(miniboard, initialFen, moves, onComplete) {
+      if (moves.length === 0) {
+        onComplete()
+        return
+      }
+
+      // Reset board to original position before playing solution
+      this.resetBoardToOriginalPosition(miniboard)
+      
+      let currentMoveIndex = 0
+      
+      const playNextMove = () => {
+        if (currentMoveIndex < moves.length) {
+          // Clear initial move highlighting before the first solution move
+          if (currentMoveIndex === 0) {
+            this.clearExistingHighlights(miniboard)
+          }
+          
+          const moveUci = moves[currentMoveIndex]
+          this.animateMoveOnMiniboard(miniboard, moveUci)
+          currentMoveIndex++
+          
+          setTimeout(playNextMove, 700) // 0.7 second delay between moves
+        } else {
+          // All moves completed, call the callback
+          onComplete()
         }
       }
       
@@ -619,15 +720,22 @@ export default {
       // Add click handlers for solution buttons
       const solutionButtons = document.querySelectorAll('#missed-puzzles-section .view-solution-btn')
       console.log('Found solution buttons:', solutionButtons.length)
-      solutionButtons.forEach((button: HTMLElement) => {
-        button.addEventListener('click', (e) => {
+      solutionButtons.forEach((button) => {
+        const buttonEl = button as HTMLButtonElement
+        buttonEl.addEventListener('click', (e) => {
           e.preventDefault()
           console.log('Solution button clicked')
-          const puzzleIndex = parseInt(button.dataset.puzzleIndex || '0')
+          
+          // Prevent multiple clicks while playing solution
+          if (buttonEl.disabled) {
+            return
+          }
+          
+          const puzzleIndex = parseInt(buttonEl.dataset.puzzleIndex || '0')
           const puzzleData = this.failedPuzzles[puzzleIndex]
           console.log('Puzzle index:', puzzleIndex, 'Puzzle data:', puzzleData)
           if (puzzleData) {
-            this.showSolution(puzzleData)
+            this.showSolutionWithButtonState(puzzleData, buttonEl)
           }
         })
       })

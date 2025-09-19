@@ -157,15 +157,21 @@
 
           .puzzle-actions
             .view-solution-btn
-              background: rgba(74, 144, 226, 0.2)
-              border: 1px solid rgba(74, 144, 226, 0.4)
-              color: #4a90e2
+              background: rgba(27, 73, 171, 0.8)
+              color: white
+              border: none
               padding: 6px 12px
               border-radius: 4px
-              font-size: 11px
+              font-size: 12px
               cursor: pointer
-              transition: all 0.2s ease
+              transition: all 0.2s ease, opacity 0.3s ease
+              opacity: 1
+              min-width: 120px
+              text-align: center
 
               &:hover
-                background: rgba(74, 144, 226, 0.3)
-                border-color: rgba(74, 144, 226, 0.6)
+                background: rgba(27, 73, 171, 1)
+
+              &:disabled
+                opacity: 0.5
+                cursor: not-allowed
