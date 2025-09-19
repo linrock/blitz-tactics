@@ -54,7 +54,7 @@ class UsersController < ApplicationController
   def update_board
     board = current_user.user_chessboard || current_user.build_user_chessboard
     board.update! board_params
-    redirect_to "/"
+    redirect_to "/customize", notice: "Board customization saved!"
   end
 
   private

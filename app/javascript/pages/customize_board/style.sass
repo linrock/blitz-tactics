@@ -125,11 +125,12 @@
       width: 100%
 
       input[type="radio"]
-        margin-bottom: 8px
+        display: none  // Hide the radio button
 
     &:has(input[type="radio"]:checked)
       border-color: colors.$blue-button-bg
-      background: rgba(81, 183, 255, 0.1)
+      background: rgba(81, 183, 255, 0.2)
+      box-shadow: 0 0 10px rgba(81, 183, 255, 0.3)
 
     .piece-set-preview
       display: flex

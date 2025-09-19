@@ -167,6 +167,20 @@ export default class CustomizeBoard {
       }
     })
 
+    // Set up click handler for piece set options
+    this.el.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement
+      // Check if click is on piece set option area
+      const pieceSetOption = target.closest('.piece-set-option')
+      if (pieceSetOption) {
+        const radioButton = pieceSetOption.querySelector('input[name="board[piece_set]"]') as HTMLInputElement
+        if (radioButton && !radioButton.checked) {
+          radioButton.checked = true
+          this._updatePieceSetPreview({ target: radioButton } as Event & { target: HTMLInputElement })
+        }
+      }
+    })
+
     // Set up keypress and keyup handlers for hex inputs
     this.el.addEventListener('keypress', (e) => {
       const target = e.target as HTMLElement
@@ -281,34 +295,37 @@ export default class CustomizeBoard {
     pieces.forEach(pieceCode => {
       const svgElement = pieceSetContainer.querySelector(`.piece-svg[data-piece="${pieceCode}"]`)
       const pieceClass = pieceMap[pieceCode]
-      const boardPiece = document.querySelector(`.cg-wrap piece.${pieceClass}`)
+      const boardPieces = document.querySelectorAll(`.cg-wrap piece.${pieceClass}`)
       
-      if (svgElement && boardPiece && svgElement.innerHTML.trim()) {
-        // Replace the piece's background with the SVG content
-        boardPiece.innerHTML = svgElement.innerHTML
-        const pieceEl = boardPiece as HTMLElement
-        pieceEl.style.backgroundImage = 'none'
-        
-        // Remove any classes that might cause opacity issues
-        pieceEl.classList.remove('fading', 'ghost')
-        
-        // Ensure full opacity for the piece element itself
-        pieceEl.style.opacity = '1'
-        
-        // Ensure the SVG fills the piece container and has full opacity
-        const svg = pieceEl.querySelector('svg')
-        if (svg) {
-          svg.style.width = '100%'
-          svg.style.height = '100%'
-          svg.style.display = 'block'
-          svg.style.opacity = '1'
+      if (svgElement && svgElement.innerHTML.trim()) {
+        // Update all pieces of this type (there might be multiple pawns, etc.)
+        boardPieces.forEach(boardPiece => {
+          // Replace the piece's background with the SVG content
+          boardPiece.innerHTML = svgElement.innerHTML
+          const pieceEl = boardPiece as HTMLElement
+          pieceEl.style.backgroundImage = 'none'
           
-          // Also ensure any images within the SVG have full opacity
-          const images = svg.querySelectorAll('image')
-          images.forEach(img => {
-            ;(img as unknown as HTMLElement).style.opacity = '1'
-          })
-        }
+          // Remove any classes that might cause opacity issues
+          pieceEl.classList.remove('fading', 'ghost')
+          
+          // Ensure full opacity for the piece element itself
+          pieceEl.style.opacity = '1'
+          
+          // Ensure the SVG fills the piece container and has full opacity
+          const svg = pieceEl.querySelector('svg')
+          if (svg) {
+            svg.style.width = '100%'
+            svg.style.height = '100%'
+            svg.style.display = 'block'
+            svg.style.opacity = '1'
+            
+            // Also ensure any images within the SVG have full opacity
+            const images = svg.querySelectorAll('image')
+            images.forEach(img => {
+              ;(img as unknown as HTMLElement).style.opacity = '1'
+            })
+          }
+        })
       }
     })
   }
