@@ -194,11 +194,13 @@ export default {
         const mistakes = puzzleData.mistakes || 0
         const isSolved = puzzleData.solved
         
-        // Calculate puzzle number (only for solved puzzles, in reverse order)
+        // Calculate puzzle number (only for solved puzzles, in reverse order: 7, 6, 5, 4, 3, 2, 1)
         let puzzleNumber = null
         if (isSolved) {
-          const solvedIndex = solvedPuzzles.reverse().findIndex(p => p.puzzle?.id === puzzleId)
-          puzzleNumber = solvedPuzzles.length - solvedIndex
+          // Find the original solve order index
+          const originalSolvedIndex = solvedPuzzles.findIndex(p => p.puzzle?.id === puzzleId)
+          // Reverse the numbering: if 7 puzzles solved, first solved = 7, last solved = 1
+          puzzleNumber = solvedPuzzles.length - originalSolvedIndex
         }
         
         let initialMove = puzzleData.puzzle?.initialMove

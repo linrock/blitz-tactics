@@ -139,6 +139,7 @@
         min-width: 0
         box-sizing: border-box
         position: relative
+        min-height: 320px
 
         .puzzle-number
           position: absolute
@@ -181,6 +182,11 @@
 
         .puzzle-info
           text-align: center
+          display: flex
+          flex-direction: column
+          justify-content: space-between
+          flex-grow: 1
+          width: 100%
 
           .puzzle-meta
             display: flex
@@ -204,6 +210,8 @@
               font-style: italic
 
           .puzzle-actions
+            margin-top: auto
+            
             .view-solution-btn
               background: rgba(27, 73, 171, 0.8)
               color: white
