@@ -71,10 +71,13 @@ export default {
       highScore: 0,
       puzzleIdsFailed: [] as number[],
       failedPuzzles: [] as any[],
+      playedPuzzles: [] as any[],
       highScores: [] as [string, number][],
       currentPuzzle: null as any,
       currentPuzzleData: null as any,
       originalBoardStates: new Map(),
+      currentPuzzleStartTime: null as number | null,
+      currentPuzzleMistakes: 0,
     }
   },
 
@@ -92,10 +95,33 @@ export default {
       this.hasFinished = true
       dispatch('timer:stop')
       
-      // Show the missed puzzles section if there are any
-      console.log('Game over - failed puzzles:', this.failedPuzzles.length)
-      if (this.failedPuzzles.length > 0) {
-        this.showMissedPuzzlesSection()
+      // Add the current unsolved puzzle to the list if there is one and it hasn't been added already
+      if (this.currentPuzzle) {
+        const alreadyAdded = this.playedPuzzles.some(p => p.puzzle?.id === this.currentPuzzle.id)
+        if (!alreadyAdded) {
+          // Calculate time spent on current puzzle
+          const endTime = Date.now()
+          const solveTimeMs = this.currentPuzzleStartTime ? endTime - this.currentPuzzleStartTime : 0
+          const solveTimeSeconds = Math.round(solveTimeMs / 100) / 10 // Round to 1 decimal place
+          
+          this.playedPuzzles.push({
+            puzzle: this.currentPuzzle,
+            puzzle_data: this.currentPuzzleData,
+            solveTime: solveTimeSeconds, // Time spent even if not solved
+            mistakes: this.currentPuzzleMistakes,
+            puzzleNumber: null, // No number for unsolved puzzle
+            solved: false
+          })
+          console.log('Added unsolved puzzle:', this.currentPuzzle.id, 'Time:', solveTimeSeconds + 's', 'Mistakes:', this.currentPuzzleMistakes)
+        } else {
+          console.log('Current puzzle already in played list, skipping')
+        }
+      }
+      
+      // Show the played puzzles section if there are any
+      console.log('Game over - played puzzles:', this.playedPuzzles.length)
+      if (this.playedPuzzles.length > 0) {
+        this.showPlayedPuzzlesSection()
       }
     }
 
@@ -109,7 +135,9 @@ export default {
         // Store current puzzle data for failed puzzle tracking
         this.currentPuzzle = data.puzzle
         this.currentPuzzleData = data
-        console.log('Puzzle loaded:', data.puzzle.id, data.puzzle)
+        this.currentPuzzleStartTime = Date.now()
+        this.currentPuzzleMistakes = 0 // Reset mistakes for new puzzle
+        console.log('Puzzle loaded:', data.puzzle.id, 'Start time:', this.currentPuzzleStartTime)
       },
       'puzzle:hint': hint => {
         this.numHints -= 1
@@ -133,6 +161,24 @@ export default {
         if (puzzle && puzzle.id) {
           this.solvedPuzzleIds.push(puzzle.id)
           
+          // Calculate solve time
+          const endTime = Date.now()
+          const solveTimeMs = this.currentPuzzleStartTime ? endTime - this.currentPuzzleStartTime : 0
+          const solveTimeSeconds = Math.round(solveTimeMs / 100) / 10 // Round to 1 decimal place
+          
+          // Track this puzzle in the played puzzles list with timing data
+          if (this.currentPuzzle) {
+            this.playedPuzzles.push({
+              puzzle: this.currentPuzzle,
+              puzzle_data: this.currentPuzzleData,
+              solveTime: solveTimeSeconds,
+              mistakes: this.currentPuzzleMistakes,
+              puzzleNumber: this.playedPuzzles.length + 1, // Will be reversed later
+              solved: true
+            })
+            console.log('Added solved puzzle:', this.currentPuzzle.id, 'Time:', solveTimeSeconds + 's', 'Mistakes:', this.currentPuzzleMistakes, 'Total played:', this.playedPuzzles.length)
+          }
+          
           // Send puzzle ID to server immediately for real-time tracking
           try {
             await this.trackSolvedPuzzle(puzzle.id)
@@ -151,6 +197,10 @@ export default {
         console.log('Move failed - current puzzle:', this.currentPuzzle)
         console.log('Move failed - current puzzle data:', this.currentPuzzleData)
         
+        // Track mistakes for current puzzle
+        this.currentPuzzleMistakes++
+        console.log('Mistake made on puzzle:', this.currentPuzzle?.id, 'Total mistakes:', this.currentPuzzleMistakes)
+        
         if (!this.hasStarted) {
           this.hasStarted = true
         }
@@ -161,13 +211,22 @@ export default {
         this.numLives -= 1
         this.puzzleIdsFailed.push(this.currentPuzzleId)
         
-        // Store the full puzzle data for the missed puzzle
+        // Calculate time spent on failed puzzle
+        const endTime = Date.now()
+        const solveTimeMs = this.currentPuzzleStartTime ? endTime - this.currentPuzzleStartTime : 0
+        const solveTimeSeconds = Math.round(solveTimeMs / 100) / 10 // Round to 1 decimal place
+        
+        // Store the full puzzle data for the failed puzzle with timing and mistakes
         if (this.currentPuzzle) {
-          this.failedPuzzles.push({
+          this.playedPuzzles.push({
             puzzle: this.currentPuzzle,
-            puzzle_data: this.currentPuzzleData
+            puzzle_data: this.currentPuzzleData,
+            solveTime: solveTimeSeconds,
+            mistakes: this.currentPuzzleMistakes,
+            puzzleNumber: null, // No number for failed puzzles
+            solved: false
           })
-          console.log('Added failed puzzle:', this.currentPuzzle.id, 'Total failed:', this.failedPuzzles.length)
+          console.log('Added failed puzzle:', this.currentPuzzle.id, 'Time:', solveTimeSeconds + 's', 'Mistakes:', this.currentPuzzleMistakes, 'Total played:', this.playedPuzzles.length)
         } else {
           console.log('No current puzzle available to add to failed puzzles')
         }
@@ -598,23 +657,38 @@ export default {
       return moves
     },
 
-    showMissedPuzzlesSection() {
-      const missedSection = document.getElementById('missed-puzzles-section')
-      const missedList = document.getElementById('missed-puzzles-list')
+    showPlayedPuzzlesSection() {
+      const playedSection = document.getElementById('missed-puzzles-section')
+      const playedList = document.getElementById('missed-puzzles-list')
       
-      if (!missedSection || !missedList) return
+      if (!playedSection || !playedList) return
       
       // Clear existing content
-      missedList.innerHTML = ''
+      playedList.innerHTML = ''
       
-      // Create HTML for each missed puzzle
-      this.failedPuzzles.slice(0, 3).forEach((puzzleData, index) => {
+      // Separate solved and unsolved puzzles
+      const solvedPuzzles = this.playedPuzzles.filter(p => p.solved)
+      const unsolvedPuzzles = this.playedPuzzles.filter(p => !p.solved)
+      
+      // Show unsolved puzzle first (most recent), then solved puzzles in reverse order
+      const allPuzzlesToShow = [...unsolvedPuzzles.reverse(), ...solvedPuzzles.reverse()]
+      
+      // Create HTML for each played puzzle (in reverse order, latest first)
+      allPuzzlesToShow.forEach((puzzleData, index) => {
         console.log('Creating puzzle item for index', index, 'puzzleData:', puzzleData)
-        console.log('Puzzle object:', puzzleData.puzzle)
-        console.log('Puzzle data:', puzzleData.puzzle_data)
-        console.log('Puzzle ID:', puzzleData.puzzle?.puzzle_id || puzzleData.puzzle?.id)
         
         const puzzleId = puzzleData.puzzle?.id || 'Unknown'
+        const solveTime = puzzleData.solveTime
+        const mistakes = puzzleData.mistakes || 0
+        const isSolved = puzzleData.solved
+        
+        // Calculate puzzle number (only for solved puzzles, in reverse order)
+        let puzzleNumber = null
+        if (isSolved) {
+          const originalSolvedIndex = solvedPuzzles.findIndex(p => p.puzzle?.id === puzzleId)
+          // Reverse the numbering: if 7 puzzles solved, first solved = 7, last solved = 1
+          puzzleNumber = solvedPuzzles.length - originalSolvedIndex
+        }
         
         // Use the actual property names from the puzzle object
         const initialFen = puzzleData.puzzle?.fen
@@ -641,13 +715,37 @@ export default {
         }
         
         console.log('Puzzle ID:', puzzleId)
+        console.log('Solve Time:', solveTime)
+        console.log('Mistakes:', mistakes)
+        console.log('Is Solved:', isSolved)
         console.log('Initial FEN:', initialFen)
         console.log('Final initial move UCI:', initialMoveUci)
-        console.log('Puzzle object keys:', Object.keys(puzzleData.puzzle || {}))
+        
+        // Find the original index for solution button data
+        const originalIndex = this.playedPuzzles.findIndex(p => p.puzzle?.id === puzzleId)
+        
+        // Build conditional HTML elements
+        let numberBadgeHtml = ''
+        if (puzzleNumber) {
+          numberBadgeHtml = `<div class="puzzle-number">${puzzleNumber}</div>`
+        }
+        
+        let mistakeBadgeHtml = ''
+        if (mistakes > 0) {
+          mistakeBadgeHtml = `<div class="mistake-badge">${mistakes} mistake${mistakes > 1 ? 's' : ''}</div>`
+        }
+        
+        let timeDisplayHtml = ''
+        if (isSolved && solveTime) {
+          timeDisplayHtml = `<div class="solve-time">Solved in ${solveTime}s</div>`
+        }
+        // For unsolved puzzles, leave timeDisplayHtml empty (no text shown)
         
         const puzzleItem = document.createElement('div')
         puzzleItem.className = 'missed-puzzle-item'
         puzzleItem.innerHTML = `
+          ${numberBadgeHtml}
+          ${mistakeBadgeHtml}
           <div class="puzzle-miniboard">
             <a href="/puzzles/${puzzleId}" class="miniboard-link">
               <div class="mini-chessboard" 
@@ -659,32 +757,35 @@ export default {
             </a>
           </div>
           <div class="puzzle-info">
-            <div class="puzzle-meta">Puzzle ${puzzleId}</div>
+            <div class="puzzle-meta">
+              <div class="puzzle-id">Puzzle ${puzzleId}</div>
+              ${timeDisplayHtml}
+            </div>
             <div class="puzzle-actions">
-              <button class="view-solution-btn" data-puzzle-index="${index}">Show Solution</button>
+              <button class="view-solution-btn" data-puzzle-index="${originalIndex}">Show Solution</button>
             </div>
           </div>
         `
-        missedList.appendChild(puzzleItem)
+        playedList.appendChild(puzzleItem)
       })
       
       // Show the section
-      missedSection.style.display = 'block'
+      playedSection.style.display = 'block'
       
       // Prevent horizontal scrollbar on body
       document.body.style.overflowX = 'hidden'
       
       // Initialize miniboards
-      this.initializeMissedPuzzleMiniboards()
+      this.initializePlayedPuzzleMiniboards()
       
       // Add click handlers for solution buttons (with a small delay to ensure DOM is ready)
       setTimeout(() => {
-        this.addSolutionButtonHandlers()
+        this.addPlayedPuzzleSolutionButtonHandlers()
       }, 100)
     },
 
-    initializeMissedPuzzleMiniboards() {
-      // Initialize miniboards for missed puzzles
+    initializePlayedPuzzleMiniboards() {
+      // Initialize miniboards for played puzzles
       const miniboards = document.querySelectorAll('#missed-puzzles-section .mini-chessboard:not([data-initialized])')
       miniboards.forEach((el: HTMLElement) => {
         const { fen, initialMove, flip } = el.dataset
@@ -716,7 +817,7 @@ export default {
       })
     },
 
-    addSolutionButtonHandlers() {
+    addPlayedPuzzleSolutionButtonHandlers() {
       // Add click handlers for solution buttons
       const solutionButtons = document.querySelectorAll('#missed-puzzles-section .view-solution-btn')
       console.log('Found solution buttons:', solutionButtons.length)
@@ -732,7 +833,7 @@ export default {
           }
           
           const puzzleIndex = parseInt(buttonEl.dataset.puzzleIndex || '0')
-          const puzzleData = this.failedPuzzles[puzzleIndex]
+          const puzzleData = this.playedPuzzles[puzzleIndex]
           console.log('Puzzle index:', puzzleIndex, 'Puzzle data:', puzzleData)
           if (puzzleData) {
             this.showSolutionWithButtonState(puzzleData, buttonEl)
