@@ -37,9 +37,13 @@ class RookEndgamePuzzle
 
   # Create a random level using ThemedLevelCreator
   def self.random_level(total_puzzles = 100)
-    # Use ThemedLevelCreator to generate puzzle data
-    puzzle_data = ThemedLevelCreator.create_theme_puzzle_set_fast(
+    # Randomly choose a color to move for the entire puzzle set
+    color_to_move = %w[w b].sample
+    
+    # Use ThemedLevelCreator to generate puzzle data with consistent color
+    puzzle_data = ThemedLevelCreator.create_theme_puzzle_set_fast_single_color(
       theme: "rookEndgame",
+      color_to_move: color_to_move,
       puzzle_counts: DEFAULT_ROOK_ENDGAME_PUZZLE_COUNTS,
       pools_dir: "data/themes/"
     )
