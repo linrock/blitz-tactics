@@ -87,3 +87,85 @@
             width: 16px
             height: 16px
             fill: currentColor
+
+// Missed puzzles section styling (outside Vue app, like infinity underboard)
+.missed-puzzles-section
+  margin-top: 40px
+  margin-bottom: 4rem
+  padding: 30px 0
+  background: rgba(0, 0, 0, 0.2)
+  width: 100%
+  max-width: 100%
+  overflow-x: hidden
+  box-sizing: border-box
+
+  .container
+    max-width: 100%
+    width: 100%
+    overflow-x: hidden
+    box-sizing: border-box
+    padding: 0 20px
+    
+    h3
+      text-align: center
+      margin-bottom: 30px
+      color: rgba(255, 255, 255, 0.9)
+
+    .missed-puzzles-list
+      display: grid
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+      gap: 20px
+      max-width: 800px
+      margin: 0 auto
+      padding: 0
+      justify-items: center
+      box-sizing: border-box
+      width: 100%
+      overflow-x: hidden
+
+      .missed-puzzle-item
+        display: flex
+        flex-direction: column
+        align-items: center
+        padding: 15px
+        background: rgba(255, 255, 255, 0.05)
+        border-radius: 8px
+        border: 1px solid rgba(255, 255, 255, 0.1)
+        width: 100%
+        max-width: 200px
+        min-width: 0
+        box-sizing: border-box
+
+        .puzzle-miniboard
+          margin-bottom: 10px
+          
+          .miniboard-link
+            display: block
+            text-decoration: none
+          
+          .mini-chessboard
+            width: 120px
+            height: 120px
+
+        .puzzle-info
+          text-align: center
+
+          .puzzle-meta
+            font-size: 12px
+            color: rgba(255, 255, 255, 0.6)
+            margin-bottom: 8px
+
+          .puzzle-actions
+            .view-solution-btn
+              background: rgba(74, 144, 226, 0.2)
+              border: 1px solid rgba(74, 144, 226, 0.4)
+              color: #4a90e2
+              padding: 6px 12px
+              border-radius: 4px
+              font-size: 11px
+              cursor: pointer
+              transition: all 0.2s ease
+
+              &:hover
+                background: rgba(74, 144, 226, 0.3)
+                border-color: rgba(74, 144, 226, 0.6)

@@ -5,6 +5,12 @@ class PuzzlesController < ApplicationController
   def index
     if params[:puzzle_ids]
       puzzle_ids = params[:puzzle_ids].split(',').take(100)
+      
+      # If only one puzzle ID, redirect to show action (same as /p/:id)
+      if puzzle_ids.length == 1
+        redirect_to "/p/#{puzzle_ids.first}" and return
+      end
+      
       if puzzle_ids.any? {|p| p =~ /[a-z]/i }
         # Hack to handle lichess v2 puzzles for puzzle sets
         @puzzles = LichessV2Puzzle.find_by_sorted_lichess(puzzle_ids)
