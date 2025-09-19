@@ -13,28 +13,29 @@ section.game-mode.infinity-mode
     - if current_user
       .recent-puzzles-section#recent-puzzles-section
         h3 Recent Infinity Puzzles
-        .recent-puzzles-list#recent-puzzles-list
-          - if @recent_puzzles.any?
-            - @recent_puzzles.each_with_index do |puzzle_data, i|
-              - puzzle = puzzle_data[:puzzle]
-              - puzzle_data_json = puzzle_data[:puzzle_data]
-              - solution_lines = puzzle_data[:solution_lines]
-              - solved_at = puzzle_data[:solved_at]
-              - difficulty = puzzle_data[:difficulty]
-              .recent-puzzle-item(data-puzzle-id=puzzle.puzzle_id)
-                .puzzle-miniboard
-                  = linked_puzzle_miniboard(puzzle)
-                .puzzle-info
-                  .puzzle-meta
-                    .puzzle-time= time_ago_in_words(solved_at) + " ago"
-                    .puzzle-difficulty Difficulty: #{difficulty}
-                  .puzzle-actions
-                    button.view-solution-btn(
-                      data-puzzle-id=puzzle.puzzle_id
-                      data-initial-fen=puzzle.initial_fen
-                      data-solution-lines=solution_lines.to_json
-                    ) Show solution
-          - else
-            .no-recent-puzzles No puzzles solved yet. Start solving to see them here!
+        .container
+          .recent-puzzles-list#recent-puzzles-list
+            - if @recent_puzzles.any?
+              - @recent_puzzles.each_with_index do |puzzle_data, i|
+                - puzzle = puzzle_data[:puzzle]
+                - puzzle_data_json = puzzle_data[:puzzle_data]
+                - solution_lines = puzzle_data[:solution_lines]
+                - solved_at = puzzle_data[:solved_at]
+                - difficulty = puzzle_data[:difficulty]
+                .recent-puzzle-item(data-puzzle-id=puzzle.puzzle_id)
+                  .puzzle-miniboard
+                    = linked_puzzle_miniboard(puzzle)
+                  .puzzle-info
+                    .puzzle-meta
+                      .puzzle-time= time_ago_in_words(solved_at) + " ago"
+                      .puzzle-difficulty Difficulty: #{difficulty}
+                    .puzzle-actions
+                      button.view-solution-btn(
+                        data-puzzle-id=puzzle.puzzle_id
+                        data-initial-fen=puzzle.initial_fen
+                        data-solution-lines=solution_lines.to_json
+                      ) Show solution
+            - else
+              .no-recent-puzzles No puzzles solved yet. Start solving to see them here!
 
 = render 'shared/main_footer'
