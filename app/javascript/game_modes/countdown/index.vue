@@ -412,45 +412,8 @@ export default {
           return
         }
 
-        // Debug the solution lines structure
-        console.log('Raw solution lines:', solutionLines)
-        console.log('Type of solution lines:', typeof solutionLines)
-        console.log('Is array:', Array.isArray(solutionLines))
-        
-        // Extract moves from the solution lines
-        let moves = []
-        if (Array.isArray(solutionLines)) {
-          // If it's an array, get the first line
-          const firstLine = solutionLines[0]
-          console.log('First line:', firstLine, 'Type:', typeof firstLine)
-          if (typeof firstLine === 'string') {
-            moves = firstLine.split(' ').filter(move => move.trim())
-          } else if (firstLine && typeof firstLine === 'object') {
-            // Check if the object has moves property
-            if (firstLine.moves) {
-              moves = Array.isArray(firstLine.moves) ? firstLine.moves : firstLine.moves.split(' ').filter(move => move.trim())
-            } else if (firstLine.line) {
-              moves = typeof firstLine.line === 'string' ? firstLine.line.split(' ').filter(move => move.trim()) : []
-            }
-          }
-        } else if (typeof solutionLines === 'string') {
-          moves = solutionLines.split(' ').filter(move => move.trim())
-        } else if (solutionLines && typeof solutionLines === 'object') {
-          // Check various possible properties
-          if (solutionLines.moves) {
-            moves = Array.isArray(solutionLines.moves) ? solutionLines.moves : solutionLines.moves.split(' ').filter(move => move.trim())
-          } else if (solutionLines.line) {
-            moves = typeof solutionLines.line === 'string' ? solutionLines.line.split(' ').filter(move => move.trim()) : []
-          } else if (solutionLines[0]) {
-            // Might be an object that looks like an array
-            const firstItem = solutionLines[0]
-            if (typeof firstItem === 'string') {
-              moves = firstItem.split(' ').filter(move => move.trim())
-            }
-          }
-        }
-        
-        console.log('Extracted moves:', moves)
+        // Extract moves from the solution tree structure using the same logic as haste mode
+        const moves = this.extractSolutionMoves(solutionLines)
         console.log('Solution moves to replay:', moves)
 
         if (moves.length === 0) {
@@ -534,6 +497,33 @@ export default {
         console.error('Error replaying solution:', error)
         onComplete()
       }
+    },
+
+    extractSolutionMoves(solutionLines) {
+      // Extract moves from the solution tree structure
+      const moves = []
+      
+      if (solutionLines && typeof solutionLines === 'object') {
+        // Recursively traverse the solution tree to collect moves
+        const traverseLines = (lines) => {
+          if (lines && typeof lines === 'object') {
+            for (const [moveUci, nextLines] of Object.entries(lines)) {
+              if (moveUci && moveUci.match(/^[a-h][1-8][a-h][1-8]/)) {
+                moves.push(moveUci)
+                // Only follow the first line of the solution
+                if (nextLines && typeof nextLines === 'object') {
+                  traverseLines(nextLines)
+                }
+                break // Only take the first move from each level
+              }
+            }
+          }
+        }
+        
+        traverseLines(solutionLines)
+      }
+      
+      return moves
     }
   },
 
