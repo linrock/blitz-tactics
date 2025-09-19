@@ -90,3 +90,91 @@
       .score
         font-size: 28px
         margin-top: 8px
+
+// Played puzzles section styling (outside Vue app, similar to three mode)
+.played-puzzles-section
+  margin-top: 40px
+  margin-bottom: 4rem
+  padding: 30px 0
+  background: rgba(0, 0, 0, 0.2)
+  width: 100%
+  max-width: 100%
+  overflow-x: hidden
+  box-sizing: border-box
+
+  .container
+    max-width: 100%
+    width: 100%
+    overflow-x: hidden
+    box-sizing: border-box
+    padding: 0 20px
+    
+    h3
+      text-align: center
+      margin-bottom: 30px
+      color: rgba(255, 255, 255, 0.9)
+
+    .played-puzzles-list
+      display: grid
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))
+      gap: 30px
+      max-width: 1000px
+      margin: 0 auto
+      padding: 0
+      justify-items: center
+      box-sizing: border-box
+      width: 100%
+      overflow-x: hidden
+
+      .played-puzzle-item
+        display: flex
+        flex-direction: column
+        align-items: center
+        padding: 20px
+        background: rgba(255, 255, 255, 0.05)
+        border-radius: 8px
+        border: 1px solid rgba(255, 255, 255, 0.1)
+        width: 100%
+        max-width: 280px
+        min-width: 0
+        box-sizing: border-box
+
+        .puzzle-miniboard
+          margin-bottom: 10px
+          
+          .miniboard-link
+            display: block
+            text-decoration: none
+          
+          .mini-chessboard
+            width: 200px
+            height: 200px
+
+        .puzzle-info
+          text-align: center
+
+          .puzzle-meta
+            font-size: 12px
+            color: rgba(255, 255, 255, 0.6)
+            margin-bottom: 8px
+
+          .puzzle-actions
+            .view-solution-btn
+              background: rgba(27, 73, 171, 0.8)
+              color: white
+              border: none
+              padding: 6px 12px
+              border-radius: 4px
+              font-size: 12px
+              cursor: pointer
+              transition: all 0.2s ease, opacity 0.3s ease
+              opacity: 1
+              min-width: 120px
+              text-align: center
+
+              &:hover
+                background: rgba(27, 73, 171, 1)
+
+              &:disabled
+                opacity: 0.5
+                cursor: not-allowed
