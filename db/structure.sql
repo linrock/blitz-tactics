@@ -1219,7 +1219,8 @@ CREATE TABLE public.user_chessboards (
     opponent_from_square_color character varying,
     opponent_to_square_color character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    piece_set character varying
 );
 
 
@@ -2261,6 +2262,13 @@ CREATE INDEX index_solved_puzzles_on_user_id ON public.solved_puzzles USING btre
 
 
 --
+-- Name: index_solved_puzzles_on_user_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_solved_puzzles_on_user_id_and_created_at ON public.solved_puzzles USING btree (user_id, created_at);
+
+
+--
 -- Name: index_solved_puzzles_on_user_id_and_puzzle_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2402,6 +2410,7 @@ ALTER TABLE ONLY public.solved_puzzles
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250919032532'),
 ('20250918195258'),
 ('20250918032709'),
 ('20250821173256'),
@@ -2413,6 +2422,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250821043546'),
 ('20250821042209'),
 ('20250821042208'),
+('20250123000000'),
 ('20250122000000'),
 ('20250120000000'),
 ('20250118220001'),
