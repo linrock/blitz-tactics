@@ -1,12 +1,13 @@
 .user-profile.customize-board
   .container
-    h2 Customize board colors
+    h2 Customize board colors and pieces
     h3 Click on a square to the right or edit a hex color directly
 
     .custom-board
       .left
         .chessground-board
           .chessground
+          .piece-promotion-modal-mount
       = form_tag "/customize", method: :put, class: "right"
         h4 Board squares
         .squares
@@ -61,4 +62,44 @@
           button.gray.reset-colors Reset colors
           button.blue.save-colors Save colors
 
+    h4 Piece Set
+    .piece-sets
+      - UserChessboard::PIECE_SETS.each do |piece_set|
+        .piece-set-option
+          label
+            input(
+              type="radio"
+              name="board[piece_set]"
+              value="#{piece_set}"
+              checked=((@board&.piece_set || 'cburnett') == piece_set)
+            )
+            .piece-set-preview(data-piece-set="#{piece_set}")
+              .piece-sample.white-knight(style="background-image: url('#{safe_piece_asset_path(piece_set, 'wN')}')")
+              .piece-sample.black-knight(style="background-image: url('#{safe_piece_asset_path(piece_set, 'bN')}')")
+            .piece-set-name = piece_set.humanize
+
   style(type="text/css")= @board&.to_css
+  
+  / Hidden container with embedded SVG content for all piece sets
+  .piece-svg-container(style="display: none;")
+    - UserChessboard::PIECE_SETS.each do |piece_set|
+      .piece-set-svgs(data-piece-set="#{piece_set}")
+        - pieces = ['wK', 'wQ', 'wR', 'wB', 'wN', 'wP', 'bK', 'bQ', 'bR', 'bB', 'bN', 'bP']
+        - pieces.each do |piece|
+          - begin
+            - svg_path = Rails.root.join("app/assets/images/pieces/#{piece_set}/#{piece}.svg")
+            - if File.exist?(svg_path)
+              .piece-svg(data-piece="#{piece}")
+                = raw File.read(svg_path)
+            - else
+              - # Handle special cases like mono piece set
+              - if piece_set == 'mono'
+                - mono_svg_path = Rails.root.join("app/assets/images/pieces/#{piece_set}/#{piece[1]}.svg")
+                - if File.exist?(mono_svg_path)
+                  .piece-svg(data-piece="#{piece}")
+                    = raw File.read(mono_svg_path)
+          - rescue => e
+            / Handle any file reading errors gracefully
+
+  javascript:
+    window.hastePuzzleData = #{raw @haste_puzzle&.bt_puzzle_data&.to_json};

@@ -93,3 +93,64 @@
 
       &.blue
         background: colors.$blue-button-bg
+
+// Piece set selection - moved below the board
+.piece-sets
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr))
+  gap: 15px
+  margin: 30px 0 25px 0
+  max-height: 400px
+  overflow-y: auto
+
+  .piece-set-option
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: 10px
+    border: 2px solid transparent
+    border-radius: 8px
+    background: rgba(255, 255, 255, 0.05)
+    transition: all 0.2s ease
+
+    &:hover
+      background: rgba(255, 255, 255, 0.1)
+      border-color: rgba(255, 255, 255, 0.2)
+
+    label
+      display: flex
+      flex-direction: column
+      align-items: center
+      cursor: pointer
+      width: 100%
+
+      input[type="radio"]
+        margin-bottom: 8px
+
+    &:has(input[type="radio"]:checked)
+      border-color: colors.$blue-button-bg
+      background: rgba(81, 183, 255, 0.1)
+
+    .piece-set-preview
+      display: flex
+      gap: 8px
+      margin-bottom: 8px
+
+      .piece-sample
+        width: 32px
+        height: 32px
+        background-size: contain
+        background-repeat: no-repeat
+        background-position: center
+
+        &.white-knight
+          background-image: url('../../../assets/images/pieces/cburnett/wN.svg')
+
+        &.black-knight
+          background-image: url('../../../assets/images/pieces/cburnett/bN.svg')
+
+    .piece-set-name
+      font-size: 12px
+      text-align: center
+      color: rgba(255, 255, 255, 0.8)
+      text-transform: capitalize

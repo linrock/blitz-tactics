@@ -5,6 +5,14 @@ class UserChessboard < ActiveRecord::Base
 
   HEX_REGEX = /\A#[0-9A-F]{6}\z/
 
+  PIECE_SETS = %w[
+    alpha anarcandy caliente california cardinal cburnett celtic chess7
+    chessnut companion cooke disguised dubrovny fantasy firi fresca gioco
+    governor horsey icpieces kiwen-suwi kosal leipzig letter maestro merida
+    monarchy mono mpchess pirouetti pixel reillycraig rhosgfx riohacha
+    shapes spatial staunty tatiana xkcd
+  ].freeze
+
   COLOR_FIELDS = [
     :light_square_color,
     :dark_square_color,
@@ -18,6 +26,12 @@ class UserChessboard < ActiveRecord::Base
 
   COLOR_FIELDS.each do |color|
     validates color, format: HEX_REGEX, allow_nil: true
+  end
+
+  validates :piece_set, inclusion: { in: PIECE_SETS }, allow_nil: true
+
+  def effective_piece_set
+    piece_set.present? ? piece_set : 'cburnett'
   end
 
   # returns nil if no styles defined, CSS string otherwise
@@ -135,6 +149,13 @@ class UserChessboard < ActiveRecord::Base
         "
       end
     end
+
+    # Add piece set styles
+    effective_set = effective_piece_set
+    if effective_set != 'cburnett' && PIECE_SETS.include?(effective_set)
+      add_piece_set_styles(styles, effective_set)
+    end
+
     return unless styles.length > 0
     styles.join("\n").html_safe
   end
@@ -149,7 +170,30 @@ class UserChessboard < ActiveRecord::Base
 
   def capitalize_hex_colors
     COLOR_FIELDS.each do |field|
-      send("#{field}=", send(field).upcase) if field.present?
+      if send(field).present?
+        send("#{field}=", send(field).upcase)
+      end
+    end
+  end
+
+  def add_piece_set_styles(styles, piece_set_name)
+    pieces = %w[pawn bishop knight rook queen king]
+    colors = %w[white black]
+    
+    pieces.each do |piece|
+      colors.each do |color|
+        piece_code = piece == 'knight' ? 'n' : piece[0] # knight -> n, others -> first letter
+        piece_code = color == 'white' ? "w#{piece_code.upcase}" : "b#{piece_code.upcase}"
+        
+        styles << "
+          .cg-wrap piece.#{piece}.#{color} {
+            background-image: url('/assets/pieces/#{piece_set_name}/#{piece_code}.svg') !important;
+          }
+          .mini-chessboard .piece.#{piece}.#{color} {
+            background-image: url('/assets/pieces/#{piece_set_name}/#{piece_code}.svg') !important;
+          }
+        "
+      end
     end
   end
 end

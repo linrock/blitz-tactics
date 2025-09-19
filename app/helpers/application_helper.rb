@@ -46,4 +46,21 @@ module ApplicationHelper
     
     words.map(&:capitalize).join(' ')
   end
+
+  def safe_piece_asset_path(piece_set, piece_code)
+    begin
+      asset_path("pieces/#{piece_set}/#{piece_code}.svg")
+    rescue Propshaft::MissingAssetError
+      # Handle special cases for piece sets with different naming conventions
+      case piece_set
+      when 'mono'
+        # mono uses single letter naming (N.svg instead of wN.svg/bN.svg)
+        single_letter = piece_code[1] # Extract 'N' from 'wN' or 'bN'
+        asset_path("pieces/#{piece_set}/#{single_letter}.svg")
+      else
+        # Fallback to cburnett (standard) piece set
+        asset_path("pieces/cburnett/#{piece_code}.svg")
+      end
+    end
+  end
 end

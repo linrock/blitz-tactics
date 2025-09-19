@@ -47,6 +47,7 @@ class UsersController < ApplicationController
   # GET /customize - customize user chessboard
   def customize_board
     @board = current_user.user_chessboard
+    @haste_puzzle = HastePuzzle.random
   end
 
   # PUT /customize - update user chessboard
@@ -108,7 +109,8 @@ class UsersController < ApplicationController
       :dark_square_color,
       :opponent_from_square_color,
       :opponent_to_square_color,
-      :selected_square_color
+      :selected_square_color,
+      :piece_set
     )
   end
 
