@@ -3,11 +3,19 @@
 
   .puzzles
     - @puzzles.each_with_index do |puzzle, i|
-      div(data-puzzle-id="#{puzzle.id}")
-        = linked_puzzle_miniboard(puzzle)
+      .puzzle-item(data-puzzle-id="#{puzzle.id}")
+        .puzzle-miniboard
+          = linked_puzzle_miniboard(puzzle)
         .puzzle-info
-          .puzzle-num= i + 1
-          .puzzle-mistake-info
+          .puzzle-meta
+            .puzzle-num= i + 1
+            .puzzle-mistake-info
+          .puzzle-actions
+            button.view-solution-btn(
+              data-puzzle-id=puzzle.puzzle_id
+              data-initial-fen=puzzle.initial_fen
+              data-solution-lines=puzzle.lines_tree.to_json
+            ) Show solution
     - if @puzzles.count % 3 == 2
       .blank
     - elsif @puzzles.count % 3 == 1

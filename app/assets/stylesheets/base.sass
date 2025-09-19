@@ -401,3 +401,78 @@ button
 
         &:hover
           background: rgba(108, 117, 125, 1)
+
+// Puzzle index page styling
+.puzzle-page
+  .puzzles
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))
+    gap: 30px
+    max-width: 1000px
+    margin: 20px auto
+    padding: 0
+
+  .puzzle-item
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: 20px
+    background: rgba(255, 255, 255, 0.05)
+    border-radius: 8px
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    text-align: center
+    gap: 10px
+
+    .puzzle-miniboard
+      flex-shrink: 0
+
+      .miniboard-link
+        transition: all 0.2s ease
+
+        &:hover
+          box-shadow: 0 4px 12px rgba(255, 232, 0, 0.3)
+
+      .mini-chessboard
+        width: 200px
+        height: 200px
+
+    .puzzle-info
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 10px
+
+      .puzzle-meta
+        display: flex
+        flex-direction: column
+        gap: 5px
+
+        .puzzle-num
+          color: rgba(255,255,255,0.8)
+          font-size: 14px
+          font-weight: 500
+
+        .puzzle-mistake-info
+          color: rgba(255,255,255,0.6)
+          font-size: 12px
+
+      .puzzle-actions
+        .view-solution-btn
+          background: rgba(27, 73, 171, 0.8)
+          color: white
+          border: none
+          padding: 6px 12px
+          border-radius: 4px
+          font-size: 12px
+          cursor: pointer
+          transition: all 0.2s ease, opacity 0.3s ease
+          opacity: 1
+          min-width: 120px
+          text-align: center
+
+          &:hover
+            background: rgba(27, 73, 171, 1)
+
+          &:disabled
+            opacity: 0.5
+            cursor: not-allowed

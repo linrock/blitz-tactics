@@ -76,8 +76,8 @@ export class SolutionPlayer {
         return
       }
 
-      // Find the miniboard for this puzzle
-      const puzzleItem = button.closest('.recent-puzzle-item')
+      // Find the miniboard for this puzzle - look for both recent-puzzle-item and puzzle-item containers
+      const puzzleItem = button.closest('.recent-puzzle-item') || button.closest('.puzzle-item')
       const miniboard = puzzleItem?.querySelector('.mini-chessboard')
       
       if (!miniboard) {

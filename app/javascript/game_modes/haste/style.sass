@@ -138,6 +138,23 @@
         max-width: 280px
         min-width: 0
         box-sizing: border-box
+        position: relative
+
+        .puzzle-number
+          position: absolute
+          top: 8px
+          left: 8px
+          background: rgba(27, 73, 171, 0.9)
+          color: white
+          border-radius: 50%
+          width: 32px
+          height: 32px
+          display: flex
+          align-items: center
+          justify-content: center
+          font-weight: bold
+          font-size: 14px
+          z-index: 1
 
         .puzzle-miniboard
           margin-bottom: 10px
@@ -154,9 +171,19 @@
           text-align: center
 
           .puzzle-meta
-            font-size: 12px
-            color: rgba(255, 255, 255, 0.6)
+            display: flex
+            flex-direction: column
+            gap: 4px
             margin-bottom: 8px
+
+            .puzzle-id
+              font-size: 12px
+              color: rgba(255, 255, 255, 0.6)
+
+            .solve-time
+              font-size: 14px
+              color: rgba(255, 255, 255, 0.8)
+              font-weight: bold
 
           .puzzle-actions
             .view-solution-btn

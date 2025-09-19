@@ -54,6 +54,7 @@ export default {
       playedPuzzles: [] as any[],
       currentPuzzle: null as any,
       currentPuzzleData: null as any,
+      currentPuzzleStartTime: null as number | null,
     }
   },
 
@@ -66,7 +67,8 @@ export default {
         // Track each puzzle loaded (including puzzle data)
         this.currentPuzzle = data.puzzle
         this.currentPuzzleData = data
-        console.log('Puzzle loaded:', data.puzzle.id)
+        this.currentPuzzleStartTime = Date.now()
+        console.log('Puzzle loaded:', data.puzzle.id, 'Start time:', this.currentPuzzleStartTime)
       },
       'puzzles:status': ({ i }) => {
         this.numPuzzlesSolved = i + 1
@@ -77,13 +79,20 @@ export default {
           this.solvedPuzzleIds.push(puzzle.id)
           console.log('Added puzzle ID:', puzzle.id, 'Total solved:', this.solvedPuzzleIds.length)
           
-          // Track this puzzle in the played puzzles list
+          // Calculate solve time
+          const endTime = Date.now()
+          const solveTimeMs = this.currentPuzzleStartTime ? endTime - this.currentPuzzleStartTime : 0
+          const solveTimeSeconds = Math.round(solveTimeMs / 100) / 10 // Round to 1 decimal place
+          
+          // Track this puzzle in the played puzzles list with timing data
           if (this.currentPuzzle) {
             this.playedPuzzles.push({
               puzzle: this.currentPuzzle,
-              puzzle_data: this.currentPuzzleData
+              puzzle_data: this.currentPuzzleData,
+              solveTime: solveTimeSeconds,
+              puzzleNumber: this.playedPuzzles.length + 1 // Will be reversed later
             })
-            console.log('Added played puzzle:', this.currentPuzzle.id, 'Total played:', this.playedPuzzles.length)
+            console.log('Added played puzzle:', this.currentPuzzle.id, 'Solve time:', solveTimeSeconds + 's', 'Total played:', this.playedPuzzles.length)
           }
           
           // Send puzzle ID to server immediately for real-time tracking
@@ -147,12 +156,15 @@ export default {
       // Clear existing content
       playedList.innerHTML = ''
       
-      // Create HTML for each played puzzle
-      this.playedPuzzles.forEach((puzzleData, index) => {
+      // Create HTML for each played puzzle (in reverse order, latest first)
+      const reversedPuzzles = [...this.playedPuzzles].reverse()
+      reversedPuzzles.forEach((puzzleData, index) => {
         console.log('Creating puzzle item for index', index, 'puzzleData:', puzzleData)
         
         const puzzleId = puzzleData.puzzle?.id || 'Unknown'
         const initialFen = puzzleData.puzzle?.fen
+        const solveTime = puzzleData.solveTime || 0
+        const puzzleNumber = this.playedPuzzles.length - index // Reverse numbering: last = highest number
         let initialMove = puzzleData.puzzle?.initialMove
         let initialMoveUci = null
         
@@ -176,12 +188,18 @@ export default {
         }
         
         console.log('Puzzle ID:', puzzleId)
+        console.log('Puzzle Number:', puzzleNumber)
+        console.log('Solve Time:', solveTime + 's')
         console.log('Initial FEN:', initialFen)
         console.log('Final initial move UCI:', initialMoveUci)
+        
+        // Find the original index for solution button data
+        const originalIndex = this.playedPuzzles.findIndex(p => p.puzzle?.id === puzzleId)
         
         const puzzleItem = document.createElement('div')
         puzzleItem.className = 'played-puzzle-item'
         puzzleItem.innerHTML = `
+          <div class="puzzle-number">${puzzleNumber}</div>
           <div class="puzzle-miniboard">
             <a href="/puzzles/${puzzleId}" class="miniboard-link">
               <div class="mini-chessboard" 
@@ -193,9 +211,12 @@ export default {
             </a>
           </div>
           <div class="puzzle-info">
-            <div class="puzzle-meta">Puzzle ${puzzleId}</div>
+            <div class="puzzle-meta">
+              <div class="puzzle-id">Puzzle ${puzzleId}</div>
+              <div class="solve-time">${solveTime}s</div>
+            </div>
             <div class="puzzle-actions">
-              <button class="view-solution-btn" data-puzzle-index="${index}">Show Solution</button>
+              <button class="view-solution-btn" data-puzzle-index="${originalIndex}">Show Solution</button>
             </div>
           </div>
         `
