@@ -34,3 +34,146 @@
         .score
           font-size: 28px
           margin-top: 8px
+
+// Played puzzles section styling (outside Vue app, matches haste/three modes)
+.played-puzzles-section
+  margin-top: 40px
+  margin-bottom: 4rem
+  padding: 30px 0
+  background: rgba(0, 0, 0, 0.2)
+  width: 100%
+  max-width: 100%
+  overflow-x: hidden
+  box-sizing: border-box
+
+  .container
+    max-width: 100%
+    width: 100%
+    overflow-x: hidden
+    box-sizing: border-box
+    padding: 0 20px
+    
+    h3
+      text-align: center
+      margin-bottom: 30px
+      color: rgba(255, 255, 255, 0.9)
+
+    .played-puzzles-list
+      display: grid
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))
+      gap: 30px
+      max-width: 1000px
+      margin: 0 auto
+      padding: 0
+      justify-items: center
+      box-sizing: border-box
+      width: 100%
+      overflow-x: hidden
+
+      .played-puzzle-item
+        display: flex
+        flex-direction: column
+        align-items: center
+        padding: 20px
+        background: rgba(255, 255, 255, 0.05)
+        border-radius: 8px
+        border: 1px solid rgba(255, 255, 255, 0.1)
+        width: 100%
+        max-width: 280px
+        min-width: 0
+        box-sizing: border-box
+        position: relative
+        min-height: 320px
+
+        .puzzle-number
+          position: absolute
+          top: 8px
+          left: 8px
+          background: rgba(27, 73, 171, 0.9)
+          color: white
+          border-radius: 50%
+          width: 32px
+          height: 32px
+          display: flex
+          align-items: center
+          justify-content: center
+          font-weight: bold
+          font-size: 14px
+          z-index: 1
+
+        .mistake-badge
+          position: absolute
+          top: 8px
+          right: 8px
+          background: rgba(128, 57, 170, 0.9)
+          color: white
+          border-radius: 12px
+          padding: 4px 8px
+          font-size: 11px
+          font-weight: bold
+          z-index: 1
+
+        .puzzle-miniboard
+          margin-bottom: 10px
+          
+          .miniboard-link
+            display: block
+            text-decoration: none
+          
+          .mini-chessboard
+            width: 200px
+            height: 200px
+
+        .puzzle-info
+          text-align: center
+          display: flex
+          flex-direction: column
+          justify-content: space-between
+          flex-grow: 1
+          width: 100%
+
+          .puzzle-meta
+            display: flex
+            flex-direction: column
+            gap: 4px
+            margin-bottom: 8px
+
+            .puzzle-id
+              font-size: 12px
+              color: rgba(255, 255, 255, 0.6)
+
+            .solve-time
+              font-size: 14px
+              color: rgba(255, 255, 255, 0.8)
+              font-weight: bold
+
+            .unsolved-status
+              font-size: 14px
+              color: rgba(255, 200, 100, 0.9)
+              font-weight: bold
+              font-style: italic
+
+          .puzzle-actions
+            margin-top: auto
+            
+            .view-solution-btn
+              background: rgba(27, 73, 171, 0.8)
+              color: white
+              border: none
+              padding: 6px 12px
+              border-radius: 4px
+              font-size: 12px
+              cursor: pointer
+              transition: all 0.2s ease, opacity 0.3s ease
+              opacity: 1
+              min-width: 120px
+              text-align: center
+
+              &:hover
+                background: rgba(27, 73, 171, 1)
+
+              &:disabled
+                opacity: 0.5
+                cursor: not-allowed
+
+
