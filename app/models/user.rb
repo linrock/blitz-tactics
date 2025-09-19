@@ -314,6 +314,31 @@ class User < ActiveRecord::Base
     SolvedPuzzle.first_solved_on(id, date)
   end
 
+  # Get daily puzzle solve counts for the past 7 days
+  def daily_puzzle_solves_past_7_days
+    # Get the past 7 days (including today)
+    end_date = Date.current
+    start_date = 6.days.ago.to_date
+    
+    # Query for daily counts
+    daily_counts = SolvedPuzzle
+      .where(user_id: id)
+      .where(created_at: start_date.beginning_of_day..end_date.end_of_day)
+      .group('DATE(created_at)')
+      .count
+    
+    # Create array with all 7 days, filling in 0 for days with no solves
+    (start_date..end_date).map do |date|
+      count = daily_counts[date] || 0
+      {
+        date: date,
+        count: count,
+        formatted_date: date.strftime("%b %d"),
+        day_name: date.strftime("%a")
+      }
+    end
+  end
+
   private
 
   def format_level_date(date_string)

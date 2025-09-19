@@ -292,3 +292,103 @@
     @media (max-width: 768px)
       flex-direction: column
       gap: 20px
+
+  // Daily puzzle graph styles
+  .daily-puzzle-graph
+    margin-bottom: 40px
+
+    h2
+      color: rgba(255,255,255,0.9)
+      font-size: 24px
+      margin-bottom: 15px
+      padding-bottom: 10px
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2)
+
+    .graph-container
+      background: rgba(255, 255, 255, 0.05)
+      border-radius: 8px
+      padding: 20px
+      margin-top: 20px
+      position: relative
+
+    .graph-bars
+      display: flex
+      align-items: flex-end
+      justify-content: space-between
+      height: 200px
+      gap: 8px
+      padding: 0 10px
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2)
+
+    .graph-bar-container
+      flex: 1
+      display: flex
+      flex-direction: column
+      align-items: center
+      height: 100%
+      position: relative
+      justify-content: flex-end
+
+    .graph-bar
+      background: linear-gradient(to top, #2c5aa0, #1e3a5f)
+      border-radius: 4px 4px 0 0
+      width: 60%
+      min-height: 4px
+      position: relative
+      transition: all 0.3s ease
+      cursor: pointer
+
+      &:hover
+        background: linear-gradient(to top, #3d6bb0, #2f4a6f)
+
+      .bar-value
+        position: absolute
+        top: -25px
+        left: 50%
+        transform: translateX(-50%)
+        color: rgba(255,255,255,0.9)
+        font-size: 12px
+        font-weight: bold
+        white-space: nowrap
+        z-index: 10
+
+    .bar-label
+      position: absolute
+      bottom: -40px
+      left: 50%
+      transform: translateX(-50%)
+      text-align: center
+      width: 100%
+
+      .day-name
+        color: rgba(255,255,255,0.7)
+        font-size: 12px
+        font-weight: bold
+        margin-bottom: 2px
+
+      .day-date
+        color: rgba(255,255,255,0.5)
+        font-size: 10px
+
+    // Responsive adjustments
+    @media (max-width: 768px)
+      .graph-bars
+        height: 150px
+        gap: 4px
+        padding: 0 5px
+
+      .graph-bar
+        width: 70%
+        
+        .bar-value
+          font-size: 10px
+          top: -20px
+
+      .bar-label
+        bottom: -35px
+        
+        .day-name
+          font-size: 10px
+
+        .day-date
+          font-size: 9px

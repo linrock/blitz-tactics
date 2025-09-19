@@ -114,6 +114,32 @@
     <% end %>
   </div>
 
+  <% daily_stats = @user.daily_puzzle_solves_past_7_days %>
+  <% total_puzzles = daily_stats.sum { |day| day[:count] } %>
+  <% if total_puzzles > 0 %>
+    <div class="daily-puzzle-graph">
+      <h2>Unique puzzles solved</h2>
+      <% max_count = daily_stats.map { |day| day[:count] }.max || 1 %>
+      <div class="graph-container">
+        <div class="graph-bars">
+          <% daily_stats.each do |day| %>
+            <div class="graph-bar-container">
+              <div class="graph-bar" 
+                   style="height: <%= (day[:count].to_f / max_count * 100).round(1) %>%"
+                   title="<%= day[:formatted_date] %>: <%= day[:count] %> puzzle<%= 's' if day[:count] != 1 %>">
+                <div class="bar-value"><%= day[:count] %></div>
+              </div>
+              <div class="bar-label">
+                <div class="day-name"><%= day[:day_name] %></div>
+                <div class="day-date"><%= day[:formatted_date] %></div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <% if @recent_puzzles.any? %>
     <div class="recent-puzzles-section">
              <h2>Recent puzzles solved</h2>
