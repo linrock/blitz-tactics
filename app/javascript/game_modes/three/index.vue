@@ -738,8 +738,10 @@ export default {
         let timeDisplayHtml = ''
         if (isSolved && solveTime) {
           timeDisplayHtml = `<div class="solve-time">Solved in ${solveTime}s</div>`
+        } else if (!isSolved && solveTime) {
+          timeDisplayHtml = `<div class="spent-time">Spent ${solveTime}s</div>`
         }
-        // For unsolved puzzles, leave timeDisplayHtml empty (no text shown)
+        // For puzzles with no timing data, leave timeDisplayHtml empty
         
         const puzzleItem = document.createElement('div')
         puzzleItem.className = 'missed-puzzle-item'
