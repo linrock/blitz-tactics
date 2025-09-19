@@ -34,9 +34,15 @@ aside.three-under-board.game-under-board
         .label Your high score today
         .score {{ highScore }}
 
+    .score-container.recent-high-scores(v-if="highScores.length >= 3")
+      .label Past 24 hours
+      .list
+        .high-score(v-for="[playerName, score] in highScores")
+          .score {{ score }}
+          .player-name {{ playerName }}
+
     .three-complete-section.actions
       .action-buttons
-        a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
         a.blue-button(href="/three") Play again
 
 

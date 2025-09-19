@@ -64,6 +64,39 @@
         &.actions
           align-items: flex-start
 
+    .score-container
+      margin-bottom: 16px
+      align-items: center
+
+      .score
+        font-size: 28px
+        margin-top: 8px
+
+    .recent-high-scores
+      .label
+        font-size: 14px
+        color: rgba(255,255,255,0.7)
+        margin-bottom: 8px
+
+      .list
+        .high-score
+          display: flex
+          justify-content: space-between
+          align-items: center
+          padding: 4px 0
+          border-bottom: 1px solid rgba(255,255,255,0.1)
+
+          &:last-child
+            border-bottom: none
+
+          .score
+            font-size: 16px
+            font-weight: bold
+
+          .player-name
+            font-size: 14px
+            color: rgba(255,255,255,0.8)
+
       .puzzles-failed
         margin: 10px 0 0
 
