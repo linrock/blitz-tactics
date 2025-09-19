@@ -307,9 +307,10 @@
     .graph-container
       background: rgba(255, 255, 255, 0.05)
       border-radius: 8px
-      padding: 20px
+      padding: 30px 20px 50px 20px
       margin-top: 20px
       position: relative
+      overflow: visible
 
     .graph-bars
       display: flex
@@ -335,15 +336,10 @@
       width: 60%
       min-height: 4px
       position: relative
-      transition: all 0.3s ease
-      cursor: pointer
-
-      &:hover
-        background: linear-gradient(to top, #3d6bb0, #2f4a6f)
 
       .bar-value
         position: absolute
-        top: -25px
+        top: -20px
         left: 50%
         transform: translateX(-50%)
         color: rgba(255,255,255,0.9)
@@ -354,7 +350,7 @@
 
     .bar-label
       position: absolute
-      bottom: -40px
+      bottom: -35px
       left: 50%
       transform: translateX(-50%)
       text-align: center
@@ -382,10 +378,10 @@
         
         .bar-value
           font-size: 10px
-          top: -20px
+          top: -18px
 
       .bar-label
-        bottom: -35px
+        bottom: -30px
         
         .day-name
           font-size: 10px
