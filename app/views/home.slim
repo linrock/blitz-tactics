@@ -227,7 +227,8 @@ section.homepage
 
         - fastest_speedruns = @scoreboard.fastest_speedruns(SpeedrunLevel.yesterdays_level)
         - countdown_high_scores = @scoreboard.countdown_high_scores(CountdownLevel.yesterdays_level)
-        - if fastest_speedruns.present? or countdown_high_scores.present?
+        - unique_puzzles_yesterday = @scoreboard.unique_puzzles_solved_on_day(1.day.ago.to_date)
+        - if fastest_speedruns.present? or countdown_high_scores.present? or unique_puzzles_yesterday.present?
           .scores
             h6 Yesterday
             - if fastest_speedruns.present?
@@ -244,10 +245,18 @@ section.homepage
                   .ranking
                     .player-name= user_link(user)
                     .stats= high_score
+            - if unique_puzzles_yesterday.present?
+              .unique-puzzles-solved.top-players
+                h5 Unique puzzles solved
+                - unique_puzzles_yesterday.each do |user, count|
+                  .ranking
+                    .player-name= user_link(user)
+                    .stats= count
 
         - fastest_speedruns = @scoreboard.fastest_speedruns(@speedrun_level)
         - countdown_high_scores = @scoreboard.countdown_high_scores(@countdown_level)
-        - if fastest_speedruns.present? or countdown_high_scores.present?
+        - unique_puzzles_today = @scoreboard.unique_puzzles_solved_on_day(Date.current)
+        - if fastest_speedruns.present? or countdown_high_scores.present? or unique_puzzles_today.present?
           .scores
             h6 Today
             - if fastest_speedruns.present?
@@ -265,6 +274,14 @@ section.homepage
                   .ranking
                     .player-name= user_link(user)
                     .stats= high_score
+
+            - if unique_puzzles_today.present?
+              .unique-puzzles-solved.top-players
+                h5 Unique puzzles solved
+                - unique_puzzles_today.each do |user, count|
+                  .ranking
+                    .player-name= user_link(user)
+                    .stats= count
 
     .themed-puzzle-sets-section
       h2 Themed chess puzzle sets.

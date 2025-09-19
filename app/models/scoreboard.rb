@@ -174,6 +174,26 @@ class Scoreboard
     @top_openings_scores_three_days ||= CompletedOpeningsRound.high_scores(@three_days_time)
   end
 
+  # Get users with most unique puzzles solved on a specific day
+  def unique_puzzles_solved_on_day(date)
+    start_of_day = date.beginning_of_day
+    end_of_day = date.end_of_day
+    
+    SolvedPuzzle
+      .where(created_at: start_of_day..end_of_day)
+      .group(:user_id)
+      .count
+      .sort_by { |_, count| -count }
+      .take(@n_homepage)
+      .map do |user_id, count|
+        [
+          User.find_by(id: user_id),
+          count
+        ]
+      end
+      .reject { |user, _| user.nil? }
+  end
+
   private
 
   def group_and_count(scope, n)
