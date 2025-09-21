@@ -268,6 +268,16 @@ class User < ActiveRecord::Base
       }
     end
 
+    activities += completed_repetition_rounds.where('created_at >= ?', since).order(created_at: :desc).limit(limit).map do |round|
+      {
+        type: 'repetition',
+        type_display: "Repetition - Level #{round.repetition_level.number}",
+        date: round.created_at,
+        score: round.formatted_time_spent,
+        url: round.repetition_level.path
+      }
+    end
+
     # Add daily infinity puzzle activity
     infinity_puzzle_days = solved_puzzles.where('created_at >= ? AND game_mode = ?', since, 'infinity')
                                         .group('DATE(created_at)')
