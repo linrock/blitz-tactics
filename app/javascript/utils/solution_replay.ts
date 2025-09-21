@@ -162,7 +162,8 @@ export class SolutionReplay {
         }
         
         const moveUci = moves[currentMoveIndex]
-        this.animateMoveOnMiniboard(miniboard, moveUci)
+        const isLastMove = currentMoveIndex === moves.length - 1
+        this.animateMoveOnMiniboard(miniboard, moveUci, isLastMove)
         currentMoveIndex++
         
         setTimeout(playNextMove, 700) // 0.7 second delay between moves
@@ -199,7 +200,8 @@ export class SolutionReplay {
         }
         
         const moveUci = moves[currentMoveIndex]
-        this.animateMoveOnMiniboard(miniboard, moveUci)
+        const isLastMove = currentMoveIndex === moves.length - 1
+        this.animateMoveOnMiniboard(miniboard, moveUci, isLastMove)
         currentMoveIndex++
         
         setTimeout(playNextMove, 700) // 0.7 second delay between moves
@@ -329,8 +331,9 @@ export class SolutionReplay {
    * Animate a move on the miniboard
    * @param miniboard - The miniboard DOM element
    * @param moveUci - The move UCI string
+   * @param isLastMove - Whether this is the last move in the solution
    */
-  animateMoveOnMiniboard(miniboard: HTMLElement, moveUci: string) {
+  animateMoveOnMiniboard(miniboard: HTMLElement, moveUci: string, isLastMove: boolean = false) {
     const fromSquare = moveUci.substring(0, 2)
     const toSquare = moveUci.substring(2, 4)
     
@@ -354,7 +357,7 @@ export class SolutionReplay {
     console.log(`Found to square:`, toSquareEl)
 
     // Simulate piece movement
-    this.simulatePieceMovement(fromSquareEl, toSquareEl)
+    this.simulatePieceMovement(fromSquareEl, toSquareEl, isLastMove)
   }
 
   /**
@@ -406,13 +409,14 @@ export class SolutionReplay {
    * Simulate piece movement between squares
    * @param fromSquareEl - The source square element
    * @param toSquareEl - The destination square element
+   * @param isLastMove - Whether this is the last move in the solution
    */
-  simulatePieceMovement(fromSquareEl: Element, toSquareEl: Element) {
+  simulatePieceMovement(fromSquareEl: Element, toSquareEl: Element, isLastMove: boolean = false) {
     // Get the piece from the 'from' square
     const pieceEl = fromSquareEl.querySelector('.piece')
     if (!pieceEl) {
       // If no piece, just highlight squares
-      this.highlightSquares(fromSquareEl, toSquareEl)
+      this.highlightSquares(fromSquareEl, toSquareEl, isLastMove)
       return
     }
 
@@ -435,27 +439,32 @@ export class SolutionReplay {
     // Add the cloned piece to the destination square
     toSquareEl.appendChild(pieceClone)
     
-    // Remove highlighting after a delay
-    setTimeout(() => {
-      fromSquareEl.classList.remove('move-from')
-      toSquareEl.classList.remove('move-to')
-    }, 500)
+    // Only remove highlighting after a delay if it's not the last move
+    if (!isLastMove) {
+      setTimeout(() => {
+        fromSquareEl.classList.remove('move-from')
+        toSquareEl.classList.remove('move-to')
+      }, 500)
+    }
   }
 
   /**
    * Highlight squares without moving pieces
    * @param fromSquareEl - The source square element
    * @param toSquareEl - The destination square element
+   * @param isLastMove - Whether this is the last move in the solution
    */
-  highlightSquares(fromSquareEl: Element, toSquareEl: Element) {
+  highlightSquares(fromSquareEl: Element, toSquareEl: Element, isLastMove: boolean = false) {
     fromSquareEl.classList.add('move-from')
     toSquareEl.classList.add('move-to')
     
-    // Remove highlighting after a delay
-    setTimeout(() => {
-      fromSquareEl.classList.remove('move-from')
-      toSquareEl.classList.remove('move-to')
-    }, 500)
+    // Only remove highlighting after a delay if it's not the last move
+    if (!isLastMove) {
+      setTimeout(() => {
+        fromSquareEl.classList.remove('move-from')
+        toSquareEl.classList.remove('move-to')
+      }, 500)
+    }
   }
 }
 
