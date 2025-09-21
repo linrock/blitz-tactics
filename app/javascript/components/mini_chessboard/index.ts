@@ -31,8 +31,19 @@ export default class MiniChessboard {
     this.cjs = new Chess()
     this.highlights = {}
     
-    // Add cg-wrap class to match chessground structure
-    this.el.classList.add('cg-wrap')
+    
+    // Create a cg-wrap child element to contain the board
+    const cgWrap = document.createElement('div')
+    cgWrap.classList.add('cg-wrap')
+    cgWrap.style.width = '100%'
+    cgWrap.style.height = '100%'
+    
+    // Clear the mini-chessboard content and add the cg-wrap child
+    this.el.innerHTML = ''
+    this.el.appendChild(cgWrap)
+    
+    // Update this.el to point to the cg-wrap element for rendering
+    this.el = cgWrap
     
     if (options.flip) {
       this.rows.reverse()
