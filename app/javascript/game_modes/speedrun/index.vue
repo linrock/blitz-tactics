@@ -7,6 +7,10 @@ aside.speedrun-under-board.game-under-board
 
   .speedrun-complete(v-if="hasCompleted")
     .timers-section
+      .timer-container.accuracy(:class="{ 'perfect-accuracy': isPerfectAccuracy }")
+        .label Accuracy
+        .timer {{ accuracyPercentage }}
+
       .timer-container.your-time
         .label Your time
         .timer {{ formattedYourTime }}
@@ -16,7 +20,6 @@ aside.speedrun-under-board.game-under-board
         .timer {{ formattedBestTime }}
 
     .action-buttons
-      a.dark-button.view-puzzles(href="/speedrun/puzzles") View puzzles
       a.blue-button(href="/speedrun") Play again
 
   template(v-if="!hasStarted")
@@ -31,6 +34,7 @@ aside.speedrun-under-board.game-under-board
   import MiniChessboard from '@blitz/components/mini_chessboard'
   import { subscribe } from '@blitz/events'
   import { formattedTime } from '@blitz/utils'
+  import { solutionReplay } from '@blitz/utils/solution_replay'
 
   import Timer from './timer.vue'
 
@@ -55,6 +59,8 @@ aside.speedrun-under-board.game-under-board
         currentPuzzleData: null as any,
         currentPuzzleStartTime: null as number | null,
         currentPuzzleMistakes: 0,
+        totalMoves: 0,
+        correctMoves: 0,
       }
     },
 
@@ -64,6 +70,16 @@ aside.speedrun-under-board.game-under-board
       },
       formattedBestTime(): string {
         return formattedTime(parseInt(this.bestTime, 0))
+      },
+      accuracyPercentage(): string {
+        if (this.totalMoves === 0) return '0%'
+        const percentage = Math.round((this.correctMoves / this.totalMoves) * 100)
+        return `${percentage}%`
+      },
+      isPerfectAccuracy(): boolean {
+        if (this.totalMoves === 0) return false
+        const percentage = Math.round((this.correctMoves / this.totalMoves) * 100)
+        return percentage === 100
       }
     },
 
@@ -93,12 +109,19 @@ aside.speedrun-under-board.game-under-board
           if (!this.hasStarted) {
             this.hasStarted = true
           }
+          // Track total moves
+          this.totalMoves++
         },
 
         'move:fail': () => {
           // Track mistakes for current puzzle
           this.currentPuzzleMistakes++
           console.log('Mistake made on puzzle:', this.currentPuzzle?.id, 'Total mistakes:', this.currentPuzzleMistakes)
+        },
+
+        'move:success': () => {
+          // Track correct moves
+          this.correctMoves++
         },
 
         'puzzle:solved': (puzzle) => {
@@ -135,23 +158,8 @@ aside.speedrun-under-board.game-under-board
           boardOverlayEl.classList.remove(`invisible`)
           this.yourTime = elapsedTimeMs
           
-          // Add the current unsolved puzzle to the list if there is one
-          if (this.currentPuzzle) {
-            // Calculate time spent on current puzzle
-            const endTime = Date.now()
-            const solveTimeMs = this.currentPuzzleStartTime ? endTime - this.currentPuzzleStartTime : 0
-            const solveTimeSeconds = Math.round(solveTimeMs / 100) / 10 // Round to 1 decimal place
-            
-            this.playedPuzzles.push({
-              puzzle: this.currentPuzzle,
-              puzzle_data: this.currentPuzzleData,
-              solveTime: solveTimeSeconds, // Time spent even if not solved
-              mistakes: this.currentPuzzleMistakes,
-              puzzleNumber: null, // No number for unsolved puzzle
-              solved: false
-            })
-            console.log('Added unsolved puzzle:', this.currentPuzzle.id, 'Time:', solveTimeSeconds + 's', 'Mistakes:', this.currentPuzzleMistakes)
-          }
+          // Note: In speedrun mode, the game only ends with a successful puzzle solve,
+          // so the current puzzle is already added to playedPuzzles in the puzzle:solved handler
           
           speedrunCompleted(this.levelName, elapsedTimeMs).then(data => {
             console.log('speedrun completed!')
@@ -357,24 +365,26 @@ aside.speedrun-under-board.game-under-board
             const puzzleIndex = parseInt(button.dataset.puzzleIndex || '0')
             const puzzleData = this.playedPuzzles[puzzleIndex]
             
-            if (puzzleData && puzzleData.puzzle_data) {
-              // Extract solution lines from puzzle data
-              const solutionLines = puzzleData.puzzle_data.solutionLines || []
-              console.log('Showing solution for puzzle:', puzzleData.puzzle.id, 'Solution lines:', solutionLines)
-              
-              // Create a simple alert with the solution (you could enhance this with a modal)
-              if (solutionLines.length > 0) {
-                const solutionText = solutionLines.map((line: any, index: number) => 
-                  `${index + 1}. ${line.join(' ')}`
-                ).join('\n')
-                alert(`Solution for Puzzle ${puzzleData.puzzle.id}:\n\n${solutionText}`)
+            if (puzzleData && puzzleData.puzzle) {
+              // Use the working solution replay utility
+              const puzzleId = puzzleData.puzzle.id
+              const miniboard = document.querySelector(`#played-puzzles-section .mini-chessboard[data-puzzle-id="${puzzleId}"]`)
+              if (miniboard) {
+                // Use the puzzle lines for the solution (same as three game mode)
+                const solutionLines = puzzleData.puzzle.lines
+                if (solutionLines) {
+                  solutionReplay.replaySolutionOnMiniboard(miniboard, solutionLines)
+                } else {
+                  console.log('No solution lines found for puzzle:', puzzleId)
+                }
               } else {
-                alert(`No solution available for Puzzle ${puzzleData.puzzle.id}`)
+                console.log('Miniboard not found for puzzle:', puzzleId)
               }
             }
           })
         })
-      }
+      },
+
     },
 
     components: {
