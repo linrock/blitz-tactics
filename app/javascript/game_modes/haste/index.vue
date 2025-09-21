@@ -34,6 +34,7 @@ import { hasteRoundCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
 import { subscribe } from '@blitz/events'
+import { solutionReplay } from '@blitz/utils/solution_replay'
 
 import Timer from './timer.vue'
 
@@ -368,10 +369,10 @@ export default {
       if (puzzleId) {
         const miniboard = document.querySelector(`#played-puzzles-section .mini-chessboard[data-puzzle-id="${puzzleId}"]`)
         if (miniboard) {
-          // Use the puzzle lines for the solution
+          // Use the puzzle lines for the solution (same as three game mode)
           const solutionLines = puzzleData.puzzle?.lines
           if (solutionLines) {
-            this.replaySolutionOnMiniboardWithCallback(miniboard, solutionLines, () => {
+            solutionReplay.replaySolutionOnMiniboardWithCallback(miniboard, solutionLines, () => {
               // Reset button state when solution playback is complete
               buttonEl.textContent = originalText || 'Show solution'
               buttonEl.style.opacity = '1'
@@ -394,122 +395,6 @@ export default {
       }
     },
 
-    async replaySolutionOnMiniboardWithCallback(miniboardEl, solutionLines, onComplete) {
-      if (!solutionLines) {
-        console.log('No solution lines available')
-        onComplete()
-        return
-      }
-
-      const solutionMoves = this.extractSolutionMoves(solutionLines)
-      
-      if (solutionMoves.length === 0) {
-        console.log('No solution moves found')
-        onComplete()
-        return
-      }
-
-      console.log('Playing solution moves:', solutionMoves)
-      
-      const initialFen = miniboardEl.getAttribute('data-fen')
-      if (!initialFen) {
-        console.error('No initial FEN found for miniboard')
-        onComplete()
-        return
-      }
-
-      // Play the solution moves with callback when complete
-      this.playMovesInMiniboardWithCallback(miniboardEl, initialFen, solutionMoves, onComplete)
-    },
-
-    extractSolutionMoves(solutionLines) {
-      // Extract moves from the solution tree structure
-      const moves = []
-      
-      if (solutionLines && typeof solutionLines === 'object') {
-        // Recursively traverse the solution tree to collect moves
-        const traverseLines = (lines) => {
-          if (lines && typeof lines === 'object') {
-            for (const [moveUci, nextLines] of Object.entries(lines)) {
-              if (moveUci && moveUci.match(/^[a-h][1-8][a-h][1-8]/)) {
-                moves.push(moveUci)
-                // Only follow the first line of the solution
-                if (nextLines && typeof nextLines === 'object') {
-                  traverseLines(nextLines)
-                }
-                break // Only take the first move from each level
-              }
-            }
-          }
-        }
-        
-        traverseLines(solutionLines)
-      }
-      
-      return moves
-    },
-
-    playMovesInMiniboardWithCallback(miniboard, initialFen, moves, onComplete) {
-      if (moves.length === 0) {
-        onComplete()
-        return
-      }
-
-      let currentMoveIndex = 0
-      
-      const playNextMove = () => {
-        if (currentMoveIndex < moves.length) {
-          const moveUci = moves[currentMoveIndex]
-          this.animateMoveOnMiniboard(miniboard, moveUci)
-          currentMoveIndex++
-          
-          setTimeout(playNextMove, 700) // 0.7 second delay between moves
-        } else {
-          // All moves completed, call the callback
-          onComplete()
-        }
-      }
-      
-      // Start playing moves
-      setTimeout(playNextMove, 200)
-    },
-
-    animateMoveOnMiniboard(miniboard, moveUci) {
-      // Simple animation by moving pieces between squares based on UCI notation
-      if (!moveUci || moveUci.length < 4) return
-      
-      const fromSquare = moveUci.substring(0, 2)
-      const toSquare = moveUci.substring(2, 4)
-      
-      // Find the squares in the miniboard
-      const squares = miniboard.querySelectorAll('.square')
-      const squareMap = {}
-      
-      squares.forEach((square, index) => {
-        const file = String.fromCharCode(97 + (index % 8)) // 'a' + file index
-        const rank = 8 - Math.floor(index / 8) // rank from 8 to 1
-        const squareName = file + rank
-        squareMap[squareName] = square
-      })
-      
-      const fromEl = squareMap[fromSquare]
-      const toEl = squareMap[toSquare]
-      
-      if (fromEl && toEl) {
-        // Move the piece
-        const piece = fromEl.querySelector('.piece')
-        if (piece) {
-          // Remove any existing piece on the target square
-          const existingPiece = toEl.querySelector('.piece')
-          if (existingPiece) {
-            existingPiece.remove()
-          }
-          
-          // Move the piece
-          toEl.appendChild(piece)
-        }
-      }
-    }
   }
 }
 </script>
