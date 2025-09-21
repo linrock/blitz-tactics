@@ -1,5 +1,6 @@
 import SimpleColorPicker from 'simple-color-picker'
 
+import PuzzlePlayer from '@blitz/components/puzzle_player'
 import ChessgroundBoard from '@blitz/components/chessground_board'
 import { dispatch } from '@blitz/events'
 
@@ -20,6 +21,7 @@ const boardStyles = new BoardStyles()
 export default class CustomizeBoard {
   private colorPicker: any
   private el: HTMLElement
+  private puzzlePlayer: any
 
   constructor() {
     this.el = document.querySelector('.customize-board')
@@ -49,20 +51,14 @@ export default class CustomizeBoard {
     const puzzleData = (window as any).hastePuzzleData
     const fen = puzzleData ? puzzleData.fen : '1Q6/8/8/8/8/k1K5/8/8 b - - 13 62'
     
-    new ChessgroundBoard({ fen, viewOnly: true })
-    
-    // If we have puzzle data, add highlighting without making moves
-    if (puzzleData && puzzleData.initialMove && puzzleData.initialMove.uci) {
-      const firstMove = puzzleData.initialMove.uci
-      setTimeout(() => {
-        this.addPuzzleHighlighting(firstMove, puzzleData.lines)
-      }, 500)
-    } else {
-      // Default behavior for fallback position
-      setTimeout(() => {
-        this.addDefaultHighlighting()
-      }, 500)
-    }
+    // Initialize the puzzle player with the standard chessboard (no resizing)
+    this.puzzlePlayer = new PuzzlePlayer({
+      noHint: true,
+      noCounter: true,
+      noCombo: true,
+      noResizer: true,
+      source: '/haste/puzzles' // Use haste puzzles as source
+    })
     
     // Initialize piece set previews
     
@@ -86,68 +82,6 @@ export default class CustomizeBoard {
     boardStyles.set(initialColors)
   }
 
-  private getSquareIndex(square: string): number {
-    const file = square.charCodeAt(0) - 97 // 'a' = 97
-    const rank = parseInt(square[1]) - 1
-    return rank * 8 + file
-  }
-
-  private getSquareCoordinates(index: number): [number, number] {
-    const file = index % 8
-    const rank = 7 - Math.floor(index / 8) // Flip rank for display
-    return [file, rank]
-  }
-
-  private addPuzzleHighlighting(firstMove: string, lines: any) {
-    const board = document.querySelector('cg-board')
-    if (!board) return
-
-    // For preview purposes, show where a move would come from/to
-    const fromSquare = firstMove.slice(0, 2)
-    const toSquare = firstMove.slice(2, 4)
-    
-    // Create "from" highlight to show where the piece would move from
-    const fromEl = document.createElement('square')
-    fromEl.classList.add('last-move', 'move-from')
-    const fromIndex = this.getSquareIndex(fromSquare)
-    const [fromX, fromY] = this.getSquareCoordinates(fromIndex)
-    fromEl.style.transform = `translate(${fromX * 60}px, ${fromY * 60}px)`
-    board.appendChild(fromEl)
-
-    // Create "to" highlight to show where the piece would move to
-    const toEl = document.createElement('square')
-    toEl.classList.add('last-move', 'move-to')
-    const toIndex = this.getSquareIndex(toSquare)
-    const [toX, toY] = this.getSquareCoordinates(toIndex)
-    toEl.style.transform = `translate(${toX * 60}px, ${toY * 60}px)`
-    board.appendChild(toEl)
-
-    // Add selected highlighting for the piece that could move next
-    if (lines && Object.keys(lines).length > 0) {
-      // Find the first player move in the lines tree
-      const playerMove = Object.keys(lines)[0]
-      if (playerMove) {
-        const playerFromSquare = playerMove.slice(0, 2)
-        const selectedEl = document.createElement('square')
-        selectedEl.classList.add('selected')
-        const selectedIndex = this.getSquareIndex(playerFromSquare)
-        const [selectedX, selectedY] = this.getSquareCoordinates(selectedIndex)
-        selectedEl.style.transform = `translate(${selectedX * 60}px, ${selectedY * 60}px)`
-        board.appendChild(selectedEl)
-      }
-    }
-  }
-
-  private addDefaultHighlighting() {
-    const board = document.querySelector('cg-board')
-    if (!board) return
-    
-    // Default selected highlighting (fallback position)
-    const highlightEl = document.createElement('square')
-    highlightEl.classList.add('selected')
-    highlightEl.style.transform = 'translate(60px, 0)'
-    board.appendChild(highlightEl)
-  }
 
   private setupEventListeners() {
     // Set up click handlers for square color toggles

@@ -14,6 +14,7 @@ interface PuzzlePlayerOptions extends PuzzleSourceOptions {
   noHint?: boolean,
   noCounter?: boolean,
   noCombo?: boolean,
+  noResizer?: boolean,
 }
 
 /** The puzzle player used in the various game modes */
@@ -21,7 +22,9 @@ export default class PuzzlePlayer {
   constructor(options: PuzzlePlayerOptions = {}) {
     // Create all views first so they can subscribe to events
     new ChessgroundBoard
-    new ChessboardResizer
+    if (!options.noResizer) {
+      new ChessboardResizer
+    }
     new MoveStatus
     new Instructions
     if (!options.noCounter) {

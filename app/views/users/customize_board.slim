@@ -5,11 +5,16 @@
     h2 Customize board colors and pieces
     h3 Click on a square to the right or edit a hex color directly
 
+    .instructions.invisible White to move
+
     .custom-board
       .left
-        .chessground-board
-          .chessground
-          .piece-promotion-modal-mount
+        .board-area-container
+          .board-area
+            .chessground-board
+              .piece-promotion-modal-mount
+              .chessground
+              .board-modal-container.invisible(style="display: none")
       = form_tag "/customize", method: :put, class: "right"
         h4 Board squares
         .squares
