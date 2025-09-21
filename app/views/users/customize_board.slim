@@ -60,25 +60,25 @@
               value="#{@board&.selected_square_color}"
             )
 
-        h4 Piece Set
-        .piece-sets
-          - UserChessboard::PIECE_SETS.each do |piece_set|
-            .piece-set-option
-              label
-                input(
-                  type="radio"
-                  name="board[piece_set]"
-                  value="#{piece_set}"
-                  checked=((@board&.piece_set || 'cburnett') == piece_set)
-                )
-                .piece-set-preview(data-piece-set="#{piece_set}")
-                  .piece-sample.white-knight(style="background-image: url('#{safe_piece_asset_path(piece_set, 'wN')}')")
-                  .piece-sample.black-knight(style="background-image: url('#{safe_piece_asset_path(piece_set, 'bN')}')")
-                .piece-set-name = piece_set.humanize
-
         .action-buttons
-          button.gray.reset-colors Reset colors
-          button.blue.save-colors Save colors
+          button.gray.reset-colors Reset board
+          button.blue.save-colors Save board
+
+    h4 Piece Set
+    .piece-sets
+      - UserChessboard::PIECE_SETS.each do |piece_set|
+        .piece-set-option
+          label
+            input(
+              type="radio"
+              name="board[piece_set]"
+              value="#{piece_set}"
+              checked=((@board&.piece_set || 'cburnett') == piece_set)
+            )
+            .piece-set-preview(data-piece-set="#{piece_set}")
+              .piece-sample.white-knight(style="background-image: url('#{safe_piece_asset_path(piece_set, 'wN')}')")
+              .piece-sample.black-knight(style="background-image: url('#{safe_piece_asset_path(piece_set, 'bN')}')")
+            .piece-set-name = piece_set.humanize
 
   style(type="text/css")= @board&.to_css
   
