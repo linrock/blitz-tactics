@@ -185,14 +185,49 @@ class UserChessboard < ActiveRecord::Base
         piece_code = piece == 'knight' ? 'n' : piece[0] # knight -> n, others -> first letter
         piece_code = color == 'white' ? "w#{piece_code.upcase}" : "b#{piece_code.upcase}"
         
-        styles << "
-          .cg-wrap piece.#{piece}.#{color} {
-            background-image: url('/assets/pieces/#{piece_set_name}/#{piece_code}.svg') !important;
-          }
-          .mini-chessboard .piece.#{piece}.#{color} {
-            background-image: url('/assets/pieces/#{piece_set_name}/#{piece_code}.svg') !important;
-          }
-        "
+        # Try to read the SVG file and convert to base64
+        svg_path = Rails.root.join("app/assets/images/pieces/#{piece_set_name}/#{piece_code}.svg")
+        if File.exist?(svg_path)
+          begin
+            svg_content = File.read(svg_path)
+            base64_svg = Base64.encode64(svg_content).gsub(/\n/, '').strip
+            data_uri = "data:image/svg+xml;base64,#{base64_svg}"
+            
+            styles << "
+              .cg-wrap piece.#{piece}.#{color} {
+                background-image: url('#{data_uri}') !important;
+              }
+              .mini-chessboard .piece.#{piece}.#{color} {
+                background-image: url('#{data_uri}') !important;
+              }
+            "
+          rescue => e
+            Rails.logger.warn "Failed to read SVG file #{svg_path}: #{e.message}"
+          end
+        else
+          # Handle special cases like mono piece set
+          if piece_set_name == 'mono'
+            mono_svg_path = Rails.root.join("app/assets/images/pieces/#{piece_set_name}/#{piece_code[1]}.svg")
+            if File.exist?(mono_svg_path)
+              begin
+                svg_content = File.read(mono_svg_path)
+                base64_svg = Base64.encode64(svg_content).gsub(/\n/, '').strip
+                data_uri = "data:image/svg+xml;base64,#{base64_svg}"
+                
+                styles << "
+                  .cg-wrap piece.#{piece}.#{color} {
+                    background-image: url('#{data_uri}') !important;
+                  }
+                  .mini-chessboard .piece.#{piece}.#{color} {
+                    background-image: url('#{data_uri}') !important;
+                  }
+                "
+              rescue => e
+                Rails.logger.warn "Failed to read mono SVG file #{mono_svg_path}: #{e.message}"
+              end
+            end
+          end
+        end
       end
     end
   end
