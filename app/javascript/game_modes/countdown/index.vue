@@ -29,6 +29,7 @@ import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
 import MiniChessboard from '@blitz/components/mini_chessboard'
 import { subscribe } from '@blitz/events'
+import { solutionReplay } from '@blitz/utils/solution_replay'
 
 import Timer from './timer.vue'
 
@@ -323,8 +324,8 @@ export default {
             flip: flip === 'true'
           })
           
-          // Store the miniboard instance on the element for solution replay
-          ;(el as any)._miniboard_vue_instance = miniboard
+          // Store the miniboard instance on the element for potential cleanup
+          ;(el as any).miniboardInstance = miniboard
         }
       })
     },
@@ -368,10 +369,10 @@ export default {
       if (puzzleId) {
         const miniboard = document.querySelector(`#played-puzzles-section .mini-chessboard[data-puzzle-id="${puzzleId}"]`)
         if (miniboard) {
-          // Use the puzzle lines for the solution
+          // Use the puzzle lines for the solution (same as three game mode)
           const solutionLines = puzzleData.puzzle?.lines
           if (solutionLines) {
-            this.replaySolutionOnMiniboardWithCallback(miniboard, solutionLines, () => {
+            solutionReplay.replaySolutionOnMiniboardWithCallback(miniboard, solutionLines, () => {
               // Reset button state when solution playback is complete
               buttonEl.textContent = originalText || 'Show solution'
               buttonEl.style.opacity = '1'
@@ -394,137 +395,6 @@ export default {
       }
     },
 
-    async replaySolutionOnMiniboardWithCallback(miniboardEl, solutionLines, onComplete) {
-      if (!solutionLines) {
-        console.log('No solution lines available')
-        onComplete()
-        return
-      }
-
-      console.log('Replaying solution on miniboard with lines:', solutionLines)
-
-      try {
-        // Get the miniboard instance
-        const miniboardInstance = (miniboardEl as any)._miniboard_vue_instance
-        if (!miniboardInstance) {
-          console.log('No miniboard instance found')
-          onComplete()
-          return
-        }
-
-        // Extract moves from the solution tree structure using the same logic as haste mode
-        const moves = this.extractSolutionMoves(solutionLines)
-        console.log('Solution moves to replay:', moves)
-
-        if (moves.length === 0) {
-          console.log('No moves to replay')
-          onComplete()
-          return
-        }
-
-        // Clear any existing replay timeout
-        if ((miniboardInstance as any).replayTimeout) {
-          clearTimeout((miniboardInstance as any).replayTimeout)
-        }
-
-        // Access the chess.js instance from the miniboard
-        const chess = (miniboardInstance as any).cjs
-        if (!chess) {
-          console.log('No chess instance found')
-          onComplete()
-          return
-        }
-
-        // Get the initial position
-        const initialFen = chess.fen()
-        
-        // Convert UCI moves to SAN moves that chess.js can understand
-        const uciToMove = (uci: string) => {
-          if (uci.length < 4) return null
-          const from = uci.substring(0, 2)
-          const to = uci.substring(2, 4)
-          const promotion = uci.length > 4 ? uci.substring(4) : undefined
-          return { from, to, promotion }
-        }
-
-        // Reset to initial position and replay moves
-        let moveIndex = 0
-        const replayNextMove = () => {
-          if (moveIndex < moves.length) {
-            try {
-              const uciMove = moves[moveIndex]
-              console.log(`Playing move ${moveIndex + 1}/${moves.length}: ${uciMove}`)
-              
-              const move = uciToMove(uciMove)
-              if (move) {
-                const result = chess.move(move)
-                if (result) {
-                  // Highlight the move
-                  ;(miniboardInstance as any).highlights = {}
-                  ;(miniboardInstance as any).highlightSquare(result.from, 'move-from')
-                  ;(miniboardInstance as any).highlightSquare(result.to, 'move-to')
-                  
-                  // Re-render the board
-                  ;(miniboardInstance as any).renderFen(chess.fen())
-                  
-                  moveIndex++
-                  // Schedule next move
-                  ;(miniboardInstance as any).replayTimeout = setTimeout(replayNextMove, 800)
-                } else {
-                  console.log('Invalid move:', move)
-                  onComplete()
-                }
-              } else {
-                console.log('Could not parse UCI move:', uciMove)
-                onComplete()
-              }
-            } catch (error) {
-              console.error('Error making move:', error)
-              onComplete()
-            }
-          } else {
-            console.log('Solution replay complete')
-            // Clear the timeout reference
-            ;(miniboardInstance as any).replayTimeout = null
-            onComplete()
-          }
-        }
-
-        // Start replaying moves
-        replayNextMove()
-
-      } catch (error) {
-        console.error('Error replaying solution:', error)
-        onComplete()
-      }
-    },
-
-    extractSolutionMoves(solutionLines) {
-      // Extract moves from the solution tree structure
-      const moves = []
-      
-      if (solutionLines && typeof solutionLines === 'object') {
-        // Recursively traverse the solution tree to collect moves
-        const traverseLines = (lines) => {
-          if (lines && typeof lines === 'object') {
-            for (const [moveUci, nextLines] of Object.entries(lines)) {
-              if (moveUci && moveUci.match(/^[a-h][1-8][a-h][1-8]/)) {
-                moves.push(moveUci)
-                // Only follow the first line of the solution
-                if (nextLines && typeof nextLines === 'object') {
-                  traverseLines(nextLines)
-                }
-                break // Only take the first move from each level
-              }
-            }
-          }
-        }
-        
-        traverseLines(solutionLines)
-      }
-      
-      return moves
-    }
   },
 
   components: {
