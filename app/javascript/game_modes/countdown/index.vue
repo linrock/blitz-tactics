@@ -7,6 +7,10 @@ aside.countdown-under-board.game-under-board
 
   .countdown-complete(v-if="hasFinished")
     .score-section
+      .score-container.accuracy
+        .label Accuracy
+        .score(:class="{ 'perfect-accuracy': isPerfectAccuracy }") {{ accuracyPercentage }}%
+
       .score-container.your-score
         .label Your score
         .score {{ score }}
@@ -49,6 +53,19 @@ export default {
       currentPuzzleData: null as any,
       currentPuzzleStartTime: null as number | null,
       currentPuzzleMistakes: 0,
+      totalMoves: 0,
+      correctMoves: 0,
+    }
+  },
+
+  computed: {
+    accuracyPercentage() {
+      if (this.totalMoves === 0) return 0
+      return Math.round((this.correctMoves / this.totalMoves) * 100)
+    },
+
+    isPerfectAccuracy() {
+      return this.totalMoves > 0 && this.correctMoves === this.totalMoves
     }
   },
 
@@ -145,6 +162,12 @@ export default {
         if (!this.hasStarted) {
           this.hasStarted = true
         }
+        // Track total moves for accuracy calculation
+        this.totalMoves++
+      },
+      'move:success': () => {
+        // Track correct moves for accuracy calculation
+        this.correctMoves++
       }
     })
 
