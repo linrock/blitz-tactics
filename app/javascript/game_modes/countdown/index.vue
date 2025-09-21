@@ -6,18 +6,18 @@ aside.countdown-under-board.game-under-board
       .description {{ nPuzzlesSolved }} puzzles solved
 
   .countdown-complete(v-if="hasFinished")
-    .score-section
-      .score-container.accuracy
+    .timers-section
+      .timer-container.accuracy(:class="{ 'perfect-accuracy': isPerfectAccuracy }")
         .label Accuracy
-        .score(:class="{ 'perfect-accuracy': isPerfectAccuracy }") {{ accuracyPercentage }}%
+        .timer {{ accuracyPercentage }}%
 
-      .score-container.your-score
+      .timer-container.your-score
         .label Your score
-        .score {{ score }}
+        .timer {{ score }}
 
-      .score-container.high-score
+      .timer-container.high-score
         .label High score
-        .score {{ highScore }}
+        .timer {{ highScore }}
 
     .action-buttons
       a.view-puzzles.dark-button(:href="viewPuzzlesLink") View puzzles
