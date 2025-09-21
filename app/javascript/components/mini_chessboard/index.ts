@@ -30,6 +30,10 @@ export default class MiniChessboard {
     this.el = options.el
     this.cjs = new Chess()
     this.highlights = {}
+    
+    // Add cg-wrap class to match chessground structure
+    this.el.classList.add('cg-wrap')
+    
     if (options.flip) {
       this.rows.reverse()
       this.columns.reverse()

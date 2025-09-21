@@ -197,7 +197,7 @@ class UserChessboard < ActiveRecord::Base
               .cg-wrap piece.#{piece}.#{color} {
                 background-image: url('#{data_uri}') !important;
               }
-              .mini-chessboard .piece.#{piece}.#{color} {
+              .mini-chessboard.cg-wrap .square piece.#{piece}.#{color} {
                 background-image: url('#{data_uri}') !important;
               }
             "
@@ -218,7 +218,7 @@ class UserChessboard < ActiveRecord::Base
                   .cg-wrap piece.#{piece}.#{color} {
                     background-image: url('#{data_uri}') !important;
                   }
-                  .mini-chessboard .piece.#{piece}.#{color} {
+                  .mini-chessboard.cg-wrap .square piece.#{piece}.#{color} {
                     background-image: url('#{data_uri}') !important;
                   }
                 "
