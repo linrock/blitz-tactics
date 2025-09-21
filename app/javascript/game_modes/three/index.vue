@@ -53,6 +53,7 @@ import { threeRoundCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
 import { dispatch, subscribe } from '@blitz/events'
+import { solutionReplay } from '@blitz/utils/solution_replay'
 
 import Timer from './timer.vue'
 
@@ -81,7 +82,6 @@ export default {
       highScores: [] as [string, number][],
       currentPuzzle: null as any,
       currentPuzzleData: null as any,
-      originalBoardStates: new Map(),
       currentPuzzleStartTime: null as number | null,
       currentPuzzleMistakes: 0,
     }
@@ -291,10 +291,10 @@ export default {
       if (puzzleId) {
         const miniboard = document.querySelector(`#missed-puzzles-section .mini-chessboard[data-puzzle-id="${puzzleId}"]`)
         if (miniboard) {
-          // Use the puzzle lines for the solution
+          // Use the puzzle lines for the solution (same as other game modes)
           const solutionLines = puzzleData.puzzle?.lines
           if (solutionLines) {
-            this.replaySolutionOnMiniboard(miniboard, solutionLines)
+            solutionReplay.replaySolutionOnMiniboard(miniboard, solutionLines)
           } else {
             console.log('No solution lines found for puzzle:', puzzleId)
           }
@@ -318,10 +318,10 @@ export default {
       if (puzzleId) {
         const miniboard = document.querySelector(`#missed-puzzles-section .mini-chessboard[data-puzzle-id="${puzzleId}"]`)
         if (miniboard) {
-          // Use the puzzle lines for the solution
+          // Use the puzzle lines for the solution (same as other game modes)
           const solutionLines = puzzleData.puzzle?.lines
           if (solutionLines) {
-            this.replaySolutionOnMiniboardWithCallback(miniboard, solutionLines, () => {
+            solutionReplay.replaySolutionOnMiniboardWithCallback(miniboard, solutionLines, () => {
               // Reset button state when solution playback is complete
               button.textContent = originalText || 'Show solution'
               button.style.opacity = '1'
@@ -344,324 +344,10 @@ export default {
       }
     },
 
-    async replaySolutionOnMiniboard(miniboardEl, solutionLines) {
-      if (!solutionLines) {
-        console.log('No solution lines available')
-        return
-      }
 
-      const solutionMoves = this.extractSolutionMoves(solutionLines)
-      
-      if (solutionMoves.length === 0) {
-        console.log('No solution moves found')
-        return
-      }
 
-      console.log('Playing solution moves:', solutionMoves)
-      
-      const initialFen = miniboardEl.getAttribute('data-fen')
-      if (!initialFen) {
-        console.error('No initial FEN found for miniboard')
-        return
-      }
 
-      // Play the solution moves
-      this.playMovesInMiniboard(miniboardEl, initialFen, solutionMoves)
-    },
 
-    async replaySolutionOnMiniboardWithCallback(miniboardEl, solutionLines, onComplete) {
-      if (!solutionLines) {
-        console.log('No solution lines available')
-        onComplete()
-        return
-      }
-
-      const solutionMoves = this.extractSolutionMoves(solutionLines)
-      
-      if (solutionMoves.length === 0) {
-        console.log('No solution moves found')
-        onComplete()
-        return
-      }
-
-      console.log('Playing solution moves:', solutionMoves)
-      
-      const initialFen = miniboardEl.getAttribute('data-fen')
-      if (!initialFen) {
-        console.error('No initial FEN found for miniboard')
-        onComplete()
-        return
-      }
-
-      // Play the solution moves with callback when complete
-      this.playMovesInMiniboardWithCallback(miniboardEl, initialFen, solutionMoves, onComplete)
-    },
-
-    playMovesInMiniboard(miniboard, initialFen, moves) {
-      if (moves.length === 0) {
-        return
-      }
-
-      // Reset board to original position before playing solution
-      this.resetBoardToOriginalPosition(miniboard)
-      
-      let currentMoveIndex = 0
-      
-      const playNextMove = () => {
-        if (currentMoveIndex < moves.length) {
-          // Clear initial move highlighting before the first solution move
-          if (currentMoveIndex === 0) {
-            this.clearExistingHighlights(miniboard)
-          }
-          
-          const moveUci = moves[currentMoveIndex]
-          this.animateMoveOnMiniboard(miniboard, moveUci)
-          currentMoveIndex++
-          
-          setTimeout(playNextMove, 700) // 0.7 second delay between moves
-        }
-      }
-      
-      // Start playing moves after reset completes
-      setTimeout(playNextMove, 200)
-    },
-
-    playMovesInMiniboardWithCallback(miniboard, initialFen, moves, onComplete) {
-      if (moves.length === 0) {
-        onComplete()
-        return
-      }
-
-      // Reset board to original position before playing solution
-      this.resetBoardToOriginalPosition(miniboard)
-      
-      let currentMoveIndex = 0
-      
-      const playNextMove = () => {
-        if (currentMoveIndex < moves.length) {
-          // Clear initial move highlighting before the first solution move
-          if (currentMoveIndex === 0) {
-            this.clearExistingHighlights(miniboard)
-          }
-          
-          const moveUci = moves[currentMoveIndex]
-          this.animateMoveOnMiniboard(miniboard, moveUci)
-          currentMoveIndex++
-          
-          setTimeout(playNextMove, 700) // 0.7 second delay between moves
-        } else {
-          // All moves completed, call the callback
-          onComplete()
-        }
-      }
-      
-      // Start playing moves after reset completes
-      setTimeout(playNextMove, 200)
-    },
-
-    resetBoardToOriginalPosition(miniboard) {
-      const originalFen = miniboard.getAttribute('data-fen')
-      const originalMove = miniboard.getAttribute('data-initial-move')
-      
-      if (!originalFen) {
-        console.warn('No original FEN data found for reset')
-        return
-      }
-
-      // Store the current state first time we see this board
-      if (!this.originalBoardStates.has(originalFen)) {
-        this.storeOriginalBoardState(miniboard, originalFen)
-      }
-
-      // Restore from stored state
-      this.restoreFromStoredState(miniboard, originalFen, originalMove)
-    },
-
-    storeOriginalBoardState(miniboard, fen) {
-      const squares = miniboard.querySelectorAll('.square')
-      const pieces = []
-      
-      squares.forEach((square, index) => {
-        const piece = square.querySelector('.piece')
-        if (piece) {
-          // Clone the piece to store its exact state
-          const pieceClone = piece.cloneNode(true)
-          pieces.push({ squareIndex: index, piece: pieceClone })
-        }
-      })
-      
-      this.originalBoardStates.set(fen, {
-        pieces,
-        initialMove: miniboard.getAttribute('data-initial-move')
-      })
-    },
-
-    restoreFromStoredState(miniboard, fen, originalMove) {
-      const storedState = this.originalBoardStates.get(fen)
-      if (!storedState) {
-        console.warn('No stored state found for FEN:', fen)
-        return
-      }
-
-      // Clear all current pieces
-      const squares = miniboard.querySelectorAll('.square')
-      squares.forEach(square => {
-        const pieces = square.querySelectorAll('.piece')
-        pieces.forEach(piece => piece.remove())
-      })
-
-      // Restore pieces to their original positions using square indices
-      storedState.pieces.forEach(({ squareIndex, piece }) => {
-        if (squareIndex >= 0 && squareIndex < squares.length) {
-          const pieceClone = piece.cloneNode(true)
-          squares[squareIndex].appendChild(pieceClone)
-        }
-      })
-
-      // Restore initial move highlighting
-      if (originalMove) {
-        setTimeout(() => {
-          this.restoreInitialMoveHighlighting(miniboard, originalMove)
-        }, 50)
-      }
-    },
-
-    restoreInitialMoveHighlighting(miniboard, moveUci) {
-      if (!moveUci || moveUci.length < 4) return
-      
-      const fromSquare = moveUci.substring(0, 2)
-      const toSquare = moveUci.substring(2, 4)
-      
-      const squares = miniboard.querySelectorAll('.square')
-      const fromSquareEl = this.getSquareByPosition(squares, fromSquare)
-      const toSquareEl = this.getSquareByPosition(squares, toSquare)
-      
-      if (fromSquareEl) fromSquareEl.classList.add('move-from')
-      if (toSquareEl) toSquareEl.classList.add('move-to')
-    },
-
-    clearExistingHighlights(miniboard) {
-      // Remove any existing move-from and move-to classes from all squares
-      const highlightedSquares = miniboard.querySelectorAll('.square.move-from, .square.move-to')
-      highlightedSquares.forEach(square => {
-        square.classList.remove('move-from', 'move-to')
-      })
-    },
-
-    animateMoveOnMiniboard(miniboard, moveUci) {
-      const fromSquare = moveUci.substring(0, 2)
-      const toSquare = moveUci.substring(2, 4)
-      
-      // Get all squares from the miniboard
-      const squares = miniboard.querySelectorAll('.square')
-      
-      // Find squares by position index
-      const fromSquareEl = this.getSquareByPosition(squares, fromSquare)
-      const toSquareEl = this.getSquareByPosition(squares, toSquare)
-      
-      if (!fromSquareEl || !toSquareEl) {
-        console.warn(`Could not find squares ${fromSquare} or ${toSquare} on miniboard`)
-        return
-      }
-
-      // Simulate piece movement
-      this.simulatePieceMovement(fromSquareEl, toSquareEl)
-    },
-
-    simulatePieceMovement(fromSquareEl, toSquareEl) {
-      // Get the piece from the 'from' square
-      const pieceEl = fromSquareEl.querySelector('.piece')
-      if (!pieceEl) {
-        // If no piece, just highlight squares
-        this.highlightSquares(fromSquareEl, toSquareEl)
-        return
-      }
-
-      // Clone the piece element
-      const pieceClone = pieceEl.cloneNode(true)
-      
-      // Highlight squares and move the piece
-      fromSquareEl.classList.add('move-from')
-      toSquareEl.classList.add('move-to')
-      
-      // Move the piece immediately
-      pieceEl.remove()
-      
-      // Remove any existing piece from destination square
-      const existingPiece = toSquareEl.querySelector('.piece')
-      if (existingPiece) {
-        existingPiece.remove()
-      }
-      
-      // Add the piece to the destination square
-      toSquareEl.appendChild(pieceClone)
-      
-      // Clean up square highlighting after a delay
-      setTimeout(() => {
-        fromSquareEl.classList.remove('move-from')
-        toSquareEl.classList.remove('move-to')
-      }, 600)
-    },
-
-    highlightSquares(fromSquareEl, toSquareEl) {
-      // Fallback: just highlight squares if no piece to move
-      fromSquareEl.classList.add('move-from')
-      toSquareEl.classList.add('move-to')
-      
-      setTimeout(() => {
-        fromSquareEl.classList.remove('move-from')
-        toSquareEl.classList.remove('move-to')
-      }, 800)
-    },
-
-    getSquareByPosition(squares, squareId) {
-      // Get the miniboard element to check if it's flipped
-      const miniboard = squares[0]?.closest('.mini-chessboard')
-      const isFlipped = miniboard?.getAttribute('data-flip') === 'true'
-      
-      // Convert square notation (e.g., "e4") to board index
-      const file = squareId.charAt(0) // 'a' to 'h'
-      const rank = parseInt(squareId.charAt(1)) // 1 to 8
-      
-      // Convert to 0-based indices
-      let fileIndex = file.charCodeAt(0) - 'a'.charCodeAt(0) // 0 to 7
-      let rankIndex = 8 - rank // 0 to 7 (rank 8 = index 0, rank 1 = index 7)
-      
-      // If the board is flipped, reverse both file and rank indices
-      if (isFlipped) {
-        fileIndex = 7 - fileIndex // Flip horizontally
-        rankIndex = 7 - rankIndex // Flip vertically
-      }
-      
-      // Calculate the index in the squares array
-      const squareIndex = rankIndex * 8 + fileIndex
-      
-      return squares[squareIndex] || null
-    },
-    
-    extractSolutionMoves(lines) {
-      const moves = []
-      
-      const traverse = (node) => {
-        if (typeof node === 'string') {
-          return // Reached a terminal node
-        }
-        
-        for (const [move, child] of Object.entries(node)) {
-          if (child === 'win') {
-            moves.push(move)
-            return
-          } else if (typeof child === 'object') {
-            moves.push(move)
-            traverse(child)
-            return
-          }
-        }
-      }
-      
-      traverse(lines)
-      return moves
-    },
 
     showPlayedPuzzlesSection() {
       const playedSection = document.getElementById('missed-puzzles-section')
