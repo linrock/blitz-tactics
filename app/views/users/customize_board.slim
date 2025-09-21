@@ -60,9 +60,9 @@
               value="#{@board&.selected_square_color}"
             )
 
-        .action-buttons
-          button.gray.reset-colors Reset board
-          button.blue.save-colors Save board
+    .action-buttons
+      button.gray.reset-colors Reset board
+      button.blue.save-colors Save board
 
     h4 Piece Set
     .piece-sets
@@ -80,7 +80,15 @@
               .piece-sample.black-knight(style="background-image: url('#{safe_piece_asset_path(piece_set, 'bN')}')")
             .piece-set-name = piece_set.humanize
 
-  style(type="text/css")= @board&.to_css
+  - if @board&.to_css
+    script type="text/javascript"
+      | document.addEventListener('DOMContentLoaded', function() {
+      |   var style = document.createElement('style');
+      |   style.type = 'text/css';
+      |   style.setAttribute('data-custom-piece-set', 'true');
+      |   style.innerHTML = #{raw @board.to_css.to_json};
+      |   document.head.appendChild(style);
+      | });
   
   / Hidden container with embedded SVG content for all piece sets
   .piece-svg-container(style="display: none;")

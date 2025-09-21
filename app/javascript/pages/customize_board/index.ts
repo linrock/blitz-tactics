@@ -24,8 +24,16 @@ export default class CustomizeBoard {
   constructor() {
     this.el = document.querySelector('.customize-board')
     this.initialize()
+    this.initializePieceSetPreviews()
     this.setupEventListeners()
+    
+    // Set initial piece set preview
+    const selectedPieceSet = this.el.querySelector('input[name="board[piece_set]"]:checked') as HTMLInputElement
+    if (selectedPieceSet) {
+      this._updateBoardPieceSet(selectedPieceSet.value)
+    }
   }
+
 
   private initializePieceSetPreviews() {
     // Piece preview images are now set server-side via Rails asset helpers
@@ -57,13 +65,6 @@ export default class CustomizeBoard {
     }
     
     // Initialize piece set previews
-    this.initializePieceSetPreviews()
-    
-    // Set initial piece set preview
-    const selectedPieceSet = this.el.querySelector('input[name="board[piece_set]"]:checked') as HTMLInputElement
-    if (selectedPieceSet) {
-      this._updateBoardPieceSet(selectedPieceSet.value)
-    }
     
     const squares = ['light', 'dark', 'selected', 'from', 'to']
     const initialColors = {}
@@ -156,6 +157,8 @@ export default class CustomizeBoard {
         this._toggleColorPicker(e)
       } else if (target.matches('.reset-colors')) {
         this._resetColors(e)
+      } else if (target.matches('.save-colors')) {
+        this._saveBoard(e)
       }
     })
 
@@ -180,6 +183,8 @@ export default class CustomizeBoard {
         }
       }
     })
+
+
 
     // Set up keypress and keyup handlers for hex inputs
     this.el.addEventListener('keypress', (e) => {
@@ -261,6 +266,9 @@ export default class CustomizeBoard {
     e.preventDefault()
     boardStyles.set(defaultColors)
     
+    // Clear any custom piece set styles that were injected
+    this._clearCustomPieceSetStyles()
+    
     // Reset piece set to default (cburnett)
     const defaultPieceSetRadio = this.el.querySelector('input[name="board[piece_set]"][value="cburnett"]') as HTMLInputElement
     if (defaultPieceSetRadio) {
@@ -270,20 +278,72 @@ export default class CustomizeBoard {
     }
   }
 
+  private _saveBoard(e: Event) {
+    e.preventDefault()
+    
+    // Find the form
+    const form = this.el.querySelector('form')
+    if (form) {
+      // Get the selected piece set
+      const selectedPieceSet = this.el.querySelector('input[name="board[piece_set]"]:checked') as HTMLInputElement
+      
+      // Create a hidden input for the piece set if it's not already in the form
+      if (selectedPieceSet) {
+        // Remove any existing piece set input in the form
+        const existingPieceSetInput = form.querySelector('input[name="board[piece_set]"]')
+        if (existingPieceSetInput) {
+          existingPieceSetInput.remove()
+        }
+        
+        // Create a new hidden input with the selected piece set value
+        const pieceSetInput = document.createElement('input')
+        pieceSetInput.type = 'hidden'
+        pieceSetInput.name = 'board[piece_set]'
+        pieceSetInput.value = selectedPieceSet.value
+        form.appendChild(pieceSetInput)
+      }
+      
+      // Submit the form
+      form.submit()
+    }
+  }
+
+
   private _updatePieceSetPreview(e: Event & { target: HTMLInputElement }) {
     const pieceSet = e.target.value
     this._updateBoardPieceSet(pieceSet)
   }
 
-  private _updateBoardPieceSet(pieceSet: string) {
-    // Find the SVG container for this piece set
-    const pieceSetContainer = document.querySelector(`.piece-set-svgs[data-piece-set="${pieceSet}"]`)
-    if (!pieceSetContainer) {
-      console.warn(`No SVG container found for piece set: ${pieceSet}`)
-      return
-    }
+  private _clearCustomPieceSetStyles() {
+    // Remove any custom piece set styles that were injected via JavaScript
+    const customStyles = document.querySelectorAll('style[data-custom-piece-set]')
+    customStyles.forEach(style => style.remove())
     
-    // Update all pieces on the board
+    // Also remove any styles that contain piece set CSS
+    const allStyles = document.querySelectorAll('style')
+    allStyles.forEach(style => {
+      const content = style.innerHTML
+      if (content.includes('.cg-wrap piece.') && content.includes('background-image: url(\'data:image/svg+xml;base64,')) {
+        style.remove()
+      }
+    })
+  }
+
+  private _updateBoardPieceSet(pieceSet: string) {
+    // Clear any existing custom piece set styles
+    this._clearCustomPieceSetStyles()
+    
+    // Generate CSS for the selected piece set using base64 SVG data URIs
+    this._injectPieceSetCSS(pieceSet)
+  }
+
+  private _injectPieceSetCSS(pieceSet: string) {
+    // Create a style element for this piece set
+    const style = document.createElement('style')
+    style.type = 'text/css'
+    style.setAttribute('data-custom-piece-set', 'true')
+    
+    // Generate CSS rules for each piece using base64 SVG data URIs
     const pieces = ['wK', 'wQ', 'wR', 'wB', 'wN', 'wP', 'bK', 'bQ', 'bR', 'bB', 'bN', 'bP']
     const pieceMap = {
       'wK': 'king.white', 'wQ': 'queen.white', 'wR': 'rook.white', 
@@ -292,43 +352,29 @@ export default class CustomizeBoard {
       'bB': 'bishop.black', 'bN': 'knight.black', 'bP': 'pawn.black'
     }
     
+    let css = ''
     pieces.forEach(pieceCode => {
-      const svgElement = pieceSetContainer.querySelector(`.piece-svg[data-piece="${pieceCode}"]`)
       const pieceClass = pieceMap[pieceCode]
-      const boardPieces = document.querySelectorAll(`.cg-wrap piece.${pieceClass}`)
-      
-      if (svgElement && svgElement.innerHTML.trim()) {
-        // Update all pieces of this type (there might be multiple pawns, etc.)
-        boardPieces.forEach(boardPiece => {
-          // Replace the piece's background with the SVG content
-          boardPiece.innerHTML = svgElement.innerHTML
-          const pieceEl = boardPiece as HTMLElement
-          pieceEl.style.backgroundImage = 'none'
+      // Get the SVG content from the piece set container
+      const pieceSetContainer = document.querySelector(`.piece-set-svgs[data-piece-set="${pieceSet}"]`)
+      if (pieceSetContainer) {
+        const svgElement = pieceSetContainer.querySelector(`.piece-svg[data-piece="${pieceCode}"]`)
+        if (svgElement && svgElement.innerHTML.trim()) {
+          // Convert SVG to base64 data URI
+          const svgContent = svgElement.innerHTML.trim()
+          const base64Svg = btoa(unescape(encodeURIComponent(svgContent)))
+          const dataUri = `data:image/svg+xml;base64,${base64Svg}`
           
-          // Remove any classes that might cause opacity issues
-          pieceEl.classList.remove('fading', 'ghost')
-          
-          // Ensure full opacity for the piece element itself
-          pieceEl.style.opacity = '1'
-          
-          // Ensure the SVG fills the piece container and has full opacity
-          const svg = pieceEl.querySelector('svg')
-          if (svg) {
-            svg.style.width = '100%'
-            svg.style.height = '100%'
-            svg.style.display = 'block'
-            svg.style.opacity = '1'
-            
-            // Also ensure any images within the SVG have full opacity
-            const images = svg.querySelectorAll('image')
-            images.forEach(img => {
-              ;(img as unknown as HTMLElement).style.opacity = '1'
-            })
-          }
-        })
+          // Generate CSS rule
+          css += `.cg-wrap piece.${pieceClass} { background-image: url('${dataUri}') !important; background-size: cover !important; background-repeat: no-repeat !important; background-position: center !important; }\n`
+        }
       }
     })
+    
+    style.innerHTML = css
+    document.head.appendChild(style)
   }
+
 
 
 }
