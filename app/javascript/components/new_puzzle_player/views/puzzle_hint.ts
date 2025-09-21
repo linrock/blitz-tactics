@@ -57,6 +57,8 @@ export default class PuzzleHint {
     this.el.classList.add(`invisible`)
     this.buttonEl.classList.remove(`invisible`)
     this.moveEl.textContent = ``
+    // Hide combo counter when hint button appears
+    dispatch(`combo:drop`)
     this.timeout = window.setTimeout(() => {
       dispatch(`move:too_slow`)
       setTimeout(() => this.showHint(), hintDelay)
