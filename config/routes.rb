@@ -92,6 +92,7 @@ Rails.application.routes.draw do
 
   # more pages
   get '/scoreboard'              => 'pages#scoreboard'
+  get '/achievements'            => 'achievements#index'
   get '/about'                   => 'pages#about'
   get '/puzzle-themes'           => 'pages#puzzle_themes'
   

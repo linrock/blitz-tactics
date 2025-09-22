@@ -1,0 +1,137 @@
+<% content_for(:title) { "Achievements" } %>
+
+<div class="achievements-page">
+  <div class="container">
+    <header>
+      <h1>Achievements</h1>
+      <p class="subtitle">Track your progress and unlock new milestones</p>
+    </header>
+
+    <div class="achievements-grid">
+      <div class="achievement-category">
+        <h2>📊 PROGRESSION</h2>
+        <div class="achievement-list">
+          <div class="achievement unlocked">
+            <div class="achievement-icon">✅</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🏆 Puzzle Solver (500 puzzles)</div>
+              <div class="achievement-description">Unlocked Mar 15</div>
+            </div>
+          </div>
+          
+          <div class="achievement in-progress">
+            <div class="achievement-icon">⏳</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🏆 Tactics Master (347/1000 puzzles)</div>
+              <div class="achievement-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 34.7%"></div>
+                </div>
+                <div class="progress-text">████████░░</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🏆 Chess Encyclopedia (2500 puzzles)</div>
+              <div class="achievement-description">Solve 2500 puzzles to unlock</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="achievement-category">
+        <h2>⚡ SPEED & SKILL</h2>
+        <div class="achievement-list">
+          <div class="achievement unlocked">
+            <div class="achievement-icon">✅</div>
+            <div class="achievement-content">
+              <div class="achievement-title">⚡ Lightning (< 3 seconds)</div>
+              <div class="achievement-description">Unlocked Mar 12</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">⚡ Speed Demon (< 5 sec average over 20)</div>
+              <div class="achievement-description">Maintain 5 second average over 20 puzzles</div>
+            </div>
+          </div>
+          
+          <div class="achievement in-progress">
+            <div class="achievement-icon">⏳</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🎯 Sharp Eye (7/10 in a row)</div>
+              <div class="achievement-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 70%"></div>
+                </div>
+                <div class="progress-text">███████░░░</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="achievement-category">
+        <h2>🔥 CONSISTENCY</h2>
+        <div class="achievement-list">
+          <div class="achievement unlocked">
+            <div class="achievement-icon">✅</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🔥 Daily Solver (7 days)</div>
+              <div class="achievement-description">Unlocked Mar 10</div>
+            </div>
+          </div>
+          
+          <div class="achievement in-progress">
+            <div class="achievement-icon">⏳</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🔥 Committed (23/30 days)</div>
+              <div class="achievement-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 76.7%"></div>
+                </div>
+                <div class="progress-text">████████░░</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="achievement-category">
+        <h2>❓ MYSTERY ACHIEVEMENTS (3 hidden)</h2>
+        <div class="achievement-list">
+          <div class="achievement locked mystery">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">??? - Play at unusual times...</div>
+              <div class="achievement-description">Keep playing to discover this secret!</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked mystery">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">??? - Something about perfect timing...</div>
+              <div class="achievement-description">Keep playing to discover this secret!</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked mystery">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">??? - Community related...</div>
+              <div class="achievement-description">Keep playing to discover this secret!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render 'shared/main_footer' %>
