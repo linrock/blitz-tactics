@@ -36,7 +36,7 @@ section.homepage
                                                  initial_move: initial_move,
                                                  title: "First Puzzle" })
                     .level-info-bottom
-                      .success-criteria= "#{set_data['puzzles_count']} puzzles"
+                      .success-criteria= "#{@current_adventure_level_number}-#{set_data['set_index']}: Solve #{set_data['puzzles_count']} puzzles"
                       - if set_data['completed']
                         .completion-indicator
                           .checkmark ✓
