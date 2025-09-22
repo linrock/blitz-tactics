@@ -16,3 +16,5 @@
             span= "#{puzzle_set.lichess_v2_puzzles.count} puzzles"
             span &nbsp;-&nbsp;
             span= "created by #{puzzle_set.user.username}"
+            span &nbsp;-&nbsp;
+            span= "created #{puzzle_set.created_at.strftime('%b %d, %Y')}"
