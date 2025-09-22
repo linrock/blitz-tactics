@@ -100,17 +100,21 @@ class AdventureLevelCreator
       puzzle_sets: []
     }
 
-    # Generate puzzle sets for this level
+    # Generate puzzle sets for this level, alternating between white and black to move
     config[:puzzle_sets].times do |set_index|
       puzzles_per_set = config[:puzzles_per_set].is_a?(Array) ? 
                        config[:puzzles_per_set][set_index] : 
                        config[:puzzles_per_set]
 
+      # Alternate between white and black to move
+      color_to_move = set_index.even? ? 'w' : 'b'
+
       puzzle_set = generate_puzzle_set(
         level: level_number,
         set_index: set_index + 1,
         puzzles_count: puzzles_per_set,
-        rating_range: config[:rating_range]
+        rating_range: config[:rating_range],
+        color_to_move: color_to_move
       )
 
       level_data[:puzzle_sets] << puzzle_set
@@ -120,11 +124,11 @@ class AdventureLevelCreator
   end
 
   # Generate a single puzzle set for a level using puzzle pool files
-  def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:)
-    puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles)"
+  def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w')
+    puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles, #{color_to_move == 'w' ? 'white' : 'black'} to move)"
 
-    # Determine which pool file to use based on rating range
-    pool_file_info = find_pool_file_for_rating_range(rating_range)
+    # Determine which pool file to use based on rating range and color
+    pool_file_info = find_pool_file_for_rating_range(rating_range, color_to_move)
     
     if pool_file_info.nil?
       puts "    ERROR: No pool file found for rating range #{rating_range}"
@@ -132,6 +136,7 @@ class AdventureLevelCreator
         set_index: set_index,
         puzzles_count: 0,
         rating_range: rating_range,
+        color_to_move: color_to_move,
         puzzles: []
       }
     end
@@ -145,6 +150,7 @@ class AdventureLevelCreator
         set_index: set_index,
         puzzles_count: 0,
         rating_range: rating_range,
+        color_to_move: color_to_move,
         puzzles: []
       }
     end
@@ -156,29 +162,20 @@ class AdventureLevelCreator
       puts "    WARNING: Only found #{puzzles.length} puzzles in database (requested #{puzzles_count})"
     end
 
-    # Convert to the format expected by the game
-    puzzle_data = puzzles.map do |puzzle|
-      {
-        id: puzzle.id,
-        fen: puzzle.initial_fen,
-        lines: puzzle.lines_tree, # Fixed: use lines_tree instead of solution_lines
-        initialMove: {
-          san: puzzle.initial_move_san,
-          uci: puzzle.initial_move_uci
-        }
-      }
-    end
+    # Convert to simple list of puzzle IDs
+    puzzle_ids = puzzles.map(&:puzzle_id)
 
     {
       set_index: set_index,
-      puzzles_count: puzzle_data.length,
+      puzzles_count: puzzle_ids.length,
       rating_range: rating_range,
-      puzzles: puzzle_data
+      color_to_move: color_to_move,
+      puzzles: puzzle_ids
     }
   end
 
-  # Find the appropriate pool file for a given rating range
-  def self.find_pool_file_for_rating_range(rating_range)
+  # Find the appropriate pool file for a given rating range and color
+  def self.find_pool_file_for_rating_range(rating_range, color_to_move = 'w')
     pools_dir = "data/puzzle-pools/"
     
     # Map rating ranges to pool file numbers
@@ -214,20 +211,18 @@ class AdventureLevelCreator
     
     return nil unless best_pool
     
-    # Try both colors and find the first available file
-    %w[w b].each do |color|
-      filename = "#{color}_pool_#{format("%02d", best_pool)}_#{pool_mapping.key(best_pool).min}-#{pool_mapping.key(best_pool).max}.txt"
-      file_path = Rails.root.join(pools_dir, filename)
-      
-      if File.exist?(file_path)
-        return {
-          filename: filename,
-          file_path: file_path,
-          color: color,
-          pool_number: best_pool,
-          rating_range: pool_mapping.key(best_pool)
-        }
-      end
+    # Use the specified color to move
+    filename = "#{color_to_move}_pool_#{format("%02d", best_pool)}_#{pool_mapping.key(best_pool).min}-#{pool_mapping.key(best_pool).max}.txt"
+    file_path = Rails.root.join(pools_dir, filename)
+    
+    if File.exist?(file_path)
+      return {
+        filename: filename,
+        file_path: file_path,
+        color: color_to_move,
+        pool_number: best_pool,
+        rating_range: pool_mapping.key(best_pool)
+      }
     end
     
     nil
@@ -267,8 +262,8 @@ class AdventureLevelCreator
     full_output_dir = Rails.root.join(output_dir)
     FileUtils.mkdir_p(full_output_dir)
     
-    # Create filename
-    filename = "adventure-level-#{level_number.to_s.rjust(2, '0')}.json"
+    # Create filename (removed "adventure-" prefix)
+    filename = "level-#{level_number.to_s.rjust(2, '0')}.json"
     file_path = File.join(full_output_dir, filename)
     
     # Write level data to file
@@ -321,24 +316,27 @@ class AdventureLevelCreator
       puts "\nAnalyzing Level #{level_number}: #{config[:description]}"
       puts "Rating range: #{config[:rating_range]}"
       
-      # Find the appropriate pool file
-      pool_file_info = find_pool_file_for_rating_range(config[:rating_range])
+      # Check both white and black pool files for this level
+      white_pool_info = find_pool_file_for_rating_range(config[:rating_range], 'w')
+      black_pool_info = find_pool_file_for_rating_range(config[:rating_range], 'b')
       
-      if pool_file_info.nil?
-        puts "  ❌ No pool file found for rating range #{config[:rating_range]}"
+      if white_pool_info.nil? && black_pool_info.nil?
+        puts "  ❌ No pool files found for rating range #{config[:rating_range]}"
         analysis[level_number] = {
           config: config,
           available_puzzles: 0,
           needed_puzzles: 0,
           sufficient: false,
           coverage: 0.0,
-          pool_file: nil
+          pool_files: []
         }
         next
       end
       
-      # Count available puzzles in pool file
-      puzzle_count = count_puzzles_in_pool_file(pool_file_info[:file_path])
+      # Calculate total available puzzles from both colors
+      white_count = white_pool_info ? count_puzzles_in_pool_file(white_pool_info[:file_path]) : 0
+      black_count = black_pool_info ? count_puzzles_in_pool_file(black_pool_info[:file_path]) : 0
+      total_available = white_count + black_count
       
       # Calculate total puzzles needed
       total_needed = config[:puzzle_sets] * 
@@ -347,20 +345,24 @@ class AdventureLevelCreator
                      config[:puzzles_per_set])
       
       # Check if we have enough puzzles
-      sufficient = puzzle_count >= total_needed
+      sufficient = total_available >= total_needed
+      
+      pool_files = []
+      pool_files << white_pool_info[:filename] if white_pool_info
+      pool_files << black_pool_info[:filename] if black_pool_info
       
       analysis[level_number] = {
         config: config,
-        available_puzzles: puzzle_count,
+        available_puzzles: total_available,
         needed_puzzles: total_needed,
         sufficient: sufficient,
-        coverage: sufficient ? 100.0 : (puzzle_count.to_f / total_needed * 100).round(1),
-        pool_file: pool_file_info[:filename]
+        coverage: sufficient ? 100.0 : (total_available.to_f / total_needed * 100).round(1),
+        pool_files: pool_files
       }
       
       status = sufficient ? "✅ SUFFICIENT" : "⚠️  INSUFFICIENT"
-      puts "  Pool file: #{pool_file_info[:filename]}"
-      puts "  Available: #{puzzle_count} puzzles"
+      puts "  Pool files: #{pool_files.join(', ')}"
+      puts "  Available: #{total_available} puzzles (W: #{white_count}, B: #{black_count})"
       puts "  Needed: #{total_needed} puzzles"
       puts "  Status: #{status} (#{analysis[level_number][:coverage]}% coverage)"
     end
@@ -396,12 +398,16 @@ class AdventureLevelCreator
     config = LEVEL_CONFIG[level_number]
     return false unless config
 
-    # Find the appropriate pool file
-    pool_file_info = find_pool_file_for_rating_range(config[:rating_range])
-    return false unless pool_file_info
+    # Check both white and black pool files
+    white_pool_info = find_pool_file_for_rating_range(config[:rating_range], 'w')
+    black_pool_info = find_pool_file_for_rating_range(config[:rating_range], 'b')
+    
+    return false if white_pool_info.nil? && black_pool_info.nil?
 
-    # Count available puzzles in pool file
-    available = count_puzzles_in_pool_file(pool_file_info[:file_path])
+    # Count available puzzles from both colors
+    white_count = white_pool_info ? count_puzzles_in_pool_file(white_pool_info[:file_path]) : 0
+    black_count = black_pool_info ? count_puzzles_in_pool_file(black_pool_info[:file_path]) : 0
+    total_available = white_count + black_count
 
     # Calculate total puzzles needed
     total_needed = config[:puzzle_sets] * 
@@ -409,6 +415,6 @@ class AdventureLevelCreator
                    config[:puzzles_per_set].sum : 
                    config[:puzzles_per_set])
 
-    available >= total_needed
+    total_available >= total_needed
   end
 end
