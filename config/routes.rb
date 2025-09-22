@@ -98,6 +98,12 @@ Rails.application.routes.draw do
   
   # admin page
   get '/admin'                   => 'admin#index'
+  get '/admin/feature-flags'     => 'admin#feature_flags'
+  post '/admin/feature-flags'    => 'admin#create_feature_flag'
+  patch '/admin/feature-flags/:id' => 'admin#update_feature_flag'
+  put '/admin/feature-flags/:id' => 'admin#update_feature_flag'
+  post '/admin/feature-flags/:id/toggle' => 'admin#toggle_feature_flag'
+  delete '/admin/feature-flags/:id' => 'admin#destroy_feature_flag'
 
   # puzzle pages
   get '/puzzles'                 => 'puzzles#index'

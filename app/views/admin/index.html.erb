@@ -92,6 +92,13 @@
       <p>Total unique users who solved puzzles: <strong><%= @solved_puzzle_stats.values.sum { |s| s[:users] } %></strong></p>
       <p>Average unique users per day: <strong><%= (@solved_puzzle_stats.values.sum { |s| s[:users] } / @period_days.to_f).round(1) %></strong></p>
     </div>
+
+    <div class="admin-navigation">
+      <h2>Admin Tools</h2>
+      <div class="admin-links">
+        <%= link_to "Feature Flags", admin_feature_flags_path, class: "admin-link" %>
+      </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -493,5 +500,42 @@ document.addEventListener('DOMContentLoaded', function() {
   background: #1a1a1a;
   border-radius: 4px;
   max-height: 400px;
+}
+
+.admin-navigation {
+  background: #2d2d2d;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #404040;
+  margin-top: 30px;
+}
+
+.admin-navigation h2 {
+  margin-top: 0;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+.admin-links {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.admin-link {
+  padding: 12px 20px;
+  background: #4a90e2;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid #4a90e2;
+}
+
+.admin-link:hover {
+  background: #357abd;
+  border-color: #357abd;
+  color: #ffffff;
 }
 </style>

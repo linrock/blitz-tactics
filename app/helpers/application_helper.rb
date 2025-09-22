@@ -63,4 +63,33 @@ module ApplicationHelper
       end
     end
   end
+
+  # Feature flag helper methods
+  def feature_enabled?(feature_name)
+    FeatureFlag.enabled?(feature_name)
+  end
+
+  def feature_disabled?(feature_name)
+    !FeatureFlag.enabled?(feature_name)
+  end
+
+  # Helper for conditional rendering based on feature flags
+  def with_feature(feature_name, &block)
+    if FeatureFlag.enabled?(feature_name)
+      capture(&block)
+    end
+  end
+
+  # Helper for rendering different content based on feature flags
+  def feature_toggle(feature_name, enabled_content: nil, disabled_content: nil, &block)
+    if FeatureFlag.enabled?(feature_name)
+      if enabled_content
+        enabled_content
+      elsif block_given?
+        capture(&block)
+      end
+    else
+      disabled_content
+    end
+  end
 end

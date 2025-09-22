@@ -1,0 +1,272 @@
+.admin-page
+  padding: 40px 0
+  min-height: 100vh
+  color: rgba(255, 255, 255, 0.9)
+
+  header
+    text-align: center
+    margin-bottom: 50px
+
+    h1
+      font-size: 22px
+      font-family: Orbitron, Arial, sans-serif
+      text-transform: uppercase
+      letter-spacing: 2px
+      opacity: 0.6
+      margin-bottom: 10px
+
+    .subtitle
+      font-size: 16px
+      color: rgba(255, 255, 255, 0.7)
+      margin: 0
+
+  .feature-flag-form
+    background: rgba(255, 255, 255, 0.05)
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    border-radius: 8px
+    padding: 30px
+    margin-bottom: 40px
+
+    h2
+      font-size: 18px
+      font-weight: bold
+      margin-bottom: 20px
+      color: rgba(255, 255, 255, 0.9)
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2)
+      padding-bottom: 10px
+
+  .feature-flag-form-inner
+    display: grid
+    gap: 20px
+
+  .form-group
+    display: flex
+    flex-direction: column
+    gap: 8px
+
+    label
+      font-weight: 600
+      color: rgba(255, 255, 255, 0.8)
+
+    input[type="text"], textarea
+      padding: 12px
+      border: 1px solid rgba(255, 255, 255, 0.2)
+      border-radius: 6px
+      background: rgba(255, 255, 255, 0.05)
+      color: rgba(255, 255, 255, 0.9)
+      font-size: 14px
+
+      &:focus
+        outline: none
+        border-color: rgba(255, 255, 255, 0.4)
+        background: rgba(255, 255, 255, 0.08)
+
+    textarea
+      resize: vertical
+      min-height: 80px
+
+  .checkbox-group
+    flex-direction: row
+    align-items: center
+    gap: 12px
+
+    input[type="checkbox"]
+      width: 18px
+      height: 18px
+
+    label
+      margin: 0
+
+  .feature-flags-list
+    margin-bottom: 40px
+
+    h2
+      font-size: 18px
+      font-weight: bold
+      margin-bottom: 25px
+      color: rgba(255, 255, 255, 0.9)
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2)
+      padding-bottom: 10px
+
+  .feature-flags-grid
+    display: grid
+    gap: 20px
+
+  .feature-flag-card
+    background: rgba(255, 255, 255, 0.05)
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    border-radius: 8px
+    padding: 20px
+    transition: all 0.3s ease
+
+    &.enabled
+      border-left: 4px solid rgba(76, 175, 80, 0.6)
+      background: rgba(76, 175, 80, 0.05)
+
+    &.disabled
+      border-left: 4px solid rgba(244, 67, 54, 0.6)
+      background: rgba(244, 67, 54, 0.05)
+
+  .feature-flag-header
+    display: flex
+    justify-content: space-between
+    align-items: flex-start
+    margin-bottom: 12px
+
+    h3
+      font-size: 16px
+      font-weight: 600
+      color: rgba(255, 255, 255, 0.9)
+      margin: 0
+      font-family: var(--monospace-font)
+
+  .feature-flag-status
+    .status-indicator
+      font-size: 12px
+      font-weight: 600
+      padding: 4px 8px
+      border-radius: 4px
+      text-transform: uppercase
+      letter-spacing: 0.5px
+
+      &.enabled
+        background: rgba(76, 175, 80, 0.2)
+        color: rgba(76, 175, 80, 1)
+
+      &.disabled
+        background: rgba(244, 67, 54, 0.2)
+        color: rgba(244, 67, 54, 1)
+
+  .feature-flag-description
+    color: rgba(255, 255, 255, 0.7)
+    font-size: 14px
+    line-height: 1.5
+    margin-bottom: 15px
+
+  .feature-flag-actions
+    display: flex
+    gap: 10px
+    margin-bottom: 15px
+
+  .inline-form
+    display: inline-block
+
+  .feature-flag-meta
+    display: flex
+    flex-direction: column
+    gap: 4px
+
+    small
+      color: rgba(255, 255, 255, 0.5)
+      font-size: 12px
+
+  .no-feature-flags
+    text-align: center
+    padding: 40px
+    color: rgba(255, 255, 255, 0.6)
+
+    p
+      margin-bottom: 10px
+
+  .usage-examples
+    background: rgba(255, 255, 255, 0.05)
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    border-radius: 8px
+    padding: 30px
+    margin-bottom: 40px
+
+    h2
+      font-size: 18px
+      font-weight: bold
+      margin-bottom: 20px
+      color: rgba(255, 255, 255, 0.9)
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2)
+      padding-bottom: 10px
+
+  .code-examples
+    display: grid
+    gap: 20px
+
+  .code-block
+    h4
+      font-size: 14px
+      font-weight: 600
+      color: rgba(255, 255, 255, 0.8)
+      margin-bottom: 10px
+
+    pre
+      background: rgba(0, 0, 0, 0.3)
+      border: 1px solid rgba(255, 255, 255, 0.1)
+      border-radius: 6px
+      padding: 15px
+      overflow-x: auto
+
+    code
+      font-family: var(--monospace-font)
+      font-size: 13px
+      color: rgba(255, 255, 255, 0.9)
+      line-height: 1.4
+
+  .admin-navigation
+    text-align: center
+
+  // Button styles
+  .blue-button, .green-button, .red-button
+    padding: 10px 20px
+    border: none
+    border-radius: 6px
+    font-size: 14px
+    font-weight: 600
+    cursor: pointer
+    transition: all 0.3s ease
+    text-decoration: none
+    display: inline-block
+
+    &.small
+      padding: 6px 12px
+      font-size: 12px
+
+  .blue-button
+    background: #2196F3
+    color: white
+
+    &:hover
+      background: #1976D2
+
+  .green-button
+    background: #4CAF50
+    color: white
+
+    &:hover
+      background: #45a049
+
+  .red-button
+    background: #f44336
+    color: white
+
+    &:hover
+      background: #d32f2f
+
+  // Responsive design
+  @media (max-width: 768px)
+    padding: 20px 0
+
+    header
+      margin-bottom: 30px
+
+      h1
+        font-size: 1.8rem
+
+    .feature-flag-form, .usage-examples
+      padding: 20px
+
+    .feature-flag-header
+      flex-direction: column
+      gap: 10px
+
+    .feature-flag-actions
+      flex-direction: column
+
+    .code-block pre
+      padding: 10px
+      font-size: 12px

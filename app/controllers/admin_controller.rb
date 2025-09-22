@@ -5,6 +5,47 @@ class AdminController < ApplicationController
     @time_period = params[:period] || 'week'
     @stats = game_mode_stats(@time_period)
     @solved_puzzle_stats = solved_puzzle_stats(@time_period)
+    @feature_flags = FeatureFlag.all.order(:name)
+  end
+
+  def feature_flags
+    @feature_flags = FeatureFlag.all.order(:name)
+  end
+
+  def create_feature_flag
+    @feature_flag = FeatureFlag.new(feature_flag_params)
+    
+    if @feature_flag.save
+      redirect_to admin_feature_flags_path, notice: 'Feature flag created successfully!'
+    else
+      @feature_flags = FeatureFlag.all.order(:name)
+      render :feature_flags, status: :unprocessable_entity
+    end
+  end
+
+  def update_feature_flag
+    @feature_flag = FeatureFlag.find(params[:id])
+    
+    if @feature_flag.update(feature_flag_params)
+      redirect_to admin_feature_flags_path, notice: 'Feature flag updated successfully!'
+    else
+      @feature_flags = FeatureFlag.all.order(:name)
+      render :feature_flags, status: :unprocessable_entity
+    end
+  end
+
+  def toggle_feature_flag
+    @feature_flag = FeatureFlag.find(params[:id])
+    @feature_flag.toggle!
+    
+    redirect_to admin_feature_flags_path, notice: "Feature flag '#{@feature_flag.name}' #{@feature_flag.enabled? ? 'enabled' : 'disabled'}!"
+  end
+
+  def destroy_feature_flag
+    @feature_flag = FeatureFlag.find(params[:id])
+    @feature_flag.destroy
+    
+    redirect_to admin_feature_flags_path, notice: 'Feature flag deleted successfully!'
   end
 
   private
@@ -13,6 +54,10 @@ class AdminController < ApplicationController
     unless user_signed_in? && current_user.id == 1
       render "pages/not_found", status: 404
     end
+  end
+
+  def feature_flag_params
+    params.require(:feature_flag).permit(:name, :enabled, :description)
   end
 
   def game_mode_stats(period = 'week')
