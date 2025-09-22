@@ -62,29 +62,12 @@ export default class BoardStyles {
       css += `.cg-wrap.orientation-black coords.files coord:nth-child(2n + 1) { color: ${dark} !important; }`
     }
     if (light || dark) {
-      const b64Svg = `
-        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:x="http://www.w3.org/1999/xlink"
-            viewBox="0 0 8 8" shape-rendering="crispEdges">
-        <g id="a">
-          <g id="b">
-            <g id="c">
-              <g id="d">
-                <rect width="1" height="1" fill="${light}" id="e"/>
-                <use x="1" y="1" href="#e" x:href="#e"/>
-                <rect y="1" width="1" height="1" fill="${dark}" id="f"/>
-                <use x="1" y="-1" href="#f" x:href="#f"/>
-              </g>
-              <use x="2" href="#d" x:href="#d"/>
-            </g>
-            <use x="4" href="#c" x:href="#c"/>
-          </g>
-          <use y="2" href="#b" x:href="#b"/>
-        </g>
-        <use y="4" href="#a" x:href="#a"/>
-        </svg>
-      `.trim()
-      css += `cg-board { background-image: url('data:image/svg+xml;base64,${btoa(b64Svg)}'); }`
+      // Use CSS custom properties for board colors
+      css += `:root { --chessboard-light: ${light || '#F3E4CF'}; --chessboard-dark: ${dark || '#CEB3A2'}; }`
+      css += `cg-board::before { 
+        background-image: conic-gradient(var(--chessboard-dark) 0deg, var(--chessboard-dark) 90deg, var(--chessboard-light) 90deg, var(--chessboard-light) 180deg, var(--chessboard-dark) 180deg, var(--chessboard-dark) 270deg, var(--chessboard-light) 270deg, var(--chessboard-light) 360deg);
+        background-size: 25% 25%;
+      }`
     }
     if (from) {
       css += `cg-board square.last-move.move-from { background-color: ${from} !important; }`
