@@ -40,6 +40,10 @@ class PagesController < ApplicationController
             set_data['completed'] = current_user ? set_completed_by_user?(@current_adventure_level_number, set_data['set_index'], current_user) : false
             set_data
           end
+          
+          # Calculate progress for the current level
+          @completed_sets_count = @adventure_puzzle_sets.count { |set| set['completed'] }
+          @total_sets_count = @adventure_puzzle_sets.length
         else
           # Requested level not found, show first level
           @current_adventure_level = @adventure_levels.first
@@ -51,6 +55,10 @@ class PagesController < ApplicationController
             set_data['completed'] = current_user ? set_completed_by_user?(@current_adventure_level_number, set_data['set_index'], current_user) : false
             set_data
           end
+          
+          # Calculate progress for the current level
+          @completed_sets_count = @adventure_puzzle_sets.count { |set| set['completed'] }
+          @total_sets_count = @adventure_puzzle_sets.length
         end
         
         @all_adventure_levels_complete = false
