@@ -492,6 +492,39 @@ ALTER SEQUENCE public.countdown_puzzles_id_seq OWNED BY public.countdown_puzzles
 
 
 --
+-- Name: feature_flags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.feature_flags (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    enabled boolean DEFAULT false NOT NULL,
+    description text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: feature_flags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.feature_flags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: feature_flags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.feature_flags_id_seq OWNED BY public.feature_flags.id;
+
+
+--
 -- Name: haste_puzzles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1425,6 +1458,13 @@ ALTER TABLE ONLY public.countdown_puzzles ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: feature_flags id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.feature_flags ALTER COLUMN id SET DEFAULT nextval('public.feature_flags_id_seq'::regclass);
+
+
+--
 -- Name: haste_puzzles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1703,6 +1743,14 @@ ALTER TABLE ONLY public.countdown_levels
 
 ALTER TABLE ONLY public.countdown_puzzles
     ADD CONSTRAINT countdown_puzzles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: feature_flags feature_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.feature_flags
+    ADD CONSTRAINT feature_flags_pkey PRIMARY KEY (id);
 
 
 --
@@ -2035,6 +2083,13 @@ CREATE INDEX index_countdown_puzzles_on_countdown_level_id ON public.countdown_p
 --
 
 CREATE UNIQUE INDEX index_countdown_puzzles_on_countdown_level_id_and_puzzle_hash ON public.countdown_puzzles USING btree (countdown_level_id, puzzle_hash);
+
+
+--
+-- Name: index_feature_flags_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_feature_flags_on_name ON public.feature_flags USING btree (name);
 
 
 --
@@ -2429,6 +2484,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250118220000'),
 ('20250116000005'),
 ('20250116000004'),
+('20241220000001'),
 ('20210417123508'),
 ('20210417123507'),
 ('20201229001317'),
