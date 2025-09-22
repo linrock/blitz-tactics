@@ -20,69 +20,141 @@
 #   rake adventure:analyze                              # Analyze puzzle availability
 
 class AdventureLevelCreator
-  # Level configuration - defines difficulty progression
+  # Level configuration - defines difficulty progression with challenge conditions
   LEVEL_CONFIG = {
     1 => {
-      puzzle_sets: 2,
-      puzzles_per_set: 10,
+      description: "Beginner's Journey",
       rating_range: (600..1000),
-      description: "Beginner's Journey"
+      puzzle_sets: [
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
+        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" }
+      ]
     },
     2 => {
-      puzzle_sets: 3,
-      puzzles_per_set: 10,
+      description: "Building Foundations",
       rating_range: (700..1100),
-      description: "Building Foundations"
+      puzzle_sets: [
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
+      ]
     },
     3 => {
-      puzzle_sets: 3,
-      puzzles_per_set: 12,
+      description: "Growing Confidence",
       rating_range: (800..1200),
-      description: "Growing Confidence"
+      puzzle_sets: [
+        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" }
+      ]
     },
     4 => {
-      puzzle_sets: 4,
-      puzzles_per_set: 10,
+      description: "Stepping Up",
       rating_range: (900..1300),
-      description: "Stepping Up"
+      puzzle_sets: [
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
+      ]
     },
     5 => {
-      puzzle_sets: 4,
-      puzzles_per_set: 12,
+      description: "Intermediate Challenge",
       rating_range: (1000..1400),
-      description: "Intermediate Challenge"
+      puzzle_sets: [
+        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
+        { puzzles: 10, challenge: "perfect", description: "Solve 10 puzzles perfectly (no mistakes)" },
+        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" }
+      ]
     },
     6 => {
-      puzzle_sets: 5,
-      puzzles_per_set: 10,
+      description: "Advanced Tactics",
       rating_range: (1100..1500),
-      description: "Advanced Tactics"
+      puzzle_sets: [
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
+      ]
     },
     7 => {
-      puzzle_sets: 5,
-      puzzles_per_set: 12,
+      description: "Master's Path",
       rating_range: (1200..1600),
-      description: "Master's Path"
+      puzzle_sets: [
+        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
+        { puzzles: 10, challenge: "perfect", description: "Solve 10 puzzles perfectly (no mistakes)" },
+        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
+        { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" }
+      ]
     },
     8 => {
-      puzzle_sets: 6,
-      puzzles_per_set: 10,
+      description: "Expert Territory",
       rating_range: (1300..1700),
-      description: "Expert Territory"
+      puzzle_sets: [
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
+      ]
     },
     9 => {
-      puzzle_sets: 6,
-      puzzles_per_set: 12,
+      description: "Elite Challenges",
       rating_range: (1400..1800),
-      description: "Elite Challenges"
+      puzzle_sets: [
+        { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" },
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
+        { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" },
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
+        { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" },
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" }
+      ]
     },
     10 => {
-      puzzle_sets: 6,
-      puzzles_per_set: [10, 10, 10, 20, 20, 20], # Mixed difficulty
+      description: "Grandmaster Quest",
       rating_range: (1500..1900),
-      description: "Grandmaster Quest"
+      puzzle_sets: [
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
+        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
+        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" }
+      ]
     }
   }.freeze
+
+  # Challenge type configurations
+  CHALLENGE_CONFIGS = {
+    'solve' => {
+      name: 'Solve',
+      description: 'Complete puzzles with mistakes allowed',
+      requires_perfect: false,
+      time_limit: nil
+    },
+    'perfect' => {
+      name: 'Perfect',
+      description: 'Complete puzzles without any mistakes',
+      requires_perfect: true,
+      time_limit: nil
+    },
+    'speed' => {
+      name: 'Speed',
+      description: 'Complete puzzles within time limit',
+      requires_perfect: false,
+      time_limit: 60 # seconds
+    }
+  }.freeze
+
+  # Get challenge configuration for a specific challenge type
+  def self.get_challenge_config(challenge_type)
+    CHALLENGE_CONFIGS[challenge_type] || CHALLENGE_CONFIGS['solve']
+  end
 
   # Generate a specific adventure level
   def self.generate_level(level_number)
@@ -91,7 +163,7 @@ class AdventureLevelCreator
 
     puts "Generating Adventure Level #{level_number}: #{config[:description]}"
     puts "Rating range: #{config[:rating_range]}"
-    puts "Puzzle sets: #{config[:puzzle_sets]}"
+    puts "Puzzle sets: #{config[:puzzle_sets].length}"
 
     level_data = {
       level: level_number,
@@ -101,20 +173,18 @@ class AdventureLevelCreator
     }
 
     # Generate puzzle sets for this level, alternating between white and black to move
-    config[:puzzle_sets].times do |set_index|
-      puzzles_per_set = config[:puzzles_per_set].is_a?(Array) ? 
-                       config[:puzzles_per_set][set_index] : 
-                       config[:puzzles_per_set]
-
+    config[:puzzle_sets].each_with_index do |set_config, set_index|
       # Alternate between white and black to move
       color_to_move = set_index.even? ? 'w' : 'b'
 
       puzzle_set = generate_puzzle_set(
         level: level_number,
         set_index: set_index + 1,
-        puzzles_count: puzzles_per_set,
+        puzzles_count: set_config[:puzzles],
         rating_range: config[:rating_range],
-        color_to_move: color_to_move
+        color_to_move: color_to_move,
+        challenge: set_config[:challenge],
+        challenge_description: set_config[:description]
       )
 
       level_data[:puzzle_sets] << puzzle_set
@@ -124,8 +194,8 @@ class AdventureLevelCreator
   end
 
   # Generate a single puzzle set for a level using puzzle pool files
-  def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w')
-    puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles, #{color_to_move == 'w' ? 'white' : 'black'} to move)"
+  def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w', challenge: 'solve', challenge_description: nil)
+    puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles, #{color_to_move == 'w' ? 'white' : 'black'} to move, #{challenge_description || challenge})"
 
     # Determine which pool file to use based on rating range and color
     pool_file_info = find_pool_file_for_rating_range(rating_range, color_to_move)
@@ -146,11 +216,15 @@ class AdventureLevelCreator
     
     if puzzle_ids.empty?
       puts "    WARNING: No puzzles found in pool file #{pool_file_info[:filename]}"
+      challenge_config = get_challenge_config(challenge)
       return {
         set_index: set_index,
         puzzles_count: 0,
         rating_range: rating_range,
         color_to_move: color_to_move,
+        challenge: challenge,
+        challenge_description: challenge_description,
+        challenge_config: challenge_config,
         puzzles: []
       }
     end
@@ -165,11 +239,16 @@ class AdventureLevelCreator
     # Convert to simple list of puzzle IDs
     puzzle_ids = puzzles.map(&:puzzle_id)
 
+    challenge_config = get_challenge_config(challenge)
+    
     {
       set_index: set_index,
       puzzles_count: puzzle_ids.length,
       rating_range: rating_range,
       color_to_move: color_to_move,
+      challenge: challenge,
+      challenge_description: challenge_description,
+      challenge_config: challenge_config,
       puzzles: puzzle_ids
     }
   end
