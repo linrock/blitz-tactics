@@ -58,11 +58,75 @@ button
   background: #28a745
   color: white
   border-left: 4px solid #1e7e34
+  position: fixed
+  top: 20px
+  right: 20px
+  z-index: 1000
+  max-width: 400px
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3)
+  animation: slideInRight 0.3s ease-out
+  padding-right: 40px
+  
+  .flash-dismiss
+    position: absolute
+    top: 5px
+    right: 10px
+    background: none
+    border: none
+    color: white
+    font-size: 20px
+    font-weight: bold
+    cursor: pointer
+    padding: 0
+    width: 20px
+    height: 20px
+    display: flex
+    align-items: center
+    justify-content: center
+    opacity: 0.8
+    transition: opacity 0.2s ease
+    line-height: 1
+    z-index: 1001
+    
+    &:hover
+      opacity: 1
 
 .flash-alert
   background: #dc3545
   color: white
   border-left: 4px solid #c82333
+  position: fixed
+  top: 20px
+  right: 20px
+  z-index: 1000
+  max-width: 400px
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3)
+  animation: slideInRight 0.3s ease-out
+  padding-right: 40px
+  
+  .flash-dismiss
+    position: absolute
+    top: 5px
+    right: 10px
+    background: none
+    border: none
+    color: white
+    font-size: 20px
+    font-weight: bold
+    cursor: pointer
+    padding: 0
+    width: 20px
+    height: 20px
+    display: flex
+    align-items: center
+    justify-content: center
+    opacity: 0.8
+    transition: opacity 0.2s ease
+    line-height: 1
+    z-index: 1001
+    
+    &:hover
+      opacity: 1
 
 @keyframes slideInRight
   from
