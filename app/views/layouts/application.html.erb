@@ -24,12 +24,14 @@
   <% if notice %>
     <div class="flash-notice">
       <%= notice %>
+      <button class="flash-dismiss" onclick="this.parentElement.remove()">×</button>
     </div>
   <% end %>
   
   <% if alert %>
     <div class="flash-alert">
       <%= alert %>
+      <button class="flash-dismiss" onclick="this.parentElement.remove()">×</button>
     </div>
   <% end %>
 
