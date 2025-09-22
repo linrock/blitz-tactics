@@ -10,7 +10,7 @@
     <!-- Create New Feature Flag Form -->
     <div class="feature-flag-form">
       <h2>Create New Feature Flag</h2>
-      <%= form_with model: [:admin, FeatureFlag.new], url: admin_feature_flags_path, local: true, class: "feature-flag-form-inner" do |form| %>
+      <%= form_with model: FeatureFlag.new, url: "/admin/feature-flags", local: true, class: "feature-flag-form-inner" do |form| %>
         <div class="form-group">
           <%= form.label :name, "Feature Name" %>
           <%= form.text_field :name, placeholder: "e.g., new_achievements_system", required: true %>
@@ -52,12 +52,12 @@
               <% end %>
               
               <div class="feature-flag-actions">
-                <%= form_with url: admin_toggle_feature_flag_path(flag), method: :post, local: true, class: "inline-form" do |form| %>
+                <%= form_with url: "/admin/feature-flags/#{flag.id}/toggle", method: :post, local: true, class: "inline-form" do |form| %>
                   <%= form.submit flag.enabled? ? "Disable" : "Enable", 
                       class: flag.enabled? ? "red-button small" : "green-button small" %>
                 <% end %>
                 
-                <%= form_with url: admin_feature_flag_path(flag), method: :delete, local: true, 
+                <%= form_with url: "/admin/feature-flags/#{flag.id}", method: :delete, local: true, 
                     class: "inline-form", 
                     data: { confirm: "Are you sure you want to delete this feature flag?" } do |form| %>
                   <%= form.submit "Delete", class: "red-button small" %>

@@ -8,8 +8,8 @@ class PagesController < ApplicationController
     @world_number = 1
     @world_name = "Just getting started"
     
-    # Quest mode enabled flag - set to false by default
-    @quest_mode_enabled = false
+    # Quest mode enabled flag - controlled by feature flag
+    @quest_mode_enabled = FeatureFlag.enabled?(:adventure_mode)
     
     # Only load quest data if quest mode is enabled
     if @quest_mode_enabled

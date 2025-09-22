@@ -44,6 +44,11 @@ feature_flags = [
     name: "puzzle_difficulty_ai",
     enabled: false,
     description: "Enable AI-powered puzzle difficulty assessment and adaptive learning"
+  },
+  {
+    name: "adventure_mode",
+    enabled: false,
+    description: "Enable adventure mode with quest worlds and progression system"
   }
 ]
 
