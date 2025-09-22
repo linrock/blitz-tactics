@@ -1,6 +1,6 @@
 // white to move
 
-import { subscribeOnce } from '@blitz/events'
+import { subscribeOnce, subscribe } from '@blitz/events'
 
 export default class Instructions {
 
@@ -9,6 +9,7 @@ export default class Instructions {
   }
 
   constructor() {
+    console.log('Instructions: Component created, el:', this.el)
     subscribeOnce('move:too_slow', () => {
       this.el.classList.add(`smaller`)
     })
@@ -20,6 +21,11 @@ export default class Instructions {
         this.el.textContent = `Black to move`
       }
     })
-    subscribeOnce('puzzles:start', () => this.el.classList.add('invisible'))
+    subscribe({
+      'puzzles:start': () => {
+        console.log('Instructions: Received puzzles:start, hiding instructions, el:', this.el)
+        this.el.classList.add('invisible')
+      }
+    })
   }
 }

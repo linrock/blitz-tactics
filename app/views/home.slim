@@ -34,10 +34,9 @@ section.homepage
                                         locals: { fen: puzzle_fen,
                                                  flip: puzzle_flip,
                                                  initial_move: initial_move,
-                                                 title: "Set #{set_data['set_index']} - First Puzzle" })
+                                                 title: "First Puzzle" })
                     .level-info-bottom
-                      .success-criteria= "Set #{set_data['set_index']} - #{set_data['puzzles_count']} puzzles"
-                      .color-to-move= "#{set_data['color_to_move'] == 'w' ? 'White' : 'Black'} to move"
+                      .success-criteria= "#{set_data['puzzles_count']} puzzles"
                       - if set_data['completed']
                         .completion-indicator
                           .checkmark ✓

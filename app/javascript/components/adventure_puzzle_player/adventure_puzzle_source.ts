@@ -48,7 +48,12 @@ export default class AdventurePuzzleSource {
         })
         dispatch('puzzle:hint', hints[~~(Math.random() * hints.length)])
       },
-      'move:try': move => this.tryUserMove(move),
+      'move:try': move => {
+        console.log('Adventure: Received move:try event', move)
+        console.log('Adventure: About to call tryUserMove')
+        this.tryUserMove(move)
+        console.log('Adventure: tryUserMove completed')
+      },
     })
   }
 
@@ -58,7 +63,6 @@ export default class AdventurePuzzleSource {
 
   private firstPuzzle() {
     this.i = 0
-    this.started = true
     this.nextPuzzle()
   }
 
@@ -100,9 +104,13 @@ export default class AdventurePuzzleSource {
   }
 
   private tryUserMove(move: any) {
+    console.log('Adventure: tryUserMove called, started:', this.started)
     if (!this.started) {
       this.started = true
+      console.log('Adventure: Dispatching puzzles:start')
       dispatch('puzzles:start')
+    } else {
+      console.log('Adventure: Already started, not dispatching puzzles:start')
     }
     
     if (!this.current.boardState) return
