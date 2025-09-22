@@ -18,7 +18,29 @@
     .subtitle
       font-size: 16px
       color: rgba(255, 255, 255, 0.7)
-      margin: 0
+      margin: 0 0 30px 0
+
+  .achievement-stats
+    display: flex
+    justify-content: center
+    gap: 40px
+    margin-bottom: 20px
+
+    .stat
+      text-align: center
+
+      .stat-number
+        display: block
+        font-size: 2rem
+        font-weight: bold
+        color: rgba(255, 255, 255, 0.9)
+        font-family: var(--monospace-font)
+
+      .stat-label
+        font-size: 0.9rem
+        color: rgba(255, 255, 255, 0.6)
+        text-transform: uppercase
+        letter-spacing: 1px
 
   .achievements-grid
     max-width: 800px
@@ -31,13 +53,31 @@
     border-radius: 8px
     padding: 30px
 
+    &.tier-1
+      border-left: 4px solid rgba(76, 175, 80, 0.6)
+
+    &.tier-2
+      border-left: 4px solid rgba(255, 152, 0, 0.6)
+
+    &.tier-3
+      border-left: 4px solid rgba(156, 39, 176, 0.6)
+
+    &.mystery
+      border-left: 4px solid rgba(255, 193, 7, 0.6)
+
     h2
       font-size: 18px
       font-weight: bold
-      margin-bottom: 25px
+      margin-bottom: 8px
       color: rgba(255, 255, 255, 0.9)
       border-bottom: 1px solid rgba(255, 255, 255, 0.2)
       padding-bottom: 10px
+
+    .category-description
+      font-size: 14px
+      color: rgba(255, 255, 255, 0.6)
+      margin-bottom: 25px
+      font-style: italic
 
   .achievement-list
     display: flex
@@ -108,7 +148,7 @@
       transition: width 0.3s ease
 
     .progress-text
-      font-family: monospace
+      font-family: var(--monospace-font)
       font-size: 0.9rem
       opacity: 0.7
 
@@ -120,10 +160,20 @@
       margin-bottom: 30px
 
       h1
-        font-size: 2.5rem
+        font-size: 1.8rem
 
       .subtitle
         font-size: 1rem
+
+      .achievement-stats
+        gap: 20px
+
+        .stat
+          .stat-number
+            font-size: 1.5rem
+
+          .stat-label
+            font-size: 0.8rem
 
     .achievement-category
       margin-bottom: 30px
@@ -131,6 +181,10 @@
 
       h2
         font-size: 1.3rem
+        margin-bottom: 8px
+
+      .category-description
+        font-size: 13px
         margin-bottom: 20px
 
     .achievement

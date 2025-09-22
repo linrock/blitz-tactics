@@ -5,12 +5,45 @@
     <header>
       <h1>Achievements</h1>
       <p class="subtitle">Track your progress and unlock new milestones</p>
+      <div class="achievement-stats">
+        <div class="stat">
+          <span class="stat-number">12</span>
+          <span class="stat-label">Unlocked</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">8</span>
+          <span class="stat-label">In Progress</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">5</span>
+          <span class="stat-label">Locked</span>
+        </div>
+      </div>
     </header>
 
     <div class="achievements-grid">
-      <div class="achievement-category">
-        <h2>📊 PROGRESSION</h2>
+      <!-- TIER 1: Foundation Achievements -->
+      <div class="achievement-category tier-1">
+        <h2>🚀 TIER 1 - FOUNDATION</h2>
+        <p class="category-description">Essential milestones for new players</p>
+        
         <div class="achievement-list">
+          <div class="achievement unlocked">
+            <div class="achievement-icon">✅</div>
+            <div class="achievement-content">
+              <div class="achievement-title">👶 First Steps (10 puzzles)</div>
+              <div class="achievement-description">Unlocked Mar 8</div>
+            </div>
+          </div>
+          
+          <div class="achievement unlocked">
+            <div class="achievement-icon">✅</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🎯 Getting Started (100 puzzles)</div>
+              <div class="achievement-description">Unlocked Mar 10</div>
+            </div>
+          </div>
+          
           <div class="achievement unlocked">
             <div class="achievement-icon">✅</div>
             <div class="achievement-content">
@@ -22,12 +55,70 @@
           <div class="achievement in-progress">
             <div class="achievement-icon">⏳</div>
             <div class="achievement-content">
+              <div class="achievement-title">🎯 Sharp Eye (7/10 correct in a row)</div>
+              <div class="achievement-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 70%"></div>
+                </div>
+                <div class="progress-text">7/10 correct</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="achievement unlocked">
+            <div class="achievement-icon">✅</div>
+            <div class="achievement-content">
+              <div class="achievement-title">✨ Flawless (Perfect game mode session)</div>
+              <div class="achievement-description">Unlocked Mar 12</div>
+            </div>
+          </div>
+          
+          <div class="achievement unlocked">
+            <div class="achievement-icon">✅</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🔥 Daily Solver (7 days in a row)</div>
+              <div class="achievement-description">Unlocked Mar 10</div>
+            </div>
+          </div>
+          
+          <div class="achievement in-progress">
+            <div class="achievement-icon">⏳</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🔥 Committed (23/30 days in a row)</div>
+              <div class="achievement-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 76.7%"></div>
+                </div>
+                <div class="progress-text">23/30 days</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="achievement unlocked">
+            <div class="achievement-icon">✅</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🗺️ Explorer (Try all 7 game modes)</div>
+              <div class="achievement-description">Unlocked Mar 14</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIER 2: Skill Development -->
+      <div class="achievement-category tier-2">
+        <h2>⚡ TIER 2 - SKILL DEVELOPMENT</h2>
+        <p class="category-description">Master the fundamentals and build expertise</p>
+        
+        <div class="achievement-list">
+          <div class="achievement in-progress">
+            <div class="achievement-icon">⏳</div>
+            <div class="achievement-content">
               <div class="achievement-title">🏆 Tactics Master (347/1000 puzzles)</div>
               <div class="achievement-progress">
                 <div class="progress-bar">
                   <div class="progress-fill" style="width: 34.7%"></div>
                 </div>
-                <div class="progress-text">████████░░</div>
+                <div class="progress-text">347/1000 puzzles</div>
               </div>
             </div>
           </div>
@@ -35,16 +126,19 @@
           <div class="achievement locked">
             <div class="achievement-icon">🔒</div>
             <div class="achievement-content">
-              <div class="achievement-title">🏆 Chess Encyclopedia (2500 puzzles)</div>
+              <div class="achievement-title">📚 Chess Encyclopedia (2500 puzzles)</div>
               <div class="achievement-description">Solve 2500 puzzles to unlock</div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="achievement-category">
-        <h2>⚡ SPEED & SKILL</h2>
-        <div class="achievement-list">
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🎯 Precision (25 correct in a row)</div>
+              <div class="achievement-description">Get 25 puzzles correct in a row</div>
+            </div>
+          </div>
+          
           <div class="achievement unlocked">
             <div class="achievement-icon">✅</div>
             <div class="achievement-content">
@@ -61,54 +155,122 @@
             </div>
           </div>
           
-          <div class="achievement in-progress">
-            <div class="achievement-icon">⏳</div>
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
             <div class="achievement-content">
-              <div class="achievement-title">🎯 Sharp Eye (7/10 in a row)</div>
-              <div class="achievement-progress">
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 70%"></div>
-                </div>
-                <div class="progress-text">███████░░░</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="achievement-category">
-        <h2>🔥 CONSISTENCY</h2>
-        <div class="achievement-list">
-          <div class="achievement unlocked">
-            <div class="achievement-icon">✅</div>
-            <div class="achievement-content">
-              <div class="achievement-title">🔥 Daily Solver (7 days)</div>
-              <div class="achievement-description">Unlocked Mar 10</div>
+              <div class="achievement-title">🚀 Haste Hero (15+ combo streak)</div>
+              <div class="achievement-description">Reach a 15+ combo streak in Haste mode</div>
             </div>
           </div>
           
-          <div class="achievement in-progress">
-            <div class="achievement-icon">⏳</div>
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
             <div class="achievement-content">
-              <div class="achievement-title">🔥 Committed (23/30 days)</div>
-              <div class="achievement-progress">
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 76.7%"></div>
-                </div>
-                <div class="progress-text">████████░░</div>
-              </div>
+              <div class="achievement-title">🎯 Three's Mastery (Zero hints)</div>
+              <div class="achievement-description">Complete Three mode using zero hints</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">⏰ Countdown Crusher (Level 10)</div>
+              <div class="achievement-description">Reach level 10 in Countdown mode</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🔥 Dedicated (100 days in a row)</div>
+              <div class="achievement-description">Solve puzzles 100 days in a row</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">📌 Pin Master (50 pin puzzles)</div>
+              <div class="achievement-description">Solve 50 pin-themed puzzles</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="achievement-category">
-        <h2>❓ MYSTERY ACHIEVEMENTS (3 hidden)</h2>
+      <!-- TIER 3: Advanced Mastery -->
+      <div class="achievement-category tier-3">
+        <h2>👑 TIER 3 - ADVANCED MASTERY</h2>
+        <p class="category-description">Elite achievements for dedicated players</p>
+        
+        <div class="achievement-list">
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">💎 Perfectionist (100 correct in a row)</div>
+              <div class="achievement-description">Get 100 puzzles correct in a row</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">⏱️ Time Attack (Haste under 2 minutes)</div>
+              <div class="achievement-description">Complete Haste mode in under 2 minutes</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">⭐ Rating Warrior (1400+ rating)</div>
+              <div class="achievement-description">Achieve 1400+ rating in Rated mode</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🍴 Fork Specialist (50 fork puzzles)</div>
+              <div class="achievement-description">Solve 50 fork-themed puzzles</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">♟️ Endgame Expert (100 endgame puzzles)</div>
+              <div class="achievement-description">Solve 100 endgame puzzles</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🏆 Daily Champion (#1 daily high score)</div>
+              <div class="achievement-description">Get #1 daily high score in any mode</div>
+            </div>
+          </div>
+          
+          <div class="achievement locked">
+            <div class="achievement-icon">🔒</div>
+            <div class="achievement-content">
+              <div class="achievement-title">🦉 Night Owl (25 puzzles after 10 PM)</div>
+              <div class="achievement-description">Solve 25 puzzles after 10 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MYSTERY ACHIEVEMENTS -->
+      <div class="achievement-category mystery">
+        <h2>❓ MYSTERY ACHIEVEMENTS</h2>
+        <p class="category-description">Hidden secrets waiting to be discovered</p>
+        
         <div class="achievement-list">
           <div class="achievement locked mystery">
             <div class="achievement-icon">🔒</div>
             <div class="achievement-content">
-              <div class="achievement-title">??? - Play at unusual times...</div>
+              <div class="achievement-title">??? - Early Bird</div>
               <div class="achievement-description">Keep playing to discover this secret!</div>
             </div>
           </div>
@@ -116,7 +278,7 @@
           <div class="achievement locked mystery">
             <div class="achievement-icon">🔒</div>
             <div class="achievement-content">
-              <div class="achievement-title">??? - Something about perfect timing...</div>
+              <div class="achievement-title">??? - Perfect Timing</div>
               <div class="achievement-description">Keep playing to discover this secret!</div>
             </div>
           </div>
@@ -124,7 +286,7 @@
           <div class="achievement locked mystery">
             <div class="achievement-icon">🔒</div>
             <div class="achievement-content">
-              <div class="achievement-title">??? - Community related...</div>
+              <div class="achievement-title">??? - Lucky Number</div>
               <div class="achievement-description">Keep playing to discover this secret!</div>
             </div>
           </div>
