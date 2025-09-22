@@ -1,0 +1,17 @@
+- content_for(:title) { "Adventure mode" }
+
+section.game-mode.adventure-mode
+  .container
+    = render partial: "puzzle_player/above_board"
+    .board-area-container
+      .board-area
+        .chessground-board
+          .piece-promotion-modal-mount
+          .chessground
+          .board-modal-container.invisible(style="display: none")
+    .vue-app-mount
+
+    #puzzle-player(
+      data-puzzles=@puzzle_data.to_json
+      data-level-info=@puzzle_data[:level_info].to_json
+    )

@@ -29,6 +29,11 @@ Rails.application.routes.draw do
   post '/quest/levels/:id/complete' => 'game_modes/quest#complete'
   get '/quest/:world_id/:world_level_id' => 'game_modes/quest#play_quest_level'
 
+  # adventure mode
+  get '/adventure/level/:level_number' => 'game_modes/adventure#show'
+  get '/adventure/level/:level_number/set/:set_index' => 'game_modes/adventure#play_level'
+  post '/adventure/level/:level_number/set/:set_index/complete' => 'game_modes/adventure#complete'
+
   # infinity mode
   get '/infinity'                => 'game_modes/infinity#index'
   get '/infinity/puzzles.json'   => 'game_modes/infinity#puzzles_json'

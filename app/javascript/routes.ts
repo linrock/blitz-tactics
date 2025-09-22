@@ -20,6 +20,7 @@ import UserProfile from './pages/user_profile'
 
 import NewPuzzlePlayer from './components/new_puzzle_player/index.vue'
 import QuestMode from './game_modes/quest/index.vue'
+import AdventurePuzzlePlayer from './components/adventure_puzzle_player/index'
 
 interface RouteMap {
   [routeKey: string]: () => void
@@ -64,6 +65,9 @@ const routes: RouteMap = {
 
   // quest puzzle player
   "game_modes/quest#play_quest_level": () => mountVue(QuestMode, '.quest-mode .vue-app-mount'),
+
+  // adventure puzzle player
+  "game_modes/adventure#play_level": () => new AdventurePuzzlePlayer(),
 
   // user profile
   "users#customize_board": () => new CustomizeBoard,

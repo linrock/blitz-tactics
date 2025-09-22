@@ -1,0 +1,44 @@
+section.adventure-level
+  .container
+    header.level-intro
+      h1= "Level #{@level_data['level']}: #{@level_data['description']}"
+      .level-info
+        .rating-range= "Rating Range: #{@level_data['rating_range']}"
+        .total-puzzles= "Total Puzzles: #{@total_puzzle_count}"
+
+    main.puzzle-sets
+      - @puzzle_sets.each do |set|
+        .puzzle-set
+          .set-header
+            h3= "Set #{set['set_index']}"
+            .set-info
+              .puzzle-count= "#{set['puzzles_count']} puzzles"
+              .color-to-move= "#{set['color_to_move'] == 'w' ? 'White' : 'Black'} to move"
+              .rating-range= "Rating: #{set['rating_range']}"
+          
+          .set-puzzles
+            - set['puzzles'].each_with_index do |puzzle_id, index|
+              - puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
+              - if puzzle
+                .puzzle-item
+                  .puzzle-board
+                    = render(partial: "static/snippets/miniboard",
+                            locals: { fen: puzzle.initial_fen,
+                                     flip: puzzle.initial_fen.include?(" w "),
+                                     initial_move: puzzle.moves_uci[0],
+                                     title: "Puzzle #{index + 1}" })
+                  .puzzle-info
+                    .puzzle-id= puzzle_id
+                    .puzzle-rating= "Rating: #{puzzle.rating}"
+              - else
+                .puzzle-item.error
+                  .puzzle-info
+                    .puzzle-id= puzzle_id
+                    .error-message Puzzle not found
+
+    .level-actions
+      - if @puzzle_sets.any?
+        - first_set = @puzzle_sets.first
+        a.blue-button(href="/adventure/level/#{@level_data['level']}/set/#{first_set['set_index']}") Start Level
+      - else
+        .no-puzzles No puzzle sets available for this level

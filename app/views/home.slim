@@ -8,9 +8,9 @@ section.homepage
           span.puzzle-count-number= current_user.unique_puzzles_solved_count
           span.puzzle-count-label unique puzzles
 
-  - if @quest_mode_enabled
+  - if @adventure_mode_enabled
     .quest-section
-      - if @quest_world && @quest_world_levels_with_puzzles
+      - if @current_adventure_level && @adventure_puzzle_sets&.any?
         .quest-bg(
           style="background-image: url(/backgrounds/#{@background_img})")
         .quest-above-bg(
@@ -18,45 +18,46 @@ section.homepage
 
         .quest-container.container
           header.world-intro
-            .world-name= @quest_world.description
+            .world-name= "Level #{@current_adventure_level_number}: #{@current_adventure_level['description']}"
 
           main.world-levels
-            - if @quest_world_levels_with_puzzles&.any?
-              - @quest_world_levels_with_puzzles.each do |level_data|
-                - if level_data && level_data['id']
-                  a.quest-level-link(href="/quest/#{@quest_world.id}/#{level_data['id']}" class="#{'completed' if level_data['completed']}")
-                    .quest-level
-                      - if level_data['first_puzzle']
-                        - puzzle_data = level_data['first_puzzle']
-                        - puzzle_fen = puzzle_data[:fen] if puzzle_data
-                        - puzzle_flip = puzzle_fen&.include?(" w ") || false
-                        - initial_move = puzzle_data[:initial_move] if puzzle_data
-                        .board-link= render(partial: "static/snippets/miniboard",
-                                          locals: { fen: puzzle_fen,
-                                                   flip: puzzle_flip,
-                                                   initial_move: initial_move,
-                                                   title: "Level #{level_data['number']} - First Puzzle" })
-                      .level-info-bottom
-                        .success-criteria= level_data['success_criteria_description']
-                        - if level_data['completed']
-                          .completion-indicator
-                            .checkmark ✓
+            - @adventure_puzzle_sets.each do |set_data|
+              - if set_data && set_data['set_index']
+                a.quest-level-link(href="/adventure/level/#{@current_adventure_level_number}/set/#{set_data['set_index']}" class="#{'completed' if set_data['completed']}")
+                  .quest-level
+                    - if set_data['first_puzzle']
+                      - puzzle_data = set_data['first_puzzle']
+                      - puzzle_fen = puzzle_data[:fen] if puzzle_data
+                      - puzzle_flip = puzzle_fen&.include?(" w ") || false
+                      - initial_move = puzzle_data[:initial_move] if puzzle_data
+                      .board-link= render(partial: "static/snippets/miniboard",
+                                        locals: { fen: puzzle_fen,
+                                                 flip: puzzle_flip,
+                                                 initial_move: initial_move,
+                                                 title: "Set #{set_data['set_index']} - First Puzzle" })
+                    .level-info-bottom
+                      .success-criteria= "Set #{set_data['set_index']} - #{set_data['puzzles_count']} puzzles"
+                      .color-to-move= "#{set_data['color_to_move'] == 'w' ? 'White' : 'Black'} to move"
+                      - if set_data['completed']
+                        .completion-indicator
+                          .checkmark ✓
 
         .quest-container-bottom.container
-          - if user_signed_in? && @quest_world.completed_by?(current_user)
+          - if user_signed_in? && @current_level_completed
             .quest-completed
               .completion-message
-                .title World Complete!
-                .description You've completed all levels in this world
+                .title Level Complete!
+                .description You've completed all puzzle sets in this level
               .action-buttons
-                - next_world = get_next_quest_world_for_user(current_user)
-                - if next_world && next_world != @quest_world
-                  a.blue-button(href="/?world=#{next_world.id}") Continue to Next World
+                - next_level = @current_adventure_level_number + 1
+                - next_level_data = load_adventure_level(next_level)
+                - if next_level_data
+                  a.blue-button(href="/?level=#{next_level}") Continue to Next Level
                 - else
                   a.blue-button(href="/") Back to Homepage
           - else
             div Complete all puzzle sets to continue
-      - elsif @all_quest_worlds_complete
+      - elsif @all_adventure_levels_complete
         .quest-bg(
           style="background-image: url(/backgrounds/#{@background_img})")
         .quest-above-bg(
@@ -64,18 +65,18 @@ section.homepage
 
         .quest-container.container
           header.world-intro
-            .world-name All quest worlds complete!
+            .world-name All adventure levels complete!
           main.world-levels
             .quest-level
               .level-info-top 🎉 Congratulations! 🎉
-              .level-info-bottom You've completed all available quest worlds.
+              .level-info-bottom You've completed all available adventure levels.
       - else
         = render partial: "worlds/world-#{@world_number}"
 
   .game-modes-section
     .container
       header
-        - if @quest_mode_enabled
+        - if @adventure_mode_enabled
           h2 Practice fast-paced chess puzzles in another game mode.
         - else
           h2 Fast-paced chess puzzles. Choose a game mode to get started.

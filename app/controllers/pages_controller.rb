@@ -8,44 +8,67 @@ class PagesController < ApplicationController
     @world_number = 1
     @world_name = "Just getting started"
     
-    # Quest mode enabled flag - controlled by feature flag
-    @quest_mode_enabled = FeatureFlag.enabled?(:adventure_mode)
+    # Adventure mode enabled flag - controlled by feature flag
+    @adventure_mode_enabled = FeatureFlag.enabled?(:adventure_mode)
     
-    # Only load quest data if quest mode is enabled
-    if @quest_mode_enabled
-      # Load the appropriate QuestWorld based on user's progress or URL parameter
-      if params[:world].present?
-        @quest_world = QuestWorld.find(params[:world])
-      else
-        @quest_world = get_next_quest_world_for_user(current_user)
-      end
+    # Only load adventure data if adventure mode is enabled
+    if @adventure_mode_enabled
+      # Load adventure levels
+      @adventure_levels = load_adventure_levels
       
-      # Only prepare quest data if we have a quest world and it's not completed
-      if @quest_world && (!current_user || !@quest_world.completed_by?(current_user))
-        @quest_world_levels = @quest_world.quest_world_levels
-        # Prepare first puzzle data for each level
-        @quest_world_levels_with_puzzles = @quest_world_levels.map do |level|
-          first_puzzle = get_first_puzzle_for_level(level)
-          level_data = level.attributes
-          level_data['first_puzzle'] = first_puzzle
-          level_data['success_criteria_description'] = level.success_criteria_description
-          level_data['completed'] = current_user ? level.completed_by?(current_user) : false
-          level_data
+      if @adventure_levels.any?
+        # Determine which level to show (from URL parameter or first level)
+        requested_level = params[:level].to_i
+        if requested_level > 0
+          # Try to load the requested level
+          @current_adventure_level = load_adventure_level(requested_level)
+          @current_adventure_level_number = requested_level
+        else
+          # Show the first level by default
+          @current_adventure_level = @adventure_levels.first
+          @current_adventure_level_number = @current_adventure_level['level']
         end
-        @all_quest_worlds_complete = false
+        
+        if @current_adventure_level
+          # Check if the current level is completed
+          @current_level_completed = current_user ? adventure_level_completed_by_user?(@current_adventure_level_number, current_user) : false
+          
+          # Prepare puzzle set data for the current level
+          @adventure_puzzle_sets = @current_adventure_level['puzzle_sets'].map do |set_data|
+            first_puzzle = get_first_puzzle_for_adventure_set(set_data)
+            set_data['first_puzzle'] = first_puzzle
+            set_data['completed'] = current_user ? set_completed_by_user?(@current_adventure_level_number, set_data['set_index'], current_user) : false
+            set_data
+          end
+        else
+          # Requested level not found, show first level
+          @current_adventure_level = @adventure_levels.first
+          @current_adventure_level_number = @current_adventure_level['level']
+          @current_level_completed = current_user ? adventure_level_completed_by_user?(@current_adventure_level_number, current_user) : false
+          @adventure_puzzle_sets = @current_adventure_level['puzzle_sets'].map do |set_data|
+            first_puzzle = get_first_puzzle_for_adventure_set(set_data)
+            set_data['first_puzzle'] = first_puzzle
+            set_data['completed'] = current_user ? set_completed_by_user?(@current_adventure_level_number, set_data['set_index'], current_user) : false
+            set_data
+          end
+        end
+        
+        @all_adventure_levels_complete = false
       else
-        # If all worlds completed or no quest world, don't show quest section
-        @quest_world = nil
-        @quest_world_levels = nil
-        @quest_world_levels_with_puzzles = nil
-        @all_quest_worlds_complete = current_user && QuestWorld.all.all? { |w| w.completed_by?(current_user) }
+        # No adventure levels available
+        @current_adventure_level = nil
+        @current_adventure_level_number = nil
+        @current_level_completed = false
+        @adventure_puzzle_sets = []
+        @all_adventure_levels_complete = false
       end
     else
-      # Quest mode disabled - set all quest variables to nil
-      @quest_world = nil
-      @quest_world_levels = nil
-      @quest_world_levels_with_puzzles = nil
-      @all_quest_worlds_complete = false
+      # Adventure mode disabled - set all adventure variables to nil
+      @current_adventure_level = nil
+      @current_adventure_level_number = nil
+      @current_level_completed = false
+      @adventure_puzzle_sets = []
+      @all_adventure_levels_complete = false
     end
     
     render "/home"
@@ -176,6 +199,110 @@ class PagesController < ApplicationController
     QuestWorld.order(:number, :id).find do |world|
       !world.completed_by?(user)
     end # Return nil if all worlds completed
+  end
+
+  def load_adventure_levels
+    adventure_dir = Rails.root.join("data", "game-modes", "adventure")
+    return [] unless Dir.exist?(adventure_dir)
+    
+    levels = []
+    
+    # Find all level JSON files
+    Dir.glob(adventure_dir.join("level-*.json")).sort.each do |file_path|
+      begin
+        level_data = JSON.parse(File.read(file_path))
+        levels << level_data
+      rescue JSON::ParserError => e
+        Rails.logger.error "Error parsing adventure level file #{file_path}: #{e.message}"
+      end
+    end
+    
+    levels
+  end
+
+  def adventure_level_completed_by_user?(level_number, user)
+    return false unless user
+    
+    # Check if all puzzle sets in the level are completed
+    user_profile = user.profile || {}
+    adventure_completions = user_profile['adventure_completions'] || {}
+    level_completions = adventure_completions[level_number.to_s] || {}
+    
+    # Load the level data to check how many sets it has
+    level_data = load_adventure_level(level_number)
+    return false unless level_data
+    
+    # Check if all puzzle sets are completed
+    level_data['puzzle_sets'].all? do |set|
+      level_completions[set['set_index'].to_s] == true
+    end
+  end
+
+  def get_first_puzzle_for_adventure_level(level_data)
+    return nil unless level_data['puzzle_sets'].present? && level_data['puzzle_sets'].is_a?(Array)
+
+    first_set = level_data['puzzle_sets'].first
+    return nil unless first_set['puzzles'].present? && first_set['puzzles'].is_a?(Array)
+
+    first_puzzle_id = first_set['puzzles'].first
+    return nil if first_puzzle_id.blank?
+
+    # Try to find the puzzle by puzzle_id
+    puzzle = LichessV2Puzzle.find_by(puzzle_id: first_puzzle_id.to_s)
+    return nil unless puzzle
+
+    {
+      puzzle_id: puzzle.puzzle_id,
+      fen: puzzle.initial_fen,
+      initial_fen: puzzle.initial_fen,
+      initial_move: puzzle.moves_uci[0],
+      rating: puzzle.rating,
+      themes: puzzle.themes
+    }
+  end
+
+  def get_first_puzzle_for_adventure_set(set_data)
+    return nil unless set_data['puzzles'].present? && set_data['puzzles'].is_a?(Array)
+
+    first_puzzle_id = set_data['puzzles'].first
+    return nil if first_puzzle_id.blank?
+
+    # Try to find the puzzle by puzzle_id
+    puzzle = LichessV2Puzzle.find_by(puzzle_id: first_puzzle_id.to_s)
+    return nil unless puzzle
+
+    {
+      puzzle_id: puzzle.puzzle_id,
+      fen: puzzle.initial_fen,
+      initial_fen: puzzle.initial_fen,
+      initial_move: puzzle.moves_uci[0],
+      rating: puzzle.rating,
+      themes: puzzle.themes
+    }
+  end
+
+  def set_completed_by_user?(level_number, set_index, user)
+    return false unless user
+    
+    # Use user profile to track adventure completions
+    user_profile = user.profile || {}
+    adventure_completions = user_profile['adventure_completions'] || {}
+    level_completions = adventure_completions[level_number.to_s] || {}
+    
+    level_completions[set_index.to_s] == true
+  end
+
+  def load_adventure_level(level_number)
+    level_file = Rails.root.join("data", "game-modes", "adventure", "level-#{level_number.to_s.rjust(2, '0')}.json")
+    
+    return nil unless File.exist?(level_file)
+    
+    begin
+      JSON.parse(File.read(level_file))
+    rescue JSON::ParserError => e
+      Rails.logger.error "Error parsing adventure level #{level_number}: #{e.message}"
+      nil
+    end
   end
 
   private
