@@ -3,7 +3,7 @@ class PagesController < ApplicationController
   before_action :set_homepage_puzzles, only: [:home, :world1, :world2, :world3, :world4, :world5, :world6]
 
   def home
-    @background_img = "photo-1503180036370-373c16943ae6.jpg"
+    @background_img = "bg.svg"
     @background_overlay = "rgba(0, 0, 0, 0.1)"
     @world_number = 1
     @world_name = "Just getting started"
@@ -20,16 +20,28 @@ class PagesController < ApplicationController
       @adventure_levels = load_adventure_levels
       
       if @adventure_levels.any?
-        # Determine which level to show (from URL parameter or first level)
+        # Determine which level to show (from URL parameter or user's latest unlocked level)
         requested_level = params[:level].to_i
         if requested_level > 0
+          # Check if user can access this level
+          if current_user && !can_user_access_level?(requested_level, current_user)
+            # User cannot access this level, redirect to their latest unlocked level
+            redirect_to "/?level=#{@latest_incomplete_level || 1}" and return
+          end
+          
           # Try to load the requested level
           @current_adventure_level = load_adventure_level(requested_level)
           @current_adventure_level_number = requested_level
         else
-          # Show the first level by default
-          @current_adventure_level = @adventure_levels.first
-          @current_adventure_level_number = @current_adventure_level['level']
+          # Show the user's latest unlocked level by default
+          if current_user && @latest_incomplete_level
+            @current_adventure_level = load_adventure_level(@latest_incomplete_level)
+            @current_adventure_level_number = @latest_incomplete_level
+          else
+            # Fallback to first level if no user or no incomplete levels
+            @current_adventure_level = @adventure_levels.first
+            @current_adventure_level_number = @current_adventure_level['level']
+          end
         end
         
         if @current_adventure_level
@@ -414,5 +426,28 @@ class PagesController < ApplicationController
 
     # If all levels are completed, return the last level number
     adventure_levels.last['level']
+  end
+
+  # Check if user can access a specific level
+  def can_user_access_level?(level_number, user)
+    return true unless user # Allow access if no user (guest mode)
+    
+    adventure_levels = load_adventure_levels
+    return false unless adventure_levels.any?
+    
+    # Find the level data
+    level_data = adventure_levels.find { |level| level['level'] == level_number }
+    return false unless level_data
+    
+    # Level 1 is always accessible
+    return true if level_number == 1
+    
+    # For other levels, check if the previous level is completed
+    previous_level_number = level_number - 1
+    previous_level_data = adventure_levels.find { |level| level['level'] == previous_level_number }
+    return false unless previous_level_data
+    
+    # User can access this level if they completed the previous level
+    adventure_level_completed_by_user?(previous_level_number, user)
   end
 end

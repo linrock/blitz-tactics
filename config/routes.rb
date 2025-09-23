@@ -31,6 +31,7 @@ Rails.application.routes.draw do
 
   # adventure mode
   get '/adventure/level/:level_number' => 'game_modes/adventure#show'
+  get '/adventure/level-:level_number' => 'pages#home', constraints: { level_number: /\d+/ }
   get '/adventure/level/:level_number/set/:set_index' => 'game_modes/adventure#play_level'
   post '/adventure/level/:level_number/set/:set_index/complete' => 'game_modes/adventure#complete'
 

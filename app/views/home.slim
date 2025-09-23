@@ -15,7 +15,7 @@ section.homepage
     .quest-section
       - if @current_adventure_level && @adventure_puzzle_sets&.any?
         .quest-bg(
-          style="background-image: url(/backgrounds/#{@background_img})")
+          style="background-image: url(#{asset_path(@background_img)})")
         .quest-above-bg(
           style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
 
@@ -64,7 +64,7 @@ section.homepage
             div= "#{@completed_sets_count}/#{@total_sets_count} completed - Complete all puzzle sets to continue"
       - elsif @all_adventure_levels_complete
         .quest-bg(
-          style="background-image: url(/backgrounds/#{@background_img})")
+          style="background-image: url(#{asset_path(@background_img)})")
         .quest-above-bg(
           style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
 
