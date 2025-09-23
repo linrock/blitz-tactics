@@ -315,11 +315,9 @@
       flex-direction: column
       justify-content: space-between
 
-      // Completed levels styling
+      // Completed levels styling - ensure same height as incomplete levels
       &.completed
-        .quest-level
-          background: rgba(255, 255, 255, 0.1)
-          border: 1px solid rgba(255, 255, 255, 0.2)
+        // Remove nested .quest-level selector to maintain consistent styling
 
       // Locked levels styling
       &.locked
