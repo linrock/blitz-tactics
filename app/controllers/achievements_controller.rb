@@ -8,13 +8,13 @@ class AchievementsController < ApplicationController
     
     # Define puzzle solving achievement tiers
     @puzzle_tiers = [
-      { count: 10, title: "👶 First Steps", description: "Solve your first 10 puzzles" },
-      { count: 100, title: "🎯 Getting Started", description: "Solve 100 puzzles" },
-      { count: 500, title: "🏆 Puzzle Solver", description: "Solve 500 puzzles" },
-      { count: 1000, title: "💪 Tactics Master", description: "Solve 1,000 puzzles" },
-      { count: 10000, title: "📚 Chess Encyclopedia", description: "Solve 10,000 puzzles" },
-      { count: 50000, title: "🌟 Puzzle Legend", description: "Solve 50,000 puzzles" },
-      { count: 100000, title: "👑 Chess Grandmaster", description: "Solve 100,000 puzzles" }
+      { count: 10, title: "🌱 Puzzle Novice", description: "Solve your first 10 puzzles" },
+      { count: 100, title: "🔍 Getting Started", description: "Solve 100 puzzles" },
+      { count: 500, title: "⚡ Puzzle Solver", description: "Solve 500 puzzles" },
+      { count: 1000, title: "⭐ Tactics Initiate", description: "Solve 1,000 puzzles" },
+      { count: 10000, title: "🌟 Puzzle Apprentice", description: "Solve 10,000 puzzles" },
+      { count: 50000, title: "🏆 Puzzle Expert", description: "Solve 50,000 puzzles" },
+      { count: 100000, title: "👑 Tactics Legend", description: "Solve 100,000 puzzles" }
     ]
     
     # Find the earliest achievement that has not been unlocked yet
