@@ -40,6 +40,9 @@ export default class PuzzleHint {
       },
       'puzzle:hint': (hint: string) => {
         this.displayHint(hint)
+        // Highlight the "from" square like Three game mode does
+        const fromSquare = hint.slice(0, 2)
+        dispatch('shape:draw', fromSquare)
       },
       'move:success': () => {
         // Hide the hint button after a successful move
