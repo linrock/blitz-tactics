@@ -4,6 +4,8 @@ section.homepage
     .user-puzzle-indicator
       .container
         .puzzle-count-display
+          - if @adventure_mode_enabled && @latest_incomplete_level
+            span.level-indicator Level #{@latest_incomplete_level}
           span.puzzle-count-label You've solved
           span.puzzle-count-number= current_user.unique_puzzles_solved_count
           span.puzzle-count-label unique puzzles
@@ -23,11 +25,16 @@ section.homepage
           main.world-levels
             - @adventure_puzzle_sets.each do |set_data|
               - if set_data && set_data['set_index']
-                a.quest-level-link(href="/adventure/level/#{@current_adventure_level_number}/set/#{set_data['set_index']}" class="#{'completed' if set_data['completed']}")
+                - is_locked = !set_data['unlocked']
+                - link_href = is_locked ? "#" : "/adventure/level/#{@current_adventure_level_number}/set/#{set_data['set_index']}"
+                a.quest-level-link(href=link_href class="#{'completed' if set_data['completed']} #{'locked' if is_locked}")
                   .quest-level
                     - if set_data['completed']
                       .completion-indicator
                         .checkmark ✓
+                    - elsif is_locked
+                      .completion-indicator
+                        .lock-icon 🔒
                     - if set_data['first_puzzle']
                       - puzzle_data = set_data['first_puzzle']
                       - puzzle_fen = puzzle_data[:fen] if puzzle_data

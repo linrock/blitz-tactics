@@ -13,11 +13,16 @@
 
     .puzzle-count-display
       display: flex
-      justify-content: flex-end
+      justify-content: space-between
       align-items: center
       gap: 8px
       font-size: 14px
       color: rgba(255, 255, 255, 0.8)
+
+      .level-indicator
+        font-weight: 600
+        color: rgba(255, 255, 255, 0.9)
+        font-size: 16px
 
       .puzzle-count-label
         font-weight: normal
@@ -291,19 +296,27 @@
       margin-bottom: 20px
       transition: opacity 0.3s ease
 
-      // Fade completed levels
+      // Completed levels styling
       &.completed
-        opacity: 0.75
-        
         .quest-level
           background: rgba(255, 255, 255, 0.1)
           border: 1px solid rgba(255, 255, 255, 0.2)
           
           .board-link
-            opacity: 0.8
+            // No opacity fade for completed levels
             
           .level-info-bottom
-            opacity: 0.85
+            // No opacity fade for completed levels
+
+      // Locked levels styling
+      &.locked
+        opacity: 0.7
+        cursor: not-allowed
+        pointer-events: none
+        
+        .quest-level
+          background: rgba(255, 255, 255, 0.05)
+          border: 1px solid rgba(255, 255, 255, 0.1)
 
       .quest-level
         cursor: pointer

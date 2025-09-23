@@ -11,6 +11,9 @@ class PagesController < ApplicationController
     # Adventure mode enabled flag - controlled by feature flag
     @adventure_mode_enabled = FeatureFlag.enabled?(:adventure_mode)
     
+    # Find the latest incomplete level for the user
+    @latest_incomplete_level = find_latest_incomplete_level(current_user) if @adventure_mode_enabled && current_user
+    
     # Only load adventure data if adventure mode is enabled
     if @adventure_mode_enabled
       # Load adventure levels
@@ -34,10 +37,21 @@ class PagesController < ApplicationController
           @current_level_completed = current_user ? adventure_level_completed_by_user?(@current_adventure_level_number, current_user) : false
           
           # Prepare puzzle set data for the current level
-          @adventure_puzzle_sets = @current_adventure_level['puzzle_sets'].map do |set_data|
+          @adventure_puzzle_sets = @current_adventure_level['puzzle_sets'].map.with_index do |set_data, index|
             first_puzzle = get_first_puzzle_for_adventure_set(set_data)
             set_data['first_puzzle'] = first_puzzle
             set_data['completed'] = current_user ? set_completed_by_user?(@current_adventure_level_number, set_data['set_index'], current_user) : false
+            
+            # Determine if this set is unlocked
+            # First set is always unlocked, subsequent sets are unlocked if the previous set is completed
+            if index == 0
+              set_data['unlocked'] = true
+            else
+              previous_set = @current_adventure_level['puzzle_sets'][index - 1]
+              previous_set_completed = current_user ? set_completed_by_user?(@current_adventure_level_number, previous_set['set_index'], current_user) : false
+              set_data['unlocked'] = previous_set_completed
+            end
+            
             set_data
           end
           
@@ -53,10 +67,21 @@ class PagesController < ApplicationController
           @current_adventure_level = @adventure_levels.first
           @current_adventure_level_number = @current_adventure_level['level']
           @current_level_completed = current_user ? adventure_level_completed_by_user?(@current_adventure_level_number, current_user) : false
-          @adventure_puzzle_sets = @current_adventure_level['puzzle_sets'].map do |set_data|
+          @adventure_puzzle_sets = @current_adventure_level['puzzle_sets'].map.with_index do |set_data, index|
             first_puzzle = get_first_puzzle_for_adventure_set(set_data)
             set_data['first_puzzle'] = first_puzzle
             set_data['completed'] = current_user ? set_completed_by_user?(@current_adventure_level_number, set_data['set_index'], current_user) : false
+            
+            # Determine if this set is unlocked
+            # First set is always unlocked, subsequent sets are unlocked if the previous set is completed
+            if index == 0
+              set_data['unlocked'] = true
+            else
+              previous_set = @current_adventure_level['puzzle_sets'][index - 1]
+              previous_set_completed = current_user ? set_completed_by_user?(@current_adventure_level_number, previous_set['set_index'], current_user) : false
+              set_data['unlocked'] = previous_set_completed
+            end
+            
             set_data
           end
           
@@ -368,5 +393,26 @@ class PagesController < ApplicationController
     @repetition_level = @user.highest_repetition_level_unlocked
     @countdown_level_score = @user.best_countdown_score(@countdown_level)
     @user_rating = @user.user_rating&.rating_string || "Unrated"
+  end
+
+  private
+
+  # Find the latest level that the user has not completed
+  def find_latest_incomplete_level(user)
+    return nil unless user
+
+    adventure_levels = load_adventure_levels
+    return nil unless adventure_levels.any?
+
+    # Find the first level that is not completed
+    adventure_levels.each do |level_data|
+      level_number = level_data['level']
+      unless adventure_level_completed_by_user?(level_number, user)
+        return level_number
+      end
+    end
+
+    # If all levels are completed, return the last level number
+    adventure_levels.last['level']
   end
 end
