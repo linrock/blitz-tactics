@@ -44,6 +44,10 @@ class PagesController < ApplicationController
           # Calculate progress for the current level
           @completed_sets_count = @adventure_puzzle_sets.count { |set| set['completed'] }
           @total_sets_count = @adventure_puzzle_sets.length
+          
+          # Check if there's a next level available
+          @next_level_number = @current_adventure_level_number + 1
+          @next_level_data = load_adventure_level(@next_level_number)
         else
           # Requested level not found, show first level
           @current_adventure_level = @adventure_levels.first
@@ -59,6 +63,10 @@ class PagesController < ApplicationController
           # Calculate progress for the current level
           @completed_sets_count = @adventure_puzzle_sets.count { |set| set['completed'] }
           @total_sets_count = @adventure_puzzle_sets.length
+          
+          # Check if there's a next level available
+          @next_level_number = @current_adventure_level_number + 1
+          @next_level_data = load_adventure_level(@next_level_number)
         end
         
         @all_adventure_levels_complete = false

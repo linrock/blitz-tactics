@@ -48,10 +48,8 @@ section.homepage
                 .title Level Complete!
                 .description You've completed all puzzle sets in this level
               .action-buttons
-                - next_level = @current_adventure_level_number + 1
-                - next_level_data = load_adventure_level(next_level)
-                - if next_level_data
-                  a.blue-button(href="/?level=#{next_level}") Continue to Next Level
+                - if @next_level_data
+                  a.blue-button(href="/?level=#{@next_level_number}") Continue to Next Level
                 - else
                   a.blue-button(href="/") Back to Homepage
           - else
