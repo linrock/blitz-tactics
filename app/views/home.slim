@@ -25,6 +25,9 @@ section.homepage
               - if set_data && set_data['set_index']
                 a.quest-level-link(href="/adventure/level/#{@current_adventure_level_number}/set/#{set_data['set_index']}" class="#{'completed' if set_data['completed']}")
                   .quest-level
+                    - if set_data['completed']
+                      .completion-indicator
+                        .checkmark ✓
                     - if set_data['first_puzzle']
                       - puzzle_data = set_data['first_puzzle']
                       - puzzle_fen = puzzle_data[:fen] if puzzle_data
@@ -37,9 +40,6 @@ section.homepage
                                                  title: "First Puzzle" })
                     .level-info-bottom
                       .success-criteria= "#{@current_adventure_level_number}-#{set_data['set_index']}: Solve #{set_data['puzzles_count']} puzzles"
-                      - if set_data['completed']
-                        .completion-indicator
-                          .checkmark ✓
 
         .quest-container-bottom.container
           - if user_signed_in? && @current_level_completed
