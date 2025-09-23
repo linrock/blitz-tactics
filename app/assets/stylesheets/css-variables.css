@@ -2,4 +2,32 @@
   --main-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --monospace-font: "Source Code Pro", "Courier New", "Monaco", "Menlo", monospace;
   --combo-indicator-font: "Orbitron", sans-serif;
+  
+  /* Board dimensions */
+  --board-size: 496px;
+  --above-board-height: 90px;
+  --below-board-height: 140px;
+  
+  /* Sidebar dimensions */
+  --main-width: 700px;
+  --right-sidebar-width: 300px;
+  
+  /* Main chessboard variables */
+  --square-size: 60px;
+  
+  /* Puzzle player */
+  --user-preferences-panel-width: 380px;
+  
+  /* Round button with svg icon */
+  --round-button-size: 36px;
+  
+  /* Colors for combo indicator */
+  --move-perfect: #34FF00;
+  --move-great: #2AE2EA;
+  --move-good: #FFF260;
+  --move-almost: #F98661;
+  --move-fail: #F954AE;
+  
+  /* Button colors */
+  --blue-button-bg: #2C9BEA;
 }

@@ -1,8 +1,5 @@
 // the main puzzle player interface
 
-@use "../../../assets/stylesheets/_colors" as colors
-@use "../../../assets/stylesheets/_variables" as vars
-
 body 
   transition: background 0.6s ease
 
@@ -43,7 +40,7 @@ body
   padding: 10px 24px
   border: 0
   border-radius: 3px
-  background: colors.$blue-button-bg
+  background: var(--blue-button-bg)
   display: inline-block
   color: white
   text-decoration: none
@@ -84,7 +81,7 @@ body
     stroke: #636363
 
 .above-board 
-  height: vars.$above-board-height
+  height: var(--above-board-height)
   position: relative
   // width $main-width
   margin: 15px auto 0
@@ -154,30 +151,30 @@ body
       transition: opacity 0.9s ease-out 0.2s, transform 0.05s ease-in-out
 
     .perfect 
-      color: colors.$move-perfect
+      color: var(--move-perfect)
       font-weight: 600
       letter-spacing: 3px
       font-size: 40px
 
     .great 
-      color: colors.$move-great
+      color: var(--move-great)
       font-weight: 600
       letter-spacing: 3px
       font-size: 38px
 
     .good 
-      color: colors.$move-good
+      color: var(--move-good)
       font-weight: 600
       letter-spacing: 3px
       font-size: 38px
 
     .almost 
-      color: colors.$move-almost
+      color: var(--move-almost)
       position: relative
       top: 12px
 
     .fail 
-      color: colors.$move-fail
+      color: var(--move-fail)
       position: relative
       top: 12px
 

@@ -1,5 +1,3 @@
-@use "../../../assets/stylesheets/_variables" as vars
-
 .repetition-mode 
   .container
     position: relative
@@ -8,7 +6,7 @@
     .right-stats
       position: absolute
       top: 90px
-      left: calc(50% + (vars.$board-size / 2) + 1rem)
+      left: calc(50% + (var(--board-size) / 2) + 1rem)
       width: 220px
       display: flex
       flex-direction: column

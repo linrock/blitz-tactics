@@ -1,9 +1,6 @@
 @forward "../../assets/stylesheets/buttons"
-@use "../../assets/stylesheets/_colors" as *
-@use "../../assets/stylesheets/_variables" as *
 
 .game-mode
-  $board-size: 496px
 
   .container
     display: flex
@@ -15,7 +12,7 @@
 
   // Above board section positioning
   .above-board
-    width: $board-size
+    width: var(--board-size)
     height: 90px
     // margin-bottom: 20px
     position: relative
@@ -84,30 +81,30 @@
         transition: opacity 0.9s ease-out 0.2s, transform 0.05s ease-in-out
 
       .perfect 
-        color: $move-perfect
+        color: var(--move-perfect)
         font-weight: 600
         letter-spacing: 3px
         font-size: 40px
 
       .great 
-        color: $move-great
+        color: var(--move-great)
         font-weight: 600
         letter-spacing: 3px
         font-size: 38px
 
       .good 
-        color: $move-good
+        color: var(--move-good)
         font-weight: 600
         letter-spacing: 3px
         font-size: 38px
 
       .almost 
-        color: $move-almost
+        color: var(--move-almost)
         position: relative
         top: 12px
 
       .fail 
-        color: $move-fail
+        color: var(--move-fail)
         position: relative
         top: 12px
 
@@ -147,13 +144,13 @@
     padding: 0
 
   .board-area
-    width: $board-size
-    height: $board-size
+    width: var(--board-size)
+    height: var(--board-size)
     position: relative
 
   .chessground-board
-    width: $board-size
-    height: $board-size
+    width: var(--board-size)
+    height: var(--board-size)
     position: absolute
     top: 0
     left: 50%

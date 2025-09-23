@@ -1,5 +1,3 @@
-@use "_colors" as colors
-
 // Base button styles
 %button-base
   border: 0
@@ -23,7 +21,7 @@
 // Blue button (primary action)
 .blue-button
   @extend %button-base
-  background: colors.$blue-button-bg
+  background: var(--blue-button-bg)
   color: white
   font-size: 18px
   padding: 10px 24px
