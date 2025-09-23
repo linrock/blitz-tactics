@@ -43,6 +43,8 @@ export class SolutionReplay {
    * @param onComplete - Callback function when replay is complete
    */
   async replaySolutionOnMiniboardWithCallback(miniboardEl: HTMLElement, solutionLines: any, onComplete: () => void) {
+    console.log('replaySolutionOnMiniboardWithCallback called with:', { miniboardEl, solutionLines })
+    
     if (!solutionLines) {
       console.log('No solution lines available')
       onComplete()
@@ -65,6 +67,10 @@ export class SolutionReplay {
       onComplete()
       return
     }
+
+    console.log('Initial FEN:', initialFen)
+    console.log('Miniboard element:', miniboardEl)
+    console.log('Miniboard innerHTML:', miniboardEl.innerHTML)
 
     // Play the solution moves with callback when complete
     this.playMovesInMiniboardWithCallback(miniboardEl, initialFen, solutionMoves, onComplete)
@@ -135,13 +141,20 @@ export class SolutionReplay {
     }
     
     console.log('Extracted moves in sequence:', moves)
+    console.log('Total moves found:', moves.length)
+    
+    // Log each move with its position in the sequence
+    moves.forEach((move, index) => {
+      console.log(`Move ${index + 1}: ${move}`)
+    })
+    
     return moves
   }
 
   /**
    * Play moves on a miniboard
    * @param miniboard - The miniboard DOM element
-   * @param initialFen - The initial FEN position
+   * @param initialFen - The initial FEN position (not used anymore)
    * @param moves - Array of UCI moves to play
    */
   playMovesInMiniboard(miniboard: HTMLElement, initialFen: string, moves: string[]) {
@@ -149,14 +162,14 @@ export class SolutionReplay {
       return
     }
 
-    // Reset board to original position before playing solution
-    this.resetBoardToOriginalPosition(miniboard)
+    // Don't reset the board - start from current position
+    console.log('Starting solution replay from current board position (no callback)')
     
     let currentMoveIndex = 0
     
     const playNextMove = () => {
       if (currentMoveIndex < moves.length) {
-        // Clear initial move highlighting before the first solution move
+        // Clear any existing highlights before the first solution move
         if (currentMoveIndex === 0) {
           this.clearExistingHighlights(miniboard)
         }
@@ -170,49 +183,58 @@ export class SolutionReplay {
       }
     }
     
-    // Start playing moves after reset completes
-    setTimeout(playNextMove, 200)
+    // Start playing moves immediately from current position
+    playNextMove()
   }
 
   /**
    * Play moves on a miniboard with callback when complete
    * @param miniboard - The miniboard DOM element
-   * @param initialFen - The initial FEN position
+   * @param initialFen - The initial FEN position (not used anymore)
    * @param moves - Array of UCI moves to play
    * @param onComplete - Callback function when all moves are complete
    */
   playMovesInMiniboardWithCallback(miniboard: HTMLElement, initialFen: string, moves: string[], onComplete: () => void) {
+    console.log('playMovesInMiniboardWithCallback called with:', { miniboard, initialFen, moves })
+    
     if (moves.length === 0) {
+      console.log('No moves to play, calling onComplete')
       onComplete()
       return
     }
 
-    // Reset board to original position before playing solution
-    this.resetBoardToOriginalPosition(miniboard)
+    // Don't reset the board - start from current position
+    console.log('Starting solution replay from current board position')
     
     let currentMoveIndex = 0
     
     const playNextMove = () => {
+      console.log(`Playing move ${currentMoveIndex + 1}/${moves.length}: ${moves[currentMoveIndex]}`)
+      
       if (currentMoveIndex < moves.length) {
-        // Clear initial move highlighting before the first solution move
+        // Clear any existing highlights before the first solution move
         if (currentMoveIndex === 0) {
+          console.log('Clearing existing highlights')
           this.clearExistingHighlights(miniboard)
         }
         
         const moveUci = moves[currentMoveIndex]
         const isLastMove = currentMoveIndex === moves.length - 1
+        console.log(`Animating move: ${moveUci}, isLastMove: ${isLastMove}`)
         this.animateMoveOnMiniboard(miniboard, moveUci, isLastMove)
         currentMoveIndex++
         
         setTimeout(playNextMove, 700) // 0.7 second delay between moves
       } else {
         // All moves completed, call the callback
+        console.log('All moves completed, calling onComplete')
         onComplete()
       }
     }
     
-    // Start playing moves after reset completes
-    setTimeout(playNextMove, 200)
+    // Start playing moves immediately from current position
+    console.log('Starting move playback immediately from current position')
+    playNextMove()
   }
 
   /**
@@ -223,6 +245,8 @@ export class SolutionReplay {
     const originalFen = miniboard.getAttribute('data-fen')
     const originalMove = miniboard.getAttribute('data-initial-move')
     
+    console.log('resetBoardToOriginalPosition called with:', { originalFen, originalMove })
+    
     if (!originalFen) {
       console.warn('No original FEN data found for reset')
       return
@@ -230,11 +254,46 @@ export class SolutionReplay {
 
     // Store the current state first time we see this board
     if (!this.originalBoardStates.has(originalFen)) {
+      console.log('Storing original board state for FEN:', originalFen)
       this.storeOriginalBoardState(miniboard, originalFen)
     }
 
-    // Restore from stored state
-    this.restoreFromStoredState(miniboard, originalFen, originalMove)
+    // Instead of restoring from stored state, reinitialize the miniboard with the original FEN
+    // This ensures we have the correct initial position
+    console.log('Reinitializing miniboard with original FEN:', originalFen)
+    this.reinitializeMiniboard(miniboard, originalFen, originalMove)
+  }
+
+  /**
+   * Reinitialize miniboard with original FEN
+   * @param miniboard - The miniboard DOM element
+   * @param fen - The FEN string
+   * @param originalMove - The original move UCI
+   */
+  reinitializeMiniboard(miniboard: HTMLElement, fen: string, originalMove: string | null) {
+    console.log('reinitializeMiniboard called with:', { fen, originalMove })
+    
+    // Instead of trying to reinitialize, we'll create a new MiniChessboard instance
+    // This ensures we have the correct initial position
+    try {
+      // Import MiniChessboard dynamically
+      import('@blitz/components/mini_chessboard').then(({ default: MiniChessboard }) => {
+        console.log('Creating new MiniChessboard instance')
+        const newInstance = new MiniChessboard({
+          el: miniboard,
+          fen,
+          initialMove: originalMove,
+          flip: miniboard.getAttribute('data-flip') === 'true'
+        })
+        
+        // Store the new instance on the element
+        ;(miniboard as any).miniboardInstance = newInstance
+        
+        console.log('New MiniChessboard instance created and stored')
+      })
+    } catch (error) {
+      console.error('Failed to reinitialize miniboard:', error)
+    }
   }
 
   /**
@@ -243,7 +302,15 @@ export class SolutionReplay {
    * @param fen - The FEN string
    */
   storeOriginalBoardState(miniboard: HTMLElement, fen: string) {
-    const squares = miniboard.querySelectorAll('.square')
+    // Get squares from cg-wrap if it exists
+    let squares = miniboard.querySelectorAll('.square')
+    if (squares.length === 0) {
+      const cgWrap = miniboard.querySelector('.cg-wrap')
+      if (cgWrap) {
+        squares = cgWrap.querySelectorAll('.square')
+      }
+    }
+    
     const pieces: any[] = []
     
     squares.forEach((square, index) => {
@@ -274,8 +341,16 @@ export class SolutionReplay {
       return
     }
 
+    // Get squares from cg-wrap if it exists
+    let squares = miniboard.querySelectorAll('.square')
+    if (squares.length === 0) {
+      const cgWrap = miniboard.querySelector('.cg-wrap')
+      if (cgWrap) {
+        squares = cgWrap.querySelectorAll('.square')
+      }
+    }
+
     // Clear all current pieces
-    const squares = miniboard.querySelectorAll('.square')
     squares.forEach(square => {
       const pieces = square.querySelectorAll('.piece')
       pieces.forEach(piece => piece.remove())
@@ -306,7 +381,15 @@ export class SolutionReplay {
     const fromSquare = moveUci.substring(0, 2)
     const toSquare = moveUci.substring(2, 4)
     
-    const squares = miniboard.querySelectorAll('.square')
+    // Get squares from cg-wrap if it exists
+    let squares = miniboard.querySelectorAll('.square')
+    if (squares.length === 0) {
+      const cgWrap = miniboard.querySelector('.cg-wrap')
+      if (cgWrap) {
+        squares = cgWrap.querySelectorAll('.square')
+      }
+    }
+    
     const fromSquareEl = this.getSquareByPosition(squares, fromSquare)
     const toSquareEl = this.getSquareByPosition(squares, toSquare)
     
@@ -321,7 +404,15 @@ export class SolutionReplay {
    * @param miniboard - The miniboard DOM element
    */
   clearExistingHighlights(miniboard: HTMLElement) {
-    const squares = miniboard.querySelectorAll('.square')
+    // Get squares from cg-wrap if it exists
+    let squares = miniboard.querySelectorAll('.square')
+    if (squares.length === 0) {
+      const cgWrap = miniboard.querySelector('.cg-wrap')
+      if (cgWrap) {
+        squares = cgWrap.querySelectorAll('.square')
+      }
+    }
+    
     squares.forEach(square => {
       square.classList.remove('move-from', 'move-to')
     })
@@ -337,11 +428,31 @@ export class SolutionReplay {
     const fromSquare = moveUci.substring(0, 2)
     const toSquare = moveUci.substring(2, 4)
     
-    console.log(`Animating move: ${moveUci} (${fromSquare} -> ${toSquare})`)
+    console.log(`animateMoveOnMiniboard called: ${moveUci} (${fromSquare} -> ${toSquare})`)
+    console.log('Miniboard element:', miniboard)
+    console.log('Miniboard innerHTML:', miniboard.innerHTML)
     
     // Get all squares from the miniboard
-    const squares = miniboard.querySelectorAll('.square')
+    // The MiniChessboard creates a cg-wrap element, so we need to look inside it
+    let squares = miniboard.querySelectorAll('.square')
+    
+    // If no squares found, try looking inside cg-wrap
+    if (squares.length === 0) {
+      const cgWrap = miniboard.querySelector('.cg-wrap')
+      if (cgWrap) {
+        squares = cgWrap.querySelectorAll('.square')
+        console.log(`Found ${squares.length} squares inside cg-wrap`)
+      }
+    }
+    
     console.log(`Found ${squares.length} squares on miniboard`)
+    
+    if (squares.length === 0) {
+      console.error('No squares found on miniboard!')
+      console.log('Miniboard structure:', miniboard.outerHTML)
+      console.log('cg-wrap structure:', miniboard.querySelector('.cg-wrap')?.outerHTML)
+      return
+    }
     
     // Find squares by position index
     const fromSquareEl = this.getSquareByPosition(squares, fromSquare)
@@ -349,7 +460,7 @@ export class SolutionReplay {
     
     if (!fromSquareEl || !toSquareEl) {
       console.warn(`Could not find squares ${fromSquare} or ${toSquare} on miniboard`)
-      console.log('Available squares:', Array.from(squares).map((sq, i) => ({ index: i, element: sq })))
+      console.log('Available squares:', Array.from(squares).map((sq, i) => ({ index: i, element: sq, classes: sq.className })))
       return
     }
 
@@ -412,16 +523,38 @@ export class SolutionReplay {
    * @param isLastMove - Whether this is the last move in the solution
    */
   simulatePieceMovement(fromSquareEl: Element, toSquareEl: Element, isLastMove: boolean = false) {
+    console.log('simulatePieceMovement called with:', { fromSquareEl, toSquareEl, isLastMove })
+    console.log('From square classes:', fromSquareEl.className)
+    console.log('To square classes:', toSquareEl.className)
+    
     // Get the piece from the 'from' square
-    const pieceEl = fromSquareEl.querySelector('.piece')
+    // Try multiple selectors to find the piece
+    let pieceEl = fromSquareEl.querySelector('.piece')
+    if (!pieceEl) {
+      // Try finding any element that looks like a piece
+      pieceEl = fromSquareEl.querySelector('piece')
+    }
+    if (!pieceEl) {
+      // Try finding any child element
+      pieceEl = fromSquareEl.firstElementChild
+    }
+    
+    console.log('Found piece element:', pieceEl)
+    console.log('From square innerHTML:', fromSquareEl.innerHTML)
+    console.log('To square innerHTML before move:', toSquareEl.innerHTML)
+    console.log('From square children:', Array.from(fromSquareEl.children))
+    
     if (!pieceEl) {
       // If no piece, just highlight squares
+      console.log('No piece found, just highlighting squares')
       this.highlightSquares(fromSquareEl, toSquareEl, isLastMove)
       return
     }
 
     // Clone the piece element
-    const pieceClone = pieceEl.cloneNode(true)
+    const pieceClone = pieceEl.cloneNode(true) as Element
+    console.log('Cloned piece:', pieceClone)
+    console.log('Cloned piece classes:', pieceClone.className)
     
     // Highlight squares and move the piece
     fromSquareEl.classList.add('move-from')
@@ -429,22 +562,46 @@ export class SolutionReplay {
     
     // Remove the original piece
     pieceEl.remove()
+    console.log('Original piece removed')
     
     // Remove any existing piece from destination square
-    const existingPiece = toSquareEl.querySelector('.piece')
+    let existingPiece = toSquareEl.querySelector('.piece')
+    if (!existingPiece) {
+      existingPiece = toSquareEl.querySelector('piece')
+    }
+    if (!existingPiece) {
+      existingPiece = toSquareEl.firstElementChild
+    }
+    
     if (existingPiece) {
+      console.log('Removing existing piece from destination:', existingPiece)
       existingPiece.remove()
     }
     
     // Add the cloned piece to the destination square
     toSquareEl.appendChild(pieceClone)
+    console.log('Cloned piece added to destination')
+    console.log('To square innerHTML after move:', toSquareEl.innerHTML)
+    
+    // Verify the move was successful
+    let newPiece = toSquareEl.querySelector('.piece')
+    if (!newPiece) {
+      newPiece = toSquareEl.querySelector('piece')
+    }
+    if (!newPiece) {
+      newPiece = toSquareEl.firstElementChild
+    }
+    console.log('New piece in destination:', newPiece)
     
     // Only remove highlighting after a delay if it's not the last move
     if (!isLastMove) {
       setTimeout(() => {
         fromSquareEl.classList.remove('move-from')
         toSquareEl.classList.remove('move-to')
+        console.log('Highlights removed')
       }, 500)
+    } else {
+      console.log('Last move - keeping highlights')
     }
   }
 
