@@ -28,11 +28,14 @@ document.addEventListener(`DOMContentLoaded`, () => {
     if (options) {
       optionsJson = JSON.parse(options)
     }
-    new MiniChessboard({
+    const miniboard = new MiniChessboard({
       el, fen, flip: flip === `true`,
       initialMove, initialMoveSan,
       ...optionsJson
     })
+    
+    // Store the instance on the element for solution replay functionality
+    ;(el as any).miniboardInstance = miniboard
   })
 
   // initialize global views/components

@@ -1,4 +1,5 @@
 import { uciToMove } from '@blitz/utils'
+import MiniChessboard from '@blitz/components/mini_chessboard'
 
 // Solution player for recent puzzles - plays directly in miniboards
 export class SolutionPlayer {
@@ -20,6 +21,7 @@ export class SolutionPlayer {
   }
 
   private async playSolutionInMiniboard(button: HTMLElement) {
+    const buttonEl = button as HTMLButtonElement
     const puzzleId = button.getAttribute('data-puzzle-id')
     const initialFen = button.getAttribute('data-initial-fen')
     const solutionLinesJson = button.getAttribute('data-solution-lines')
@@ -40,7 +42,7 @@ export class SolutionPlayer {
 
     // Update button state - fade out instead of changing text
     button.style.opacity = '0.5'
-    button.disabled = true
+    buttonEl.disabled = true
     this.playingSolutions.add(puzzleId)
 
     try {
@@ -60,7 +62,7 @@ export class SolutionPlayer {
         console.warn('No solution data available')
         button.textContent = originalText || 'Show solution'
         button.style.opacity = '1'
-        button.disabled = false
+        buttonEl.disabled = false
         this.playingSolutions.delete(puzzleId)
         return
       }
@@ -71,7 +73,7 @@ export class SolutionPlayer {
         console.warn('No solution moves found')
         button.textContent = originalText || 'Show solution'
         button.style.opacity = '1'
-        button.disabled = false
+        buttonEl.disabled = false
         this.playingSolutions.delete(puzzleId)
         return
       }
@@ -84,7 +86,7 @@ export class SolutionPlayer {
         console.error('Could not find miniboard for puzzle')
         button.textContent = originalText || 'Show solution'
         button.style.opacity = '1'
-        button.disabled = false
+        buttonEl.disabled = false
         this.playingSolutions.delete(puzzleId)
         return
       }
@@ -96,7 +98,7 @@ export class SolutionPlayer {
         // Reset button when done - fade back in
         button.textContent = originalText || 'Show solution'
         button.style.opacity = '1'
-        button.disabled = false
+        buttonEl.disabled = false
         this.playingSolutions.delete(puzzleId)
       })
 
@@ -104,7 +106,7 @@ export class SolutionPlayer {
       console.error('Failed to load or parse solution data:', error)
       button.textContent = originalText || 'Show solution'
       button.style.opacity = '1'
-      button.disabled = false
+      buttonEl.disabled = false
       this.playingSolutions.delete(puzzleId)
     }
   }
@@ -115,16 +117,14 @@ export class SolutionPlayer {
       return
     }
 
-    // Reset board to original position before playing solution
-    this.resetBoardToOriginalPosition(miniboard)
+    // Start playing moves from current position - no reset needed
+    console.log('Starting solution from current board position')
     
-    // Note: We don't clear initial move highlighting here - let it show until first move
-
     let currentMoveIndex = 0
     
     const playNextMove = () => {
       if (currentMoveIndex < moves.length) {
-        // Clear initial move highlighting before the first solution move
+        // Clear existing move highlighting before the first solution move
         if (currentMoveIndex === 0) {
           this.clearExistingHighlights(miniboard)
         }
@@ -139,8 +139,8 @@ export class SolutionPlayer {
       }
     }
     
-    // Start playing moves after reset completes
-    setTimeout(playNextMove, 200)
+    // Start playing moves immediately from current position
+    setTimeout(playNextMove, 100)
   }
 
   private clearExistingHighlights(miniboard: Element) {
@@ -152,23 +152,91 @@ export class SolutionPlayer {
   }
 
   private resetBoardToOriginalPosition(miniboard: Element) {
-    // Store original state before any manipulation
     const originalFen = miniboard.getAttribute('data-fen')
     const originalMove = miniboard.getAttribute('data-initial-move')
+    
+    console.log('resetBoardToOriginalPosition called with:', { originalFen, originalMove })
     
     if (!originalFen) {
       console.warn('No original FEN data found for reset')
       return
     }
 
-
-    // Store the current state first time we see this board
-    if (!this.originalBoardStates.has(originalFen)) {
-      this.storeOriginalBoardState(miniboard, originalFen)
+    // Check if there's a stored miniboard instance we can reset directly
+    const miniboardInstance = (miniboard as any).miniboardInstance
+    if (miniboardInstance) {
+      console.log('Found miniboard instance, resetting chess position to:', originalFen)
+      
+      try {
+        // Access the internal chess.js instance
+        const cjs = (miniboardInstance as any).cjs
+        if (cjs) {
+          console.log('Current FEN before reset:', cjs.fen())
+          
+          // Reset to original FEN
+          cjs.load(originalFen)
+          console.log('FEN after reset:', cjs.fen())
+          
+          // Clear highlights
+          const highlights = (miniboardInstance as any).highlights
+          if (highlights) {
+            Object.keys(highlights).forEach(key => delete highlights[key])
+          }
+          
+          // Force re-render by calling the private renderFen method
+          const renderFen = (miniboardInstance as any).renderFen
+          if (renderFen && typeof renderFen === 'function') {
+            renderFen.call(miniboardInstance, originalFen)
+            console.log('Forced re-render with original FEN')
+          }
+          
+          // Apply initial move if present
+          if (originalMove && originalMove !== '') {
+            setTimeout(() => {
+              try {
+                console.log('Applying initial move:', originalMove)
+                const moveResult = cjs.move({
+                  from: originalMove.slice(0, 2),
+                  to: originalMove.slice(2, 4),
+                  promotion: originalMove.length > 4 ? originalMove[4] : undefined
+                })
+                
+                if (moveResult) {
+                  // Highlight the move
+                  const highlightSquare = (miniboardInstance as any).highlightSquare
+                  if (highlightSquare && typeof highlightSquare === 'function') {
+                    highlightSquare.call(miniboardInstance, moveResult.from, 'move-from')
+                    highlightSquare.call(miniboardInstance, moveResult.to, 'move-to')
+                  }
+                  
+                  // Re-render with the move
+                  if (renderFen && typeof renderFen === 'function') {
+                    renderFen.call(miniboardInstance, cjs.fen())
+                  }
+                }
+                
+                console.log('Board reset complete with initial move')
+              } catch (error) {
+                console.warn('Failed to apply initial move:', error)
+              }
+            }, 100)
+          } else {
+            console.log('Board reset complete without initial move')
+          }
+        } else {
+          console.warn('Could not access chess.js instance')
+        }
+      } catch (error) {
+        console.error('Error resetting miniboard:', error)
+      }
+    } else {
+      console.warn('No miniboard instance found, falling back to DOM manipulation')
+      // Fallback to the old method if no instance is available
+      if (!this.originalBoardStates.has(originalFen)) {
+        this.storeOriginalBoardState(miniboard, originalFen)
+      }
+      this.restoreFromStoredState(miniboard, originalFen, originalMove)
     }
-
-    // Restore from stored state
-    this.restoreFromStoredState(miniboard, originalFen, originalMove)
   }
 
   // Store original board states to avoid re-parsing FEN
@@ -247,24 +315,76 @@ export class SolutionPlayer {
 
 
   private animateMoveOnMiniboard(miniboard: Element, moveUci: string) {
-    const fromSquare = moveUci.substring(0, 2)
-    const toSquare = moveUci.substring(2, 4)
+    console.log('animateMoveOnMiniboard called with move:', moveUci)
+    console.log('Miniboard element:', miniboard)
+    console.log('Miniboard classes:', miniboard.className)
+    console.log('Miniboard attributes:', miniboard.attributes)
     
-    // Get all squares from the miniboard
-    const squares = miniboard.querySelectorAll('.square')
+    // Try to make the move directly in the chess.js instance and re-render
+    const miniboardInstance = (miniboard as any).miniboardInstance
+    console.log('Miniboard instance:', miniboardInstance)
     
-    // Find squares by position index since the MiniChessboard component 
-    // creates squares without data-square attributes
-    const fromSquareEl = this.getSquareByPosition(squares, fromSquare)
-    const toSquareEl = this.getSquareByPosition(squares, toSquare)
-    
-    if (!fromSquareEl || !toSquareEl) {
-      console.warn(`Could not find squares ${fromSquare} or ${toSquare} on miniboard`)
-      return
+    if (miniboardInstance) {
+      console.log('Found miniboard instance, making move in chess.js')
+      
+      const cjs = (miniboardInstance as any).cjs
+      if (cjs) {
+        try {
+          console.log('Current FEN before move:', cjs.fen())
+          
+          // Make the move in chess.js
+          const moveResult = cjs.move({
+            from: moveUci.slice(0, 2),
+            to: moveUci.slice(2, 4),
+            promotion: moveUci.length > 4 ? moveUci[4] : undefined
+          })
+          
+          if (moveResult) {
+            console.log('Move made successfully:', moveResult)
+            console.log('New FEN after move:', cjs.fen())
+            
+            // Clear previous highlights
+            const highlights = (miniboardInstance as any).highlights
+            if (highlights) {
+              Object.keys(highlights).forEach(key => delete highlights[key])
+            }
+            
+            // Add new highlights for this move
+            const highlightSquare = (miniboardInstance as any).highlightSquare
+            if (highlightSquare && typeof highlightSquare === 'function') {
+              highlightSquare.call(miniboardInstance, moveResult.from, 'move-from')
+              highlightSquare.call(miniboardInstance, moveResult.to, 'move-to')
+            }
+            
+            // Force re-render to show the new position
+            const renderFen = (miniboardInstance as any).renderFen
+            if (renderFen && typeof renderFen === 'function') {
+              renderFen.call(miniboardInstance, cjs.fen())
+              console.log('Board re-rendered with new position')
+            }
+          } else {
+            console.warn('Failed to make move:', moveUci)
+          }
+        } catch (error) {
+          console.error('Error making move:', error)
+        }
+      } else {
+        console.warn('Could not access chess.js instance')
+      }
+    } else {
+      console.warn('No miniboard instance found, falling back to DOM manipulation')
+      // Fallback to old method
+      const fromSquare = moveUci.substring(0, 2)
+      const toSquare = moveUci.substring(2, 4)
+      
+      const squares = miniboard.querySelectorAll('.square')
+      const fromSquareEl = this.getSquareByPosition(squares, fromSquare)
+      const toSquareEl = this.getSquareByPosition(squares, toSquare)
+      
+      if (fromSquareEl && toSquareEl) {
+        this.simulatePieceMovement(fromSquareEl, toSquareEl)
+      }
     }
-
-    // Simulate piece movement by manipulating the pieces
-    this.simulatePieceMovement(fromSquareEl, toSquareEl)
   }
 
   private simulatePieceMovement(fromSquareEl: Element, toSquareEl: Element) {
