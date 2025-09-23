@@ -315,4 +315,19 @@
   </div>
 </div>
 
+<% unless user_signed_in? %>
+<div class="achievements-cta">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Ready to start your puzzle journey?</h2>
+      <p>Sign up to track your progress and unlock achievements</p>
+      <a href="<%= https_registration_url %>" class="cta-button">
+        <svg><use xlink:href="#sign-in"/></svg>
+        <span>Sign up for free</span>
+      </a>
+    </div>
+  </div>
+</div>
+<% end %>
+
 <%= render 'shared/main_footer' %>
