@@ -16,9 +16,11 @@
       </div>
     </div>
     
-    <div v-if="setCompleted" class="adventure-completion">
-      <div class="completion-message">{{ completionMessage }}</div>
-      <button class="completion-button" @click="returnToHomepage">Return to Homepage</button>
+    <div v-if="setCompleted" class="adventure-completion-overlay">
+      <div class="completion-content">
+        <div class="completion-message">{{ completionMessage }}</div>
+        <button class="completion-button" @click="returnToHomepage">Return to Homepage</button>
+      </div>
     </div>
   </div>
 </template>
@@ -213,38 +215,69 @@ export default {
   font-family: inherit !important;
 }
 
-.adventure-mode .adventure-completion {
+.adventure-mode .board-area-container {
+  position: relative;
+}
+
+.adventure-mode .adventure-completion-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.adventure-mode .adventure-completion-overlay .completion-content {
   text-align: center;
-  padding: 20px 0;
-  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  min-width: 300px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.adventure-mode .adventure-completion .completion-message {
+.adventure-mode .adventure-completion-overlay .completion-content .completion-message {
   color: #4CAF50;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.adventure-mode .adventure-completion .completion-button {
+.adventure-mode .adventure-completion-overlay .completion-content .completion-button {
   background: #4CAF50;
   color: white;
   border: none;
-  padding: 12px 24px;
+  padding: 14px 28px;
   font-size: 16px;
   font-weight: 600;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
   transition: background-color 0.2s;
+  min-width: 180px;
+  min-height: 48px;
 }
 
-.adventure-mode .adventure-completion .completion-button:hover {
+.adventure-mode .adventure-completion-overlay .completion-content .completion-button:hover {
   background: #45a049;
 }
 
-.adventure-mode .adventure-completion .completion-button:active {
+.adventure-mode .adventure-completion-overlay .completion-content .completion-button:active {
   background: #3d8b40;
 }
 </style>

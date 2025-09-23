@@ -21,8 +21,13 @@
 
       .level-indicator
         font-weight: 600
-        color: rgba(255, 255, 255, 0.9)
+        color: rgba(255, 255, 255, 0.75)
         font-size: 16px
+
+      .puzzle-count-group
+        display: flex
+        align-items: center
+        gap: 8px
 
       .puzzle-count-label
         font-weight: normal
@@ -296,17 +301,22 @@
       margin-bottom: 20px
       transition: opacity 0.3s ease
 
+    .quest-level
+      cursor: pointer
+      background: rgba(255, 255, 255, 0.1)
+      border-radius: 8px
+      padding: 20px
+      border: 1px solid rgba(255, 255, 255, 0.2)
+      transition: background 0.15s ease
+      display: flex
+      flex-direction: column
+      justify-content: space-between
+
       // Completed levels styling
       &.completed
         .quest-level
           background: rgba(255, 255, 255, 0.1)
           border: 1px solid rgba(255, 255, 255, 0.2)
-          
-          .board-link
-            // No opacity fade for completed levels
-            
-          .level-info-bottom
-            // No opacity fade for completed levels
 
       // Locked levels styling
       &.locked
@@ -318,16 +328,9 @@
           background: rgba(255, 255, 255, 0.05)
           border: 1px solid rgba(255, 255, 255, 0.1)
 
-      .quest-level
-        cursor: pointer
-        background: rgba(255, 255, 255, 0.1)
-        border-radius: 8px
-        padding: 20px
-        border: 1px solid rgba(255, 255, 255, 0.2)
-        transition: all 0.3s ease
-        display: flex
-        flex-direction: column
-        justify-content: space-between
+      // Hover effect for clickable links (not locked)
+      &:not(.locked):hover
+        background: rgba(255, 255, 255, 0.15)
 
 // Responsive breakpoints
 @media (max-width: 720px)
