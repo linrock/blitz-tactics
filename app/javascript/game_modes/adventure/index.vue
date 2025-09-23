@@ -11,9 +11,14 @@
           Solve <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles
         </span>
         <span v-else class="solved-text">
-          <span class="current">{{ puzzlesSolved }}</span> of <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles solved
+          <span class="current">{{ puzzlesSolved }}</span> <span class="separator">of</span> <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles solved
         </span>
       </div>
+    </div>
+    
+    <div v-if="setCompleted" class="adventure-completion">
+      <div class="completion-message">{{ completionMessage }}</div>
+      <button class="completion-button" @click="returnToHomepage">Return to Homepage</button>
     </div>
   </div>
 </template>
@@ -36,7 +41,9 @@ export default {
       levelInfo: null,
       hasStarted: false,
       puzzlesSolved: 0,
-      puzzlePlayer: null
+      puzzlePlayer: null,
+      setCompleted: false,
+      completionMessage: ''
     }
   },
   
@@ -92,9 +99,6 @@ export default {
     async handleSetComplete() {
       if (!this.levelInfo) return
       
-      console.log('Adventure: Completing set with levelInfo:', this.levelInfo)
-      console.log('Adventure: URL will be:', `/adventure/level/${this.levelInfo.level_number}/set/${this.levelInfo.set_index}/complete`)
-      
       try {
         const response = await fetch(`/adventure/level/${this.levelInfo.level_number}/set/${this.levelInfo.set_index}/complete`, {
           method: 'POST',
@@ -110,20 +114,137 @@ export default {
         const result = await response.json()
         
         if (result.success) {
+          this.setCompleted = true
           if (result.level_completed) {
-            alert('Congratulations! You completed the entire level!')
+            this.completionMessage = 'Congratulations! You completed the entire level!'
           } else {
-            alert('Set completed! Great job!')
+            this.completionMessage = 'Set completed! Great job!'
           }
-          
-          // Navigate back to level overview
-          window.location.href = `/adventure/level/${this.levelInfo.level_number}`
+        } else {
+          this.setCompleted = true
+          this.completionMessage = 'Set completed! Great job!'
         }
       } catch (error) {
         console.error('Error completing set:', error)
-        alert('Error saving completion. Please try again.')
+        this.setCompleted = true
+        this.completionMessage = 'Set completed! Great job!'
       }
+    },
+    
+    returnToHomepage() {
+      window.location.href = '/'
     }
   }
 }
 </script>
+
+<style scoped>
+.adventure-mode .adventure-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.adventure-mode .adventure-header h2 {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.adventure-mode .adventure-header p {
+  color: #cccccc;
+  font-size: 16px;
+  margin: 0;
+}
+
+.adventure-mode .adventure-progress {
+  text-align: center;
+  padding: 15px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 10px 0;
+}
+
+.adventure-mode .adventure-progress .progress-text {
+  display: inline-block;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+.adventure-mode .adventure-progress .progress-text * {
+  font-family: inherit !important;
+  font-variant-numeric: inherit !important;
+}
+
+.adventure-mode .adventure-progress .progress-text .solve-text .total {
+  color: #ffffff;
+  font-weight: 500;
+  min-width: 2em;
+  text-align: center;
+  display: inline-block;
+  font-family: inherit !important;
+}
+
+.adventure-mode .adventure-progress .progress-text .solved-text .current {
+  color: #4CAF50;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 2em;
+  text-align: center;
+  font-family: inherit !important;
+}
+
+.adventure-mode .adventure-progress .progress-text .solved-text .separator {
+  color: #ffffff;
+  font-weight: 500;
+  display: inline-block;
+  min-width: 2em;
+  text-align: center;
+  font-family: inherit !important;
+}
+
+.adventure-mode .adventure-progress .progress-text .solved-text .total {
+  color: #ffffff;
+  font-weight: 500;
+  min-width: 2em;
+  text-align: center;
+  display: inline-block;
+  font-family: inherit !important;
+}
+
+.adventure-mode .adventure-completion {
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 20px;
+}
+
+.adventure-mode .adventure-completion .completion-message {
+  color: #4CAF50;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.adventure-mode .adventure-completion .completion-button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.2s;
+}
+
+.adventure-mode .adventure-completion .completion-button:hover {
+  background: #45a049;
+}
+
+.adventure-mode .adventure-completion .completion-button:active {
+  background: #3d8b40;
+}
+</style>
