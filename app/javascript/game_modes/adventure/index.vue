@@ -141,6 +141,22 @@ export default {
 </script>
 
 <style scoped>
+.adventure-mode {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.adventure-mode .adventure-header,
+.adventure-mode .adventure-progress {
+  pointer-events: auto;
+}
+
 .adventure-mode .adventure-header {
   text-align: center;
   margin-bottom: 20px;
@@ -215,21 +231,17 @@ export default {
   font-family: inherit !important;
 }
 
-.adventure-mode .board-area-container {
-  position: relative;
-}
-
 .adventure-mode .adventure-completion-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 9999;
 }
 
 .adventure-mode .adventure-completion-overlay .completion-content {
@@ -280,4 +292,5 @@ export default {
 .adventure-mode .adventure-completion-overlay .completion-content .completion-button:active {
   background: #3d8b40;
 }
+
 </style>
