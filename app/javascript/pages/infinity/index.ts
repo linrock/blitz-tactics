@@ -40,7 +40,7 @@ export class SolutionPlayer {
     const originalText = button.textContent
     button.textContent = 'Showing solution...'
 
-    // Update button state - fade out instead of changing text
+    // Update button state - fade out and disable to indicate processing
     button.style.opacity = '0.5'
     buttonEl.disabled = true
     this.playingSolutions.add(puzzleId)
