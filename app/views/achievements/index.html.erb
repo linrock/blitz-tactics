@@ -35,9 +35,24 @@
         
         <div class="achievement-list">
           <% @puzzle_achievements.each do |achievement| %>
-            <div class="achievement <%= achievement[:unlocked] ? 'unlocked' : 'in-progress' %>">
+            <% 
+              status_class = if achievement[:unlocked]
+                'unlocked'
+              elsif achievement[:is_next_achievement]
+                'in-progress'
+              else
+                'locked'
+              end
+            %>
+            <div class="achievement <%= status_class %>">
               <div class="achievement-icon">
-                <%= achievement[:unlocked] ? '✅' : '⏳' %>
+                <% if achievement[:unlocked] %>
+                  ✅
+                <% elsif achievement[:is_next_achievement] %>
+                  ⏳
+                <% else %>
+                  🔒
+                <% end %>
               </div>
               <div class="achievement-content">
                 <div class="achievement-title">
@@ -45,17 +60,19 @@
                 </div>
                 <% if achievement[:unlocked] %>
                   <div class="achievement-description">Unlocked!</div>
-                <% else %>
+                <% elsif achievement[:is_next_achievement] %>
                   <div class="achievement-progress">
                     <div class="progress-bar">
-                      <div class="progress-fill" style="width: <%= achievement[:progress] %>%"></div>
+                      <div class="progress-fill" style="width: <%= achievement[:progress_percentage] %>%"></div>
                     </div>
                     <div class="progress-text">
-                      <%= achievement[:current_count] %>/<%= achievement[:tier][:count] %> puzzles
-                      <% if achievement[:next_tier] %>
-                        (<%= achievement[:tier][:count] - achievement[:current_count] %> more to go)
-                      <% end %>
+                      <%= achievement[:current_count] %>/<%= achievement[:tier][:count] %> puzzles 
+                      (<%= achievement[:progress_percentage] %>% - <%= achievement[:remaining_count] %> more to go)
                     </div>
+                  </div>
+                <% else %>
+                  <div class="achievement-description">
+                    <%= achievement[:tier][:description] %>
                   </div>
                 <% end %>
               </div>

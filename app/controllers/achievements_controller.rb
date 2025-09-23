@@ -17,18 +17,30 @@ class AchievementsController < ApplicationController
       { count: 100000, title: "👑 Chess Grandmaster", description: "Solve 100,000 puzzles" }
     ]
     
+    # Find the earliest achievement that has not been unlocked yet
+    @next_achievement = @puzzle_tiers.find { |tier| @solved_puzzles_count < tier[:count] }
+    
     # Calculate achievement status for each tier
     @puzzle_achievements = @puzzle_tiers.map do |tier|
       is_unlocked = @solved_puzzles_count >= tier[:count]
-      next_tier = @puzzle_tiers.find { |t| t[:count] > @solved_puzzles_count }
-      progress_to_next = next_tier ? (@solved_puzzles_count.to_f / next_tier[:count] * 100).round(1) : 100
+      is_next_achievement = @next_achievement && tier[:count] == @next_achievement[:count]
+      
+      # Calculate progress percentage towards this specific tier
+      progress_percentage = if is_unlocked
+        100
+      elsif is_next_achievement
+        (@solved_puzzles_count.to_f / tier[:count] * 100).round(1)
+      else
+        0 # Future achievements don't show progress
+      end
       
       {
         tier: tier,
         unlocked: is_unlocked,
-        progress: is_unlocked ? 100 : progress_to_next,
-        next_tier: next_tier,
-        current_count: @solved_puzzles_count
+        is_next_achievement: is_next_achievement,
+        progress_percentage: progress_percentage,
+        current_count: @solved_puzzles_count,
+        remaining_count: tier[:count] - @solved_puzzles_count
       }
     end
   end
