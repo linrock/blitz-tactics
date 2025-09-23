@@ -1,5 +1,17 @@
 <% content_for(:title) { "Achievements" } %>
 
+<div class="user-puzzle-indicator">
+  <div class="container">
+    <div class="puzzle-count-display adventure-mode-disabled">
+      <div class="puzzle-count-group">
+        <span class="puzzle-count-label">You've solved</span>
+        <span class="puzzle-count-number"><%= @solved_puzzles_count %></span>
+        <span class="puzzle-count-label">unique puzzles</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="achievements-page">
   <div class="container">
     <header>
@@ -20,18 +32,14 @@
         </div>
       </div>
     </header>
+  </div>
 
+  <div class="container">
     <div class="achievements-grid">
       <!-- PUZZLE SOLVING ACHIEVEMENTS -->
       <div class="achievement-category puzzle-solving">
         <h2>🧩 PUZZLE SOLVING ACHIEVEMENTS</h2>
         <p class="category-description">Track your progress as you solve more puzzles</p>
-        <div class="puzzle-stats">
-          <div class="stat">
-            <span class="stat-number"><%= @solved_puzzles_count %></span>
-            <span class="stat-label">Puzzles Solved</span>
-          </div>
-        </div>
         
         <div class="achievement-list">
           <% @puzzle_achievements.each do |achievement| %>
