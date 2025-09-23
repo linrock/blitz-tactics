@@ -1,10 +1,9 @@
 class AchievementsController < ApplicationController
-  before_action :authenticate_user!
   before_action :check_achievements_feature_flag
 
   def index
-    # Get user's solved puzzle count from counter cache
-    @solved_puzzles_count = current_user.solved_puzzles_count
+    # Get user's solved puzzle count from counter cache (0 if no user)
+    @solved_puzzles_count = current_user&.solved_puzzles_count || 0
     
     # Define puzzle solving achievement tiers
     @puzzle_tiers = [
@@ -12,7 +11,8 @@ class AchievementsController < ApplicationController
       { count: 100, title: "🔍 Getting Started", description: "Solve 100 puzzles" },
       { count: 500, title: "⚡ Puzzle Solver", description: "Solve 500 puzzles" },
       { count: 1000, title: "⭐ Tactics Initiate", description: "Solve 1,000 puzzles" },
-      { count: 10000, title: "🌟 Puzzle Apprentice", description: "Solve 10,000 puzzles" },
+      { count: 5000, title: "⭐ Tactics Apprentice", description: "Solve 1,000 puzzles" },
+      { count: 10000, title: "🌟 Tactics Journeyman", description: "Solve 10,000 puzzles" },
       { count: 50000, title: "🏆 Puzzle Expert", description: "Solve 50,000 puzzles" },
       { count: 100000, title: "👑 Tactics Legend", description: "Solve 100,000 puzzles" }
     ]
@@ -43,13 +43,17 @@ class AchievementsController < ApplicationController
         remaining_count: tier[:count] - @solved_puzzles_count
       }
     end
+    
+    # Calculate actual achievement counts
+    @unlocked_count = @puzzle_achievements.count { |a| a[:unlocked] }
+    @in_progress_count = @puzzle_achievements.count { |a| a[:is_next_achievement] }
+    @locked_count = @puzzle_achievements.count { |a| !a[:unlocked] && !a[:is_next_achievement] }
   end
 
   private
 
   def check_achievements_feature_flag
-    unless FeatureFlag.enabled?(:achievements)
-      raise ActionController::RoutingError, 'Not Found'
-    end
+    # The achievements page is always accessible, but placeholder sections are controlled by feature flag
+    @show_placeholder_sections = FeatureFlag.enabled?(:achievements)
   end
 end

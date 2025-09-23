@@ -19,16 +19,8 @@
       <p class="subtitle">Track your progress and unlock new milestones</p>
       <div class="achievement-stats">
         <div class="stat">
-          <span class="stat-number">12</span>
+          <span class="stat-number"><%= @unlocked_count %></span>
           <span class="stat-label">Unlocked</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number">8</span>
-          <span class="stat-label">In Progress</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number">5</span>
-          <span class="stat-label">Locked</span>
         </div>
       </div>
     </header>
@@ -92,6 +84,7 @@
         </div>
       </div>
 
+      <% if @show_placeholder_sections %>
       <!-- TIER 1: Foundation Achievements -->
       <div class="achievement-category tier-1">
         <h2>🚀 TIER 1 - FOUNDATION</h2>
@@ -317,6 +310,7 @@
           </div>
         </div>
       </div>
+      <% end %>
     </div>
   </div>
 </div>
