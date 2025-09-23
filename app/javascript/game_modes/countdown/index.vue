@@ -391,16 +391,25 @@ export default {
       const puzzleId = puzzleData.puzzle?.id
       if (puzzleId) {
         const miniboard = document.querySelector(`#played-puzzles-section .mini-chessboard[data-puzzle-id="${puzzleId}"]`)
+        console.log('Found miniboard for puzzle:', puzzleId, miniboard)
+        
         if (miniboard) {
           // Use the puzzle lines for the solution (same as three game mode)
           const solutionLines = puzzleData.puzzle?.lines
+          console.log('Solution lines for puzzle:', puzzleId, solutionLines)
+          
           if (solutionLines) {
-            solutionReplay.replaySolutionOnMiniboardWithCallback(miniboard, solutionLines, () => {
-              // Reset button state when solution playback is complete
-              buttonEl.textContent = originalText || 'Show solution'
-              buttonEl.style.opacity = '1'
-              buttonEl.disabled = false
-            })
+            // Add a small delay to ensure miniboard is fully initialized
+            setTimeout(() => {
+              console.log('Starting solution replay for puzzle:', puzzleId)
+              solutionReplay.replaySolutionOnMiniboardWithCallback(miniboard, solutionLines, () => {
+                console.log('Solution replay completed for puzzle:', puzzleId)
+                // Reset button state when solution playback is complete
+                buttonEl.textContent = originalText || 'Show solution'
+                buttonEl.style.opacity = '1'
+                buttonEl.disabled = false
+              })
+            }, 100)
           } else {
             console.log('No solution lines found for puzzle:', puzzleId)
             // Reset button state on error

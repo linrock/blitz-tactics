@@ -3,8 +3,11 @@
  * Extracted from working implementations in three/haste/countdown game modes
  */
 
+import MiniChessboard from '@blitz/components/mini_chessboard'
+
 export class SolutionReplay {
   private originalBoardStates = new Map()
+  private playedBoards = new Set<string>() // Track which boards have had solutions played
 
   /**
    * Replay a solution on a miniboard
@@ -72,8 +75,14 @@ export class SolutionReplay {
     console.log('Miniboard element:', miniboardEl)
     console.log('Miniboard innerHTML:', miniboardEl.innerHTML)
 
+    // Check if this board has already had a solution played
+    const boardId = miniboardEl.getAttribute('data-puzzle-id') || miniboardEl.id || 'unknown'
+    const hasBeenPlayed = this.playedBoards.has(boardId)
+    
+    console.log('Board ID:', boardId, 'Has been played:', hasBeenPlayed)
+
     // Play the solution moves with callback when complete
-    this.playMovesInMiniboardWithCallback(miniboardEl, initialFen, solutionMoves, onComplete)
+    this.playMovesInMiniboardWithCallback(miniboardEl, initialFen, solutionMoves, onComplete, hasBeenPlayed)
   }
 
   /**
@@ -190,12 +199,13 @@ export class SolutionReplay {
   /**
    * Play moves on a miniboard with callback when complete
    * @param miniboard - The miniboard DOM element
-   * @param initialFen - The initial FEN position (not used anymore)
+   * @param initialFen - The initial FEN position
    * @param moves - Array of UCI moves to play
    * @param onComplete - Callback function when all moves are complete
+   * @param hasBeenPlayed - Whether this board has already had a solution played
    */
-  playMovesInMiniboardWithCallback(miniboard: HTMLElement, initialFen: string, moves: string[], onComplete: () => void) {
-    console.log('playMovesInMiniboardWithCallback called with:', { miniboard, initialFen, moves })
+  playMovesInMiniboardWithCallback(miniboard: HTMLElement, initialFen: string, moves: string[], onComplete: () => void, hasBeenPlayed: boolean = false) {
+    console.log('playMovesInMiniboardWithCallback called with:', { miniboard, initialFen, moves, hasBeenPlayed })
     
     if (moves.length === 0) {
       console.log('No moves to play, calling onComplete')
@@ -203,8 +213,7 @@ export class SolutionReplay {
       return
     }
 
-    // Don't reset the board - start from current position
-    console.log('Starting solution replay from current board position')
+    const boardId = miniboard.getAttribute('data-puzzle-id') || miniboard.id || 'unknown'
     
     let currentMoveIndex = 0
     
@@ -226,75 +235,72 @@ export class SolutionReplay {
         
         setTimeout(playNextMove, 700) // 0.7 second delay between moves
       } else {
-        // All moves completed, call the callback
-        console.log('All moves completed, calling onComplete')
+        // All moves completed, mark this board as played and call the callback
+        console.log('All moves completed, marking board as played')
+        this.playedBoards.add(boardId)
         onComplete()
       }
     }
     
-    // Start playing moves immediately from current position
-    console.log('Starting move playback immediately from current position')
-    playNextMove()
+    if (hasBeenPlayed) {
+      // Board has been played before, reset to initial position first
+      console.log('Board has been played before, resetting to initial position')
+      this.resetBoardToOriginalPosition(miniboard).then(() => {
+        console.log('Starting move playback after reset')
+        playNextMove()
+      })
+    } else {
+      // First time playing, start from current position
+      console.log('First time playing solution, starting from current position')
+      playNextMove()
+    }
   }
 
   /**
    * Reset miniboard to original position
    * @param miniboard - The miniboard DOM element
+   * @returns Promise that resolves when reset is complete
    */
-  resetBoardToOriginalPosition(miniboard: HTMLElement) {
-    const originalFen = miniboard.getAttribute('data-fen')
-    const originalMove = miniboard.getAttribute('data-initial-move')
-    
-    console.log('resetBoardToOriginalPosition called with:', { originalFen, originalMove })
-    
-    if (!originalFen) {
-      console.warn('No original FEN data found for reset')
-      return
-    }
+  resetBoardToOriginalPosition(miniboard: HTMLElement): Promise<void> {
+    return new Promise((resolve) => {
+      const originalFen = miniboard.getAttribute('data-fen')
+      const originalMove = miniboard.getAttribute('data-initial-move')
+      const flip = miniboard.getAttribute('data-flip')
+      
+      console.log('resetBoardToOriginalPosition called with:', { originalFen, originalMove, flip })
+      
+      if (!originalFen) {
+        console.warn('No original FEN data found for reset')
+        resolve()
+        return
+      }
 
-    // Store the current state first time we see this board
-    if (!this.originalBoardStates.has(originalFen)) {
-      console.log('Storing original board state for FEN:', originalFen)
-      this.storeOriginalBoardState(miniboard, originalFen)
-    }
-
-    // Instead of restoring from stored state, reinitialize the miniboard with the original FEN
-    // This ensures we have the correct initial position
-    console.log('Reinitializing miniboard with original FEN:', originalFen)
-    this.reinitializeMiniboard(miniboard, originalFen, originalMove)
-  }
-
-  /**
-   * Reinitialize miniboard with original FEN
-   * @param miniboard - The miniboard DOM element
-   * @param fen - The FEN string
-   * @param originalMove - The original move UCI
-   */
-  reinitializeMiniboard(miniboard: HTMLElement, fen: string, originalMove: string | null) {
-    console.log('reinitializeMiniboard called with:', { fen, originalMove })
-    
-    // Instead of trying to reinitialize, we'll create a new MiniChessboard instance
-    // This ensures we have the correct initial position
-    try {
-      // Import MiniChessboard dynamically
-      import('@blitz/components/mini_chessboard').then(({ default: MiniChessboard }) => {
-        console.log('Creating new MiniChessboard instance')
-        const newInstance = new MiniChessboard({
-          el: miniboard,
-          fen,
-          initialMove: originalMove,
-          flip: miniboard.getAttribute('data-flip') === 'true'
-        })
-        
-        // Store the new instance on the element
-        ;(miniboard as any).miniboardInstance = newInstance
-        
-        console.log('New MiniChessboard instance created and stored')
+      // For now, let's just recreate the miniboard completely since the reset isn't working
+      console.log('Recreating miniboard with original FEN:', originalFen)
+      
+      // Clear existing highlights first
+      this.clearExistingHighlights(miniboard)
+      
+      // Create a completely new MiniChessboard instance
+      const newMiniboard = new MiniChessboard({
+        el: miniboard,
+        fen: originalFen,
+        initialMove: originalMove && originalMove !== '' ? originalMove : undefined,
+        flip: flip === 'true'
       })
-    } catch (error) {
-      console.error('Failed to reinitialize miniboard:', error)
-    }
+      
+      // Store the new instance
+      ;(miniboard as any).miniboardInstance = newMiniboard
+      console.log('New miniboard created with original FEN, waiting for initialization...')
+      
+      // Wait for the new miniboard to fully initialize (it has a 1000ms delay for initial move)
+      setTimeout(() => {
+        console.log('Miniboard initialization complete, board should be at starting position')
+        resolve()
+      }, 1200)
+    })
   }
+
 
   /**
    * Store the original board state
@@ -302,25 +308,39 @@ export class SolutionReplay {
    * @param fen - The FEN string
    */
   storeOriginalBoardState(miniboard: HTMLElement, fen: string) {
+    console.log('storeOriginalBoardState called for FEN:', fen)
+    
     // Get squares from cg-wrap if it exists
     let squares = miniboard.querySelectorAll('.square')
     if (squares.length === 0) {
       const cgWrap = miniboard.querySelector('.cg-wrap')
       if (cgWrap) {
         squares = cgWrap.querySelectorAll('.square')
+        console.log('Found squares in cg-wrap:', squares.length)
       }
     }
     
     const pieces: any[] = []
     
     squares.forEach((square, index) => {
-      const piece = square.querySelector('.piece')
+      // Try multiple selectors to find pieces
+      let piece = square.querySelector('.piece')
+      if (!piece) {
+        piece = square.querySelector('piece')
+      }
+      if (!piece) {
+        piece = square.firstElementChild
+      }
+      
       if (piece) {
         // Clone the piece to store its exact state
         const pieceClone = piece.cloneNode(true)
         pieces.push({ squareIndex: index, piece: pieceClone })
+        console.log(`Stored piece at square ${index}:`, pieceClone)
       }
     })
+    
+    console.log(`Stored ${pieces.length} pieces for FEN:`, fen)
     
     this.originalBoardStates.set(fen, {
       pieces,
@@ -335,6 +355,8 @@ export class SolutionReplay {
    * @param originalMove - The original move UCI
    */
   restoreFromStoredState(miniboard: HTMLElement, fen: string, originalMove: string | null) {
+    console.log('restoreFromStoredState called for FEN:', fen)
+    
     const storedState = this.originalBoardStates.get(fen)
     if (!storedState) {
       console.warn('No stored state found for FEN:', fen)
@@ -347,29 +369,53 @@ export class SolutionReplay {
       const cgWrap = miniboard.querySelector('.cg-wrap')
       if (cgWrap) {
         squares = cgWrap.querySelectorAll('.square')
+        console.log('Found squares in cg-wrap for restoration:', squares.length)
       }
     }
 
-    // Clear all current pieces
+    console.log('Clearing all current pieces from', squares.length, 'squares')
+
+    // Clear all current pieces using multiple selectors
     squares.forEach(square => {
-      const pieces = square.querySelectorAll('.piece')
-      pieces.forEach(piece => piece.remove())
+      // Remove pieces with .piece class
+      const piecesWithClass = square.querySelectorAll('.piece')
+      piecesWithClass.forEach(piece => piece.remove())
+      
+      // Remove piece tags
+      const pieceTags = square.querySelectorAll('piece')
+      pieceTags.forEach(piece => piece.remove())
+      
+      // Remove any first child that might be a piece
+      if (square.firstElementChild) {
+        square.firstElementChild.remove()
+      }
     })
+
+    console.log('Restoring', storedState.pieces.length, 'original pieces')
 
     // Restore original pieces
     storedState.pieces.forEach(({ squareIndex, piece }: any) => {
       const targetSquare = squares[squareIndex]
       if (targetSquare) {
-        targetSquare.appendChild(piece)
+        // Clone the piece again to avoid DOM node conflicts
+        const pieceClone = piece.cloneNode(true)
+        targetSquare.appendChild(pieceClone)
+        console.log(`Restored piece at square ${squareIndex}:`, pieceClone)
       }
     })
+
+    // Clear any existing highlights first
+    this.clearExistingHighlights(miniboard)
 
     // Restore initial move highlighting if it exists
     if (originalMove && originalMove !== '') {
       setTimeout(() => {
         this.highlightInitialMove(miniboard, originalMove)
+        console.log('Restored initial move highlighting:', originalMove)
       }, 100)
     }
+    
+    console.log('Board restoration completed for FEN:', fen)
   }
 
   /**
