@@ -22,6 +22,48 @@
     </header>
 
     <div class="achievements-grid">
+      <!-- PUZZLE SOLVING ACHIEVEMENTS -->
+      <div class="achievement-category puzzle-solving">
+        <h2>🧩 PUZZLE SOLVING ACHIEVEMENTS</h2>
+        <p class="category-description">Track your progress as you solve more puzzles</p>
+        <div class="puzzle-stats">
+          <div class="stat">
+            <span class="stat-number"><%= @solved_puzzles_count %></span>
+            <span class="stat-label">Puzzles Solved</span>
+          </div>
+        </div>
+        
+        <div class="achievement-list">
+          <% @puzzle_achievements.each do |achievement| %>
+            <div class="achievement <%= achievement[:unlocked] ? 'unlocked' : 'in-progress' %>">
+              <div class="achievement-icon">
+                <%= achievement[:unlocked] ? '✅' : '⏳' %>
+              </div>
+              <div class="achievement-content">
+                <div class="achievement-title">
+                  <%= achievement[:tier][:title] %> (<%= achievement[:tier][:count].to_s.reverse.gsub(/(\d{3})(?=.)/, '\1,').reverse %> puzzles)
+                </div>
+                <% if achievement[:unlocked] %>
+                  <div class="achievement-description">Unlocked!</div>
+                <% else %>
+                  <div class="achievement-progress">
+                    <div class="progress-bar">
+                      <div class="progress-fill" style="width: <%= achievement[:progress] %>%"></div>
+                    </div>
+                    <div class="progress-text">
+                      <%= achievement[:current_count] %>/<%= achievement[:tier][:count] %> puzzles
+                      <% if achievement[:next_tier] %>
+                        (<%= achievement[:tier][:count] - achievement[:current_count] %> more to go)
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
       <!-- TIER 1: Foundation Achievements -->
       <div class="achievement-category tier-1">
         <h2>🚀 TIER 1 - FOUNDATION</h2>
