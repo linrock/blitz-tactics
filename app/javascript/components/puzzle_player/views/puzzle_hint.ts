@@ -24,13 +24,8 @@ export default class PuzzleHint {
     // Add click handler to request hint from PuzzleSource
     this.buttonEl.addEventListener('click', () => {
       dispatch('puzzle:get_hint')
-    })
-    
-    const events = ['mousedown', 'touchstart']
-    events.forEach(event => {
-      this.buttonEl.addEventListener(event, () => {
-        this.buttonEl.classList.add(`invisible`)
-      })
+      // Hide button after click
+      this.buttonEl.classList.add(`invisible`)
     })
     
     subscribe({
@@ -57,7 +52,8 @@ export default class PuzzleHint {
   private displayHint(hint: string) {
     this.el.classList.remove(`invisible`)
     this.buttonEl.classList.remove(`invisible`)
-    this.moveEl.textContent = hint
+    // Show only the "from" square to match what's highlighted on board
+    this.moveEl.textContent = hint.slice(0, 2)
   }
 
   private hideHint() {
@@ -83,7 +79,7 @@ export default class PuzzleHint {
       // Hide combo counter when hint button appears
       dispatch(`combo:drop`)
       setTimeout(() => {
-        dispatch('puzzle:get_hint')
+        // Only show the hint button, don't automatically get the hint
         this.el.classList.remove(`invisible`)
         this.buttonEl.classList.remove(`invisible`)
       }, hintDelay)
