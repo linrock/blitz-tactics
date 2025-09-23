@@ -44,6 +44,7 @@
         <div class="achievement-list">
           <% @puzzle_achievements.each do |achievement| %>
             <% 
+              # Show all achievements, but hide details for locked ones
               status_class = if achievement[:unlocked]
                 'unlocked'
               elsif achievement[:is_next_achievement]
@@ -63,12 +64,15 @@
                 <% end %>
               </div>
               <div class="achievement-content">
-                <div class="achievement-title">
-                  <%= achievement[:tier][:title] %> (<%= achievement[:tier][:count].to_s.reverse.gsub(/(\d{3})(?=.)/, '\1,').reverse %> puzzles)
-                </div>
                 <% if achievement[:unlocked] %>
+                  <div class="achievement-title">
+                    <%= achievement[:tier][:title] %> (<%= achievement[:tier][:count].to_s.reverse.gsub(/(\d{3})(?=.)/, '\1,').reverse %> puzzles)
+                  </div>
                   <div class="achievement-description">Unlocked!</div>
                 <% elsif achievement[:is_next_achievement] %>
+                  <div class="achievement-title">
+                    <%= achievement[:tier][:title] %> (<%= achievement[:tier][:count].to_s.reverse.gsub(/(\d{3})(?=.)/, '\1,').reverse %> puzzles)
+                  </div>
                   <div class="achievement-progress">
                     <div class="progress-bar">
                       <div class="progress-fill" style="width: <%= achievement[:progress_percentage] %>%"></div>
@@ -79,9 +83,8 @@
                     </div>
                   </div>
                 <% else %>
-                  <div class="achievement-description">
-                    <%= achievement[:tier][:description] %>
-                  </div>
+                  <div class="achievement-title">Hidden Achievement</div>
+                  <div class="achievement-description">Keep solving puzzles to reveal what's next</div>
                 <% end %>
               </div>
             </div>
