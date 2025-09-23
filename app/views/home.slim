@@ -3,7 +3,7 @@ section.homepage
   - if user_signed_in?
     .user-puzzle-indicator
       .container
-        .puzzle-count-display
+        .puzzle-count-display(class="#{'adventure-mode-disabled' unless @adventure_mode_enabled && @latest_incomplete_level}")
           - if @adventure_mode_enabled && @latest_incomplete_level
             span.level-indicator Level #{@latest_incomplete_level}
           .puzzle-count-group

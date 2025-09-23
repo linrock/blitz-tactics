@@ -21,7 +21,7 @@ class PagesController < ApplicationController
       
       if @adventure_levels.any?
         # Determine which level to show (from URL parameter or user's latest unlocked level)
-        requested_level = params[:level].to_i
+        requested_level = (params[:level] || params[:level_number]).to_i
         if requested_level > 0
           # Check if user can access this level
           if current_user && !can_user_access_level?(requested_level, current_user)
