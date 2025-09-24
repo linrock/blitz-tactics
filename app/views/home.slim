@@ -132,24 +132,25 @@ section.homepage
             .next-day
               | Next level in #{@hours_until_tomorrow} hours
 
-      .mode.speedrun
-        h3
-          a(href="/speedrun") Speedrun
-        h4.game-mode-description
-          | Solve a sequence of puzzles as quickly as you can.
-        = homepage_miniboard_link("/speedrun", @speedrun_puzzle)
-        .under-mini-board.speedrun
-          - if user_signed_in?
-            .your-best-times
-              | Best time today:
-              span.best-time<= @best_speedrun_time
-          .daily-level
-            - if @speedrun_theme
-              .next-day
-                | Theme: #{titleize_theme(@speedrun_theme)}
-            - else
-              .next-day
-                | Next speedrun in #{@hours_until_tomorrow} hours
+      - if @speedrun_puzzle
+        .mode.speedrun
+          h3
+            a(href="/speedrun") Speedrun
+          h4.game-mode-description
+            | Solve a sequence of puzzles as quickly as you can.
+          = homepage_miniboard_link("/speedrun", @speedrun_puzzle)
+          .under-mini-board.speedrun
+            - if user_signed_in?
+              .your-best-times
+                | Best time today:
+                span.best-time<= @best_speedrun_time
+            .daily-level
+              - if @speedrun_theme
+                .next-day
+                  | Theme: #{titleize_theme(@speedrun_theme)}
+              - else
+                .next-day
+                  | Next speedrun in #{@hours_until_tomorrow} hours
 
       - if @infinity_puzzle
         .mode.infinity
