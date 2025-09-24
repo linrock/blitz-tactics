@@ -29,67 +29,66 @@ class ThemedLevelCreator
     (2100..3200) => 10,
   }.freeze
 
-  # Valid chess themes
-  VALID_THEMES = %w[
-    opening
-    endgame
-    pawnEndgame
-    fork
-    pin
-    sacrifice
-    skewer
-    discoveredAttack
-    doubleAttack
-    deflection
-    decoy
-    interference
-    overloadedPiece
-    zwischenzug
-    zugzwang
-    mateIn1
-    mateIn2
-    mateIn3
-    mateIn4
-    mateIn5
-    mateIn6
-    mateIn7
-    mateIn8
-    mateIn9
-    mateIn10
+  # Valid chess themes (only themes that exist in the database)
+    VALID_THEMES = %w[
     advancedPawn
+    anastasiaMate
+    arabianMate
+    attackingF2F7
+    attraction
     backRankMate
-    basicCheckmates
     bishopEndgame
+    bodenMate
+    capturingDefender
     castling
     clearance
     defensiveMove
+    deflection
+    discoveredAttack
+    doubleBishopMate
+    doubleCheck
+    dovetailMate
     enPassant
+    endgame
+    equality
     exposedKing
+    fork
     hangingPiece
     hookMate
+    interference
+    intermezzo
+    killBoxMate
+    kingsideAttack
     knightEndgame
     long
     master
     masterVsMaster
     mate
+    mateIn1
+    mateIn2
+    mateIn3
+    mateIn4
+    mateIn5
     middlegame
     oneMove
-    pawnMate
+    opening
+    pawnEndgame
     pin
     promotion
     queenEndgame
     queenRookEndgame
+    queensideAttack
     quietMove
     rookEndgame
-    royalFork
+    sacrifice
     short
-    simplification
     skewer
     smotheredMate
     superGM
     trappedPiece
     underPromotion
     veryLong
+    vukovicMate
     xRayAttack
     zugzwang
   ].freeze
