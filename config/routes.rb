@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
-  root 'pages#home'
+  root 'homepage#home'
   get '/world-1' => 'pages#world1'
   get '/world-2' => 'pages#world2'
   get '/world-3' => 'pages#world3'
@@ -31,7 +31,7 @@ Rails.application.routes.draw do
 
   # adventure mode
   get '/adventure/level/:level_number' => 'game_modes/adventure#show'
-  get '/adventure/level-:level_number' => 'pages#home', constraints: { level_number: /\d+/ }
+  get '/adventure/level-:level_number' => 'homepage#home', constraints: { level_number: /\d+/ }
   get '/adventure/level/:level_number/set/:set_index' => 'game_modes/adventure#play_level'
   post '/adventure/level/:level_number/set/:set_index/complete' => 'game_modes/adventure#complete'
 
