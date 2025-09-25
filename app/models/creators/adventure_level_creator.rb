@@ -55,7 +55,6 @@ class AdventureLevelCreator
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
       ]
     },
@@ -65,7 +64,6 @@ class AdventureLevelCreator
       puzzle_sets: [
         { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
         { puzzles: 10, challenge: "perfect", description: "Solve 10 puzzles perfectly (no mistakes)" },
-        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
         { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" }
       ]
     },
@@ -73,8 +71,6 @@ class AdventureLevelCreator
       description: "Advanced Tactics",
       rating_range: (1100..1500),
       puzzle_sets: [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
@@ -86,18 +82,13 @@ class AdventureLevelCreator
       puzzle_sets: [
         { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
         { puzzles: 10, challenge: "perfect", description: "Solve 10 puzzles perfectly (no mistakes)" },
-        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
-        { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" }
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" }
       ]
     },
     8 => {
       description: "Expert Territory",
       rating_range: (1300..1700),
       puzzle_sets: [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
@@ -109,10 +100,7 @@ class AdventureLevelCreator
       puzzle_sets: [
         { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" },
         { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
-        { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
-        { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" }
+        { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" }
       ]
     },
     10 => {
@@ -120,9 +108,6 @@ class AdventureLevelCreator
       rating_range: (1500..1900),
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
         { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
         { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" }
       ]
@@ -418,10 +403,7 @@ class AdventureLevelCreator
       total_available = white_count + black_count
       
       # Calculate total puzzles needed
-      total_needed = config[:puzzle_sets] * 
-                    (config[:puzzles_per_set].is_a?(Array) ? 
-                     config[:puzzles_per_set].sum : 
-                     config[:puzzles_per_set])
+      total_needed = config[:puzzle_sets].sum { |set| set[:puzzles] }
       
       # Check if we have enough puzzles
       sufficient = total_available >= total_needed
@@ -489,10 +471,7 @@ class AdventureLevelCreator
     total_available = white_count + black_count
 
     # Calculate total puzzles needed
-    total_needed = config[:puzzle_sets] * 
-                  (config[:puzzles_per_set].is_a?(Array) ? 
-                   config[:puzzles_per_set].sum : 
-                   config[:puzzles_per_set])
+    total_needed = config[:puzzle_sets].sum { |set| set[:puzzles] }
 
     total_available >= total_needed
   end
