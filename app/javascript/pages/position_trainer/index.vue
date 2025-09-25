@@ -5,6 +5,7 @@
 .chessground-board
   .piece-promotion-modal-mount
   .chessground
+  .board-modal-container.invisible(style="display: none")
 .actions
   button.dark-button(@click="resetPosition()") Reset position
   button.dark-button(@click="analyzeOnLichess()") Analyze on Lichess

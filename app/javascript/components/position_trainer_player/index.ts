@@ -110,7 +110,16 @@ export default class PositionTrainerPlayer {
     this.chessgroundBoard.unfreeze()
     dispatch('fen:set', this.initialFen)
     this.result = null
+    this.hideBoardOverlay()
     this.showInstructions()
+  }
+
+  private hideBoardOverlay() {
+    const el: HTMLElement = document.querySelector('.board-modal-container')
+    if (el) {
+      el.style.display = 'none'
+      el.classList.add('invisible')
+    }
   }
 
   private handleFenUpdate(fen: FEN) {
@@ -195,7 +204,18 @@ export default class PositionTrainerPlayer {
       message = 'Game over'
     }
     
+    // Show the board overlay
+    this.showBoardOverlay()
+    
     dispatch('instructions:set', message)
+  }
+
+  private showBoardOverlay() {
+    const el: HTMLElement = document.querySelector('.board-modal-container')
+    if (el) {
+      el.style.display = ''
+      el.classList.remove('invisible')
+    }
   }
 
   public getFen(): FEN {
