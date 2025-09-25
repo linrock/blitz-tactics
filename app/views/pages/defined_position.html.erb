@@ -35,6 +35,25 @@
       <button class="dark-button analyze-lichess">Analyze on Lichess</button>
     </div>
   </div>
+  <% if @route[:path].start_with?('/checkmates/') %>
+    <div class="checkmate-links-section">
+      <h3>Other Checkmate Positions</h3>
+      <div class="checkmate-links">
+        <a href="/checkmates/two-bishops" class="checkmate-link">
+          <span class="checkmate-title">Two Bishops</span>
+          <span class="checkmate-description">Practice checkmating with two bishops</span>
+        </a>
+        <a href="/checkmates/bishop-and-knight" class="checkmate-link">
+          <span class="checkmate-title">Bishop and Knight</span>
+          <span class="checkmate-description">Practice checkmating with a bishop and knight</span>
+        </a>
+        <a href="/checkmates/two-knights" class="checkmate-link">
+          <span class="checkmate-title">Two Knights</span>
+          <span class="checkmate-description">Practice checkmating with two knights vs a pawn</span>
+        </a>
+      </div>
+    </div>
+  <% end %>
 <% end %>
 
 <% if has_description %>
@@ -52,6 +71,8 @@
     <%= yield(:position_trainer) %>
   </div>
 <% end %>
+
+<%= render 'shared/main_footer' %>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {

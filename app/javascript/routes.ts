@@ -89,7 +89,6 @@ const routes: RouteMap = {
     import('@blitz/workers/stockfish_engine').then(({ default: StockfishEngine }) => {
       const depth = parseInt(position.depth, 10) || 15
       const engine = new StockfishEngine
-      let initialMoveMade = false
       let firstMoveMade = false
       
       // Wait for DOM to be ready before creating board
@@ -172,8 +171,8 @@ const routes: RouteMap = {
                 return
               }
               
-              // Check if it's the computer's turn
-              const isComputersTurn = analyzedFen.includes(` ${orientation === 'black' ? 'w' : 'b'} `)
+              // Check if it's the computer's turn (Black to move)
+              const isComputersTurn = analyzedFen.includes(' b ')
               if (isComputersTurn) {
                 const computerMove = state.evaluation.best
                 const moveObj = uciToMove(computerMove)
@@ -243,43 +242,6 @@ const routes: RouteMap = {
             })
           }
           
-          // Make initial computer move to show it's the player's turn
-          if (!initialMoveMade) {
-            initialMoveMade = true
-            setTimeout(() => {
-              console.log('Making initial computer move...')
-              const analysisOptions = { depth, multipv: 1 }
-              engine.analyze(fen, analysisOptions).then(output => {
-                const { state } = output
-                if (state && state.evaluation && state.evaluation.best) {
-                  const computerMove = state.evaluation.best
-                  console.log('Initial computer move:', computerMove)
-                  
-                  // Convert UCI move to proper format for ChessgroundBoard
-                  const moveObj = uciToMove(computerMove)
-                  console.log('Converted move object:', moveObj)
-                  
-                  // Use the board's move method directly instead of dispatch
-                  const moveResult = board.cjs.move(moveObj)
-                  if (moveResult) {
-                    // Update the board display with lastMove highlighting
-                    const lastMove = [moveObj.from, moveObj.to] as [string, string]
-                    dispatch('fen:set', board.cjs.fen(), lastMove)
-                    
-                    // Update instructions to show it's now the player's turn
-                    if (whoseTurnEl) {
-                      const playerToMove = position.fen.includes(' w ') ? 'Black' : 'White'
-                      whoseTurnEl.textContent = `${playerToMove} to move`
-                    }
-                  } else {
-                    console.error('Invalid move:', moveObj)
-                  }
-                }
-              }).catch(error => {
-                console.error('Error making initial computer move:', error)
-              })
-            }, 500) // Small delay to ensure board is fully initialized
-          }
         }
         
         // Set up UI when DOM is ready

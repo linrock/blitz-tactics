@@ -25,7 +25,7 @@ Saavedra position
 Two bishops | Checkmates
   Practice checkmating with two bishops. White to play wins.
   /checkmates/two-bishops
-  fen: 8/8/4k3/8/8/2K2B2/5B2/8 b - -
+  fen: 8/8/4k3/8/8/2K2B2/5B2/8 w - -
   goal: win
   depth: 10
 
