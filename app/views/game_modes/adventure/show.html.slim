@@ -12,7 +12,7 @@ section.adventure-level
           .set-header
             h3= "Set #{set['set_index']}"
             .set-info
-              .puzzle-count= "#{set['puzzles_count']} puzzles"
+              .puzzle-count= set['challenge_description'] || "#{set['puzzles_count']} puzzles"
               .color-to-move= "#{set['color_to_move'] == 'w' ? 'White' : 'Black'} to move"
               .rating-range= "Rating: #{set['rating_range']}"
           

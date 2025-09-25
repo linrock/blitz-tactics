@@ -8,10 +8,20 @@
     <div class="adventure-progress">
       <div class="progress-text">
         <span v-if="!hasStarted" class="solve-text">
-          Solve <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles
+          <span v-if="isWithoutMistakesChallenge">
+            Solve <span class="total">{{ requiredPuzzles }}</span> puzzles without mistakes
+          </span>
+          <span v-else>
+            Solve <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles
+          </span>
         </span>
         <span v-else class="solved-text">
-          <span class="current">{{ puzzlesSolved }}</span> <span class="separator">of</span> <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles solved
+          <span v-if="isWithoutMistakesChallenge">
+            <span class="current">{{ puzzlesSolvedInRow }}</span> <span class="separator">of</span> <span class="total">{{ requiredPuzzles }}</span> puzzles solved in a row
+          </span>
+          <span v-else>
+            <span class="current">{{ puzzlesSolved }}</span> <span class="separator">of</span> <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles solved
+          </span>
         </span>
       </div>
     </div>
@@ -43,6 +53,9 @@ export default {
       levelInfo: null,
       hasStarted: false,
       puzzlesSolved: 0,
+      puzzlesSolvedInRow: 0,
+      requiredPuzzles: 0,
+      isWithoutMistakesChallenge: false,
       puzzlePlayer: null,
       setCompleted: false,
       completionMessage: ''
@@ -65,6 +78,9 @@ export default {
 
       if (puzzlesData && levelInfoData) {
         this.levelInfo = JSON.parse(levelInfoData)
+        this.isWithoutMistakesChallenge = this.levelInfo.challenge === 'without_mistakes'
+        this.requiredPuzzles = this.levelInfo.puzzle_count || 0
+        this.puzzlesSolvedInRow = 0
         console.log('Adventure: levelInfo loaded:', this.levelInfo)
         
         // Create all puzzle player components first
@@ -91,6 +107,14 @@ export default {
         },
         'puzzle:solved': () => {
           this.puzzlesSolved++
+        },
+        'adventure:counter:update': (data) => {
+          this.puzzlesSolvedInRow = data.puzzlesSolvedInRow
+          this.requiredPuzzles = data.requiredPuzzles
+        },
+        'adventure:counter:reset': (data) => {
+          this.puzzlesSolvedInRow = data.puzzlesSolvedInRow
+          this.requiredPuzzles = data.requiredPuzzles
         },
         'puzzles:complete': () => {
           this.handleSetComplete()

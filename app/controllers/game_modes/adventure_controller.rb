@@ -74,6 +74,8 @@ class GameModes::AdventureController < ApplicationController
         color_to_move: puzzle_set['color_to_move'],
         rating_range: puzzle_set['rating_range'],
         puzzle_count: @puzzles.length,
+        challenge: puzzle_set['challenge'],
+        challenge_description: puzzle_set['challenge_description'],
         success_criteria: "Complete all #{@puzzles.length} puzzles"
       }
     }

@@ -55,7 +55,7 @@ class AdventureLevelCreator
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
+        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
       ]
     },
     5 => {
@@ -128,11 +128,19 @@ class AdventureLevelCreator
       requires_perfect: true,
       time_limit: nil
     },
+    'without_mistakes' => {
+      name: 'Without Mistakes',
+      description: 'Solve puzzles in a row without making any mistakes',
+      requires_perfect: true,
+      time_limit: nil,
+      resets_on_mistake: true
+    },
     'speed' => {
       name: 'Speed',
       description: 'Complete puzzles within time limit',
       requires_perfect: false,
-      time_limit: 60 # seconds
+      time_limit: 60, # seconds
+      resets_on_mistake: false
     }
   }.freeze
 

@@ -47,7 +47,7 @@ section.homepage
                                                  initial_move: initial_move,
                                                  title: "First Puzzle" })
                     .level-info-bottom
-                      .success-criteria= "#{@current_adventure_level_number}-#{set_data['set_index']}: Solve #{set_data['puzzles_count']} puzzles"
+                      .success-criteria= "#{@current_adventure_level_number}-#{set_data['set_index']}: #{set_data['challenge_description'] || 'Solve ' + set_data['puzzles_count'].to_s + ' puzzles'}"
 
         .quest-container-bottom.container
           - if user_signed_in? && @current_level_completed

@@ -11,6 +11,10 @@ export default class AdventurePuzzleSource {
   private firstMoveT: number | undefined
   private current: any = {}
   private mode: string = 'adventure'
+  private levelInfo: any = null
+  private puzzlesSolvedInRow = 0
+  private requiredPuzzles = 0
+  private isWithoutMistakesChallenge = false
 
   constructor() {
     this.initializePuzzleSource()
@@ -23,6 +27,17 @@ export default class AdventurePuzzleSource {
 
   private setupEventListeners() {
     subscribe({
+      'adventure:level:loaded': levelInfo => {
+        this.levelInfo = levelInfo
+        this.requiredPuzzles = levelInfo.puzzle_count || 0
+        this.isWithoutMistakesChallenge = levelInfo.challenge === 'without_mistakes'
+        this.puzzlesSolvedInRow = 0
+        console.log('Adventure: Level loaded', {
+          challenge: levelInfo.challenge,
+          requiredPuzzles: this.requiredPuzzles,
+          isWithoutMistakesChallenge: this.isWithoutMistakesChallenge
+        })
+      },
       'puzzles:fetched': puzzles => {
         this.puzzles = new Puzzles()
         this.addPuzzles(puzzles)
@@ -30,9 +45,13 @@ export default class AdventurePuzzleSource {
       },
       'puzzles:next': () => {
         this.i++
-        if (this.i >= this.puzzles.count()) {
-          dispatch('puzzles:complete')
-        } else {
+        
+        // For without_mistakes challenges, cycle through puzzles indefinitely
+        if (this.isWithoutMistakesChallenge) {
+          // Reset to beginning if we've gone through all puzzles
+          if (this.i >= this.puzzles.count()) {
+            this.i = 0
+          }
           const n = this.puzzles.count()
           dispatch(`puzzles:status`, {
             i: this.i,
@@ -40,6 +59,19 @@ export default class AdventurePuzzleSource {
             n,
           })
           this.nextPuzzle()
+        } else {
+          // Normal behavior for other challenge types
+          if (this.i >= this.puzzles.count()) {
+            dispatch('puzzles:complete')
+          } else {
+            const n = this.puzzles.count()
+            dispatch(`puzzles:status`, {
+              i: this.i,
+              lastPuzzleId: this.puzzles.lastPuzzle().id,
+              n,
+            })
+            this.nextPuzzle()
+          }
         }
       },
       'puzzle:get_hint': () => {
@@ -53,6 +85,13 @@ export default class AdventurePuzzleSource {
         console.log('Adventure: About to call tryUserMove')
         this.tryUserMove(move)
         console.log('Adventure: tryUserMove completed')
+      },
+      'move:fail': move => {
+        if (this.isWithoutMistakesChallenge) {
+          console.log('Adventure: Mistake made in without_mistakes challenge, resetting counter')
+          this.puzzlesSolvedInRow = 0
+          dispatch('adventure:counter:reset', { puzzlesSolvedInRow: this.puzzlesSolvedInRow, requiredPuzzles: this.requiredPuzzles })
+        }
       },
     })
   }
@@ -147,6 +186,21 @@ export default class AdventurePuzzleSource {
   private handlePuzzleSolved() {
     console.log(`Adventure puzzle ${this.i + 1} solved!`)
     dispatch('puzzle:solved', this.current.puzzle)
+    
+    if (this.isWithoutMistakesChallenge) {
+      this.puzzlesSolvedInRow++
+      console.log(`Adventure: Puzzles solved in row: ${this.puzzlesSolvedInRow}/${this.requiredPuzzles}`)
+      
+      if (this.puzzlesSolvedInRow >= this.requiredPuzzles) {
+        console.log('Adventure: Without mistakes challenge completed!')
+        dispatch('puzzles:complete')
+        return
+      }
+      
+      // Update the counter display
+      dispatch('adventure:counter:update', { puzzlesSolvedInRow: this.puzzlesSolvedInRow, requiredPuzzles: this.requiredPuzzles })
+    }
+    
     dispatch('puzzles:next')
   }
 }
