@@ -242,6 +242,7 @@ export default {
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  pointer-events: auto;
 }
 
 .adventure-mode .adventure-completion-overlay .completion-content {

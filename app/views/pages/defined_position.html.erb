@@ -9,7 +9,32 @@
    ).include?(@route[:path]) %>
 
 <% content_for(:position_trainer) do %>
-  <div class="vue-app-mount"></div>
+  <div class="instructions-area">
+    <div class="whose-turn"></div>
+  </div>
+  <div class="position-trainer-board-container">
+    <div class="position-trainer-board-area">
+      <div class="chessground-board">
+        <div class="piece-promotion-modal-mount"></div>
+        <div class="chessground"></div>
+      </div>
+      <div class="resizer-container">
+        <svg class="chessboard-resizer-icon">
+          <use xlink:href="#resize-bottom-right"></use>
+        </svg>
+        <div class="chessboard-resizer"></div>
+      </div>
+    </div>
+  </div>
+  <div class="goal-message">
+    <div class="goal"></div>
+  </div>
+  <div class="position-trainer-controls">
+    <div class="actions">
+      <button class="dark-button reset-position">Reset position</button>
+      <button class="dark-button analyze-lichess">Analyze on Lichess</button>
+    </div>
+  </div>
 <% end %>
 
 <% if has_description %>
