@@ -11,6 +11,15 @@ export default class ChessboardResizer {
   private startHeight: number = 0
   private lastUpdateTime: number = 0
 
+  // Cache DOM elements for better performance
+  private boardAreaEl: HTMLElement | null = null
+  private belowBoardEl: HTMLElement | null = null
+  private rightStatsEl: HTMLElement | null = null
+
+  // Animation frame optimization
+  private animationFrameId: number | null = null
+  private pendingSize: number | null = null
+
   // Bound event handlers for easy cleanup
   private boundMouseMove: (e: MouseEvent) => void
   private boundMouseUp: (e: MouseEvent) => void
@@ -18,6 +27,11 @@ export default class ChessboardResizer {
 
   constructor() {
     this.chessboardEl = document.querySelector(boardSelector)
+    
+    // Cache DOM elements for better performance
+    this.boardAreaEl = document.querySelector('.board-area')
+    this.belowBoardEl = document.querySelector('.below-board')
+    this.rightStatsEl = document.querySelector('.right-stats')
     
     // Bind event handlers
     this.boundMouseMove = this.handleMouseMove.bind(this)
@@ -78,20 +92,28 @@ export default class ChessboardResizer {
     const headerEl = document.querySelector('.main-header')
     const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 40
     
-    // Account for above-board area
+    // Account for above-board area (if it exists)
     const aboveBoardEl = document.querySelector('.above-board')
-    const aboveBoardHeight = aboveBoardEl ? aboveBoardEl.getBoundingClientRect().height : 90
+    const aboveBoardHeight = aboveBoardEl ? aboveBoardEl.getBoundingClientRect().height : 0
     
-    // Account for below-board area (under-board UI elements)
-    const belowBoardEl = document.querySelector('.vue-app-mount')
-    const belowBoardHeight = belowBoardEl ? belowBoardEl.getBoundingClientRect().height : 200
+    // Account for below-board area (if it exists)
+    const belowBoardEl = document.querySelector('.below-board')
+    const belowBoardHeight = belowBoardEl ? belowBoardEl.getBoundingClientRect().height : 0
+    
+    // Account for description section (if it exists - for position trainer)
+    const descriptionEl = document.querySelector('.description-section')
+    const descriptionHeight = descriptionEl ? descriptionEl.getBoundingClientRect().height : 0
+    
+    // Account for actions/buttons area (if it exists)
+    const actionsEl = document.querySelector('.actions')
+    const actionsHeight = actionsEl ? actionsEl.getBoundingClientRect().height : 0
     
     // Calculate available space with some padding
     const horizontalPadding = 40 // 20px on each side
     const verticalPadding = 40 // 20px top and bottom
     
     const maxWidth = viewportWidth - horizontalPadding
-    const maxHeight = viewportHeight - headerHeight - aboveBoardHeight - belowBoardHeight - verticalPadding
+    const maxHeight = viewportHeight - headerHeight - aboveBoardHeight - belowBoardHeight - descriptionHeight - actionsHeight - verticalPadding
     
     // Use the smaller dimension since the board is square
     const maxSize = Math.min(maxWidth, maxHeight)
@@ -157,27 +179,44 @@ export default class ChessboardResizer {
     const constrainedSize = Math.min(rawSize, maxSize) // Don't exceed viewport
     const newSize = this.snapToMultipleOf8(constrainedSize) // Snap to multiples of 8px
     
+    // Store the pending size for requestAnimationFrame
+    this.pendingSize = newSize
+    
+    // Use requestAnimationFrame for smooth updates
+    if (this.animationFrameId === null) {
+      this.animationFrameId = requestAnimationFrame(() => {
+        this.updateBoardSize(this.pendingSize!)
+        this.animationFrameId = null
+        this.pendingSize = null
+      })
+    }
+  }
+
+  private updateBoardSize(newSize: number) {
     // Update the chessboard size during drag
     this.chessboardEl.style.width = `${newSize}px`
     this.chessboardEl.style.height = `${newSize}px`
     
-    // Update all container elements in real-time for smooth movement
-    const boardAreaEl: HTMLElement = document.querySelector('.board-area')
-    const belowBoardEl: HTMLElement = document.querySelector('.below-board')
-    const rightStatsEl: HTMLElement = document.querySelector('.right-stats')
-
-    if (boardAreaEl) {
-      boardAreaEl.style.width = `${newSize}px`
-      boardAreaEl.style.height = `${newSize}px`
+    // Also resize the chessground wrapper if it exists
+    const cgWrap = this.chessboardEl.querySelector('.cg-wrap')
+    if (cgWrap) {
+      cgWrap.style.width = `${newSize}px`
+      cgWrap.style.height = `${newSize}px`
     }
     
-    if (belowBoardEl) {
-      belowBoardEl.style.width = `${newSize}px`
+    // Update all container elements in real-time for smooth movement (only if they exist)
+    if (this.boardAreaEl) {
+      this.boardAreaEl.style.width = `${newSize}px`
+      this.boardAreaEl.style.height = `${newSize}px`
+    }
+    
+    if (this.belowBoardEl) {
+      this.belowBoardEl.style.width = `${newSize}px`
     }
 
-    // Update repetition mode stats position to follow board resize
-    if (rightStatsEl) {
-      rightStatsEl.style.left = `calc(50% + ${newSize / 2}px + 1rem)`
+    // Update repetition mode stats position to follow board resize (only if it exists)
+    if (this.rightStatsEl) {
+      this.rightStatsEl.style.left = `calc(50% + ${newSize / 2}px + 1rem)`
     }
     
     // Save the new size to localStorage
@@ -214,23 +253,19 @@ export default class ChessboardResizer {
   }
 
   private updateAllContainers(size: number) {
-    const boardAreaEl: HTMLElement = document.querySelector('.board-area')
-    const belowBoardEl: HTMLElement = document.querySelector('.below-board')
-    const rightStatsEl: HTMLElement = document.querySelector('.right-stats')
-
     // Update all containers to match the new board size
-    if (boardAreaEl) {
-      boardAreaEl.style.width = `${size}px`
-      boardAreaEl.style.height = `${size}px`
+    if (this.boardAreaEl) {
+      this.boardAreaEl.style.width = `${size}px`
+      this.boardAreaEl.style.height = `${size}px`
     }
     
-    if (belowBoardEl) {
-      belowBoardEl.style.width = `${size}px`
+    if (this.belowBoardEl) {
+      this.belowBoardEl.style.width = `${size}px`
     }
 
     // Update repetition mode stats position to follow board resize
-    if (rightStatsEl) {
-      rightStatsEl.style.left = `calc(50% + ${size / 2}px + 1rem)`
+    if (this.rightStatsEl) {
+      this.rightStatsEl.style.left = `calc(50% + ${size / 2}px + 1rem)`
     }
   }
 
@@ -239,6 +274,13 @@ export default class ChessboardResizer {
     if (this.dragHandle && this.chessboardEl.contains(this.dragHandle)) {
       this.chessboardEl.removeChild(this.dragHandle)
     }
+    
+    // Cancel any pending animation frame
+    if (this.animationFrameId !== null) {
+      cancelAnimationFrame(this.animationFrameId)
+      this.animationFrameId = null
+    }
+    
     document.removeEventListener('mousemove', this.boundMouseMove)
     document.removeEventListener('mouseup', this.boundMouseUp)
     window.removeEventListener('resize', this.boundWindowResize)
