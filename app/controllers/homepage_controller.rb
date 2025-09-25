@@ -48,10 +48,80 @@ class HomepageController < ApplicationController
           # Check if the current level is completed
           @current_level_completed = current_user ? adventure_level_completed_by_user?(@current_adventure_level_number, current_user) : false
           
-          # Load the first puzzle for the current level
-          @current_adventure_puzzle = load_adventure_puzzle(@current_adventure_level_number)
+          # Prepare puzzle set data for the current level
+          @adventure_puzzle_sets = @current_adventure_level['puzzle_sets'].map.with_index do |set_data, index|
+            first_puzzle = get_first_puzzle_for_adventure_set(set_data)
+            set_data['first_puzzle'] = first_puzzle
+            set_data['completed'] = current_user ? set_completed_by_user?(@current_adventure_level_number, set_data['set_index'], current_user) : false
+            
+            # Determine if this set is unlocked
+            # First set is always unlocked, subsequent sets are unlocked if the previous set is completed
+            if index == 0
+              set_data['unlocked'] = true
+            else
+              previous_set = @current_adventure_level['puzzle_sets'][index - 1]
+              previous_set_completed = current_user ? set_completed_by_user?(@current_adventure_level_number, previous_set['set_index'], current_user) : false
+              set_data['unlocked'] = previous_set_completed
+            end
+            
+            set_data
+          end
+          
+          # Calculate progress for the current level
+          @completed_sets_count = @adventure_puzzle_sets.count { |set| set['completed'] }
+          @total_sets_count = @adventure_puzzle_sets.length
+          
+          # Check if there's a next level available
+          @next_level_number = @current_adventure_level_number + 1
+          @next_level_data = load_adventure_level(@next_level_number)
+        else
+          # Requested level not found, show first level
+          @current_adventure_level = @adventure_levels.first
+          @current_adventure_level_number = @current_adventure_level['level']
+          @current_level_completed = current_user ? adventure_level_completed_by_user?(@current_adventure_level_number, current_user) : false
+          @adventure_puzzle_sets = @current_adventure_level['puzzle_sets'].map.with_index do |set_data, index|
+            first_puzzle = get_first_puzzle_for_adventure_set(set_data)
+            set_data['first_puzzle'] = first_puzzle
+            set_data['completed'] = current_user ? set_completed_by_user?(@current_adventure_level_number, set_data['set_index'], current_user) : false
+            
+            # Determine if this set is unlocked
+            # First set is always unlocked, subsequent sets are unlocked if the previous set is completed
+            if index == 0
+              set_data['unlocked'] = true
+            else
+              previous_set = @current_adventure_level['puzzle_sets'][index - 1]
+              previous_set_completed = current_user ? set_completed_by_user?(@current_adventure_level_number, previous_set['set_index'], current_user) : false
+              set_data['unlocked'] = previous_set_completed
+            end
+            
+            set_data
+          end
+          
+          # Calculate progress for the current level
+          @completed_sets_count = @adventure_puzzle_sets.count { |set| set['completed'] }
+          @total_sets_count = @adventure_puzzle_sets.length
+          
+          # Check if there's a next level available
+          @next_level_number = @current_adventure_level_number + 1
+          @next_level_data = load_adventure_level(@next_level_number)
         end
+        
+        @all_adventure_levels_complete = false
+      else
+        # No adventure levels available
+        @current_adventure_level = nil
+        @current_adventure_level_number = nil
+        @current_level_completed = false
+        @adventure_puzzle_sets = []
+        @all_adventure_levels_complete = false
       end
+    else
+      # Adventure mode disabled - set all adventure variables to nil
+      @current_adventure_level = nil
+      @current_adventure_level_number = nil
+      @current_level_completed = false
+      @adventure_puzzle_sets = []
+      @all_adventure_levels_complete = false
     end
     
     render "/home"
@@ -93,55 +163,132 @@ class HomepageController < ApplicationController
   def find_latest_incomplete_level(user)
     return nil unless user
     
-    # Find the highest level number that the user has unlocked but not completed
-    user_unlocked_levels = user.unlocked_adventure_levels.pluck(:level_number)
-    return nil if user_unlocked_levels.empty?
+    adventure_levels = load_adventure_levels
+    return nil unless adventure_levels.any?
     
-    # Find the highest level that's not completed
-    user_unlocked_levels.max do |level_num|
-      if adventure_level_completed_by_user?(level_num, user)
-        -1 # Completed levels get negative priority
-      else
-        level_num # Incomplete levels get their level number as priority
+    # Find the first level that is not completed
+    adventure_levels.each do |level_data|
+      level_number = level_data['level']
+      unless adventure_level_completed_by_user?(level_number, user)
+        return level_number
       end
     end
+    
+    # If all levels are completed, return the last level number
+    adventure_levels.last['level']
   end
 
   def load_adventure_levels
-    worlds_file = Rails.root.join("data/game-modes/worlds.yml")
-    return [] unless File.exist?(worlds_file)
+    adventure_dir = Rails.root.join("data", "game-modes", "adventure")
+    return [] unless Dir.exist?(adventure_dir)
     
-    YAML.load_file(worlds_file)["worlds"]
-  rescue => e
-    Rails.logger.error "Failed to load adventure levels: #{e.message}"
-    []
+    levels = []
+    
+    # Find all level JSON files
+    Dir.glob(adventure_dir.join("level-*.json")).sort.each do |file_path|
+      begin
+        level_data = JSON.parse(File.read(file_path))
+        levels << level_data
+      rescue JSON::ParserError => e
+        Rails.logger.error "Error parsing adventure level file #{file_path}: #{e.message}"
+      end
+    end
+    
+    levels
   end
 
   def load_adventure_level(level_number)
-    @adventure_levels.find { |level| level['level'] == level_number }
+    level_file = Rails.root.join("data", "game-modes", "adventure", "level-#{level_number.to_s.rjust(2, '0')}.json")
+    
+    return nil unless File.exist?(level_file)
+    
+    begin
+      JSON.parse(File.read(level_file))
+    rescue JSON::ParserError => e
+      Rails.logger.error "Error parsing adventure level #{level_number}: #{e.message}"
+      nil
+    end
   end
 
   def load_adventure_puzzle(level_number)
     level = load_adventure_level(level_number)
-    return nil unless level && level['puzzles'] && level['puzzles'].any?
+    return nil unless level && level['puzzle_sets'] && level['puzzle_sets'].any?
     
-    puzzle_id = level['puzzles'].first
+    first_set = level['puzzle_sets'].first
+    return nil unless first_set['puzzles'] && first_set['puzzles'].any?
+    
+    puzzle_id = first_set['puzzles'].first
     LichessV2Puzzle.find_by(puzzle_id: puzzle_id) || Puzzle.find_by(id: puzzle_id)
   end
 
   def can_user_access_level?(level_number, user)
-    return false unless user
+    return true unless user # Allow access if no user (guest mode)
     
-    # User can access level 1 by default
+    adventure_levels = load_adventure_levels
+    return false unless adventure_levels.any?
+    
+    # Find the level data
+    level_data = adventure_levels.find { |level| level['level'] == level_number }
+    return false unless level_data
+    
+    # Level 1 is always accessible
     return true if level_number == 1
     
-    # Check if user has unlocked this level
-    user.unlocked_adventure_levels.exists?(level_number: level_number)
+    # For other levels, check if the previous level is completed
+    previous_level_number = level_number - 1
+    previous_level_data = adventure_levels.find { |level| level['level'] == previous_level_number }
+    return false unless previous_level_data
+    
+    # User can access this level if they completed the previous level
+    adventure_level_completed_by_user?(previous_level_number, user)
   end
 
   def adventure_level_completed_by_user?(level_number, user)
     return false unless user
     
-    user.completed_adventure_levels.exists?(level_number: level_number)
+    # Check if all puzzle sets in the level are completed
+    user_profile = user.profile || {}
+    adventure_completions = user_profile['adventure_completions'] || {}
+    level_completions = adventure_completions[level_number.to_s] || {}
+    
+    # Load the level data to check how many sets it has
+    level_data = load_adventure_level(level_number)
+    return false unless level_data
+    
+    # Check if all puzzle sets are completed
+    level_data['puzzle_sets'].all? do |set|
+      level_completions[set['set_index'].to_s] == true
+    end
+  end
+
+  def get_first_puzzle_for_adventure_set(set_data)
+    return nil unless set_data['puzzles'].present? && set_data['puzzles'].is_a?(Array)
+
+    first_puzzle_id = set_data['puzzles'].first
+    return nil if first_puzzle_id.blank?
+
+    # Try to find the puzzle by puzzle_id
+    puzzle = LichessV2Puzzle.find_by(puzzle_id: first_puzzle_id.to_s)
+    return nil unless puzzle
+
+    {
+      puzzle_id: puzzle.puzzle_id,
+      fen: puzzle.initial_fen,
+      initial_fen: puzzle.initial_fen,
+      initial_move: puzzle.moves_uci[0],
+      rating: puzzle.rating,
+      themes: puzzle.themes
+    }
+  end
+
+  def set_completed_by_user?(level_number, set_index, user)
+    return false unless user
+    
+    # Use user profile to track adventure completions
+    user_profile = user.profile || {}
+    adventure_completions = user_profile['adventure_completions'] || {}
+    level_completions = adventure_completions[level_number.to_s] || {}
+    
+    level_completions[set_index.to_s] == true
   end
 end
