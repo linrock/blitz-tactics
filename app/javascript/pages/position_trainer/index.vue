@@ -19,6 +19,7 @@ import { uciToMove, getConfig } from '@blitz/utils'
 import StockfishEngine from '@blitz/workers/stockfish_engine'
 
 import ChessgroundBoard from '@blitz/components/chessground_board'
+import PositionTrainerResizer from '@blitz/components/position_trainer_resizer'
 import './style.sass'
 
 type GameResult = '1-0' | '0-1' | '1/2-1/2'
@@ -27,6 +28,7 @@ const SEARCH_DEPTH = 15
 const START_FEN: FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
 let chessgroundBoard: ChessgroundBoard
+let positionTrainerResizer: PositionTrainerResizer
 let depth: number
 let engine: StockfishEngine
 
@@ -115,6 +117,10 @@ export default {
       intentOnly: false,
       orientation: this.computerColor === 'w' ? 'black' : 'white',
     })
+    
+    // Initialize the resizer after the board is created
+    positionTrainerResizer = new PositionTrainerResizer()
+    
     depth = parseInt(getConfig('depth'), 10) || SEARCH_DEPTH
     engine = new StockfishEngine
     subscribe({
@@ -150,6 +156,12 @@ export default {
     })
     // this.setDebugHelpers()
     this.showInstructions = true
+  },
+
+  beforeUnmount() {
+    if (positionTrainerResizer) {
+      positionTrainerResizer.destroy()
+    }
   }
 }
 </script>

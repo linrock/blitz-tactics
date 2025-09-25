@@ -1,10 +1,5 @@
 .position-trainer 
   margin: 0 auto 50px
-  
-  // Override container width constraint for resizable boards
-  &.container
-    max-width: none
-    width: auto
 
   // TODO consolidate these variables
   $square-size-sm: 65px
@@ -21,13 +16,34 @@
 
   .chessground-board
     margin: 0 auto
-    // Remove fixed size constraints to allow resizing
-    // width: $board-size-sm
-    // height: $board-size-sm
+    width: $board-size-sm
+    height: $board-size-sm
 
   .cg-wrap
     width: 100%
     height: 100%
+
+  .position-trainer-resizer
+    position: absolute
+    bottom: -4px
+    right: -4px
+    width: 24px
+    height: 24px
+    background: transparent
+    cursor: nwse-resize
+    z-index: 10
+    display: flex
+    align-items: center
+    justify-content: center
+    border-radius: 20px
+
+    &:hover
+      background: rgba(255, 255, 255, 0.1)
+
+    .resizer-icon
+      width: 20px
+      height: 20px
+      stroke: #636363
 
   .position-trainer-board-area
     position: relative
@@ -36,8 +52,6 @@
   .position-trainer-board-container
     text-align: center
     margin: 0 auto
-    // Allow board to resize beyond container width
-    overflow: visible
 
   .resizer-container
     position: absolute
@@ -61,32 +75,25 @@
 
   .instructions-area
     text-align: center
-    margin: 3rem 0 2rem
-    transition: opacity 0.5s ease-out
+    margin-bottom: 20px
+    height: 30px // Reserve space to prevent layout shift
 
     .whose-turn
       font-weight: bold
-      font-size: 1.5rem
-
-    &.faded
-      opacity: 0
+      font-size: 18px
+      margin-bottom: 10px
 
   .goal-message
     text-align: center
-    margin: 20px 0
-    transition: opacity 0.5s ease-out
+    margin-bottom: 20px
+    height: 24px // Reserve space to prevent layout shift
 
     .goal
       font-size: 16px
-      opacity: 1
-
-    &.faded
-      .goal
-        opacity: 0
+      opacity: 0.8
 
   .position-trainer-controls
     margin-top: 20px
-      opacity: 0.8
 
   .actions 
     margin-top: 30px
@@ -110,47 +117,40 @@
         &:hover 
           color: white
 
-  .checkmate-links-section
-    background: rgba(0, 0, 0, 0.3)
-    margin-top: 40px
-    padding: 30px 20px
-    border-radius: 8px
+.description-section
+  width: 100%
+  background-color: rgba(0, 0, 0, 0.4)
+  margin-top: 40px
+  padding: 40px 0
+  min-height: 120px // Ensure consistent height to prevent layout shift
 
-    h3
-      text-align: center
+  .container
+    max-width: 800px
+    margin: 0 auto
+    padding: 0 20px
+
+    h2
       margin-bottom: 20px
-      font-size: 18px
-      color: #fafafa
+      font-size: 24px
+      font-weight: bold
+      text-align: left
 
-    .checkmate-links
-      display: flex
-      flex-direction: column
-      gap: 15px
-      max-width: 400px
-      margin: 0 auto
+    .description 
+      font-size: 16px
+      line-height: 24px
+      margin-bottom: 20px
+      text-align: left
 
-    .checkmate-link
-      display: block
-      padding: 15px 20px
-      background: rgba(255, 255, 255, 0.1)
-      border-radius: 6px
-      text-decoration: none
-      color: #fafafa
-      transition: background 0.2s ease
+    .source 
+      font-size: 12px
+      color: rgba(255, 255, 255, 0.6)
+      text-align: left
 
-      &:hover
-        background: rgba(255, 255, 255, 0.2)
+      a 
+        color: inherit
 
-      .checkmate-title
-        display: block
-        font-weight: bold
-        font-size: 16px
-        margin-bottom: 5px
-
-      .checkmate-description
-        display: block
-        font-size: 14px
-        opacity: 0.8
+        &:hover 
+          color: rgba(255, 255, 255, 0.8)
 
 // position trainers with text on the right side
 
@@ -164,9 +164,8 @@
     display: flex
 
   .chessboard, .chessground-board
-    // Remove fixed size constraints to allow resizing
-    // width: $small-board-size
-    // height: $small-board-size
+    width: $small-board-size
+    height: $small-board-size
 
   .chessground-board .cg-wrap coords
     &.ranks

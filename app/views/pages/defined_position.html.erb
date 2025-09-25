@@ -8,74 +8,26 @@
      /saavedra-position
    ).include?(@route[:path]) %>
 
-<% content_for(:position_trainer) do %>
-  <div class="instructions-area">
-    <div class="whose-turn"></div>
-  </div>
-  <div class="position-trainer-board-container">
-    <div class="position-trainer-board-area">
-      <div class="chessground-board">
-        <div class="piece-promotion-modal-mount"></div>
-        <div class="chessground"></div>
-      </div>
-      <div class="resizer-container">
-        <svg class="chessboard-resizer-icon">
-          <use xlink:href="#resize-bottom-right"></use>
-        </svg>
-        <div class="chessboard-resizer"></div>
-      </div>
-    </div>
-  </div>
-  <div class="goal-message">
-    <div class="goal"></div>
-  </div>
-  <div class="position-trainer-controls">
-    <div class="actions">
-      <button class="dark-button reset-position">Reset position</button>
-      <button class="dark-button analyze-lichess">Analyze on Lichess</button>
-    </div>
-  </div>
-  <% if @route[:path].start_with?('/checkmates/') %>
-    <div class="checkmate-links-section">
-      <h3>Other Checkmate Positions</h3>
-      <div class="checkmate-links">
-        <a href="/checkmates/two-bishops" class="checkmate-link">
-          <span class="checkmate-title">Two Bishops</span>
-          <span class="checkmate-description">Practice checkmating with two bishops</span>
-        </a>
-        <a href="/checkmates/bishop-and-knight" class="checkmate-link">
-          <span class="checkmate-title">Bishop and Knight</span>
-          <span class="checkmate-description">Practice checkmating with a bishop and knight</span>
-        </a>
-        <a href="/checkmates/two-knights" class="checkmate-link">
-          <span class="checkmate-title">Two Knights</span>
-          <span class="checkmate-description">Practice checkmating with two knights vs a pawn</span>
-        </a>
-      </div>
-    </div>
-  <% end %>
-<% end %>
+
+
+<div class="position-trainer small container">
+  <div class="vue-app-mount"></div>
+</div>
 
 <% if has_description %>
-  <div class="position-trainer small left-aligned container">
-    <div class="left">
-      <%= yield(:position_trainer) %>
-    </div>
-
-    <div class="right">
+  <div class="description-section">
+    <div class="container">
       <%= render partial: "static/descriptions#{@route[:path].gsub(/-/, '_')}" %>
     </div>
   </div>
-<% else %>
-  <div class="position-trainer small container">
-    <%= yield(:position_trainer) %>
-  </div>
 <% end %>
-
-<%= render 'shared/main_footer' %>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    blitz.position = <%= @route[:options].to_json.html_safe %>;
+    const options = <%= @route[:options].to_json.html_safe %>;
+    blitz.position = {
+      fen: options.fen,
+      goal: options.goal || 'win'
+    };
   })
 </script>
