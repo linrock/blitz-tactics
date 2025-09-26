@@ -77,6 +77,8 @@ class GameModes::AdventureController < ApplicationController
         puzzles_in_pool: @puzzles.length, # Total puzzles in pool
         challenge: puzzle_set['challenge'],
         challenge_description: puzzle_set['challenge_description'],
+        combo_target: puzzle_set['combo_target'],
+        combo_drop_time: puzzle_set['combo_drop_time'],
         success_criteria: "Complete all #{puzzle_set['puzzles_count']} puzzles"
       }
     }

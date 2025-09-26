@@ -16,6 +16,10 @@ export default class AdventurePuzzleSource {
   private requiredPuzzles = 0
   private isWithoutMistakesChallenge = false
   private isSpeedChallenge = false
+  private isMoveComboChallenge = false
+  private comboCount = 0
+  private comboTarget = 0
+  private comboDropTime = 7
   private lastPuzzleId: string | null = null
 
   constructor() {
@@ -34,12 +38,19 @@ export default class AdventurePuzzleSource {
         this.requiredPuzzles = levelInfo.puzzle_count || 0
         this.isWithoutMistakesChallenge = levelInfo.challenge === 'without_mistakes'
         this.isSpeedChallenge = levelInfo.challenge === 'speed'
+        this.isMoveComboChallenge = levelInfo.challenge === 'move_combo'
         this.puzzlesSolvedInRow = 0
+        this.comboCount = 0
+        this.comboTarget = levelInfo.combo_target || 30
+        this.comboDropTime = levelInfo.combo_drop_time || 7
         console.log('Adventure: Level loaded', {
           challenge: levelInfo.challenge,
           requiredPuzzles: this.requiredPuzzles,
           isWithoutMistakesChallenge: this.isWithoutMistakesChallenge,
-          isSpeedChallenge: this.isSpeedChallenge
+          isSpeedChallenge: this.isSpeedChallenge,
+          isMoveComboChallenge: this.isMoveComboChallenge,
+          comboTarget: this.comboTarget,
+          comboDropTime: this.comboDropTime
         })
       },
       'puzzles:fetched': puzzles => {
@@ -50,8 +61,8 @@ export default class AdventurePuzzleSource {
       'puzzles:next': () => {
         this.i++
         
-        // For without_mistakes challenges, cycle through puzzles indefinitely
-        if (this.isWithoutMistakesChallenge) {
+        // For without_mistakes and move_combo challenges, cycle through puzzles indefinitely
+        if (this.isWithoutMistakesChallenge || this.isMoveComboChallenge) {
           // Reset to beginning if we've gone through all puzzles
           if (this.i >= this.puzzles.count()) {
             this.shufflePuzzles()
@@ -91,17 +102,43 @@ export default class AdventurePuzzleSource {
         this.tryUserMove(move)
         console.log('Adventure: tryUserMove completed')
       },
+      'move:success': () => {
+        if (this.isMoveComboChallenge) {
+          this.comboCount++
+          console.log(`Adventure: Move combo incremented: ${this.comboCount}/${this.comboTarget}`)
+          
+          if (this.comboCount >= this.comboTarget) {
+            console.log('Adventure: Move combo challenge completed!')
+            dispatch('puzzles:complete')
+            return
+          }
+          
+          // Update the combo display and restart combo timer
+          dispatch('adventure:combo:update', { comboCount: this.comboCount, comboTarget: this.comboTarget })
+          dispatch('adventure:combo:timer:restart', { dropTime: this.comboDropTime })
+        }
+      },
       'move:fail': move => {
         if (this.isWithoutMistakesChallenge) {
           console.log('Adventure: Mistake made in without_mistakes challenge, resetting counter')
           this.puzzlesSolvedInRow = 0
           dispatch('adventure:counter:reset', { puzzlesSolvedInRow: this.puzzlesSolvedInRow, requiredPuzzles: this.requiredPuzzles })
         }
+        if (this.isMoveComboChallenge) {
+          console.log('Adventure: Mistake made in move_combo challenge, resetting combo')
+          this.comboCount = 0
+          dispatch('adventure:combo:reset', { comboCount: this.comboCount, comboTarget: this.comboTarget })
+        }
       },
       'timer:stopped': () => {
         if (this.isSpeedChallenge) {
           console.log('Adventure: Timer expired in speed challenge')
           dispatch('puzzles:complete')
+        }
+        if (this.isMoveComboChallenge) {
+          console.log('Adventure: Combo timer expired in move_combo challenge')
+          this.comboCount = 0
+          dispatch('adventure:combo:reset', { comboCount: this.comboCount, comboTarget: this.comboTarget })
         }
       },
     })
@@ -215,11 +252,12 @@ export default class AdventurePuzzleSource {
       dispatch('adventure:counter:update', { puzzlesSolvedInRow: this.puzzlesSolvedInRow, requiredPuzzles: this.requiredPuzzles })
     }
     
+    
     dispatch('puzzles:next')
   }
 
   private shufflePuzzles() {
-    if (!this.isWithoutMistakesChallenge || this.puzzles.count() === 0) {
+    if ((!this.isWithoutMistakesChallenge && !this.isMoveComboChallenge) || this.puzzles.count() === 0) {
       return
     }
 

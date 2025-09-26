@@ -73,7 +73,7 @@ class AdventureLevelCreator
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
+        { puzzles: 30, challenge: "move_combo", description: "Reach move combo 30", combo_target: 30 }
       ]
     },
     7 => {
@@ -141,6 +141,15 @@ class AdventureLevelCreator
       requires_perfect: false,
       time_limit: 60, # seconds
       resets_on_mistake: false
+    },
+    'move_combo' => {
+      name: 'Move Combo',
+      description: 'Reach a move combo without letting it drop',
+      requires_perfect: false,
+      time_limit: nil,
+      resets_on_mistake: false,
+      combo_target: 30, # default combo target
+      combo_drop_time: nil # default: no timer (combo only drops on mistakes)
     }
   }.freeze
 
@@ -188,8 +197,8 @@ class AdventureLevelCreator
 
   # Generate a single puzzle set for a level using puzzle pool files
   def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w', challenge: 'solve', challenge_description: nil)
-    # For without_mistakes challenges, use 2x the number of puzzles to provide variety
-    actual_puzzles_count = challenge == 'without_mistakes' ? puzzles_count * 2 : puzzles_count
+    # For without_mistakes and move_combo challenges, use 2x the number of puzzles to provide variety
+    actual_puzzles_count = (challenge == 'without_mistakes' || challenge == 'move_combo') ? puzzles_count * 2 : puzzles_count
     
     puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles required, #{actual_puzzles_count} puzzles in pool, #{color_to_move == 'w' ? 'white' : 'black'} to move, #{challenge_description || challenge})"
 

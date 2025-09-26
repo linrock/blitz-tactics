@@ -9,6 +9,9 @@
       <div v-if="isSpeedChallenge" class="timer-section">
         <timer></timer>
       </div>
+      <div v-if="isMoveComboChallenge" class="combo-timer-section">
+        <combo-timer :drop-time="comboDropTime"></combo-timer>
+      </div>
       <div class="progress-text">
         <span v-if="!hasStarted" class="solve-text">
           <span v-if="isWithoutMistakesChallenge">
@@ -16,6 +19,9 @@
           </span>
           <span v-else-if="isSpeedChallenge">
             Solve <span class="total">{{ requiredPuzzles }}</span> puzzles in 60 seconds
+          </span>
+          <span v-else-if="isMoveComboChallenge">
+            Reach move combo <span class="total">{{ comboTarget }}</span>
           </span>
           <span v-else>
             Solve <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles
@@ -27,6 +33,9 @@
           </span>
           <span v-else-if="isSpeedChallenge">
             <span class="current">{{ puzzlesSolved }}</span> <span class="separator">of</span> <span class="total">{{ requiredPuzzles }}</span> puzzles solved
+          </span>
+          <span v-else-if="isMoveComboChallenge">
+            Move combo: <span class="current">{{ comboCount }}</span> <span class="separator">of</span> <span class="total">{{ comboTarget }}</span>
           </span>
           <span v-else>
             <span class="current">{{ puzzlesSolved }}</span> <span class="separator">of</span> <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles solved
@@ -54,6 +63,7 @@ import PuzzleHint from '@blitz/components/puzzle_player/views/puzzle_hint'
 import ChessboardResizer from '@blitz/components/puzzle_player/views/chessboard_resizer'
 import AdventurePuzzleSource from '@blitz/components/adventure_puzzle_player/adventure_puzzle_source'
 import Timer from './timer.vue'
+import ComboTimer from './combo_timer.vue'
 
 export default {
   name: 'AdventureMode',
@@ -67,6 +77,10 @@ export default {
       requiredPuzzles: 0,
       isWithoutMistakesChallenge: false,
       isSpeedChallenge: false,
+      isMoveComboChallenge: false,
+      comboCount: 0,
+      comboTarget: 0,
+      comboDropTime: 7,
       puzzlePlayer: null,
       setCompleted: false,
       completionMessage: ''
@@ -91,8 +105,12 @@ export default {
         this.levelInfo = JSON.parse(levelInfoData)
         this.isWithoutMistakesChallenge = this.levelInfo.challenge === 'without_mistakes'
         this.isSpeedChallenge = this.levelInfo.challenge === 'speed'
+        this.isMoveComboChallenge = this.levelInfo.challenge === 'move_combo'
         this.requiredPuzzles = this.levelInfo.puzzle_count || 0
         this.puzzlesSolvedInRow = 0
+        this.comboCount = 0
+        this.comboTarget = this.levelInfo.combo_target || 30
+        this.comboDropTime = this.levelInfo.combo_drop_time || 7
         console.log('Adventure: levelInfo loaded:', this.levelInfo)
         
         // Create all puzzle player components first
@@ -127,6 +145,14 @@ export default {
         'adventure:counter:reset': (data) => {
           this.puzzlesSolvedInRow = data.puzzlesSolvedInRow
           this.requiredPuzzles = data.requiredPuzzles
+        },
+        'adventure:combo:update': (data) => {
+          this.comboCount = data.comboCount
+          this.comboTarget = data.comboTarget
+        },
+        'adventure:combo:reset': (data) => {
+          this.comboCount = data.comboCount
+          this.comboTarget = data.comboTarget
         },
         'puzzles:complete': () => {
           this.handleSetComplete()
@@ -175,7 +201,8 @@ export default {
   },
 
   components: {
-    Timer
+    Timer,
+    ComboTimer
   }
 }
 </script>
@@ -225,6 +252,10 @@ export default {
 }
 
 .adventure-mode .timer-section {
+  margin-bottom: 15px;
+}
+
+.adventure-mode .combo-timer-section {
   margin-bottom: 15px;
 }
 
