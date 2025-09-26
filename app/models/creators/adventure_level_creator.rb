@@ -150,6 +150,7 @@ class AdventureLevelCreator
       resets_on_mistake: false,
       combo_target: 30, # default combo target
       combo_drop_time: nil # default: no timer (combo only drops on mistakes)
+      # To enable timer: combo_drop_time: 15 (combo drops after 15 seconds of inactivity)
     }
   }.freeze
 

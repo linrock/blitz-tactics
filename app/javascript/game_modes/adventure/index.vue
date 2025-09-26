@@ -9,7 +9,7 @@
       <div v-if="isSpeedChallenge" class="timer-section">
         <timer></timer>
       </div>
-      <div v-if="isMoveComboChallenge" class="combo-timer-section">
+      <div v-if="isMoveComboChallenge && comboDropTime !== null" class="combo-timer-section">
         <combo-timer :drop-time="comboDropTime"></combo-timer>
       </div>
       <div class="progress-text">
@@ -80,7 +80,7 @@ export default {
       isMoveComboChallenge: false,
       comboCount: 0,
       comboTarget: 0,
-      comboDropTime: 7,
+      comboDropTime: null,
       puzzlePlayer: null,
       setCompleted: false,
       completionMessage: ''
@@ -110,7 +110,7 @@ export default {
         this.puzzlesSolvedInRow = 0
         this.comboCount = 0
         this.comboTarget = this.levelInfo.combo_target || 30
-        this.comboDropTime = this.levelInfo.combo_drop_time || 7
+        this.comboDropTime = this.levelInfo.combo_drop_time || null
         console.log('Adventure: levelInfo loaded:', this.levelInfo)
         
         // Create all puzzle player components first

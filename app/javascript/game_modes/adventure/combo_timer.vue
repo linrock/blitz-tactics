@@ -15,7 +15,7 @@ export default {
   props: {
     dropTime: {
       type: Number,
-      default: 7
+      default: null
     }
   },
   data() {
@@ -38,11 +38,14 @@ export default {
     }
   },
   mounted() {
-    // Initialize the timer with the drop time
-    this.initialTimeMs = this.dropTime * 1000
+    // Initialize the timer with the drop time (only if dropTime is configured)
+    if (this.dropTime !== null) {
+      this.initialTimeMs = this.dropTime * 1000
+    }
     
-    // Start timer on first move
-    subscribeOnce('move:try', () => {
+    // Start timer on first move (only if dropTime is configured)
+    if (this.dropTime !== null) {
+      subscribeOnce('move:try', () => {
       const now = Date.now()
       this.hasStarted = true
       this.startTime = now
@@ -58,46 +61,49 @@ export default {
           dispatch('timer:stopped')
         }
       }, updateInterval)
-    })
+      })
+    }
 
-    // Restart timer when combo is updated (puzzle solved)
-    subscribe({
-      'adventure:combo:timer:restart': (data) => {
-        if (this.timerInterval !== null) {
-          clearInterval(this.timerInterval)
-          this.timerInterval = null
-        }
-        
-        // Update drop time if provided
-        if (data.dropTime) {
-          this.initialTimeMs = data.dropTime * 1000
-        }
-        
-        // Restart the timer
-        const now = Date.now()
-        this.hasStarted = true
-        this.hasEnded = false
-        this.startTime = now
-        this.nowTime = now
-        this.timerInterval = window.setInterval(() => {
-          this.nowTime = Date.now()
-          if (this.timeLeftMilliseconds <= 0) {
-            this.hasEnded = true
-            if (this.timerInterval !== null) {
-              clearInterval(this.timerInterval)
-              this.timerInterval = null
-            }
-            dispatch('timer:stopped')
+    // Restart timer when combo is updated (puzzle solved) - only if dropTime is configured
+    if (this.dropTime !== null) {
+      subscribe({
+        'adventure:combo:timer:restart': (data) => {
+          if (this.timerInterval !== null) {
+            clearInterval(this.timerInterval)
+            this.timerInterval = null
           }
-        }, updateInterval)
-      },
-      'puzzles:complete': () => {
-        if (this.timerInterval !== null) {
-          clearInterval(this.timerInterval)
-          this.timerInterval = null
+          
+          // Update drop time if provided
+          if (data.dropTime) {
+            this.initialTimeMs = data.dropTime * 1000
+          }
+          
+          // Restart the timer
+          const now = Date.now()
+          this.hasStarted = true
+          this.hasEnded = false
+          this.startTime = now
+          this.nowTime = now
+          this.timerInterval = window.setInterval(() => {
+            this.nowTime = Date.now()
+            if (this.timeLeftMilliseconds <= 0) {
+              this.hasEnded = true
+              if (this.timerInterval !== null) {
+                clearInterval(this.timerInterval)
+                this.timerInterval = null
+              }
+              dispatch('timer:stopped')
+            }
+          }, updateInterval)
+        },
+        'puzzles:complete': () => {
+          if (this.timerInterval !== null) {
+            clearInterval(this.timerInterval)
+            this.timerInterval = null
+          }
         }
-      }
-    })
+      })
+    }
   },
   beforeUnmount() {
     if (this.timerInterval !== null) {

@@ -42,7 +42,7 @@ export default class AdventurePuzzleSource {
         this.puzzlesSolvedInRow = 0
         this.comboCount = 0
         this.comboTarget = levelInfo.combo_target || 30
-        this.comboDropTime = levelInfo.combo_drop_time || 7
+        this.comboDropTime = levelInfo.combo_drop_time || null
         console.log('Adventure: Level loaded', {
           challenge: levelInfo.challenge,
           requiredPuzzles: this.requiredPuzzles,
@@ -113,9 +113,13 @@ export default class AdventurePuzzleSource {
             return
           }
           
-          // Update the combo display and restart combo timer
+          // Update the combo display
           dispatch('adventure:combo:update', { comboCount: this.comboCount, comboTarget: this.comboTarget })
-          dispatch('adventure:combo:timer:restart', { dropTime: this.comboDropTime })
+          
+          // Only restart timer if combo_drop_time is configured
+          if (this.comboDropTime !== null) {
+            dispatch('adventure:combo:timer:restart', { dropTime: this.comboDropTime })
+          }
         }
       },
       'move:fail': move => {
@@ -135,7 +139,7 @@ export default class AdventurePuzzleSource {
           console.log('Adventure: Timer expired in speed challenge')
           dispatch('puzzles:complete')
         }
-        if (this.isMoveComboChallenge) {
+        if (this.isMoveComboChallenge && this.comboDropTime !== null) {
           console.log('Adventure: Combo timer expired in move_combo challenge')
           this.comboCount = 0
           dispatch('adventure:combo:reset', { comboCount: this.comboCount, comboTarget: this.comboTarget })
