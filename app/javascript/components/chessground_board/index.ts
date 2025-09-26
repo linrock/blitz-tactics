@@ -254,8 +254,8 @@ export default class ChessgroundBoard {
       square.style.top = `${rank * 12.5}%`
       
       // Determine if square is light or dark
-      // a1 (index 63) should be dark, so we use (file + rank) % 2 === 0
-      const isDark = (file + rank) % 2 === 0
+      // a1 (file=0, rank=7) should be dark, so we use (file + rank) % 2 === 1
+      const isDark = (file + rank) % 2 === 1
       square.classList.add(isDark ? 'dark' : 'light')
       
       squaresContainer.appendChild(square)
