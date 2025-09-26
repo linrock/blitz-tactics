@@ -15,6 +15,7 @@ export default class AdventurePuzzleSource {
   private puzzlesSolvedInRow = 0
   private requiredPuzzles = 0
   private isWithoutMistakesChallenge = false
+  private isSpeedChallenge = false
   private lastPuzzleId: string | null = null
 
   constructor() {
@@ -32,11 +33,13 @@ export default class AdventurePuzzleSource {
         this.levelInfo = levelInfo
         this.requiredPuzzles = levelInfo.puzzle_count || 0
         this.isWithoutMistakesChallenge = levelInfo.challenge === 'without_mistakes'
+        this.isSpeedChallenge = levelInfo.challenge === 'speed'
         this.puzzlesSolvedInRow = 0
         console.log('Adventure: Level loaded', {
           challenge: levelInfo.challenge,
           requiredPuzzles: this.requiredPuzzles,
-          isWithoutMistakesChallenge: this.isWithoutMistakesChallenge
+          isWithoutMistakesChallenge: this.isWithoutMistakesChallenge,
+          isSpeedChallenge: this.isSpeedChallenge
         })
       },
       'puzzles:fetched': puzzles => {
@@ -93,6 +96,12 @@ export default class AdventurePuzzleSource {
           console.log('Adventure: Mistake made in without_mistakes challenge, resetting counter')
           this.puzzlesSolvedInRow = 0
           dispatch('adventure:counter:reset', { puzzlesSolvedInRow: this.puzzlesSolvedInRow, requiredPuzzles: this.requiredPuzzles })
+        }
+      },
+      'timer:stopped': () => {
+        if (this.isSpeedChallenge) {
+          console.log('Adventure: Timer expired in speed challenge')
+          dispatch('puzzles:complete')
         }
       },
     })

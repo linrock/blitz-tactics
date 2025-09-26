@@ -6,10 +6,16 @@
     </div>
     
     <div class="adventure-progress">
+      <div v-if="isSpeedChallenge && hasStarted" class="timer-section">
+        <timer></timer>
+      </div>
       <div class="progress-text">
         <span v-if="!hasStarted" class="solve-text">
           <span v-if="isWithoutMistakesChallenge">
             Solve <span class="total">{{ requiredPuzzles }}</span> puzzles without mistakes
+          </span>
+          <span v-else-if="isSpeedChallenge">
+            Solve <span class="total">{{ requiredPuzzles }}</span> puzzles in 60 seconds
           </span>
           <span v-else>
             Solve <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles
@@ -18,6 +24,9 @@
         <span v-else class="solved-text">
           <span v-if="isWithoutMistakesChallenge">
             <span class="current">{{ puzzlesSolvedInRow }}</span> <span class="separator">of</span> <span class="total">{{ requiredPuzzles }}</span> puzzles solved in a row
+          </span>
+          <span v-else-if="isSpeedChallenge">
+            <span class="current">{{ puzzlesSolved }}</span> <span class="separator">of</span> <span class="total">{{ requiredPuzzles }}</span> puzzles solved
           </span>
           <span v-else>
             <span class="current">{{ puzzlesSolved }}</span> <span class="separator">of</span> <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles solved
@@ -44,6 +53,7 @@ import Instructions from '@blitz/components/puzzle_player/views/instructions'
 import PuzzleHint from '@blitz/components/puzzle_player/views/puzzle_hint'
 import ChessboardResizer from '@blitz/components/puzzle_player/views/chessboard_resizer'
 import AdventurePuzzleSource from '@blitz/components/adventure_puzzle_player/adventure_puzzle_source'
+import Timer from './timer.vue'
 
 export default {
   name: 'AdventureMode',
@@ -56,6 +66,7 @@ export default {
       puzzlesSolvedInRow: 0,
       requiredPuzzles: 0,
       isWithoutMistakesChallenge: false,
+      isSpeedChallenge: false,
       puzzlePlayer: null,
       setCompleted: false,
       completionMessage: ''
@@ -79,6 +90,7 @@ export default {
       if (puzzlesData && levelInfoData) {
         this.levelInfo = JSON.parse(levelInfoData)
         this.isWithoutMistakesChallenge = this.levelInfo.challenge === 'without_mistakes'
+        this.isSpeedChallenge = this.levelInfo.challenge === 'speed'
         this.requiredPuzzles = this.levelInfo.puzzle_count || 0
         this.puzzlesSolvedInRow = 0
         console.log('Adventure: levelInfo loaded:', this.levelInfo)
@@ -160,6 +172,10 @@ export default {
     returnToHomepage() {
       window.location.href = '/'
     }
+  },
+
+  components: {
+    Timer
   }
 }
 </script>
@@ -206,6 +222,10 @@ export default {
   font-weight: 500;
   color: #ffffff;
   margin: 10px 0;
+}
+
+.adventure-mode .timer-section {
+  margin-bottom: 15px;
 }
 
 .adventure-mode .adventure-progress .progress-text {
