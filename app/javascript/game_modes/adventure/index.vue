@@ -6,7 +6,7 @@
     </div>
     
     <div class="adventure-progress">
-      <div v-if="isSpeedChallenge && hasStarted" class="timer-section">
+      <div v-if="isSpeedChallenge" class="timer-section">
         <timer></timer>
       </div>
       <div class="progress-text">
