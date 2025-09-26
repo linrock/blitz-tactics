@@ -113,12 +113,19 @@ export default class ChessgroundBoard {
       cgOptions.orientation = options.fen?.includes(' w ') ? 'black' : 'white' as Color
     }
     this.chessground = Chessground(document.querySelector(selector), cgOptions);
+    
+    // Create 64 individual squares after a short delay to ensure chessground is fully initialized
+    setTimeout(() => {
+      this.createChessSquares()
+    }, 100)
 
     createApp(PiecePromoModal).mount('.piece-promotion-modal-mount')
 
     subscribe({
       'board:flipped': shouldBeFlipped => {
         this.chessground.set({ orientation: shouldBeFlipped ? 'black' : 'white' })
+        // Recreate squares when board orientation changes
+        this.createChessSquares()
       },
 
       'fen:set': (fen: FEN, lastMove?: [Square, Square]) => {
@@ -212,5 +219,46 @@ export default class ChessgroundBoard {
       movable: { dests: getDests(this.cjs) },
       turnColor,
     })
+  }
+
+  private createChessSquares(): void {
+    // Find the chessground wrapper
+    const cgWrap = document.querySelector('.cg-wrap')
+    if (!cgWrap) {
+      return
+    }
+
+    // Create a background container for our squares
+    let squaresContainer = cgWrap.querySelector('.chess-squares-container') as HTMLElement
+    if (!squaresContainer) {
+      squaresContainer = document.createElement('div')
+      squaresContainer.className = 'chess-squares-container'
+      cgWrap.insertBefore(squaresContainer, cgWrap.firstChild)
+    }
+
+    // Clear any existing squares
+    const existingSquares = squaresContainer.querySelectorAll('.chess-square')
+    existingSquares.forEach(square => square.remove())
+
+    // Create 64 squares
+    for (let i = 0; i < 64; i++) {
+      const square = document.createElement('div')
+      square.className = 'chess-square'
+      
+      // Calculate position (0-63, where 0 is a8, 63 is h1)
+      const file = i % 8  // 0-7 (a-h)
+      const rank = Math.floor(i / 8)  // 0-7 (8-1)
+      
+      // Position the square
+      square.style.left = `${file * 12.5}%`
+      square.style.top = `${rank * 12.5}%`
+      
+      // Determine if square is light or dark
+      // a1 (index 63) should be dark, so we use (file + rank) % 2 === 0
+      const isDark = (file + rank) % 2 === 0
+      square.classList.add(isDark ? 'dark' : 'light')
+      
+      squaresContainer.appendChild(square)
+    }
   }
 }

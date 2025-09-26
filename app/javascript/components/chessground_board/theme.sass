@@ -5,19 +5,32 @@ cg-board
   grid-template-columns: repeat(8, 1fr)
   grid-template-rows: repeat(8, 1fr)
   box-shadow: 0 1px 8px rgba(0,0,0,0.4)
+  position: relative
+  background: transparent !important
+
+// Squares container for individual divs
+.chess-squares-container
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  pointer-events: none
+  z-index: -2
+
+// Individual square styling
+.chess-square
+  position: absolute
+  width: 12.5%
+  height: 12.5%
+  pointer-events: none
+  box-sizing: border-box
   
-  // Create 8x8 grid background using CSS
-  &::before
-    content: ''
-    position: absolute
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    background-image: conic-gradient(var(--chessboard-dark, #CEB3A2) 0deg, var(--chessboard-dark, #CEB3A2) 90deg, var(--chessboard-light, #F3E4CF) 90deg, var(--chessboard-light, #F3E4CF) 180deg, var(--chessboard-dark, #CEB3A2) 180deg, var(--chessboard-dark, #CEB3A2) 270deg, var(--chessboard-light, #F3E4CF) 270deg, var(--chessboard-light, #F3E4CF) 360deg)
-    background-size: 25% 25%
-    pointer-events: none
-    z-index: -1
+  &.light
+    background-color: var(--chessboard-light, #F3E4CF)
+  
+  &.dark
+    background-color: var(--chessboard-dark, #CEB3A2)
 
 // Embedded SVGs for game pieces
 .cg-wrap piece
