@@ -15,6 +15,7 @@ export default class AdventurePuzzleSource {
   private puzzlesSolvedInRow = 0
   private requiredPuzzles = 0
   private isWithoutMistakesChallenge = false
+  private lastPuzzleId: string | null = null
 
   constructor() {
     this.initializePuzzleSource()
@@ -50,6 +51,7 @@ export default class AdventurePuzzleSource {
         if (this.isWithoutMistakesChallenge) {
           // Reset to beginning if we've gone through all puzzles
           if (this.i >= this.puzzles.count()) {
+            this.shufflePuzzles()
             this.i = 0
           }
           const n = this.puzzles.count()
@@ -116,6 +118,9 @@ export default class AdventurePuzzleSource {
       boardState: Object.assign({}, puzzle.lines),
       puzzle,
     }
+
+    // Track the last puzzle ID for shuffling logic
+    this.lastPuzzleId = puzzle.id
 
     dispatch('puzzle:loaded', puzzle)
     dispatch('board:flipped', !!puzzle.fen.match(/ w /))
@@ -202,5 +207,52 @@ export default class AdventurePuzzleSource {
     }
     
     dispatch('puzzles:next')
+  }
+
+  private shufflePuzzles() {
+    if (!this.isWithoutMistakesChallenge || this.puzzles.count() === 0) {
+      return
+    }
+
+    console.log('Adventure: Shuffling puzzles to prevent repetition')
+    
+    // Get all puzzle IDs
+    const puzzleIds = []
+    for (let i = 0; i < this.puzzles.count(); i++) {
+      puzzleIds.push(this.puzzles.puzzleAt(i).id)
+    }
+
+    // Shuffle the array using Fisher-Yates algorithm
+    for (let i = puzzleIds.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[puzzleIds[i], puzzleIds[j]] = [puzzleIds[j], puzzleIds[i]]
+    }
+
+    // Ensure the first puzzle is not the same as the last puzzle from the previous iteration
+    if (this.lastPuzzleId && puzzleIds[0] === this.lastPuzzleId && puzzleIds.length > 1) {
+      // Swap the first puzzle with a random one from the rest
+      const randomIndex = Math.floor(Math.random() * (puzzleIds.length - 1)) + 1
+      ;[puzzleIds[0], puzzleIds[randomIndex]] = [puzzleIds[randomIndex], puzzleIds[0]]
+    }
+
+    // Rebuild the puzzles collection with the shuffled order
+    const shuffledPuzzles = []
+    for (const puzzleId of puzzleIds) {
+      const puzzle = this.puzzles.puzzleAt(0) // Get any puzzle to access the collection
+      // Find the puzzle with this ID and add it to shuffled array
+      for (let i = 0; i < this.puzzles.count(); i++) {
+        const p = this.puzzles.puzzleAt(i)
+        if (p.id === puzzleId) {
+          shuffledPuzzles.push(p)
+          break
+        }
+      }
+    }
+
+    // Replace the puzzles collection
+    this.puzzles = new Puzzles()
+    this.puzzles.addPuzzles(shuffledPuzzles)
+    
+    console.log('Adventure: Puzzles shuffled, new order:', puzzleIds.slice(0, 5), '...')
   }
 }

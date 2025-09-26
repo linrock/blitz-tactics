@@ -188,7 +188,10 @@ class AdventureLevelCreator
 
   # Generate a single puzzle set for a level using puzzle pool files
   def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w', challenge: 'solve', challenge_description: nil)
-    puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles, #{color_to_move == 'w' ? 'white' : 'black'} to move, #{challenge_description || challenge})"
+    # For without_mistakes challenges, use 2x the number of puzzles to provide variety
+    actual_puzzles_count = challenge == 'without_mistakes' ? puzzles_count * 2 : puzzles_count
+    
+    puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles required, #{actual_puzzles_count} puzzles in pool, #{color_to_move == 'w' ? 'white' : 'black'} to move, #{challenge_description || challenge})"
 
     # Determine which pool file to use based on rating range and color
     pool_file_info = find_pool_file_for_rating_range(rating_range, color_to_move)
@@ -205,7 +208,7 @@ class AdventureLevelCreator
     end
 
     # Load puzzles from the pool file
-    puzzle_ids = load_puzzles_from_pool_file(pool_file_info[:file_path], puzzles_count)
+    puzzle_ids = load_puzzles_from_pool_file(pool_file_info[:file_path], actual_puzzles_count)
     
     if puzzle_ids.empty?
       puts "    WARNING: No puzzles found in pool file #{pool_file_info[:filename]}"
@@ -236,7 +239,8 @@ class AdventureLevelCreator
     
     {
       set_index: set_index,
-      puzzles_count: puzzle_ids.length,
+      puzzles_count: puzzles_count, # Required puzzles to solve
+      puzzles_in_pool: puzzle_ids.length, # Actual puzzles in the pool
       rating_range: rating_range,
       color_to_move: color_to_move,
       challenge: challenge,
