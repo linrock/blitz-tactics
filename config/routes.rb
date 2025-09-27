@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get '/quest/:world_id/:world_level_id' => 'game_modes/quest#play_quest_level'
 
   # adventure mode
+  get '/adventure' => 'game_modes/adventure#index'
   get '/adventure/level/:level_number' => 'game_modes/adventure#show'
   get '/adventure/level-:level_number' => 'homepage#home', constraints: { level_number: /\d+/ }
   get '/adventure/level/:level_number/set/:set_index' => 'game_modes/adventure#play_level'
@@ -101,6 +102,7 @@ Rails.application.routes.draw do
   get '/achievements'            => 'achievements#index'
   get '/about'                   => 'pages#about'
   get '/puzzle-themes'           => 'pages#puzzle_themes'
+  get '/puzzle-explorer'         => 'pages#puzzle_explorer'
   
   # admin page
   get '/admin'                   => 'admin#index'

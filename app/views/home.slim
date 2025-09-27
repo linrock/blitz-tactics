@@ -5,7 +5,7 @@ section.homepage
       .container
         .puzzle-count-display(class="#{'adventure-mode-disabled' unless @adventure_mode_enabled && @latest_incomplete_level}")
           - if @adventure_mode_enabled && @latest_incomplete_level
-            span.level-indicator Level #{@latest_incomplete_level}
+            a.level-indicator(href="/adventure") Level #{@latest_incomplete_level}
           .puzzle-count-group
             span.puzzle-count-label You've solved
             span.puzzle-count-number= current_user.unique_puzzles_solved_count
@@ -16,8 +16,6 @@ section.homepage
       - if @current_adventure_level && @adventure_puzzle_sets&.any?
         .quest-bg(
           style="background-image: url(#{asset_path(@background_img)})")
-        .quest-above-bg(
-          style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
 
         .quest-container.container
           header.world-intro
@@ -68,8 +66,6 @@ section.homepage
       - elsif @all_adventure_levels_complete
         .quest-bg(
           style="background-image: url(#{asset_path(@background_img)})")
-        .quest-above-bg(
-          style="background: #{@background_overlay || "rgba(0,0,0,0.5)"}")
 
         .quest-container.container
           header.world-intro

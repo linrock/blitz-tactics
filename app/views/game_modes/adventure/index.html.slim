@@ -1,0 +1,34 @@
+- content_for(:title) { "Adventure Mode - All Levels" }
+
+section.adventure-index
+  .container
+    header
+      h1 Adventure Mode
+      p.description Choose from your unlocked levels (ordered from latest to earliest)
+
+    - if @adventure_levels.any?
+      .levels-grid
+        - @adventure_levels.each do |level_info|
+          - level_number = level_info[:level_number]
+          - level_data = level_info[:data]
+          - completed = level_info[:completed]
+          
+          .level-card(class="#{'completed' if completed}")
+            a.level-link(href="/?level=#{level_number}")
+              .level-header
+                .level-number Level #{level_number}
+                - if completed
+                  .completion-badge ✓
+              .level-description= level_data['description']
+              .level-details
+                .rating-range= level_data['rating_range']
+                .puzzle-count= "#{level_data['puzzle_sets'].sum { |set| set['puzzles_count'] }} puzzles"
+                - if level_data['puzzle_sets'].any?
+                  .challenge-types
+                    - level_data['puzzle_sets'].each do |set|
+                      .challenge-type= set['challenge_description'] || "Solve #{set['puzzles_count']} puzzles"
+    - else
+      .no-levels-message
+        h3 No levels unlocked yet
+        p Complete Level 1 to unlock more adventure levels!
+        a.dark-button(href="/?level=1") Start Adventure

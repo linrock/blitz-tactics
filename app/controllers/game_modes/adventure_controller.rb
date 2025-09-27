@@ -1,6 +1,36 @@
 class GameModes::AdventureController < ApplicationController
   before_action :authenticate_user!, only: [:complete]
 
+  def index
+    # Load all adventure levels
+    @adventure_levels = []
+    
+    # Load levels 1-10 (or however many exist)
+    (1..10).each do |level_number|
+      level_data = load_adventure_level(level_number)
+      if level_data
+        # Check if user can access this level (unlocked)
+        can_access = can_user_access_level?(level_number, current_user)
+        
+        # Only include levels that are unlocked
+        if can_access
+          # Check completion status for current user
+          completed = current_user ? level_completed_by_user?(level_number, current_user) : false
+          @adventure_levels << {
+            level_number: level_number,
+            data: level_data,
+            completed: completed
+          }
+        end
+      end
+    end
+    
+    # Sort from latest level to earliest (highest level number first)
+    @adventure_levels.sort_by! { |level| -level[:level_number] }
+    
+    render :index
+  end
+
   def show
     level_number = params[:level_number].to_i
     
@@ -209,5 +239,20 @@ class GameModes::AdventureController < ApplicationController
     user_profile['adventure_completions'] = adventure_completions
     
     user.update!(profile: user_profile)
+  end
+
+  def can_user_access_level?(level_number, user)
+    return true unless user # Allow access if no user (guest mode)
+    
+    # Level 1 is always accessible
+    return true if level_number == 1
+    
+    # For other levels, check if the previous level is completed
+    previous_level_number = level_number - 1
+    previous_level_data = load_adventure_level(previous_level_number)
+    return false unless previous_level_data
+    
+    # User can access this level if they completed the previous level
+    level_completed_by_user?(previous_level_number, user)
   end
 end
