@@ -32,6 +32,33 @@ cg-board
   &.dark
     background-color: var(--chessboard-dark, #CEB3A2)
 
+  // Highlight styles applied directly to squares
+  &.move-dest
+    background: radial-gradient(rgba(238, 255, 255, 1.0) 22%, #208530 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0) !important
+    pointer-events: auto
+    &:hover
+      background: rgba(238, 255, 255, 1.0) !important
+
+  &.premove-dest
+    background: radial-gradient(rgba(20, 30, 85, 0.5) 22%, #203085 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0) !important
+    &:hover
+      background: rgba(20, 30, 85, 0.2) !important
+
+  &.selected
+    background: rgba(238, 255, 255, 1.0) !important
+
+  &.check
+    background: radial-gradient(ellipse at center, rgba(255, 0, 0, 1) 0%, rgba(231, 0, 0, 1) 25%, rgba(169, 0, 0, 0) 89%, rgba(158, 0, 0, 0) 100%) !important
+
+  &.current-premove
+    background-color: rgba(238, 255, 255, 1.0) !important
+
+  &.last-move-from
+    background-color: #fffcdd !important
+
+  &.last-move-to
+    background-color: #FFF79B !important
+
 // Embedded SVGs for game pieces
 .cg-wrap piece
   &.pawn.white
@@ -60,34 +87,10 @@ cg-board
   &.king.black
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMi41IDExLjYzVjYiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz48cGF0aCBkPSJNMjIuNSAyNXM0LjUtNy41IDMtMTAuNWMwIDAtMS0yLjUtMy0yLjVzLTMgMi41LTMgMi41Yy0xLjUgMyAzIDEwLjUgMyAxMC41IiBmaWxsPSIjMDAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIvPjxwYXRoIGQ9Ik0xMS41IDM3YzUuNSAzLjUgMTUuNSAzLjUgMjEgMHYtN3M5LTQuNSA2LTEwLjVjLTQtNi41LTEzLjUtMy41LTE2IDRWMjd2LTMuNWMtMy41LTcuNS0xMy0xMC41LTE2LTQtMyA2IDUgMTAgNSAxMFYzN3oiIGZpbGw9IiMwMDAiLz48cGF0aCBkPSJNMjAgOGg1IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIi8+PHBhdGggZD0iTTMyIDI5LjVzOC41LTQgNi4wMy05LjY1QzM0LjE1IDE0IDI1IDE4IDIyLjUgMjQuNWwuMDEgMi4xLS4wMS0yLjFDMjAgMTggOS45MDYgMTQgNi45OTcgMTkuODVjLTIuNDk3IDUuNjUgNC44NTMgOSA0Ljg1MyA5IiBzdHJva2U9IiNlY2VjZWMiLz48cGF0aCBkPSJNMTEuNSAzMGM1LjUtMyAxNS41LTMgMjEgMG0tMjEgMy41YzUuNS0zIDE1LjUtMyAyMSAwbS0yMSAzLjVjNS41LTMgMTUuNS0zIDIxIDAiIHN0cm9rZT0iI2VjZWNlYyIvPjwvZz48L3N2Zz4=')
 
-// Colors
+// Colors - now handled by div overlays
 cg-board square
-  &.move-dest
-    background: radial-gradient(rgba(238, 255, 255, 1.0) 22%, #208530 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0)
-    pointer-events: auto
-    &.oc
-      background: radial-gradient(transparent 0%, transparent 80%, rgba(238, 255, 255, 1.0) 80%)
-    &:hover
-      background: rgba(238, 255, 255, 1.0)
-  &.premove-dest
-    background: radial-gradient(rgba(20, 30, 85, 0.5) 22%, #203085 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0)
-    &.oc
-      background: radial-gradient(transparent 0%, transparent 80%, rgba(20, 30, 85, 0.2) 80%)
-    &:hover
-      background: rgba(20, 30, 85, 0.2)
-  &.selected
-    background: rgba(238, 255, 255, 1.0)
-  &.check
-    background: radial-gradient(ellipse at center, rgba(255, 0, 0, 1) 0%, rgba(231, 0, 0, 1) 25%, rgba(169, 0, 0, 0) 89%, rgba(158, 0, 0, 0) 100%)
-  &.current-premove
-    background-color: rgba(238, 255, 255, 1.0)
-
-  // Highlights for last opponent move
-  &.last-move
-    &.move-from
-      background-color: #fffcdd
-    &.move-to
-      background-color: #FFF79B
+  // Completely hide Chessground square elements since we're using div overlays
+  display: none !important
 
 // Alternating colors in rank/file labels
 .cg-wrap.orientation-white coords
@@ -110,6 +113,4 @@ cg-board square
   &.files coord:nth-child(2n + 1)
     color: #CEB3A2
 
-.cg-wrap
-  square.move-dest:hover
-    background-color: rgba(238, 255, 255, 1.0)
+// Removed - now handled by div overlays

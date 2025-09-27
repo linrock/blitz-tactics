@@ -104,6 +104,13 @@ export default class ChessgroundBoard {
             const moveObj = cjs.move({ from: from as Square, to: to as Square })
             dispatch('move:try', moveObj)
           }
+        },
+        
+        // handle square selection
+        select: (key: Key | undefined) => {
+          console.log('Square selected:', key)
+          // Update highlights when selection changes
+          setTimeout(() => this.createHighlightOverlays(), 10)
         }
       },
     }
@@ -117,7 +124,12 @@ export default class ChessgroundBoard {
     // Create 64 individual squares after a short delay to ensure chessground is fully initialized
     setTimeout(() => {
       this.createChessSquares()
+      // Also create highlights after a longer delay to ensure chessground is fully ready
+      setTimeout(() => {
+        this.createHighlightOverlays()
+      }, 200)
     }, 100)
+
 
     createApp(PiecePromoModal).mount('.piece-promotion-modal-mount')
 
@@ -126,6 +138,11 @@ export default class ChessgroundBoard {
         this.chessground.set({ orientation: shouldBeFlipped ? 'black' : 'white' })
         // Recreate squares when board orientation changes
         this.createChessSquares()
+      },
+
+      'board:update': () => {
+        // Update highlights when board state changes
+        this.createHighlightOverlays()
       },
 
       'fen:set': (fen: FEN, lastMove?: [Square, Square]) => {
@@ -141,6 +158,8 @@ export default class ChessgroundBoard {
           },
           turnColor,
         })
+        // Update highlights after FEN change
+        setTimeout(() => this.createHighlightOverlays(), 10)
       },
 
       'move:fail': () => this.resetToBeforePlayerMove(),
@@ -173,6 +192,8 @@ export default class ChessgroundBoard {
           turnColor,
         })
         dispatch('fen:updated', this.cjs.fen())
+        // Update highlights after move
+        setTimeout(() => this.createHighlightOverlays(), 10)
       },
 
       'shape:draw': (square: Square) => {
@@ -219,6 +240,8 @@ export default class ChessgroundBoard {
       movable: { dests: getDests(this.cjs) },
       turnColor,
     })
+    // Update highlights after reset
+    setTimeout(() => this.createHighlightOverlays(), 10)
   }
 
   private createChessSquares(): void {
@@ -228,37 +251,128 @@ export default class ChessgroundBoard {
       return
     }
 
-    // Create a background container for our squares
+    // Check if squares already exist (from HTML template)
     let squaresContainer = cgWrap.querySelector('.chess-squares-container') as HTMLElement
     if (!squaresContainer) {
+      // Create a background container for our squares
       squaresContainer = document.createElement('div')
       squaresContainer.className = 'chess-squares-container'
       cgWrap.insertBefore(squaresContainer, cgWrap.firstChild)
+
+      // Clear any existing squares and highlights
+      const existingSquares = squaresContainer.querySelectorAll('.chess-square, .chess-highlight')
+      existingSquares.forEach(square => square.remove())
+
+      // Create 64 squares
+      for (let i = 0; i < 64; i++) {
+        const square = document.createElement('div')
+        square.className = 'chess-square'
+        
+        // Calculate position (0-63, where 0 is a8, 63 is h1)
+        const file = i % 8  // 0-7 (a-h)
+        const rank = Math.floor(i / 8)  // 0-7 (8-1)
+        
+        // Position the square
+        square.style.left = `${file * 12.5}%`
+        square.style.top = `${rank * 12.5}%`
+        
+        // Determine if square is light or dark
+        // a1 (file=0, rank=7) should be dark, so we use (file + rank) % 2 === 1
+        const isDark = (file + rank) % 2 === 1
+        square.classList.add(isDark ? 'dark' : 'light')
+        
+        squaresContainer.appendChild(square)
+      }
     }
 
-    // Clear any existing squares
-    const existingSquares = squaresContainer.querySelectorAll('.chess-square')
-    existingSquares.forEach(square => square.remove())
 
-    // Create 64 squares
-    for (let i = 0; i < 64; i++) {
-      const square = document.createElement('div')
-      square.className = 'chess-square'
-      
-      // Calculate position (0-63, where 0 is a8, 63 is h1)
-      const file = i % 8  // 0-7 (a-h)
-      const rank = Math.floor(i / 8)  // 0-7 (8-1)
-      
-      // Position the square
-      square.style.left = `${file * 12.5}%`
-      square.style.top = `${rank * 12.5}%`
-      
-      // Determine if square is light or dark
-      // a1 (file=0, rank=7) should be dark, so we use (file + rank) % 2 === 1
-      const isDark = (file + rank) % 2 === 1
-      square.classList.add(isDark ? 'dark' : 'light')
-      
-      squaresContainer.appendChild(square)
+    // Create highlight overlays for any currently highlighted squares
+    this.createHighlightOverlays()
+  }
+
+  private createHighlightOverlays(): void {
+    const cgWrap = document.querySelector('.cg-wrap')
+    if (!cgWrap) return
+
+    const squaresContainer = cgWrap.querySelector('.chess-squares-container') as HTMLElement
+    if (!squaresContainer) return
+
+    // Clear all existing highlight classes from squares
+    const squares = squaresContainer.querySelectorAll('.chess-square')
+    squares.forEach(square => {
+      square.classList.remove('move-dest', 'selected', 'check', 'last-move-from', 'last-move-to', 'premove-dest', 'current-premove')
+    })
+
+    // Get chessground state to determine highlights
+    const state = this.chessground.state
+    console.log('Creating highlights for state:', state)
+    
+    // Add move destination highlights
+    if (state.movable && state.movable.dests) {
+      console.log('Move destinations:', state.movable.dests)
+      Object.entries(state.movable.dests).forEach(([square, dests]) => {
+        if (dests && dests.length > 0) {
+          dests.forEach(dest => {
+            console.log(`Adding move-dest highlight for ${dest}`)
+            this.addHighlightToSquare(dest, 'move-dest', squaresContainer)
+          })
+        }
+      })
+    }
+
+    // Add selected square highlight
+    if (state.selected) {
+      console.log(`Adding selected highlight for ${state.selected}`)
+      this.addHighlightToSquare(state.selected, 'selected', squaresContainer)
+    } else {
+      console.log('No selected square')
+    }
+
+    // Add last move highlights
+    if (state.lastMove && state.lastMove.length === 2) {
+      console.log(`Adding last-move highlights for ${state.lastMove[0]} and ${state.lastMove[1]}`)
+      this.addHighlightToSquare(state.lastMove[0], 'last-move-from', squaresContainer)
+      this.addHighlightToSquare(state.lastMove[1], 'last-move-to', squaresContainer)
+    }
+
+    // Add check highlight (if king is in check)
+    if (state.check) {
+      console.log(`Adding check highlight for ${state.check}`)
+      this.addHighlightToSquare(state.check, 'check', squaresContainer)
+    }
+  }
+
+  private addHighlightToSquare(square: string, highlightType: string, container: HTMLElement): void {
+    // Convert square name to file/rank coordinates
+    // Chess notation: a1 is bottom-left, h8 is top-right
+    // Our div system: (0,0) is top-left (a8), (7,7) is bottom-right (h1)
+    const file = square.charCodeAt(0) - 97 // 'a' = 0, 'b' = 1, etc.
+    const rank = 8 - parseInt(square[1]) // '1' = 7, '2' = 6, etc. (flip the rank)
+
+    // Account for board orientation
+    const orientation = this.chessground.state.orientation
+    let squareIndex: number
+    
+    if (orientation === 'white') {
+      // White orientation: a8 is top-left (0,0), h1 is bottom-right (7,7)
+      squareIndex = rank * 8 + file
+    } else {
+      // Black orientation: h1 is top-left (0,0), a8 is bottom-right (7,7)
+      // Flip both file and rank
+      const flippedFile = 7 - file
+      const flippedRank = 7 - rank
+      squareIndex = flippedRank * 8 + flippedFile
+    }
+
+    console.log(`Adding ${highlightType} to ${square}: file=${file}, rank=${rank}, orientation=${orientation}, squareIndex=${squareIndex}`)
+
+    // Find the corresponding square div
+    const squares = container.querySelectorAll('.chess-square')
+    if (squares[squareIndex]) {
+      squares[squareIndex].classList.add(highlightType)
+      console.log(`Successfully added ${highlightType} class to square ${squareIndex}`)
+    } else {
+      console.log(`Square ${squareIndex} not found for ${square}`)
     }
   }
 }

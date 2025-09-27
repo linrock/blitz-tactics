@@ -123,3 +123,52 @@ cg-board
 
     &.ranks coord
       transform: translateY(39%)
+
+// Custom chess squares (64 divs)
+.chess-squares-container
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  z-index: 1
+
+.chess-square
+  position: absolute
+  width: 12.5%
+  height: 12.5%
+  pointer-events: none
+  box-sizing: border-box
+  
+  &.light
+    background-color: #F3E4CF !important
+  
+  &.dark
+    background-color: #CEB3A2 !important
+
+  // Highlight styles applied directly to squares
+  &.move-dest
+    background: radial-gradient(rgba(238, 255, 255, 1.0) 22%, #208530 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0) !important
+    pointer-events: auto
+    &:hover
+      background: rgba(238, 255, 255, 1.0) !important
+
+  &.premove-dest
+    background: radial-gradient(rgba(20, 30, 85, 0.5) 22%, #203085 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0) !important
+    &:hover
+      background: rgba(20, 30, 85, 0.2) !important
+
+  &.selected
+    background: rgba(238, 255, 255, 1.0) !important
+
+  &.check
+    background: radial-gradient(ellipse at center, rgba(255, 0, 0, 1) 0%, rgba(231, 0, 0, 1) 25%, rgba(169, 0, 0, 0) 89%, rgba(158, 0, 0, 0) 100%) !important
+
+  &.current-premove
+    background-color: rgba(238, 255, 255, 1.0) !important
+
+  &.last-move-from
+    background-color: #fffcdd !important
+
+  &.last-move-to
+    background-color: #FFF79B !important
