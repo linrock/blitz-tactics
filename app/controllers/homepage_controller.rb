@@ -1,5 +1,5 @@
 class HomepageController < ApplicationController
-  before_action :set_user, only: [:home]
+  before_action :set_user, only: [:home, :next_level]
   before_action :set_homepage_puzzles, only: [:home]
 
   def home
@@ -20,27 +20,49 @@ class HomepageController < ApplicationController
       @adventure_levels = load_adventure_levels
       
       if @adventure_levels.any?
-        # Determine which level to show (from URL parameter or user's latest unlocked level)
+        # Determine which level to show (from URL parameter, session, or user's latest unlocked level)
         requested_level = (params[:level] || params[:level_number]).to_i
         if requested_level > 0
           # Check if user can access this level
           if current_user && !can_user_access_level?(requested_level, current_user)
             # User cannot access this level, redirect to their latest unlocked level
-            redirect_to "/?level=#{@latest_incomplete_level || 1}" and return
+            redirect_to "/" and return
           end
           
-          # Try to load the requested level
-          @current_adventure_level = load_adventure_level(requested_level)
-          @current_adventure_level_number = requested_level
+          # Update session to remember this level and redirect to homepage without query param
+          session[:current_adventure_level] = requested_level
+          redirect_to "/" and return
         else
-          # Show the user's latest unlocked level by default
-          if current_user && @latest_incomplete_level
-            @current_adventure_level = load_adventure_level(@latest_incomplete_level)
-            @current_adventure_level_number = @latest_incomplete_level
+          # Check session first, then user's latest unlocked level
+          session_level = session[:current_adventure_level].to_i
+          if session_level > 0
+            # Check if user can access the session level
+            if current_user && can_user_access_level?(session_level, current_user)
+              @current_adventure_level = load_adventure_level(session_level)
+              @current_adventure_level_number = session_level
+            else
+              # Session level not accessible, fall back to latest unlocked level
+              if current_user && @latest_incomplete_level
+                @current_adventure_level = load_adventure_level(@latest_incomplete_level)
+                @current_adventure_level_number = @latest_incomplete_level
+                session[:current_adventure_level] = @latest_incomplete_level
+              else
+                @current_adventure_level = @adventure_levels.first
+                @current_adventure_level_number = @current_adventure_level['level']
+                session[:current_adventure_level] = @current_adventure_level_number
+              end
+            end
           else
-            # Fallback to first level if no user or no incomplete levels
-            @current_adventure_level = @adventure_levels.first
-            @current_adventure_level_number = @current_adventure_level['level']
+            # No session level, show the user's latest unlocked level by default
+            if current_user && @latest_incomplete_level
+              @current_adventure_level = load_adventure_level(@latest_incomplete_level)
+              @current_adventure_level_number = @latest_incomplete_level
+              session[:current_adventure_level] = @latest_incomplete_level
+            else
+              @current_adventure_level = @adventure_levels.first
+              @current_adventure_level_number = @current_adventure_level['level']
+              session[:current_adventure_level] = @current_adventure_level_number
+            end
           end
         end
         
@@ -314,5 +336,20 @@ class HomepageController < ApplicationController
     return nil unless completion_data&.is_a?(Hash)
 
     completion_data
+  end
+
+  def next_level
+    level_number = params[:level].to_i
+    
+    # Check if user can access this level
+    if current_user && !can_user_access_level?(level_number, current_user)
+      redirect_to "/" and return
+    end
+    
+    # Update session to remember this level
+    session[:current_adventure_level] = level_number
+    
+    # Redirect to homepage with the new level
+    redirect_to "/?level=#{level_number}"
   end
 end

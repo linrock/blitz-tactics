@@ -70,11 +70,11 @@ section.homepage
           - if user_signed_in? && @current_level_completed
             .quest-completed
               .completion-message
-                .title Level Complete!
-                .description You've completed all puzzle sets in this level
+                .title Level complete!
+                .description You've completed all puzzle sets in level #{@current_adventure_level_number}
               .action-buttons
                 - if @next_level_data
-                  a.blue-button(href="/?level=#{@next_level_number}") Continue to Next Level
+                  a.blue-button(href="/?level=#{@next_level_number}") Continue to level #{@next_level_number}
                 - else
                   a.blue-button(href="/") Back to Homepage
           - else
