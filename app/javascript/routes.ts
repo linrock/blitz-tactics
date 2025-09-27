@@ -77,6 +77,11 @@ const routes: RouteMap = {
   "users#customize_board": () => new CustomizeBoard,
   "users#show": () => UserProfile(),
   "users#me": () => UserProfile(),
+
+  // puzzle explorer
+  "pages#puzzle_explorer": () => {
+    // The puzzle explorer initializes itself via DOMContentLoaded event
+  },
 }
 
 export default routes
