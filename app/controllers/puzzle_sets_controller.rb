@@ -43,6 +43,8 @@ class PuzzleSetsController < ApplicationController
 
   def edit
     @puzzle_set = PuzzleSet.find_by(id: params[:id])
+    # Load first 100 puzzles for miniboards display
+    @puzzles_for_miniboards = @puzzle_set.lichess_v2_puzzles.limit(100).includes(:lichess_v2_puzzles_puzzle_sets)
   end
 
   def update
