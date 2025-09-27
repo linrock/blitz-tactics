@@ -136,8 +136,9 @@ export default class AdventurePuzzleSource {
       },
       'timer:stopped': () => {
         if (this.isSpeedChallenge) {
-          console.log('Adventure: Timer expired in speed challenge')
-          dispatch('puzzles:complete')
+          console.log('Adventure: Timer expired in speed challenge - level failed')
+          // Do NOT dispatch puzzles:complete when timer runs out
+          // The level should be marked as failed, not completed
         }
         if (this.isMoveComboChallenge && this.comboDropTime !== null) {
           console.log('Adventure: Combo timer expired in move_combo challenge')

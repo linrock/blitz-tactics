@@ -5,13 +5,21 @@
     </div>
     
     <div class="adventure-progress">
-      <div v-if="isSpeedChallenge" class="timer-section">
+      <div v-if="isSpeedChallenge && !timerExpired" class="timer-section">
         <timer :time-limit="levelInfo.time_limit"></timer>
       </div>
       <div v-if="isMoveComboChallenge && comboDropTime !== null" class="combo-timer-section">
         <combo-timer :drop-time="comboDropTime"></combo-timer>
       </div>
-      <div class="progress-text">
+      
+      <!-- Timer expired message -->
+      <div v-if="timerExpired" class="timer-expired-section">
+        <div class="timer-expired-message">Time is up!</div>
+        <button class="retry-button" @click="retryLevel">Retry</button>
+      </div>
+      
+      <!-- Progress text (hidden when timer expires) -->
+      <div v-if="!timerExpired" class="progress-text">
         <span v-if="!hasStarted" class="solve-text">
           <span v-if="isWithoutMistakesChallenge">
             Solve <span class="total">{{ requiredPuzzles }}</span> puzzles without mistakes
@@ -49,6 +57,9 @@
         <button class="completion-button" @click="returnToHomepage">Return to Homepage</button>
       </div>
     </div>
+    
+    <!-- Board overlay for timer timeout -->
+    <div class="board-modal-container invisible" style="display: none;"></div>
   </div>
 </template>
 
@@ -83,7 +94,8 @@ export default {
       puzzlePlayer: null,
       setCompleted: false,
       completionMessage: '',
-      startTime: null
+      startTime: null,
+      timerExpired: false
     }
   },
   
@@ -157,6 +169,12 @@ export default {
         },
         'puzzles:complete': () => {
           this.handleSetComplete()
+        },
+        'timer:stopped': () => {
+          if (this.isSpeedChallenge) {
+            this.timerExpired = true
+            this.showBoardOverlay()
+          }
         }
       })
     },
@@ -202,6 +220,18 @@ export default {
     
     returnToHomepage() {
       window.location.href = '/'
+    },
+    
+    retryLevel() {
+      window.location.reload()
+    },
+    
+    showBoardOverlay() {
+      const el = document.querySelector('.board-modal-container')
+      if (el) {
+        el.style.display = ''
+        el.classList.remove('invisible')
+      }
     }
   },
 
@@ -372,6 +402,60 @@ export default {
 
 .adventure-mode .adventure-completion-overlay .completion-content .completion-button:active {
   background: #3d8b40;
+}
+
+/* Timer expired section */
+.adventure-mode .timer-expired-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.adventure-mode .timer-expired-message {
+  color: #ffb366;
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+}
+
+.adventure-mode .retry-button {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.2s;
+  min-width: 120px;
+  min-height: 48px;
+}
+
+.adventure-mode .retry-button:hover {
+  background: #357abd;
+}
+
+.adventure-mode .retry-button:active {
+  background: #2c5aa0;
+}
+
+/* Board overlay for timer timeout */
+.adventure-mode .board-modal-container {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.adventure-mode .board-modal-container.invisible {
+  opacity: 0;
+  pointer-events: none;
 }
 
 </style>
