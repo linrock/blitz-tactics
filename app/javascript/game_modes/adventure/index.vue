@@ -82,7 +82,8 @@ export default {
       comboDropTime: null,
       puzzlePlayer: null,
       setCompleted: false,
-      completionMessage: ''
+      completionMessage: '',
+      startTime: null
     }
   },
   
@@ -133,6 +134,7 @@ export default {
       subscribe({
         'puzzles:start': () => {
           this.hasStarted = true
+          this.startTime = Date.now()
         },
         'puzzle:solved': () => {
           this.puzzlesSolved++
@@ -163,6 +165,9 @@ export default {
       if (!this.levelInfo) return
       
       try {
+        // Calculate time spent in milliseconds
+        const timeSpent = this.startTime ? (Date.now() - this.startTime) : null
+        
         const response = await fetch(`/adventure/level/${this.levelInfo.level_number}/set/${this.levelInfo.set_index}/complete`, {
           method: 'POST',
           headers: {
@@ -170,7 +175,8 @@ export default {
             'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
           },
           body: JSON.stringify({
-            puzzles_solved: this.levelInfo.puzzle_count
+            puzzles_solved: this.levelInfo.puzzle_count,
+            time_spent: timeSpent
           })
         })
 

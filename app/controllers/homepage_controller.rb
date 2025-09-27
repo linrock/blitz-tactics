@@ -52,7 +52,9 @@ class HomepageController < ApplicationController
           @adventure_puzzle_sets = @current_adventure_level['puzzle_sets'].map.with_index do |set_data, index|
             first_puzzle = get_first_puzzle_for_adventure_set(set_data)
             set_data['first_puzzle'] = first_puzzle
-            set_data['completed'] = current_user ? set_completed_by_user?(@current_adventure_level_number, set_data['set_index'], current_user) : false
+            completion_data = current_user ? get_set_completion_data(@current_adventure_level_number, set_data['set_index'], current_user) : nil
+            set_data['completed'] = completion_data ? (completion_data['completed'] == true) : false
+            set_data['completion_data'] = completion_data
             
             # Determine if this set is unlocked
             # First set is always unlocked, subsequent sets are unlocked if the previous set is completed
@@ -82,7 +84,9 @@ class HomepageController < ApplicationController
           @adventure_puzzle_sets = @current_adventure_level['puzzle_sets'].map.with_index do |set_data, index|
             first_puzzle = get_first_puzzle_for_adventure_set(set_data)
             set_data['first_puzzle'] = first_puzzle
-            set_data['completed'] = current_user ? set_completed_by_user?(@current_adventure_level_number, set_data['set_index'], current_user) : false
+            completion_data = current_user ? get_set_completion_data(@current_adventure_level_number, set_data['set_index'], current_user) : nil
+            set_data['completed'] = completion_data ? (completion_data['completed'] == true) : false
+            set_data['completion_data'] = completion_data
             
             # Determine if this set is unlocked
             # First set is always unlocked, subsequent sets are unlocked if the previous set is completed
@@ -290,5 +294,29 @@ class HomepageController < ApplicationController
     level_completions = adventure_completions[level_number.to_s] || {}
     
     level_completions[set_index.to_s] == true
+  end
+
+  def get_set_completion_data(level_number, set_index, user)
+    return nil unless user
+
+    user_profile = user.profile || {}
+    adventure_completions = user_profile['adventure_completions'] || {}
+    level_completions = adventure_completions[level_number.to_s] || {}
+
+    completion_data = level_completions[set_index.to_s]
+
+    return nil unless completion_data
+
+    # Handle both old format (true) and new format (hash)
+    if completion_data.is_a?(Hash)
+      completion_data
+    else
+      # Convert old format to new format
+      {
+        completed: true,
+        first_completed_at: nil, # We don't have this data for old completions
+        best_time_ms: nil
+      }
+    end
   end
 end

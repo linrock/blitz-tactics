@@ -123,6 +123,7 @@ class GameModes::AdventureController < ApplicationController
     level_number = params[:level_number].to_i
     set_index = params[:set_index].to_i
     puzzles_solved = params[:puzzles_solved].to_i
+    time_spent = params[:time_spent]&.to_i # Time in milliseconds
     
     # Load adventure level data to validate completion
     level_data = load_adventure_level(level_number)
@@ -171,7 +172,7 @@ class GameModes::AdventureController < ApplicationController
     
     begin
       # Mark the puzzle set as completed
-      mark_set_completed_for_user(level_number, set_index, current_user)
+      mark_set_completed_for_user(level_number, set_index, current_user, time_spent)
       
       # Check if the entire level is completed
       level_completed = level_completed_by_user?(level_number, current_user)
@@ -226,19 +227,82 @@ class GameModes::AdventureController < ApplicationController
     adventure_completions = user_profile['adventure_completions'] || {}
     level_completions = adventure_completions[level_number.to_s] || {}
     
-    level_completions[set_index.to_s] == true
+    completion_data = level_completions[set_index.to_s]
+    
+    # Handle both old format (true) and new format (hash)
+    if completion_data.is_a?(Hash)
+      completion_data['completed'] == true
+    else
+      completion_data == true
+    end
   end
 
-  def mark_set_completed_for_user(level_number, set_index, user)
+  def mark_set_completed_for_user(level_number, set_index, user, time_spent = nil)
     user_profile = user.profile || {}
     adventure_completions = user_profile['adventure_completions'] || {}
     level_completions = adventure_completions[level_number.to_s] || {}
     
-    level_completions[set_index.to_s] = true
+    current_time = Time.current.iso8601
+    existing_data = level_completions[set_index.to_s]
+    
+    # Initialize completion data
+    completion_data = {
+      completed: true
+    }
+    
+    # Handle existing completion data
+    if existing_data.is_a?(Hash)
+      # Update existing data
+      completion_data = existing_data.dup
+      completion_data[:completed] = true
+      
+      # Update best time if this is faster
+      if time_spent && time_spent > 0
+        current_best = completion_data[:best_time_ms]
+        if current_best.nil? || time_spent < current_best
+          completion_data[:best_time_ms] = time_spent
+        end
+      end
+    else
+      # First completion or converting from old format
+      completion_data[:first_completed_at] = current_time
+      
+      # Set best time if provided
+      if time_spent && time_spent > 0
+        completion_data[:best_time_ms] = time_spent
+      end
+    end
+    
+    level_completions[set_index.to_s] = completion_data
     adventure_completions[level_number.to_s] = level_completions
     user_profile['adventure_completions'] = adventure_completions
     
     user.update!(profile: user_profile)
+  end
+
+  def get_set_completion_data(level_number, set_index, user)
+    return nil unless user
+    
+    user_profile = user.profile || {}
+    adventure_completions = user_profile['adventure_completions'] || {}
+    level_completions = adventure_completions[level_number.to_s] || {}
+    
+    completion_data = level_completions[set_index.to_s]
+    
+    # Return nil if not completed
+    return nil unless completion_data
+    
+    # Handle both old format (true) and new format (hash)
+    if completion_data.is_a?(Hash)
+      completion_data
+    else
+      # Convert old format to new format
+      {
+        completed: true,
+        first_completed_at: nil, # We don't have this data for old completions
+        best_time_ms: nil
+      }
+    end
   end
 
   def can_user_access_level?(level_number, user)

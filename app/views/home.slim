@@ -46,6 +46,8 @@ section.homepage
                                                  title: "First Puzzle" })
                     .level-info-bottom
                       .success-criteria= "#{@current_adventure_level_number}-#{set_data['set_index']}: #{set_data['challenge_description'] || 'Solve ' + set_data['puzzles_count'].to_s + ' puzzles'}"
+                      - if set_data['completed'] && set_data['completion_data'] && set_data['completion_data']['best_time_ms']
+                        .best-time Best time: #{(set_data['completion_data']['best_time_ms'] / 100.0).round / 10.0}s
                 - else
                   a.quest-level(href=link_href class="#{'completed' if set_data['completed']}")
                     - if set_data['completed']
@@ -63,6 +65,8 @@ section.homepage
                                                  title: "First Puzzle" })
                     .level-info-bottom
                       .success-criteria= "#{@current_adventure_level_number}-#{set_data['set_index']}: #{set_data['challenge_description'] || 'Solve ' + set_data['puzzles_count'].to_s + ' puzzles'}"
+                      - if set_data['completed'] && set_data['completion_data'] && set_data['completion_data']['best_time_ms']
+                        .best-time Best time: #{(set_data['completion_data']['best_time_ms'] / 100.0).round / 10.0}s
 
         .quest-container-bottom.container
           - if user_signed_in? && @current_level_completed

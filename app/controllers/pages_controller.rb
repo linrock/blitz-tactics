@@ -224,7 +224,14 @@ class PagesController < ApplicationController
     adventure_completions = user_profile['adventure_completions'] || {}
     level_completions = adventure_completions[level_number.to_s] || {}
     
-    level_completions[set_index.to_s] == true
+    completion_data = level_completions[set_index.to_s]
+    
+    # Handle both old format (true) and new format (hash)
+    if completion_data.is_a?(Hash)
+      completion_data['completed'] == true
+    else
+      completion_data == true
+    end
   end
 
   def load_adventure_level(level_number)
