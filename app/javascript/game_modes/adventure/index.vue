@@ -6,7 +6,7 @@
     
     <div class="adventure-progress">
       <div v-if="isSpeedChallenge" class="timer-section">
-        <timer></timer>
+        <timer :time-limit="levelInfo.time_limit"></timer>
       </div>
       <div v-if="isMoveComboChallenge && comboDropTime !== null" class="combo-timer-section">
         <combo-timer :drop-time="comboDropTime"></combo-timer>
@@ -17,7 +17,7 @@
             Solve <span class="total">{{ requiredPuzzles }}</span> puzzles without mistakes
           </span>
           <span v-else-if="isSpeedChallenge">
-            Solve <span class="total">{{ requiredPuzzles }}</span> puzzles in 60 seconds
+            Solve <span class="total">{{ requiredPuzzles }}</span> puzzles in {{ levelInfo.time_limit || 60 }} seconds
           </span>
           <span v-else-if="isMoveComboChallenge">
             Reach move combo <span class="total">{{ comboTarget }}</span>

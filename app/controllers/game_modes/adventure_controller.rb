@@ -109,6 +109,7 @@ class GameModes::AdventureController < ApplicationController
         challenge_description: puzzle_set['challenge_description'],
         combo_target: puzzle_set['combo_target'],
         combo_drop_time: puzzle_set['combo_drop_time'],
+        time_limit: puzzle_set['challenge_config']&.dig('time_limit'), # Time limit in seconds
         success_criteria: "Complete all #{puzzle_set['puzzles_count']} puzzles"
       }
     }
@@ -228,13 +229,9 @@ class GameModes::AdventureController < ApplicationController
     level_completions = adventure_completions[level_number.to_s] || {}
     
     completion_data = level_completions[set_index.to_s]
+    return false unless completion_data.is_a?(Hash)
     
-    # Handle both old format (true) and new format (hash)
-    if completion_data.is_a?(Hash)
-      completion_data['completed'] == true
-    else
-      completion_data == true
-    end
+    completion_data['completed'] == true
   end
 
   def mark_set_completed_for_user(level_number, set_index, user, time_spent = nil)
@@ -264,7 +261,7 @@ class GameModes::AdventureController < ApplicationController
         end
       end
     else
-      # First completion or converting from old format
+      # First completion
       completion_data[:first_completed_at] = current_time
       
       # Set best time if provided
@@ -289,20 +286,9 @@ class GameModes::AdventureController < ApplicationController
     
     completion_data = level_completions[set_index.to_s]
     
-    # Return nil if not completed
-    return nil unless completion_data
+    return nil unless completion_data&.is_a?(Hash)
     
-    # Handle both old format (true) and new format (hash)
-    if completion_data.is_a?(Hash)
-      completion_data
-    else
-      # Convert old format to new format
-      {
-        completed: true,
-        first_completed_at: nil, # We don't have this data for old completions
-        best_time_ms: nil
-      }
-    end
+    completion_data
   end
 
   def can_user_access_level?(level_number, user)

@@ -169,7 +169,8 @@ class PagesController < ApplicationController
     
     # Check if all puzzle sets are completed
     level_data['puzzle_sets'].all? do |set|
-      level_completions[set['set_index'].to_s] == true
+      completion_data = level_completions[set['set_index'].to_s]
+      completion_data&.is_a?(Hash) && completion_data['completed'] == true
     end
   end
 
@@ -225,13 +226,9 @@ class PagesController < ApplicationController
     level_completions = adventure_completions[level_number.to_s] || {}
     
     completion_data = level_completions[set_index.to_s]
+    return false unless completion_data&.is_a?(Hash)
     
-    # Handle both old format (true) and new format (hash)
-    if completion_data.is_a?(Hash)
-      completion_data['completed'] == true
-    else
-      completion_data == true
-    end
+    completion_data['completed'] == true
   end
 
   def load_adventure_level(level_number)

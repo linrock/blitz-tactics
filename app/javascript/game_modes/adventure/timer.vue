@@ -7,15 +7,20 @@
 import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
 import { formattedTimeSeconds } from '@blitz/utils'
 
-const initialTimeMs = 60 * 1000  // 60 seconds
 const updateInterval = 100       // timer updates this frequently
 
 export default {
+  props: {
+    timeLimit: {
+      type: Number,
+      default: 60
+    }
+  },
   data() {
     return {
       hasStarted: false,
       hasEnded: false,
-      initialTimeMs: initialTimeMs,
+      initialTimeMs: 0,
       startTime: 0,
       nowTime: 0,
       timerInterval: null as number | null,
@@ -31,7 +36,18 @@ export default {
     }
   },
 
+  watch: {
+    timeLimit(newTimeLimit) {
+      this.initialTimeMs = newTimeLimit * 1000
+      console.log('Timer time limit updated to:', newTimeLimit, 'seconds')
+    }
+  },
+
   mounted() {
+    // Set the initial time from the prop
+    this.initialTimeMs = this.timeLimit * 1000 // Convert seconds to milliseconds
+    console.log('Timer initialized with time limit:', this.timeLimit, 'seconds (', this.initialTimeMs, 'ms)')
+
     subscribeOnce('move:try', () => {
       const now = Date.now()
       this.hasStarted = true

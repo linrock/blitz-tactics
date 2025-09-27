@@ -38,9 +38,9 @@ class AdventureLevelCreator
       description: "Beginner's Journey",
       rating_range: (600..800),
       puzzle_sets: [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 3 minutes", time_limit: 180 },
-        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
+        { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
+        { puzzles: 2, challenge: "speed", description: "Solve 2 puzzles in 10 seconds", time_limit: 10 },
+        { puzzles: 3, challenge: "without_mistakes", description: "Solve 3 in a row without mistakes" }
       ]
     },
     2 => {
