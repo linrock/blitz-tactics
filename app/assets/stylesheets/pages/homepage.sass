@@ -301,6 +301,30 @@
 
   // Quest section styles
   .quest-section
+    .level-progress-container
+      margin: 20px 0
+      text-align: center
+
+      .progress-bar
+        width: 100%
+        max-width: 400px
+        height: 4px
+        background: rgba(255, 255, 255, 0.2)
+        border-radius: 2px
+        margin: 0 auto 10px auto
+        overflow: hidden
+
+        .progress-fill
+          height: 100%
+          background: linear-gradient(90deg, #4a90e2 0%, #00e676 100%)
+          border-radius: 2px
+          transition: width 0.3s ease
+          box-shadow: 0 0 8px rgba(74, 144, 226, 0.4)
+
+      .progress-text
+        color: rgba(255, 255, 255, 0.6)
+        font-size: 1rem
+        margin-top: 1rem
     .quest-level-link
       display: block
       text-decoration: none

@@ -61,7 +61,10 @@ section.homepage
                 - else
                   a.blue-button(href="/") Back to Homepage
           - else
-            div= "#{@completed_sets_count}/#{@total_sets_count} completed - Complete all puzzle sets to continue"
+            .level-progress-container
+              .progress-bar
+                .progress-fill(style="width: #{(@completed_sets_count.to_f / @total_sets_count * 100).round}%")
+              .progress-text= "#{@completed_sets_count}/#{@total_sets_count} completed - Complete all puzzle sets to continue"
       - elsif @all_adventure_levels_complete
         .quest-bg(
           style="background-image: url(#{asset_path(@background_img)})")
