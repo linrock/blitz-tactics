@@ -1,0 +1,41 @@
+<div class="puzzle-explorer">
+  <div class="container">
+    <h1>Puzzle Explorer</h1>
+    <p class="subtitle">Distribution of puzzles by rating range</p>
+    
+    <div class="histogram-container">
+      <div class="histogram">
+        <% @histogram_data.each_with_index do |item, index| %>
+          <div class="histogram-bar" style="height: <%= (item[:count].to_f / @histogram_data.map { |d| d[:count] }.max * 100).round %>%">
+            <div class="bar-value"><%= item[:count].to_s.reverse.gsub(/(\d{3})(?=.)/, '\1,').reverse %></div>
+            <% if index.even? %>
+              <div class="bar-label"><%= item[:range] %></div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="stats-container">
+      <h2>Total Puzzles</h2>
+      <div class="total-puzzles">
+        <span class="total-count"><%= @total_puzzles.to_s.reverse.gsub(/(\d{3})(?=.)/, '\1,').reverse %></span>
+        <span class="total-label">puzzles available</span>
+      </div>
+    </div>
+
+    <div class="themes-container">
+      <h2>Puzzles by Theme</h2>
+      <div class="themes-grid">
+        <% @theme_data.each do |theme_data| %>
+          <div class="theme-item">
+            <div class="theme-name"><%= theme_data[:formatted_theme] %></div>
+            <div class="theme-count"><%= theme_data[:count].to_s.reverse.gsub(/(\d{3})(?=.)/, '\1,').reverse %> puzzles</div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+  </div>
+</div>
+

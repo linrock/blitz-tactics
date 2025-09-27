@@ -1,0 +1,181 @@
+.puzzle-explorer
+  padding: 40px 20px
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%)
+  color: #e0e0e0
+  min-height: calc(100vh - 60px)
+
+  .container
+    max-width: 1200px
+    margin: 0 auto
+
+  h1
+    font-family: 'Orbitron', sans-serif
+    font-size: 3rem
+    color: #fff
+    margin-bottom: 15px
+    text-align: center
+
+  .subtitle
+    text-align: center
+    font-size: 1.1rem
+    margin-bottom: 40px
+    opacity: 0.8
+
+  .histogram-container
+    background: rgba(255, 255, 255, 0.08)
+    border-radius: 15px
+    padding: 25px
+    margin-bottom: 30px
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2)
+    backdrop-filter: blur(4px)
+    -webkit-backdrop-filter: blur(4px)
+    border: 1px solid rgba(255, 255, 255, 0.18)
+
+    .histogram
+      display: flex
+      align-items: flex-end
+      justify-content: space-between
+      height: 300px
+      gap: 2px
+      padding: 20px 0
+
+      .histogram-bar
+        flex: 1
+        background: #1e3a8a
+        border-radius: 4px 4px 0 0
+        position: relative
+        min-height: 20px
+        transition: background 0.2s ease
+        display: flex
+        flex-direction: column
+        justify-content: flex-end
+
+        &:hover
+          background: #1e40af
+
+        .bar-value
+          position: absolute
+          top: -25px
+          left: 50%
+          transform: translateX(-50%)
+          font-size: 10px
+          color: #fff
+          font-weight: bold
+          white-space: nowrap
+
+        .bar-label
+          position: absolute
+          bottom: -30px
+          left: 50%
+          transform: translateX(-50%)
+          font-size: 10px
+          color: #a0aec0
+          white-space: nowrap
+          text-align: center
+
+  .stats-container
+    background: rgba(255, 255, 255, 0.08)
+    border-radius: 15px
+    padding: 25px
+    margin-bottom: 30px
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2)
+    backdrop-filter: blur(4px)
+    -webkit-backdrop-filter: blur(4px)
+    border: 1px solid rgba(255, 255, 255, 0.18)
+
+    h2
+      margin-bottom: 20px
+      font-size: 1.8rem
+      color: #fff
+      font-weight: 600
+
+    .total-puzzles
+      text-align: center
+      padding: 30px
+      background: rgba(255, 255, 255, 0.05)
+      border-radius: 15px
+      border: 1px solid rgba(255, 255, 255, 0.1)
+
+      .total-count
+        display: block
+        font-size: 3rem
+        font-weight: bold
+        color: #fff
+        margin-bottom: 10px
+
+      .total-label
+        font-size: 1.2rem
+        color: #a0aec0
+        opacity: 0.8
+
+  .themes-container
+    background: rgba(255, 255, 255, 0.08)
+    border-radius: 15px
+    padding: 25px
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2)
+    backdrop-filter: blur(4px)
+    -webkit-backdrop-filter: blur(4px)
+    border: 1px solid rgba(255, 255, 255, 0.18)
+
+    h2
+      margin-bottom: 20px
+      font-size: 1.8rem
+      color: #fff
+      font-weight: 600
+
+    .themes-grid
+      display: grid
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
+      gap: 15px
+
+      .theme-item
+        background: rgba(255, 255, 255, 0.05)
+        padding: 15px
+        border-radius: 10px
+        text-align: center
+        border: 1px solid rgba(255, 255, 255, 0.1)
+        transition: box-shadow 0.2s ease
+
+        &:hover
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2)
+
+        .theme-name
+          font-size: 0.9rem
+          color: #e2e8f0
+          margin-bottom: 8px
+          font-weight: 500
+
+        .theme-count
+          font-size: 1.1rem
+          font-weight: bold
+          color: #fff
+
+
+// Responsive design
+@media (max-width: 768px)
+  .puzzle-explorer
+    padding: 20px 10px
+
+    h1
+      font-size: 2rem
+
+    .histogram-container, .stats-container, .themes-container
+      padding: 20px
+      margin-bottom: 20px
+
+    .themes-grid
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))
+      gap: 10px
+
+    .histogram
+      height: 250px
+      gap: 1px
+
+      .histogram-bar
+        .bar-value
+          font-size: 9px
+          top: -20px
+
+        .bar-label
+          font-size: 9px
+          bottom: -25px
