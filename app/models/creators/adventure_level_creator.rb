@@ -27,26 +27,26 @@ class AdventureLevelCreator
       rating_range: (600..1000),
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" }
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
       ]
     },
     2 => {
       description: "Building Foundations",
       rating_range: (700..1100),
       puzzle_sets: [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
+        { puzzles: 10, challenge: "solve", description: "Solve 12 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 12 puzzles" },
+        { puzzles: 10, challenge: "without_mistakes", description: "Solve 12 puzzles without mistakes" }
       ]
     },
     3 => {
       description: "Growing Confidence",
       rating_range: (800..1200),
       puzzle_sets: [
-        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" }
+        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
+        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
+        { puzzles: 15, challenge: "without_mistakes", description: "Solve 15 puzzles without mistakes" }
       ]
     },
     4 => {
