@@ -332,12 +332,6 @@
         color: rgba(255, 255, 255, 0.6)
         font-size: 1rem
         margin-top: 1rem
-    .quest-level-link
-      display: block
-      text-decoration: none
-      color: inherit
-      transition: opacity 0.3s ease
-
     .quest-level
       cursor: pointer
       background: rgba(255, 255, 255, 0.1)
@@ -348,6 +342,13 @@
       display: flex
       flex-direction: column
       justify-content: space-between
+      text-decoration: none
+      color: inherit
+
+      // When quest-level is an <a> tag (clickable)
+      &:link, &:visited
+        text-decoration: none
+        color: inherit
 
       // Completed levels styling - ensure same height as incomplete levels
       &.completed
@@ -366,6 +367,8 @@
       // Hover effect for clickable links (not locked)
       &:not(.locked):hover
         background: rgba(255, 255, 255, 0.15)
+        text-decoration: none
+        color: inherit
 
 // Responsive breakpoints
 @media (max-width: 720px)

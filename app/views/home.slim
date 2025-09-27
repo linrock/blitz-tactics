@@ -26,14 +26,31 @@ section.homepage
               - if set_data && set_data['set_index']
                 - is_locked = !set_data['unlocked']
                 - link_href = is_locked ? "#" : "/adventure/level/#{@current_adventure_level_number}/set/#{set_data['set_index']}"
-                .quest-level(class="#{'completed' if set_data['completed']} #{'locked' if is_locked}")
-                  a.quest-level-link(href=link_href)
+                - if is_locked
+                  .quest-level(class="#{'completed' if set_data['completed']} #{'locked' if is_locked}")
                     - if set_data['completed']
                       .completion-indicator
                         .checkmark ✓
                     - elsif is_locked
                       .completion-indicator
                         .lock-icon 🔒
+                    - if set_data['first_puzzle']
+                      - puzzle_data = set_data['first_puzzle']
+                      - puzzle_fen = puzzle_data[:fen] if puzzle_data
+                      - puzzle_flip = puzzle_fen&.include?(" w ") || false
+                      - initial_move = puzzle_data[:initial_move] if puzzle_data
+                      .board-link= render(partial: "static/snippets/miniboard",
+                                        locals: { fen: puzzle_fen,
+                                                 flip: puzzle_flip,
+                                                 initial_move: initial_move,
+                                                 title: "First Puzzle" })
+                    .level-info-bottom
+                      .success-criteria= "#{@current_adventure_level_number}-#{set_data['set_index']}: #{set_data['challenge_description'] || 'Solve ' + set_data['puzzles_count'].to_s + ' puzzles'}"
+                - else
+                  a.quest-level(href=link_href class="#{'completed' if set_data['completed']}")
+                    - if set_data['completed']
+                      .completion-indicator
+                        .checkmark ✓
                     - if set_data['first_puzzle']
                       - puzzle_data = set_data['first_puzzle']
                       - puzzle_fen = puzzle_data[:fen] if puzzle_data
