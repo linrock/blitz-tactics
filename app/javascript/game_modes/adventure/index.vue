@@ -1,8 +1,7 @@
 <template>
   <div class="adventure-mode" v-if="levelInfo">
     <div class="adventure-header">
-      <h2>Level {{ levelInfo.level_number }}: {{ levelInfo.level_description }}</h2>
-      <p>Set {{ levelInfo.set_index }} - {{ levelInfo.puzzle_count }} puzzles</p>
+      <h2>Level {{ levelInfo.level_number }}-{{ levelInfo.set_index }}: {{ levelInfo.level_description }}</h2>
     </div>
     
     <div class="adventure-progress">
