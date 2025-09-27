@@ -3,10 +3,22 @@
 # Each level consists of multiple puzzle sets with progressively harder puzzles.
 # Levels get more complex as the level number increases.
 #
+# Level Structure:
+#   - Levels 1-10: Manually defined for fine-tuned onboarding experience
+#   - Levels 11-100: Programmatically generated with scaled rating ranges
+#
+# Theme Support:
+#   Puzzle sets can now specify a theme to use themed puzzle pools:
+#   { puzzles: 10, challenge: "solve", description: "Solve 10 fork puzzles", theme: "fork" }
+#
+#   Themes are loaded from data/themes/{theme}/ directory and must be generated first
+#   using ThemedLevelCreator.export_theme_pools_to_files(theme: "fork")
+#
 # Usage Examples:
 #   # Generate a specific level
-#   AdventureLevelCreator.generate_level(1)
-#   AdventureLevelCreator.generate_level(10)
+#   AdventureLevelCreator.generate_level(1)   # Manual level
+#   AdventureLevelCreator.generate_level(11)  # Generated level
+#   AdventureLevelCreator.generate_level(25)  # Themed level
 #
 #   # Export all levels to files
 #   AdventureLevelCreator.export_all_levels("data/game-modes/adventure/")
@@ -20,20 +32,20 @@
 #   rake adventure:analyze                              # Analyze puzzle availability
 
 class AdventureLevelCreator
-  # Level configuration - defines difficulty progression with challenge conditions
-  LEVEL_CONFIG = {
+  # Manually defined levels 1-10 for fine-tuned onboarding experience
+  MANUAL_LEVELS = {
     1 => {
       description: "Beginner's Journey",
-      rating_range: (600..1000),
+      rating_range: (600..800),
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 3 minutes", time_limit: 180 },
         { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
       ]
     },
     2 => {
       description: "Building Foundations",
-      rating_range: (700..1100),
+      rating_range: (650..850),
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 12 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 12 puzzles" },
@@ -42,7 +54,7 @@ class AdventureLevelCreator
     },
     3 => {
       description: "Growing Confidence",
-      rating_range: (800..1200),
+      rating_range: (700..900),
       puzzle_sets: [
         { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
         { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
@@ -51,7 +63,7 @@ class AdventureLevelCreator
     },
     4 => {
       description: "Stepping Up",
-      rating_range: (900..1300),
+      rating_range: (750..950),
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
@@ -60,16 +72,16 @@ class AdventureLevelCreator
     },
     5 => {
       description: "Intermediate Challenge",
-      rating_range: (1000..1400),
+      rating_range: (800..1000),
       puzzle_sets: [
         { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 10, challenge: "perfect", description: "Solve 10 puzzles perfectly (no mistakes)" },
+        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles perfectly (no mistakes)" },
         { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" }
       ]
     },
     6 => {
       description: "Advanced Tactics",
-      rating_range: (1100..1500),
+      rating_range: (850..1050),
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
@@ -78,16 +90,16 @@ class AdventureLevelCreator
     },
     7 => {
       description: "Master's Path",
-      rating_range: (1200..1600),
+      rating_range: (900..1100),
       puzzle_sets: [
         { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 10, challenge: "perfect", description: "Solve 10 puzzles perfectly (no mistakes)" },
+        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles perfectly (no mistakes)" },
         { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" }
       ]
     },
     8 => {
       description: "Expert Territory",
-      rating_range: (1300..1700),
+      rating_range: (950..1150),
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
@@ -96,16 +108,16 @@ class AdventureLevelCreator
     },
     9 => {
       description: "Elite Challenges",
-      rating_range: (1400..1800),
+      rating_range: (1000..1200),
       puzzle_sets: [
-        { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" },
+        { puzzles: 12, challenge: "without_mistakes", description: "Solve 12 puzzles perfectly (no mistakes)" },
         { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
-        { puzzles: 12, challenge: "perfect", description: "Solve 12 puzzles perfectly (no mistakes)" }
+        { puzzles: 12, challenge: "without_mistakes", description: "Solve 12 puzzles perfectly (no mistakes)" }
       ]
     },
     10 => {
       description: "Grandmaster Quest",
-      rating_range: (1500..1900),
+      rating_range: (1050..1250),
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
@@ -114,18 +126,136 @@ class AdventureLevelCreator
     }
   }.freeze
 
+  # Generate level configuration for levels 11-100 with scaled rating ranges
+  def self.generate_level_config
+    config = {}
+    
+    (11..100).each do |level|
+      # Calculate rating range progression
+      # Level 11: ~800-1222, Level 100: 2400-3200
+      min_rating = 600 + ((level - 1) * 18.18).round  # 18.18 points per level
+      max_rating = 1000 + ((level - 1) * 22.22).round # 22.22 points per level
+      
+      # Ensure we don't exceed the target ranges
+      min_rating = [min_rating, 2400].min
+      max_rating = [max_rating, 3200].min
+      
+      # Generate description based on level
+      description = generate_level_description(level)
+      
+      # Generate puzzle sets based on level
+      puzzle_sets = generate_puzzle_sets_for_level(level)
+      
+      config[level] = {
+        description: description,
+        rating_range: (min_rating..max_rating),
+        puzzle_sets: puzzle_sets
+      }
+    end
+    
+    config
+  end
+  
+  # Generate level description based on level number (for levels 11-100)
+  def self.generate_level_description(level)
+    case level
+    when 11..25
+      "Building Foundations - Level #{level}"
+    when 26..40
+      "Growing Confidence - Level #{level}"
+    when 41..55
+      "Intermediate Challenge - Level #{level}"
+    when 56..70
+      "Advanced Tactics - Level #{level}"
+    when 71..85
+      "Expert Territory - Level #{level}"
+    when 86..95
+      "Master's Path - Level #{level}"
+    when 96..100
+      "Grandmaster Quest - Level #{level}"
+    else
+      "Adventure Level #{level}"
+    end
+  end
+  
+  # Generate puzzle sets based on level complexity (for levels 11-100)
+  def self.generate_puzzle_sets_for_level(level)
+    case level
+    when 25
+      # Special themed level: Tactical Mastery
+      [
+        { puzzles: 10, challenge: "solve", description: "Solve 10 fork puzzles", theme: "fork" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 pin puzzles", theme: "pin" },
+        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 skewer puzzles without mistakes", theme: "skewer" }
+      ]
+    when 50
+      # Special themed level: Checkmate Patterns
+      [
+        { puzzles: 8, challenge: "solve", description: "Solve 8 back rank mate puzzles", theme: "backRankMate" },
+        { puzzles: 8, challenge: "solve", description: "Solve 8 smothered mate puzzles", theme: "smotheredMate" },
+        { puzzles: 8, challenge: "solve", description: "Solve 8 arabian mate puzzles", theme: "arabianMate" }
+      ]
+    when 75
+      # Special themed level: Advanced Tactics
+      [
+        { puzzles: 10, challenge: "solve", description: "Solve 10 discovered attack puzzles", theme: "discoveredAttack" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 deflection puzzles", theme: "deflection" },
+        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 clearance puzzles without mistakes", theme: "clearance" }
+      ]
+    when 11..40
+      # Mid-early levels: introduce speed challenges
+      [
+        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
+        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
+      ]
+    when 41..60
+      # Mid levels: more complex challenges
+      [
+        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
+        { puzzles: 12, challenge: "speed", description: "Solve 12 puzzles in 60 seconds" },
+        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
+      ]
+    when 61..80
+      # Advanced levels: introduce move combo challenges
+      [
+        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
+        { puzzles: 20, challenge: "move_combo", description: "Reach move combo 20", combo_target: 20 }
+      ]
+    when 81..95
+      # Expert levels: higher combo targets
+      [
+        { puzzles: 18, challenge: "solve", description: "Solve 18 puzzles" },
+        { puzzles: 12, challenge: "speed", description: "Solve 12 puzzles in 60 seconds" },
+        { puzzles: 25, challenge: "move_combo", description: "Reach move combo 25", combo_target: 25 }
+      ]
+    when 96..100
+      # Grandmaster levels: maximum difficulty
+      [
+        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
+        { puzzles: 15, challenge: "speed", description: "Solve 15 puzzles in 60 seconds" },
+        { puzzles: 30, challenge: "move_combo", description: "Reach move combo 30", combo_target: 30 }
+      ]
+    else
+      # Fallback
+      [
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
+        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
+      ]
+    end
+  end
+
+  # Level configuration - combines manual levels 1-10 with generated levels 11-100
+  LEVEL_CONFIG = MANUAL_LEVELS.merge(generate_level_config).freeze
+
   # Challenge type configurations
   CHALLENGE_CONFIGS = {
     'solve' => {
       name: 'Solve',
       description: 'Complete puzzles with mistakes allowed',
       requires_perfect: false,
-      time_limit: nil
-    },
-    'perfect' => {
-      name: 'Perfect',
-      description: 'Complete puzzles without any mistakes',
-      requires_perfect: true,
       time_limit: nil
     },
     'without_mistakes' => {
@@ -187,7 +317,9 @@ class AdventureLevelCreator
         rating_range: config[:rating_range],
         color_to_move: color_to_move,
         challenge: set_config[:challenge],
-        challenge_description: set_config[:description]
+        challenge_description: set_config[:description],
+        theme: set_config[:theme],
+        time_limit: set_config[:time_limit]
       )
 
       level_data[:puzzle_sets] << puzzle_set
@@ -197,14 +329,15 @@ class AdventureLevelCreator
   end
 
   # Generate a single puzzle set for a level using puzzle pool files
-  def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w', challenge: 'solve', challenge_description: nil)
+  def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w', challenge: 'solve', challenge_description: nil, theme: nil, time_limit: nil)
     # For without_mistakes and move_combo challenges, use 2x the number of puzzles to provide variety
     actual_puzzles_count = (challenge == 'without_mistakes' || challenge == 'move_combo') ? puzzles_count * 2 : puzzles_count
     
-    puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles required, #{actual_puzzles_count} puzzles in pool, #{color_to_move == 'w' ? 'white' : 'black'} to move, #{challenge_description || challenge})"
+    theme_text = theme ? " (#{theme} theme)" : ""
+    puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles required, #{actual_puzzles_count} puzzles in pool, #{color_to_move == 'w' ? 'white' : 'black'} to move, #{challenge_description || challenge})#{theme_text}"
 
-    # Determine which pool file to use based on rating range and color
-    pool_file_info = find_pool_file_for_rating_range(rating_range, color_to_move)
+    # Determine which pool file to use based on rating range, color, and theme
+    pool_file_info = theme ? find_themed_pool_file_for_rating_range(rating_range, color_to_move, theme) : find_pool_file_for_rating_range(rating_range, color_to_move)
     
     if pool_file_info.nil?
       puts "    ERROR: No pool file found for rating range #{rating_range}"
@@ -246,6 +379,8 @@ class AdventureLevelCreator
     puzzle_ids = puzzles.map(&:puzzle_id)
 
     challenge_config = get_challenge_config(challenge)
+    # Override time_limit if custom value provided
+    challenge_config = challenge_config.merge(time_limit: time_limit) if time_limit
     
     {
       set_index: set_index,
@@ -256,6 +391,7 @@ class AdventureLevelCreator
       challenge: challenge,
       challenge_description: challenge_description,
       challenge_config: challenge_config,
+      theme: theme,
       puzzles: puzzle_ids
     }
   end
@@ -308,6 +444,63 @@ class AdventureLevelCreator
         color: color_to_move,
         pool_number: best_pool,
         rating_range: pool_mapping.key(best_pool)
+      }
+    end
+    
+    nil
+  end
+
+  # Find the appropriate themed pool file for a given rating range, color, and theme
+  def self.find_themed_pool_file_for_rating_range(rating_range, color_to_move = 'w', theme = nil)
+    return nil unless theme
+    
+    pools_dir = "data/themes/#{theme}/"
+    
+    # Map rating ranges to pool file numbers (same as regular pools)
+    pool_mapping = {
+      (600..800) => 1,
+      (800..1000) => 2,
+      (1000..1200) => 3,
+      (1200..1400) => 4,
+      (1400..1600) => 5,
+      (1600..1800) => 6,
+      (1800..2000) => 7,
+      (2000..2100) => 8,
+      (2100..2300) => 9,
+      (2300..3200) => 10
+    }
+    
+    # Find the best matching pool
+    best_pool = nil
+    best_overlap = 0
+    
+    pool_mapping.each do |pool_range, pool_number|
+      # Calculate overlap between the requested range and this pool
+      overlap_start = [rating_range.min, pool_range.min].max
+      overlap_end = [rating_range.max, pool_range.max].min
+      overlap = [overlap_end - overlap_start + 1, 0].max
+      
+      # Choose the pool with the most overlap
+      if overlap > best_overlap
+        best_overlap = overlap
+        best_pool = pool_number
+      end
+    end
+    
+    return nil unless best_pool
+    
+    # Use the specified color to move and theme
+    filename = "#{color_to_move}_pool_#{format("%02d", best_pool)}_#{pool_mapping.key(best_pool).min}-#{pool_mapping.key(best_pool).max}.txt"
+    file_path = Rails.root.join(pools_dir, filename)
+    
+    if File.exist?(file_path)
+      return {
+        filename: filename,
+        file_path: file_path,
+        color: color_to_move,
+        pool_number: best_pool,
+        rating_range: pool_mapping.key(best_pool),
+        theme: theme
       }
     end
     
