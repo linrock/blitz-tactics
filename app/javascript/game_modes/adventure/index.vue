@@ -1,10 +1,22 @@
 <template>
   <div class="adventure-mode" v-if="levelInfo">
-    <div class="adventure-header">
+    <div v-if="!setCompleted" class="adventure-header">
       <h2>Level {{ levelInfo.level_number }}-{{ levelInfo.set_index }}: {{ levelInfo.level_description }}</h2>
     </div>
     
-    <div class="adventure-progress">
+    <!-- Show completion info in place of progress when completed -->
+    <div v-if="setCompleted" class="adventure-progress">
+      <div class="adventure-completion-info">
+        <div class="completion-message">Level {{ levelInfo.level_number }}-{{ levelInfo.set_index }} completed!</div>
+        <div v-if="completionTime" class="completion-time">Time: {{ formatTime(completionTime) }}</div>
+        <div v-if="bestTime" class="best-time">Best Time: {{ formatTime(bestTime) }}</div>
+        <div v-else-if="completionTime" class="best-time">Best Time: {{ formatTime(completionTime) }}</div>
+        <button class="completion-button" @click="returnToHomepage">Continue</button>
+      </div>
+    </div>
+    
+    <!-- Show normal progress when not completed -->
+    <div v-else class="adventure-progress">
       <div v-if="isSpeedChallenge && !timerExpired" class="timer-section">
         <timer :time-limit="levelInfo.time_limit"></timer>
       </div>
@@ -51,14 +63,7 @@
       </div>
     </div>
     
-    <div v-if="setCompleted" class="adventure-completion-overlay">
-      <div class="completion-content">
-        <div class="completion-message">{{ completionMessage }}</div>
-        <button class="completion-button" @click="returnToHomepage">Return to Homepage</button>
-      </div>
-    </div>
-    
-    <!-- Board overlay for timer timeout -->
+    <!-- Board overlay for timer timeout and completion -->
     <div class="board-modal-container invisible" style="display: none;"></div>
   </div>
 </template>
@@ -95,7 +100,9 @@ export default {
       setCompleted: false,
       completionMessage: '',
       startTime: null,
-      timerExpired: false
+      timerExpired: false,
+      completionTime: null,
+      bestTime: null
     }
   },
   
@@ -199,22 +206,26 @@ export default {
         })
 
         const result = await response.json()
+        console.log('Backend response:', result)
+        console.log('best_time_ms from backend:', result.best_time_ms)
         
         if (result.success) {
           this.setCompleted = true
-          if (result.level_completed) {
-            this.completionMessage = 'Congratulations! You completed the entire level!'
-          } else {
-            this.completionMessage = 'Set completed! Great job!'
-          }
+          this.completionTime = timeSpent
+          this.bestTime = result.best_time_ms
+          this.showBoardOverlay()
         } else {
           this.setCompleted = true
-          this.completionMessage = 'Set completed! Great job!'
+          this.completionTime = timeSpent
+          this.bestTime = null
+          this.showBoardOverlay()
         }
       } catch (error) {
         console.error('Error completing set:', error)
         this.setCompleted = true
-        this.completionMessage = 'Set completed! Great job!'
+        this.completionTime = timeSpent
+        this.bestTime = null
+        this.showBoardOverlay()
       }
     },
     
@@ -232,6 +243,12 @@ export default {
         el.style.display = ''
         el.classList.remove('invisible')
       }
+    },
+    
+    formatTime(timeMs) {
+      if (!timeMs) return '0.0s'
+      const seconds = timeMs / 1000
+      return `${(Math.round(seconds * 10) / 10).toFixed(1)}s`
     }
   },
 
@@ -341,47 +358,35 @@ export default {
   font-family: inherit !important;
 }
 
-.adventure-mode .adventure-completion-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
+/* Completion information underneath the board */
+.adventure-mode .adventure-completion-info {
+  text-align: center;
   pointer-events: auto;
 }
 
-.adventure-mode .adventure-completion-overlay .completion-content {
-  text-align: center;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  min-width: 300px;
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.adventure-mode .adventure-completion-overlay .completion-content .completion-message {
+.adventure-mode .adventure-completion-info .completion-message {
   color: #4CAF50;
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 20px;
-  min-height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin-bottom: 15px;
 }
 
-.adventure-mode .adventure-completion-overlay .completion-content .completion-button {
-  background: #4CAF50;
+.adventure-mode .adventure-completion-info .completion-time {
+  color: #2c5aa0;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.adventure-mode .adventure-completion-info .best-time {
+  color: #4a90e2;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.adventure-mode .adventure-completion-info .completion-button {
+  background: #4a90e2;
   color: white;
   border: none;
   padding: 14px 28px;
@@ -396,12 +401,12 @@ export default {
   min-height: 48px;
 }
 
-.adventure-mode .adventure-completion-overlay .completion-content .completion-button:hover {
-  background: #45a049;
+.adventure-mode .adventure-completion-info .completion-button:hover {
+  background: #357abd;
 }
 
-.adventure-mode .adventure-completion-overlay .completion-content .completion-button:active {
-  background: #3d8b40;
+.adventure-mode .adventure-completion-info .completion-button:active {
+  background: #2c5aa0;
 }
 
 /* Timer expired section */

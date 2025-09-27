@@ -28,10 +28,7 @@ section.homepage
                 - link_href = is_locked ? "#" : "/adventure/level/#{@current_adventure_level_number}/set/#{set_data['set_index']}"
                 - if is_locked
                   .quest-level(class="#{'completed' if set_data['completed']} #{'locked' if is_locked}")
-                    - if set_data['completed']
-                      .completion-indicator
-                        .checkmark ✓
-                    - elsif is_locked
+                    - if is_locked
                       .completion-indicator
                         .lock-icon 🔒
                     - if set_data['first_puzzle']
@@ -47,12 +44,11 @@ section.homepage
                     .level-info-bottom
                       .success-criteria= "#{@current_adventure_level_number}-#{set_data['set_index']}: #{set_data['challenge_description'] || 'Solve ' + set_data['puzzles_count'].to_s + ' puzzles'}"
                       - if set_data['completed'] && set_data['completion_data'] && set_data['completion_data']['best_time_ms']
-                        .best-time Best time: #{(set_data['completion_data']['best_time_ms'] / 100.0).round / 10.0}s
+                        .best-time
+                          .checkmark ✓
+                          | Best time: #{(set_data['completion_data']['best_time_ms'] / 100.0).round / 10.0}s
                 - else
                   a.quest-level(href=link_href class="#{'completed' if set_data['completed']}")
-                    - if set_data['completed']
-                      .completion-indicator
-                        .checkmark ✓
                     - if set_data['first_puzzle']
                       - puzzle_data = set_data['first_puzzle']
                       - puzzle_fen = puzzle_data[:fen] if puzzle_data
@@ -66,7 +62,9 @@ section.homepage
                     .level-info-bottom
                       .success-criteria= "#{@current_adventure_level_number}-#{set_data['set_index']}: #{set_data['challenge_description'] || 'Solve ' + set_data['puzzles_count'].to_s + ' puzzles'}"
                       - if set_data['completed'] && set_data['completion_data'] && set_data['completion_data']['best_time_ms']
-                        .best-time Best time: #{(set_data['completion_data']['best_time_ms'] / 100.0).round / 10.0}s
+                        .best-time
+                          .checkmark ✓
+                          | Best time: #{(set_data['completion_data']['best_time_ms'] / 100.0).round / 10.0}s
 
         .quest-container-bottom.container
           - if user_signed_in? && @current_level_completed

@@ -161,27 +161,22 @@ class GameModes::AdventureController < ApplicationController
       return
     end
     
-    # Check if already completed
-    if set_completed_by_user?(level_number, set_index, current_user)
-      render json: { 
-        success: false, 
-        error: "Puzzle set already completed",
-        already_completed: true
-      }
-      return
-    end
     
     begin
-      # Mark the puzzle set as completed
-      mark_set_completed_for_user(level_number, set_index, current_user, time_spent)
+      # Mark the puzzle set as completed and get the completion data
+      completion_data = mark_set_completed_for_user(level_number, set_index, current_user, time_spent)
       
       # Check if the entire level is completed
       level_completed = level_completed_by_user?(level_number, current_user)
+      
+      # Get the best time from the completion data we just created
+      best_time_ms = completion_data&.dig('best_time_ms')
       
       render json: { 
         success: true,
         set_completed: true,
         level_completed: level_completed,
+        best_time_ms: best_time_ms,
         message: level_completed ? "Congratulations! You completed the entire level!" : "Puzzle set completed!"
       }
     rescue => e
@@ -244,29 +239,29 @@ class GameModes::AdventureController < ApplicationController
     
     # Initialize completion data
     completion_data = {
-      completed: true
+      'completed' => true
     }
     
     # Handle existing completion data
     if existing_data.is_a?(Hash)
       # Update existing data
       completion_data = existing_data.dup
-      completion_data[:completed] = true
+      completion_data['completed'] = true
       
       # Update best time if this is faster
       if time_spent && time_spent > 0
-        current_best = completion_data[:best_time_ms]
+        current_best = completion_data['best_time_ms']
         if current_best.nil? || time_spent < current_best
-          completion_data[:best_time_ms] = time_spent
+          completion_data['best_time_ms'] = time_spent
         end
       end
     else
       # First completion
-      completion_data[:first_completed_at] = current_time
+      completion_data['first_completed_at'] = current_time
       
       # Set best time if provided
       if time_spent && time_spent > 0
-        completion_data[:best_time_ms] = time_spent
+        completion_data['best_time_ms'] = time_spent
       end
     end
     
@@ -275,6 +270,9 @@ class GameModes::AdventureController < ApplicationController
     user_profile['adventure_completions'] = adventure_completions
     
     user.update!(profile: user_profile)
+    
+    # Return the completion data so we can access best_time_ms
+    completion_data
   end
 
   def get_set_completion_data(level_number, set_index, user)
