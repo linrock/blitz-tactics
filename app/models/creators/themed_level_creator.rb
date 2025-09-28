@@ -73,6 +73,7 @@ class ThemedLevelCreator
     oneMove
     opening
     pawnEndgame
+    pawnMate
     pin
     promotion
     queenEndgame
