@@ -12,6 +12,7 @@ section.adventure-index
           - level_number = level_info[:level_number]
           - level_data = level_info[:data]
           - completed = level_info[:completed]
+          - best_times = level_info[:best_times] || []
           
           .level-card(class="#{'completed' if completed}")
             a.level-link(href="/?level=#{level_number}")
@@ -21,8 +22,13 @@ section.adventure-index
                   .completion-badge ✓
               .level-description= level_data['description']
               .level-details
-                .rating-range= level_data['rating_range']
                 .puzzle-count= "#{level_data['puzzle_sets'].sum { |set| set['puzzles_count'] }} puzzles"
+                - if best_times.any?
+                  .best-times
+                    - best_times.each do |best_time|
+                      .best-time
+                        span.set-label Set #{best_time[:set_index]}:
+                        span.time= format_time(best_time[:best_time_ms])
                 - if level_data['puzzle_sets'].any?
                   .challenge-types
                     - level_data['puzzle_sets'].each do |set|

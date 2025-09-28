@@ -92,4 +92,18 @@ module ApplicationHelper
       disabled_content
     end
   end
+
+  # Helper for formatting time in milliseconds to readable format
+  def format_time(time_ms)
+    return "N/A" unless time_ms
+    
+    seconds = time_ms / 1000.0
+    if seconds < 60
+      "#{seconds.round(1)}s"
+    else
+      minutes = (seconds / 60).floor
+      remaining_seconds = (seconds % 60).round(1)
+      "#{minutes}m #{remaining_seconds}s"
+    end
+  end
 end

@@ -16,10 +16,26 @@ class GameModes::AdventureController < ApplicationController
         if can_access
           # Check completion status for current user
           completed = current_user ? level_completed_by_user?(level_number, current_user) : false
+          
+          # Get best times for each puzzle set in this level
+          best_times = []
+          if current_user
+            level_data['puzzle_sets'].each do |set|
+              completion_data = get_set_completion_data(level_number, set['set_index'], current_user)
+              if completion_data && completion_data['best_time_ms']
+                best_times << {
+                  set_index: set['set_index'],
+                  best_time_ms: completion_data['best_time_ms']
+                }
+              end
+            end
+          end
+          
           @adventure_levels << {
             level_number: level_number,
             data: level_data,
-            completed: completed
+            completed: completed,
+            best_times: best_times
           }
         end
       end
