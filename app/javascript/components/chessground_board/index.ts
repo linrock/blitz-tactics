@@ -82,6 +82,10 @@ export default class ChessgroundBoard {
       events: {
         // handle player moves
         move: (from: Key, to: Key) => {
+          console.log(`Chessground: Attempting move from ${from} to ${to}`)
+          console.log(`Chessground: Current FEN: ${this.cjs.fen()}`)
+          console.log(`Chessground: Piece on ${from}:`, this.cjs.get(from as Square))
+          
           // TODO ideally we never update the board based on the player move right away
           // this avoids a flash of a piece being dropped on the wrong square
           const piece = this.cjs.get(from as Square)
@@ -102,6 +106,7 @@ export default class ChessgroundBoard {
             // go through the move:try flow to decide whether to accept the move
             const cjs = new Chess(this.cjs.fen())
             const moveObj = cjs.move({ from: from as Square, to: to as Square })
+            console.log(`Chessground: Move result:`, moveObj)
             dispatch('move:try', moveObj)
           }
         },
@@ -166,14 +171,16 @@ export default class ChessgroundBoard {
       'move:almost': () => this.resetToBeforePlayerMove(),
 
       'move:make': (move: Move, options: MoveOptions = {}) => {
-        // console.warn(`handling move:make ${move} from ${this.cjs.fen()}`)
-        // console.log(`${options.opponent ? 'opponent' : 'player'} just moved`);
+        console.log(`Chessground: handling move:make ${JSON.stringify(move)} from ${this.cjs.fen()}`)
+        console.log(`${options.opponent ? 'opponent' : 'player'} just moved`);
         const moveObj = this.cjs.move(move)
         if (!moveObj) {
+          console.error(`Chessground: Move failed - No moveObj after move:make. FEN: ${this.cjs.fen()}, move: ${JSON.stringify(move)}`)
           throw new Error(
             `No moveObj after move:make. FEN: ${this.cjs.fen()}, move: ${JSON.stringify(move)}`
           )
         }
+        console.log(`Chessground: Move successful:`, moveObj)
         // console.log(`last move: ${moveObj.from}, ${moveObj.to}`)
         let lastMove = []
         if (options.opponent) {

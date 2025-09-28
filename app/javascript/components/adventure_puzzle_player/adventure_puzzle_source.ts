@@ -2,6 +2,8 @@ import { subscribe, dispatch } from '@blitz/events'
 import { InitialMove, Puzzle, UciMove } from '@blitz/types'
 import { uciToMove, moveToUci } from '@blitz/utils'
 import Puzzles from '../puzzle_player/puzzles'
+import StockfishEngine from '../../workers/stockfish_engine'
+import { Chess } from 'chess.js'
 
 // Adventure-specific puzzle source that works with adventure data
 export default class AdventurePuzzleSource {
@@ -17,10 +19,13 @@ export default class AdventurePuzzleSource {
   private isWithoutMistakesChallenge = false
   private isSpeedChallenge = false
   private isMoveComboChallenge = false
+  private isCheckmateChallenge = false
   private comboCount = 0
   private comboTarget = 0
   private comboDropTime = 7
   private lastPuzzleId: string | null = null
+  private engine: StockfishEngine | null = null
+  private currentFen: string = ''
 
   constructor() {
     this.initializePuzzleSource()
@@ -39,21 +44,39 @@ export default class AdventurePuzzleSource {
         this.isWithoutMistakesChallenge = levelInfo.challenge === 'without_mistakes'
         this.isSpeedChallenge = levelInfo.challenge === 'speed'
         this.isMoveComboChallenge = levelInfo.challenge === 'move_combo'
+        this.isCheckmateChallenge = levelInfo.challenge === 'checkmate'
         this.puzzlesSolvedInRow = 0
         this.comboCount = 0
         this.comboTarget = levelInfo.combo_target || 30
         this.comboDropTime = levelInfo.combo_drop_time || null
+        
+        // Initialize engine for checkmate challenges
+        if (this.isCheckmateChallenge) {
+          this.engine = new StockfishEngine()
+          // Set initial FEN for checkmate challenges
+          this.currentFen = levelInfo.position_fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+          console.log('Adventure: Initial FEN set for checkmate challenge:', this.currentFen)
+        }
+        
         console.log('Adventure: Level loaded', {
           challenge: levelInfo.challenge,
           requiredPuzzles: this.requiredPuzzles,
           isWithoutMistakesChallenge: this.isWithoutMistakesChallenge,
           isSpeedChallenge: this.isSpeedChallenge,
           isMoveComboChallenge: this.isMoveComboChallenge,
+          isCheckmateChallenge: this.isCheckmateChallenge,
           comboTarget: this.comboTarget,
-          comboDropTime: this.comboDropTime
+          comboDropTime: this.comboDropTime,
+          position_fen: levelInfo.position_fen
         })
       },
       'puzzles:fetched': puzzles => {
+        if (this.isCheckmateChallenge) {
+          // For checkmate challenges, we don't use puzzles - we use position trainer mode
+          console.log('Adventure: Checkmate challenge detected, skipping puzzle loading')
+          return
+        }
+        
         this.puzzles = new Puzzles()
         this.addPuzzles(puzzles)
         this.firstPuzzle()
@@ -134,19 +157,147 @@ export default class AdventurePuzzleSource {
           dispatch('adventure:combo:reset', { comboCount: this.comboCount, comboTarget: this.comboTarget })
         }
       },
-      'timer:stopped': () => {
-        if (this.isSpeedChallenge) {
-          console.log('Adventure: Timer expired in speed challenge - level failed')
-          // Do NOT dispatch puzzles:complete when timer runs out
-          // The level should be marked as failed, not completed
-        }
-        if (this.isMoveComboChallenge && this.comboDropTime !== null) {
-          console.log('Adventure: Combo timer expired in move_combo challenge')
-          this.comboCount = 0
-          dispatch('adventure:combo:reset', { comboCount: this.comboCount, comboTarget: this.comboTarget })
-        }
-      },
+        'timer:stopped': () => {
+          if (this.isSpeedChallenge) {
+            console.log('Adventure: Timer expired in speed challenge - level failed')
+            // Do NOT dispatch puzzles:complete when timer runs out
+            // The level should be marked as failed, not completed
+          }
+          if (this.isMoveComboChallenge && this.comboDropTime !== null) {
+            console.log('Adventure: Combo timer expired in move_combo challenge')
+            this.comboCount = 0
+            dispatch('adventure:combo:reset', { comboCount: this.comboCount, comboTarget: this.comboTarget })
+          }
+        },
+        'game:won': () => {
+          if (this.isCheckmateChallenge) {
+            console.log('Adventure: Checkmate challenge completed!')
+            console.log('Adventure: Dispatching puzzles:complete')
+            dispatch('puzzles:complete')
+          }
+        },
+        'game:lost': () => {
+          if (this.isCheckmateChallenge) {
+            console.log('Adventure: Checkmate challenge failed')
+            // Could add retry logic here if needed
+          }
+        },
+        'fen:set': (fen) => {
+          if (this.isCheckmateChallenge) {
+            console.log('Adventure: FEN updated:', fen)
+            this.currentFen = fen
+          }
+        },
+        'move:make': (move, options = {}) => {
+          if (this.isCheckmateChallenge && this.engine) {
+            console.log('Adventure: Move made in checkmate challenge:', move, 'opponent:', options.opponent)
+            
+            // Only process player moves, not computer moves (to avoid infinite loops)
+            if (!options.opponent) {
+              console.log('Adventure: Player move successful, checking game state...')
+              // Check if game is over after player move
+              setTimeout(() => {
+                this.checkGameOver()
+                // If game is not over, get computer move
+                setTimeout(() => {
+                  this.getComputerMove()
+                }, 50)
+              }, 100)
+            } else {
+              console.log('Adventure: Computer move received, checking game state...')
+              // Check if game is over after computer move
+              setTimeout(() => {
+                this.checkGameOver()
+              }, 100)
+            }
+          }
+        },
     })
+  }
+
+
+
+  private updateCurrentFen() {
+    console.log('Adventure: updateCurrentFen called')
+    // Get the current FEN from the chessground board
+    const chessgroundElement = document.querySelector('.chessground-board')
+    console.log('Adventure: chessgroundElement found:', !!chessgroundElement)
+    if (!chessgroundElement || !(chessgroundElement as any).cg) {
+      console.error('Adventure: Could not find chessground board to update FEN')
+      return
+    }
+    
+    const cg = (chessgroundElement as any).cg
+    const newFen = cg.state.fen
+    console.log('Adventure: New FEN from chessground:', newFen)
+    console.log('Adventure: Current stored FEN:', this.currentFen)
+    if (newFen !== this.currentFen) {
+      console.log('Adventure: FEN updated from', this.currentFen, 'to', newFen)
+      this.currentFen = newFen
+    } else {
+      console.log('Adventure: FEN unchanged')
+    }
+  }
+
+  private getComputerMove() {
+    if (!this.engine) {
+      console.error('Adventure: Engine not initialized')
+      return
+    }
+    
+    // Get the current FEN from the global chessground board
+    if (!(window as any).adventureChessgroundBoard) {
+      console.error('Adventure: Chessground board not found')
+      return
+    }
+    
+    const currentFen = (window as any).adventureChessgroundBoard.getFen()
+    console.log('Adventure: Getting computer move for FEN:', currentFen)
+    
+    this.engine.analyze(currentFen, { depth: 15, multipv: 1 }).then((analysis) => {
+      const evaluation = analysis.state.evaluation
+      if (evaluation && evaluation.best) {
+        const move = uciToMove(evaluation.best)
+        console.log('Adventure: Computer move calculated:', move)
+        console.log('Adventure: UCI move from Stockfish:', evaluation.best)
+        // Dispatch the move to update the board
+        dispatch('move:make', move, { opponent: true })
+      } else {
+        console.error('Adventure: No computer move found')
+      }
+    }).catch((error) => {
+      console.error('Adventure: Error getting computer move:', error)
+    })
+  }
+
+  private checkGameOver() {
+    console.log('Adventure: checkGameOver called')
+    // Get the current FEN from the global chessground board
+    if (!(window as any).adventureChessgroundBoard) {
+      console.error('Adventure: Chessground board not found for game over check')
+      return
+    }
+    
+    const currentFen = (window as any).adventureChessgroundBoard.getFen()
+    console.log('Adventure: Checking game over for FEN:', currentFen)
+    
+    // Create a temporary chess instance to check game state
+    const tempChess = new Chess(currentFen)
+    console.log('Adventure: Game over?', tempChess.game_over())
+    console.log('Adventure: In checkmate?', tempChess.in_checkmate())
+    console.log('Adventure: Turn:', tempChess.turn())
+    
+    if (tempChess.game_over()) {
+      if (tempChess.in_checkmate()) {
+        console.log('Adventure: Checkmate achieved!')
+        dispatch('game:won')
+      } else {
+        console.log('Adventure: Game over but not checkmate')
+        dispatch('game:lost')
+      }
+    } else {
+      console.log('Adventure: Game not over, continuing...')
+    }
   }
 
   private addPuzzles(puzzles) {
@@ -206,6 +357,14 @@ export default class AdventurePuzzleSource {
       dispatch('puzzles:start')
     } else {
       console.log('Adventure: Already started, not dispatching puzzles:start')
+    }
+    
+    // Handle checkmate challenges differently - they don't use boardState
+    if (this.isCheckmateChallenge) {
+      console.log('Adventure: Checkmate challenge - accepting move')
+      dispatch('move:success')
+      dispatch('move:make', move)
+      return
     }
     
     if (!this.current.boardState) return

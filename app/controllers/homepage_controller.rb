@@ -291,6 +291,19 @@ class HomepageController < ApplicationController
   end
 
   def get_first_puzzle_for_adventure_set(set_data)
+    # Handle checkmate challenges - they use position_fen instead of puzzles
+    if set_data['challenge'] == 'checkmate' && set_data['position_fen'].present?
+      return {
+        puzzle_id: "checkmate-#{set_data['set_index']}",
+        fen: set_data['position_fen'],
+        initial_fen: set_data['position_fen'],
+        initial_move: nil, # No initial move for checkmate challenges
+        rating: nil,
+        themes: ['checkmate']
+      }
+    end
+
+    # Handle regular puzzle-based challenges
     return nil unless set_data['puzzles'].present? && set_data['puzzles'].is_a?(Array)
 
     first_puzzle_id = set_data['puzzles'].first

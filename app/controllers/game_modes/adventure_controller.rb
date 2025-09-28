@@ -83,14 +83,20 @@ class GameModes::AdventureController < ApplicationController
       return
     end
     
-    # Load puzzles from database using the puzzle IDs
-    puzzle_ids = puzzle_set['puzzles']
-    @puzzles = []
-    
-    puzzle_ids.each do |puzzle_id|
-      puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
-      if puzzle
-        @puzzles << puzzle.bt_puzzle_data
+    # Handle checkmate challenges differently - they use position_fen instead of puzzles
+    if puzzle_set['challenge'] == 'checkmate'
+      @puzzles = []
+      # For checkmate challenges, we don't need puzzle data - the frontend will handle the position
+    else
+      # Load puzzles from database using the puzzle IDs
+      puzzle_ids = puzzle_set['puzzles']
+      @puzzles = []
+      
+      puzzle_ids.each do |puzzle_id|
+        puzzle = LichessV2Puzzle.find_by(puzzle_id: puzzle_id)
+        if puzzle
+          @puzzles << puzzle.bt_puzzle_data
+        end
       end
     end
     
@@ -113,6 +119,12 @@ class GameModes::AdventureController < ApplicationController
         success_criteria: "Complete all #{puzzle_set['puzzles_count']} puzzles"
       }
     }
+    
+    # Add position data for checkmate challenges
+    if puzzle_set['challenge'] == 'checkmate'
+      @puzzle_data[:position_fen] = puzzle_set['position_fen']
+      @puzzle_data[:level_info][:position_fen] = puzzle_set['position_fen']
+    end
     
     render :play_level
   rescue => e

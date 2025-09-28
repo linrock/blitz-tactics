@@ -42,6 +42,9 @@
           <span v-else-if="isMoveComboChallenge">
             Reach move combo <span class="total">{{ comboTarget }}</span>
           </span>
+          <span v-else-if="isCheckmateChallenge">
+            Win by checkmate
+          </span>
           <span v-else>
             Solve <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles
           </span>
@@ -55,6 +58,9 @@
           </span>
           <span v-else-if="isMoveComboChallenge">
             Move combo: <span class="current">{{ comboCount }}</span> <span class="separator">of</span> <span class="total">{{ comboTarget }}</span>
+          </span>
+          <span v-else-if="isCheckmateChallenge">
+            Win by checkmate
           </span>
           <span v-else>
             <span class="current">{{ puzzlesSolved }}</span> <span class="separator">of</span> <span class="total">{{ levelInfo.puzzle_count }}</span> puzzles solved
@@ -93,6 +99,7 @@ export default {
       isWithoutMistakesChallenge: false,
       isSpeedChallenge: false,
       isMoveComboChallenge: false,
+      isCheckmateChallenge: false,
       comboCount: 0,
       comboTarget: 0,
       comboDropTime: null,
@@ -111,6 +118,7 @@ export default {
     this.setupEventListeners()
   },
   
+  
   methods: {
     initializeAdventureMode() {
       const puzzlePlayerElement = document.getElementById('puzzle-player')
@@ -125,6 +133,7 @@ export default {
         this.isWithoutMistakesChallenge = this.levelInfo.challenge === 'without_mistakes'
         this.isSpeedChallenge = this.levelInfo.challenge === 'speed'
         this.isMoveComboChallenge = this.levelInfo.challenge === 'move_combo'
+        this.isCheckmateChallenge = this.levelInfo.challenge === 'checkmate'
         this.requiredPuzzles = this.levelInfo.puzzle_count || 0
         this.puzzlesSolvedInRow = 0
         this.comboCount = 0
@@ -132,20 +141,43 @@ export default {
         this.comboDropTime = this.levelInfo.combo_drop_time || null
         console.log('Adventure: levelInfo loaded:', this.levelInfo)
         
-        // Create all puzzle player components first
-        new ChessgroundBoard()
-        new ChessboardResizer()
-        new MoveStatus()
-        new Instructions()
-        new ComboCounter()
-        new PuzzleHint()
-        
-        // Create adventure puzzle source last so it can listen to events
-        new AdventurePuzzleSource()
-
-        // Dispatch events to load puzzles
-        dispatch('adventure:level:loaded', this.levelInfo)
-        dispatch('puzzles:fetched', JSON.parse(puzzlesData).puzzles)
+        // Initialize based on challenge type
+        if (this.isCheckmateChallenge) {
+          // For checkmate challenges, create board with correct options
+          const puzzleData = JSON.parse(puzzlesData)
+          console.log('Checkmate challenge - puzzle data:', puzzleData)
+          if (puzzleData.position_fen) {
+            console.log('Setting up checkmate position with FEN:', puzzleData.position_fen)
+            // Create chessground board with correct FEN and orientation
+            window.adventureChessgroundBoard = new ChessgroundBoard({
+              fen: puzzleData.position_fen,
+              intentOnly: false,
+              orientation: 'white' // Show from white's perspective so black pieces are at bottom
+            })
+            new ChessboardResizer()
+            new MoveStatus()
+            new Instructions()
+            new ComboCounter()
+            new PuzzleHint()
+            // Initialize adventure puzzle source for event handling
+            new AdventurePuzzleSource()
+            dispatch('adventure:level:loaded', this.levelInfo)
+          } else {
+            console.error('No position_fen found in puzzle data for checkmate challenge')
+          }
+        } else {
+          // For regular challenges, create board with default options
+          new ChessgroundBoard()
+          new ChessboardResizer()
+          new MoveStatus()
+          new Instructions()
+          new ComboCounter()
+          new PuzzleHint()
+          // Use adventure puzzle source
+          new AdventurePuzzleSource()
+          dispatch('adventure:level:loaded', this.levelInfo)
+          dispatch('puzzles:fetched', JSON.parse(puzzlesData).puzzles)
+        }
       }
     },
     
@@ -175,7 +207,15 @@ export default {
           this.comboTarget = data.comboTarget
         },
         'puzzles:complete': () => {
+          console.log('Adventure: puzzles:complete received')
           this.handleSetComplete()
+        },
+        'game:won': () => {
+          console.log('Adventure: game:won received, isCheckmateChallenge:', this.isCheckmateChallenge)
+          if (this.isCheckmateChallenge) {
+            console.log('Adventure: Calling handleSetComplete for checkmate challenge')
+            this.handleSetComplete()
+          }
         },
         'timer:stopped': () => {
           if (this.isSpeedChallenge) {

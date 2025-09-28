@@ -47,9 +47,9 @@ class AdventureLevelCreator
       description: "Building Foundations",
       rating_range: (650..850),
       puzzle_sets: [
-        { puzzles: 10, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 10, challenge: "without_mistakes", description: "Solve 12 puzzles without mistakes" }
+        { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
+        { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
+        { puzzles: 1, challenge: "checkmate", description: "Win by checkmate", position_fen: "8/4K3/2q5/8/8/2k5/8/8 b - - 0 1" }
       ]
     },
     3 => {
@@ -281,6 +281,15 @@ class AdventureLevelCreator
       combo_target: 30, # default combo target
       combo_drop_time: nil # default: no timer (combo only drops on mistakes)
       # To enable timer: combo_drop_time: 15 (combo drops after 15 seconds of inactivity)
+    },
+    'checkmate' => {
+      name: 'Checkmate',
+      description: 'Win the position by checkmate',
+      requires_perfect: true,
+      time_limit: nil,
+      resets_on_mistake: false,
+      position_type: 'checkmate', # indicates this uses position trainer mode
+      engine_opponent: true # uses stockfish.js for opponent moves
     }
   }.freeze
 
@@ -315,11 +324,12 @@ class AdventureLevelCreator
         set_index: set_index + 1,
         puzzles_count: set_config[:puzzles],
         rating_range: config[:rating_range],
-        color_to_move: color_to_move,
+        color_to_move: set_config[:color_to_move] || color_to_move,
         challenge: set_config[:challenge],
         challenge_description: set_config[:description],
         theme: set_config[:theme],
-        time_limit: set_config[:time_limit]
+        time_limit: set_config[:time_limit],
+        position_fen: set_config[:position_fen]
       )
 
       level_data[:puzzle_sets] << puzzle_set
@@ -329,12 +339,28 @@ class AdventureLevelCreator
   end
 
   # Generate a single puzzle set for a level using puzzle pool files
-  def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w', challenge: 'solve', challenge_description: nil, theme: nil, time_limit: nil)
+  def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w', challenge: 'solve', challenge_description: nil, theme: nil, time_limit: nil, position_fen: nil)
     # For without_mistakes and move_combo challenges, use 2x the number of puzzles to provide variety
     actual_puzzles_count = (challenge == 'without_mistakes' || challenge == 'move_combo') ? puzzles_count * 2 : puzzles_count
     
     theme_text = theme ? " (#{theme} theme)" : ""
     puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles required, #{actual_puzzles_count} puzzles in pool, #{color_to_move == 'w' ? 'white' : 'black'} to move, #{challenge_description || challenge})#{theme_text}"
+
+    # Handle checkmate challenges differently - they use specific positions, not puzzle pools
+    if challenge == 'checkmate'
+      challenge_config = get_challenge_config(challenge)
+      return {
+        set_index: set_index,
+        puzzles_count: puzzles_count,
+        rating_range: rating_range,
+        color_to_move: color_to_move,
+        challenge: challenge,
+        challenge_description: challenge_description,
+        challenge_config: challenge_config,
+        position_fen: position_fen,
+        puzzles: [] # No puzzle IDs for checkmate challenges
+      }
+    end
 
     # Determine which pool file to use based on rating range, color, and theme
     pool_file_info = theme ? find_themed_pool_file_for_rating_range(rating_range, color_to_move, theme) : find_pool_file_for_rating_range(rating_range, color_to_move)

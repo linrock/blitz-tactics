@@ -41,6 +41,13 @@ export default class PositionTrainerPlayer {
     this.goal = options.goal || (getConfig('goal') as 'win' | 'draw') || 'win'
     this.depth = options.depth || parseInt(getConfig('depth'), 10) || SEARCH_DEPTH
     
+    console.log('PositionTrainerPlayer initialized with:', {
+      options,
+      fen,
+      initialFen: this.initialFen,
+      goal: this.goal
+    })
+    
     // Determine computer color based on initial position
     this.computerColor = this.initialFen.indexOf('w') > 0 ? 'b' : 'w'
     
@@ -195,13 +202,17 @@ export default class PositionTrainerPlayer {
       if ((toMove === 'White' && result === '1-0') ||
           (toMove === 'Black' && result === '0-1')) {
         message = 'You win!!'
+        dispatch('game:won')
       } else {
         message = 'You failed :('
+        dispatch('game:lost')
       }
     } else if (this.goal === 'draw' && result === '1/2-1/2') {
       message = 'Success!!'
+      dispatch('game:drawn')
     } else {
       message = 'Game over'
+      dispatch('game:lost')
     }
     
     // Show the board overlay
