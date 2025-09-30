@@ -123,8 +123,8 @@ class PagesController < ApplicationController
 
   def puzzle_explorer
     @histogram_data = generate_puzzle_histogram
-    @total_puzzles = calculate_total_puzzles
     @theme_data = generate_theme_data
+    @total_puzzles = calculate_total_puzzles
   end
 
   def get_next_quest_world_for_user(user)
@@ -169,8 +169,7 @@ class PagesController < ApplicationController
     
     # Check if all puzzle sets are completed
     level_data['puzzle_sets'].all? do |set|
-      completion_data = level_completions[set['set_index'].to_s]
-      completion_data&.is_a?(Hash) && completion_data['completed'] == true
+      level_completions[set['set_index'].to_s] == true
     end
   end
 
@@ -225,10 +224,7 @@ class PagesController < ApplicationController
     adventure_completions = user_profile['adventure_completions'] || {}
     level_completions = adventure_completions[level_number.to_s] || {}
     
-    completion_data = level_completions[set_index.to_s]
-    return false unless completion_data&.is_a?(Hash)
-    
-    completion_data['completed'] == true
+    level_completions[set_index.to_s] == true
   end
 
   def load_adventure_level(level_number)
@@ -245,6 +241,53 @@ class PagesController < ApplicationController
   end
 
   private
+
+  def generate_theme_data
+    theme_counts = Hash.new(0)
+    puzzle_pools_dir = Rails.root.join("data", "puzzle-pools")
+    
+    # Read all puzzle pool files and count themes
+    Dir.glob(puzzle_pools_dir.join("*.txt")).each do |file_path|
+      File.readlines(file_path).each do |line|
+        next if line.strip.empty?
+        
+        # Parse line: puzzle_id|rating|themes
+        parts = line.strip.split('|')
+        next if parts.length < 3
+        
+        themes = parts[2].split(',')
+        themes.each { |theme| theme_counts[theme.strip] += 1 }
+      end
+    end
+    
+    # Convert to array format and sort by count (descending)
+    theme_counts.map do |theme, count|
+      {
+        theme: theme,
+        formatted_theme: format_theme_name(theme),
+        count: count
+      }
+    end.sort_by { |item| -item[:count] }
+  end
+
+  def calculate_total_puzzles
+    total = 0
+    puzzle_pools_dir = Rails.root.join("data", "puzzle-pools")
+    
+    # Count total puzzles across all pool files
+    Dir.glob(puzzle_pools_dir.join("*.txt")).each do |file_path|
+      total += File.readlines(file_path).count { |line| !line.strip.empty? }
+    end
+    
+    total
+  end
+
+  def format_theme_name(theme)
+    # Convert camelCase to readable format
+    theme.gsub(/([A-Z])/, ' \1')
+         .gsub(/^./, &:upcase)
+         .strip
+  end
 
   def generate_puzzle_histogram
     histogram = {}
@@ -309,53 +352,6 @@ class PagesController < ApplicationController
         item[:range].split('-').first.to_i
       end
     end
-  end
-
-  def calculate_total_puzzles
-    total = 0
-    puzzle_pools_dir = Rails.root.join("data", "puzzle-pools")
-    
-    Dir.glob(puzzle_pools_dir.join("*.txt")).each do |file_path|
-      total += File.readlines(file_path).count { |line| !line.strip.empty? }
-    end
-    
-    total
-  end
-
-  def generate_theme_data
-    theme_counts = Hash.new(0)
-    puzzle_pools_dir = Rails.root.join("data", "puzzle-pools")
-    
-    Dir.glob(puzzle_pools_dir.join("*.txt")).each do |file_path|
-      File.readlines(file_path).each do |line|
-        next if line.strip.empty?
-        
-        # Parse line: puzzle_id|rating|themes
-        parts = line.strip.split('|')
-        next if parts.length < 3
-        
-        themes = parts[2].split(',').map(&:strip)
-        themes.each { |theme| theme_counts[theme] += 1 }
-      end
-    end
-    
-    # Sort by count (descending) and convert to array format
-    theme_counts.sort_by { |theme, count| -count }.map do |theme, count|
-      {
-        theme: theme,
-        formatted_theme: format_theme_name(theme),
-        count: count
-      }
-    end
-  end
-
-  def format_theme_name(theme)
-    # Convert camelCase to proper title case
-    theme.gsub(/([a-z])([A-Z])/, '\1 \2')
-         .gsub(/([A-Z])([A-Z][a-z])/, '\1 \2')
-         .split(' ')
-         .map(&:capitalize)
-         .join(' ')
   end
 
   def get_first_puzzle_for_level(level)
