@@ -349,6 +349,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  # user settings
+  def set_sound_enabled(enabled)
+    self.profile["sound_enabled"] = enabled
+    self.save!
+  end
+
   private
 
   def format_level_date(date_string)
@@ -359,13 +365,6 @@ class User < ActiveRecord::Base
       # Fallback to original string if parsing fails
       date_string
     end
-  end
-
-  # user settings
-
-  def set_sound_enabled(enabled)
-    self.profile["sound_enabled"] = enabled
-    self.save!
   end
 
   private
