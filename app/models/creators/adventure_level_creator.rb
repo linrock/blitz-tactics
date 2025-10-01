@@ -52,9 +52,9 @@ class AdventureLevelCreator
       rating_range: (600..800),
       background_image: "bg.svg",
       puzzle_sets: [
-        { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
-        { puzzles: 2, challenge: "speed", description: "Solve 2 puzzles in 10 seconds", time_limit: 10 },
-        { puzzles: 3, challenge: "without_mistakes", description: "Solve 3 in a row without mistakes" }
+        { puzzles: 2, challenge: "solve" },
+        { puzzles: 2, challenge: "speed", time_limit: 10 },
+        { puzzles: 3, challenge: "without_mistakes" }
       ]
     },
     2 => {
@@ -62,9 +62,9 @@ class AdventureLevelCreator
       rating_range: (650..850),
       background_gradient: "linear-gradient(90deg, #1CB5E0 0%, #000851 100%)",
       puzzle_sets: [
-        { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
-        { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
-        { puzzles: 1, challenge: "checkmate", description: "Win by checkmate", position_fen: "8/4K3/2q5/8/8/2k5/8/8 b - - 0 1" }
+        { puzzles: 2, challenge: "solve" },
+        { puzzles: 2, challenge: "solve" },
+        { puzzles: 1, challenge: "checkmate", position_fen: "8/4K3/2q5/8/8/2k5/8/8 b - - 0 1" }
       ]
     },
     3 => {
@@ -72,9 +72,9 @@ class AdventureLevelCreator
       rating_range: (700..900),
       background_gradient: "linear-gradient(90deg, #3F2B96 0%, #A8C0FF 100%)",
       puzzle_sets: [
-        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
-        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
-        { puzzles: 15, challenge: "without_mistakes", description: "Solve 15 puzzles without mistakes" }
+        { puzzles: 15, challenge: "solve" },
+        { puzzles: 15, challenge: "solve" },
+        { puzzles: 15, challenge: "without_mistakes" }
       ]
     },
     4 => {
@@ -82,9 +82,9 @@ class AdventureLevelCreator
       rating_range: (750..950),
       background_gradient: "linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%)",
       puzzle_sets: [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
+        { puzzles: 10, challenge: "solve" },
+        { puzzles: 10, challenge: "solve" },
+        { puzzles: 10, challenge: "without_mistakes" }
       ]
     },
     5 => {
@@ -92,9 +92,9 @@ class AdventureLevelCreator
       rating_range: (800..1000),
       background_gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       puzzle_sets: [
-        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles perfectly (no mistakes)" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" }
+        { puzzles: 12, challenge: "solve" },
+        { puzzles: 10, challenge: "without_mistakes" },
+        { puzzles: 10, challenge: "speed", time_limit: 60 }
       ]
     },
     6 => {
@@ -102,9 +102,9 @@ class AdventureLevelCreator
       rating_range: (850..1050),
       background_gradient: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)",
       puzzle_sets: [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 30, challenge: "move_combo", description: "Reach move combo 30", combo_target: 30 }
+        { puzzles: 10, challenge: "solve" },
+        { puzzles: 10, challenge: "solve" },
+        { puzzles: 30, challenge: "move_combo", combo_target: 30 }
       ]
     },
     7 => {
@@ -112,9 +112,9 @@ class AdventureLevelCreator
       rating_range: (900..1100),
       background_gradient: "linear-gradient(120deg, #a8edea 0%, #fed6e3 100%)",
       puzzle_sets: [
-        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles perfectly (no mistakes)" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" }
+        { puzzles: 12, challenge: "solve" },
+        { puzzles: 10, challenge: "without_mistakes" },
+        { puzzles: 10, challenge: "speed", time_limit: 60 }
       ]
     },
     8 => {
@@ -122,9 +122,9 @@ class AdventureLevelCreator
       rating_range: (950..1150),
       background_gradient: "linear-gradient(90deg, #ff8a00 0%, #da1b60 100%)",
       puzzle_sets: [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" }
+        { puzzles: 10, challenge: "solve" },
+        { puzzles: 10, challenge: "solve" },
+        { puzzles: 10, challenge: "solve" }
       ]
     },
     9 => {
@@ -132,9 +132,9 @@ class AdventureLevelCreator
       rating_range: (1000..1200),
       background_gradient: "linear-gradient(60deg, #4facfe 0%, #00f2fe 100%)",
       puzzle_sets: [
-        { puzzles: 12, challenge: "without_mistakes", description: "Solve 12 puzzles perfectly (no mistakes)" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
-        { puzzles: 12, challenge: "without_mistakes", description: "Solve 12 puzzles perfectly (no mistakes)" }
+        { puzzles: 12, challenge: "without_mistakes" },
+        { puzzles: 10, challenge: "speed", time_limit: 60 },
+        { puzzles: 12, challenge: "without_mistakes" }
       ]
     },
     10 => {
@@ -142,189 +142,189 @@ class AdventureLevelCreator
       rating_range: (1050..1250),
       background_gradient: "linear-gradient(45deg, #1e3c72 0%, #2a5298 100%)",
       puzzle_sets: [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
-        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" }
+        { puzzles: 10, challenge: "solve" },
+        { puzzles: 20, challenge: "solve" },
+        { puzzles: 20, challenge: "solve" }
       ]
     },
     11 => {
       description: "Rising Star",
       rating_range: (1100..1300),
       puzzle_sets: [
-        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 45 seconds" },
-        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" }
+        { puzzles: 12, challenge: "solve" },
+        { puzzles: 10, challenge: "speed", time_limit: 45 },
+        { puzzles: 15, challenge: "solve" }
       ]
     },
     12 => {
       description: "Tactical Mastery",
       rating_range: (1150..1350),
       puzzle_sets: [
-        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
-        { puzzles: 12, challenge: "without_mistakes", description: "Solve 12 puzzles perfectly" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 40 seconds" }
+        { puzzles: 15, challenge: "solve" },
+        { puzzles: 12, challenge: "without_mistakes" },
+        { puzzles: 10, challenge: "speed", time_limit: 40 }
       ]
     },
     13 => {
       description: "Strategic Depth",
       rating_range: (1200..1400),
       puzzle_sets: [
-        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
-        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
-        { puzzles: 12, challenge: "without_mistakes", description: "Solve 12 puzzles perfectly" }
+        { puzzles: 20, challenge: "solve" },
+        { puzzles: 15, challenge: "solve" },
+        { puzzles: 12, challenge: "without_mistakes" }
       ]
     },
     14 => {
       description: "Pattern Recognition",
       rating_range: (1250..1450),
       puzzle_sets: [
-        { puzzles: 18, challenge: "solve", description: "Solve 18 puzzles" },
-        { puzzles: 15, challenge: "speed", description: "Solve 15 puzzles in 60 seconds" },
-        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" }
+        { puzzles: 18, challenge: "solve" },
+        { puzzles: 15, challenge: "speed", time_limit: 60 },
+        { puzzles: 20, challenge: "solve" }
       ]
     },
     15 => {
       description: "Endgame Excellence",
       rating_range: (1300..1500),
       puzzle_sets: [
-        { puzzles: 25, challenge: "solve", description: "Solve 25 puzzles" },
-        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
-        { puzzles: 15, challenge: "without_mistakes", description: "Solve 15 puzzles perfectly" }
+        { puzzles: 25, challenge: "solve" },
+        { puzzles: 20, challenge: "solve" },
+        { puzzles: 15, challenge: "without_mistakes" }
       ]
     },
     16 => {
       description: "Opening Precision",
       rating_range: (1350..1550),
       puzzle_sets: [
-        { puzzles: 22, challenge: "solve", description: "Solve 22 puzzles" },
-        { puzzles: 18, challenge: "speed", description: "Solve 18 puzzles in 50 seconds" },
-        { puzzles: 25, challenge: "solve", description: "Solve 25 puzzles" }
+        { puzzles: 22, challenge: "solve" },
+        { puzzles: 18, challenge: "speed", time_limit: 50 },
+        { puzzles: 25, challenge: "solve" }
       ]
     },
     17 => {
       description: "Middlegame Mastery",
       rating_range: (1400..1600),
       puzzle_sets: [
-        { puzzles: 30, challenge: "solve", description: "Solve 30 puzzles" },
-        { puzzles: 25, challenge: "solve", description: "Solve 25 puzzles" },
-        { puzzles: 20, challenge: "without_mistakes", description: "Solve 20 puzzles perfectly" }
+        { puzzles: 30, challenge: "solve" },
+        { puzzles: 25, challenge: "solve" },
+        { puzzles: 20, challenge: "without_mistakes" }
       ]
     },
     18 => {
       description: "Calculation Power",
       rating_range: (1450..1650),
       puzzle_sets: [
-        { puzzles: 28, challenge: "solve", description: "Solve 28 puzzles" },
-        { puzzles: 22, challenge: "speed", description: "Solve 22 puzzles in 45 seconds" },
-        { puzzles: 30, challenge: "solve", description: "Solve 30 puzzles" }
+        { puzzles: 28, challenge: "solve" },
+        { puzzles: 22, challenge: "speed", time_limit: 45 },
+        { puzzles: 30, challenge: "solve" }
       ]
     },
     19 => {
       description: "Positional Understanding",
       rating_range: (1500..1700),
       puzzle_sets: [
-        { puzzles: 35, challenge: "solve", description: "Solve 35 puzzles" },
-        { puzzles: 30, challenge: "solve", description: "Solve 30 puzzles" },
-        { puzzles: 25, challenge: "without_mistakes", description: "Solve 25 puzzles perfectly" }
+        { puzzles: 35, challenge: "solve" },
+        { puzzles: 30, challenge: "solve" },
+        { puzzles: 25, challenge: "without_mistakes" }
       ]
     },
     20 => {
       description: "Advanced Tactics",
       rating_range: (1550..1750),
       puzzle_sets: [
-        { puzzles: 40, challenge: "solve", description: "Solve 40 puzzles" },
-        { puzzles: 35, challenge: "solve", description: "Solve 35 puzzles" },
-        { puzzles: 30, challenge: "speed", description: "Solve 30 puzzles in 60 seconds" }
+        { puzzles: 40, challenge: "solve" },
+        { puzzles: 35, challenge: "solve" },
+        { puzzles: 30, challenge: "speed", time_limit: 60 }
       ]
     },
     21 => {
       description: "Combinational Vision",
       rating_range: (1600..1800),
       puzzle_sets: [
-        { puzzles: 45, challenge: "solve", description: "Solve 45 puzzles" },
-        { puzzles: 40, challenge: "solve", description: "Solve 40 puzzles" },
-        { puzzles: 35, challenge: "without_mistakes", description: "Solve 35 puzzles perfectly" }
+        { puzzles: 45, challenge: "solve" },
+        { puzzles: 40, challenge: "solve" },
+        { puzzles: 35, challenge: "without_mistakes" }
       ]
     },
     22 => {
       description: "Defensive Mastery",
       rating_range: (1650..1850),
       puzzle_sets: [
-        { puzzles: 50, challenge: "solve", description: "Solve 50 puzzles" },
-        { puzzles: 45, challenge: "speed", description: "Solve 45 puzzles in 75 seconds" },
-        { puzzles: 40, challenge: "solve", description: "Solve 40 puzzles" }
+        { puzzles: 50, challenge: "solve" },
+        { puzzles: 45, challenge: "speed", time_limit: 75 },
+        { puzzles: 40, challenge: "solve" }
       ]
     },
     23 => {
       description: "Attacking Patterns",
       rating_range: (1700..1900),
       puzzle_sets: [
-        { puzzles: 55, challenge: "solve", description: "Solve 55 puzzles" },
-        { puzzles: 50, challenge: "solve", description: "Solve 50 puzzles" },
-        { puzzles: 45, challenge: "without_mistakes", description: "Solve 45 puzzles perfectly" }
+        { puzzles: 55, challenge: "solve" },
+        { puzzles: 50, challenge: "solve" },
+        { puzzles: 45, challenge: "without_mistakes" }
       ]
     },
     24 => {
       description: "Time Management",
       rating_range: (1750..1950),
       puzzle_sets: [
-        { puzzles: 60, challenge: "solve", description: "Solve 60 puzzles" },
-        { puzzles: 55, challenge: "speed", description: "Solve 55 puzzles in 90 seconds" },
-        { puzzles: 50, challenge: "solve", description: "Solve 50 puzzles" }
+        { puzzles: 60, challenge: "solve" },
+        { puzzles: 55, challenge: "speed", time_limit: 90 },
+        { puzzles: 50, challenge: "solve" }
       ]
     },
     25 => {
       description: "Endgame Technique",
       rating_range: (1800..2000),
       puzzle_sets: [
-        { puzzles: 65, challenge: "solve", description: "Solve 65 puzzles" },
-        { puzzles: 60, challenge: "solve", description: "Solve 60 puzzles" },
-        { puzzles: 55, challenge: "without_mistakes", description: "Solve 55 puzzles perfectly" }
+        { puzzles: 65, challenge: "solve" },
+        { puzzles: 60, challenge: "solve" },
+        { puzzles: 55, challenge: "without_mistakes" }
       ]
     },
     26 => {
       description: "Opening Theory",
       rating_range: (1850..2050),
       puzzle_sets: [
-        { puzzles: 70, challenge: "solve", description: "Solve 70 puzzles" },
-        { puzzles: 65, challenge: "speed", description: "Solve 65 puzzles in 100 seconds" },
-        { puzzles: 60, challenge: "solve", description: "Solve 60 puzzles" }
+        { puzzles: 70, challenge: "solve" },
+        { puzzles: 65, challenge: "speed", time_limit: 100 },
+        { puzzles: 60, challenge: "solve" }
       ]
     },
     27 => {
       description: "Middlegame Strategy",
       rating_range: (1900..2100),
       puzzle_sets: [
-        { puzzles: 75, challenge: "solve", description: "Solve 75 puzzles" },
-        { puzzles: 70, challenge: "solve", description: "Solve 70 puzzles" },
-        { puzzles: 65, challenge: "without_mistakes", description: "Solve 65 puzzles perfectly" }
+        { puzzles: 75, challenge: "solve" },
+        { puzzles: 70, challenge: "solve" },
+        { puzzles: 65, challenge: "without_mistakes" }
       ]
     },
     28 => {
       description: "Tactical Brilliance",
       rating_range: (1950..2150),
       puzzle_sets: [
-        { puzzles: 80, challenge: "solve", description: "Solve 80 puzzles" },
-        { puzzles: 75, challenge: "speed", description: "Solve 75 puzzles in 120 seconds" },
-        { puzzles: 70, challenge: "solve", description: "Solve 70 puzzles" }
+        { puzzles: 80, challenge: "solve" },
+        { puzzles: 75, challenge: "speed", time_limit: 120 },
+        { puzzles: 70, challenge: "solve" }
       ]
     },
     29 => {
       description: "Positional Mastery",
       rating_range: (2000..2200),
       puzzle_sets: [
-        { puzzles: 85, challenge: "solve", description: "Solve 85 puzzles" },
-        { puzzles: 80, challenge: "solve", description: "Solve 80 puzzles" },
-        { puzzles: 75, challenge: "without_mistakes", description: "Solve 75 puzzles perfectly" }
+        { puzzles: 85, challenge: "solve" },
+        { puzzles: 80, challenge: "solve" },
+        { puzzles: 75, challenge: "without_mistakes" }
       ]
     },
     30 => {
       description: "Calculation Excellence",
       rating_range: (2050..2250),
       puzzle_sets: [
-        { puzzles: 90, challenge: "solve", description: "Solve 90 puzzles" },
-        { puzzles: 85, challenge: "speed", description: "Solve 85 puzzles in 150 seconds" },
-        { puzzles: 80, challenge: "solve", description: "Solve 80 puzzles" }
+        { puzzles: 90, challenge: "solve" },
+        { puzzles: 85, challenge: "speed", time_limit: 150 },
+        { puzzles: 80, challenge: "solve" }
       ]
     }
   }.freeze
@@ -387,65 +387,65 @@ class AdventureLevelCreator
     when 25
       # Special themed level: Tactical Mastery
       [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 fork puzzles", theme: "fork" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 pin puzzles", theme: "pin" },
-        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 skewer puzzles without mistakes", theme: "skewer" }
+        { puzzles: 10, challenge: "solve", theme: "fork" },
+        { puzzles: 10, challenge: "solve", theme: "pin" },
+        { puzzles: 10, challenge: "without_mistakes", theme: "skewer" }
       ]
     when 50
       # Special themed level: Checkmate Patterns
       [
-        { puzzles: 8, challenge: "solve", description: "Solve 8 back rank mate puzzles", theme: "backRankMate" },
-        { puzzles: 8, challenge: "solve", description: "Solve 8 smothered mate puzzles", theme: "smotheredMate" },
-        { puzzles: 8, challenge: "solve", description: "Solve 8 arabian mate puzzles", theme: "arabianMate" }
+        { puzzles: 8, challenge: "solve", theme: "backRankMate" },
+        { puzzles: 8, challenge: "solve", theme: "smotheredMate" },
+        { puzzles: 8, challenge: "solve", theme: "arabianMate" }
       ]
     when 75
       # Special themed level: Advanced Tactics
       [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 discovered attack puzzles", theme: "discoveredAttack" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 deflection puzzles", theme: "deflection" },
-        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 clearance puzzles without mistakes", theme: "clearance" }
+        { puzzles: 10, challenge: "solve", theme: "discoveredAttack" },
+        { puzzles: 10, challenge: "solve", theme: "deflection" },
+        { puzzles: 10, challenge: "without_mistakes", theme: "clearance" }
       ]
     when 11..40
       # Mid-early levels: introduce speed challenges
       [
-        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
-        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
+        { puzzles: 12, challenge: "solve" },
+        { puzzles: 10, challenge: "speed", time_limit: 60 },
+        { puzzles: 10, challenge: "without_mistakes" }
       ]
     when 41..60
       # Mid levels: more complex challenges
       [
-        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
-        { puzzles: 12, challenge: "speed", description: "Solve 12 puzzles in 60 seconds" },
-        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
+        { puzzles: 15, challenge: "solve" },
+        { puzzles: 12, challenge: "speed", time_limit: 60 },
+        { puzzles: 10, challenge: "without_mistakes" }
       ]
     when 61..80
       # Advanced levels: introduce move combo challenges
       [
-        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
-        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
-        { puzzles: 20, challenge: "move_combo", description: "Reach move combo 20", combo_target: 20 }
+        { puzzles: 15, challenge: "solve" },
+        { puzzles: 10, challenge: "speed", time_limit: 60 },
+        { puzzles: 20, challenge: "move_combo", combo_target: 20 }
       ]
     when 81..95
       # Expert levels: higher combo targets
       [
-        { puzzles: 18, challenge: "solve", description: "Solve 18 puzzles" },
-        { puzzles: 12, challenge: "speed", description: "Solve 12 puzzles in 60 seconds" },
-        { puzzles: 25, challenge: "move_combo", description: "Reach move combo 25", combo_target: 25 }
+        { puzzles: 18, challenge: "solve" },
+        { puzzles: 12, challenge: "speed", time_limit: 60 },
+        { puzzles: 25, challenge: "move_combo", combo_target: 25 }
       ]
     when 96..100
       # Grandmaster levels: maximum difficulty
       [
-        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
-        { puzzles: 15, challenge: "speed", description: "Solve 15 puzzles in 60 seconds" },
-        { puzzles: 30, challenge: "move_combo", description: "Reach move combo 30", combo_target: 30 }
+        { puzzles: 20, challenge: "solve" },
+        { puzzles: 15, challenge: "speed", time_limit: 60 },
+        { puzzles: 30, challenge: "move_combo", combo_target: 30 }
       ]
     else
       # Fallback
       [
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
-        { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles without mistakes" }
+        { puzzles: 10, challenge: "solve" },
+        { puzzles: 10, challenge: "solve" },
+        { puzzles: 10, challenge: "without_mistakes" }
       ]
     end
   end
@@ -501,6 +501,36 @@ class AdventureLevelCreator
     CHALLENGE_CONFIGS[challenge_type] || CHALLENGE_CONFIGS['solve']
   end
 
+  # Generate default description for a puzzle set challenge
+  def self.generate_default_description(puzzles_count, challenge, time_limit: nil, combo_target: nil, theme: nil)
+    challenge_config = get_challenge_config(challenge)
+    challenge_name = challenge_config[:name]
+    
+    # Base puzzle count text
+    puzzle_text = puzzles_count == 1 ? "1 puzzle" : "#{puzzles_count} puzzles"
+    
+    # Theme prefix if specified
+    theme_prefix = theme ? "#{theme} " : ""
+    
+    case challenge
+    when 'solve'
+      "Solve #{puzzle_text}"
+    when 'without_mistakes'
+      "Solve #{puzzle_text} without mistakes"
+    when 'speed'
+      time_text = time_limit ? " in #{time_limit} seconds" : " within time limit"
+      "Solve #{puzzle_text}#{time_text}"
+    when 'move_combo'
+      combo_text = combo_target ? " #{combo_target}" : ""
+      "Reach move combo#{combo_text}"
+    when 'checkmate'
+      "Win by checkmate"
+    else
+      # Fallback for unknown challenge types
+      "Complete #{puzzle_text} in #{challenge_name.downcase} mode"
+    end
+  end
+
   # Generate a specific adventure level
   def self.generate_level(level_number)
     config = LEVEL_CONFIG[level_number]
@@ -534,7 +564,8 @@ class AdventureLevelCreator
         challenge_description: set_config[:description],
         theme: set_config[:theme],
         time_limit: set_config[:time_limit],
-        position_fen: set_config[:position_fen]
+        position_fen: set_config[:position_fen],
+        combo_target: set_config[:combo_target]
       )
 
       level_data[:puzzle_sets] << puzzle_set
@@ -544,12 +575,15 @@ class AdventureLevelCreator
   end
 
   # Generate a single puzzle set for a level using puzzle pool files
-  def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w', challenge: 'solve', challenge_description: nil, theme: nil, time_limit: nil, position_fen: nil)
+  def self.generate_puzzle_set(level:, set_index:, puzzles_count:, rating_range:, color_to_move: 'w', challenge: 'solve', challenge_description: nil, theme: nil, time_limit: nil, position_fen: nil, combo_target: nil)
+    # Generate default description if none provided
+    challenge_description ||= generate_default_description(puzzles_count, challenge, time_limit: time_limit, combo_target: combo_target, theme: theme)
+    
     # For without_mistakes and move_combo challenges, use 2x the number of puzzles to provide variety
     actual_puzzles_count = (challenge == 'without_mistakes' || challenge == 'move_combo') ? puzzles_count * 2 : puzzles_count
     
     theme_text = theme ? " (#{theme} theme)" : ""
-    puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles required, #{actual_puzzles_count} puzzles in pool, #{color_to_move == 'w' ? 'white' : 'black'} to move, #{challenge_description || challenge})#{theme_text}"
+    puts "  Generating puzzle set #{set_index} (#{puzzles_count} puzzles required, #{actual_puzzles_count} puzzles in pool, #{color_to_move == 'w' ? 'white' : 'black'} to move, #{challenge_description})#{theme_text}"
 
     # Handle checkmate challenges differently - they use specific positions, not puzzle pools
     if challenge == 'checkmate'
