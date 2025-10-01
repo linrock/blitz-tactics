@@ -59,10 +59,10 @@ class AdminController < ApplicationController
         adventure_puzzle_sets = level_data['puzzle_sets'].map.with_index do |set_data, index|
           first_puzzle = get_first_puzzle_for_adventure_set(set_data)
           set_data['first_puzzle'] = first_puzzle
-          # For admin preview, show all sets as unlocked and completed
-          set_data['completed'] = true
+          # For admin preview, show all sets as unlocked but not completed
+          set_data['completed'] = false
           set_data['unlocked'] = true
-          set_data['completion_data'] = { 'completed' => true, 'best_time_ms' => 5000 } # Fake completion data
+          set_data['completion_data'] = nil # No fake completion data
           set_data
         end
         
