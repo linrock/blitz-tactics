@@ -108,6 +108,7 @@ Rails.application.routes.draw do
   # admin page
   get '/admin'                   => 'admin#index'
   get '/admin/feature-flags'     => 'admin#feature_flags'
+  get '/admin/adventure'         => 'admin#adventure'
   post '/admin/feature-flags'    => 'admin#create_feature_flag'
   patch '/admin/feature-flags/:id' => 'admin#update_feature_flag'
   put '/admin/feature-flags/:id' => 'admin#update_feature_flag'

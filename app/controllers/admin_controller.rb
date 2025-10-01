@@ -48,6 +48,40 @@ class AdminController < ApplicationController
     redirect_to admin_feature_flags_path, notice: 'Feature flag deleted successfully!'
   end
 
+  def adventure
+    # Load all adventure levels (1-100) - ALL UNLOCKED for admin preview
+    @adventure_levels = []
+    
+    (1..100).each do |level_number|
+      level_data = load_adventure_level(level_number)
+      if level_data
+        # Prepare puzzle set data exactly like homepage does
+        adventure_puzzle_sets = level_data['puzzle_sets'].map.with_index do |set_data, index|
+          first_puzzle = get_first_puzzle_for_adventure_set(set_data)
+          set_data['first_puzzle'] = first_puzzle
+          # For admin preview, show all sets as unlocked and completed
+          set_data['completed'] = true
+          set_data['unlocked'] = true
+          set_data['completion_data'] = { 'completed' => true, 'best_time_ms' => 5000 } # Fake completion data
+          set_data
+        end
+        
+        @adventure_levels << {
+          level_number: level_number,
+          data: level_data,
+          puzzle_sets: adventure_puzzle_sets,
+          completed: true  # Show all as completed for admin preview
+        }
+      end
+    end
+    
+    # Sort from latest to earliest (highest level number first)
+    @adventure_levels.sort_by! { |level| -level[:level_number] }
+    
+    # Debug logging
+    Rails.logger.info "Loaded #{@adventure_levels.count} adventure levels for admin preview"
+  end
+
   private
 
   def require_admin_access!
@@ -130,5 +164,65 @@ class AdminController < ApplicationController
     end
     
     stats
+  end
+
+  def load_adventure_level(level_number)
+    level_file = Rails.root.join("data", "game-modes", "adventure", "level-#{level_number.to_s.rjust(2, '0')}.json")
+    
+    return nil unless File.exist?(level_file)
+    
+    begin
+      JSON.parse(File.read(level_file))
+    rescue JSON::ParserError => e
+      Rails.logger.error "Error parsing adventure level #{level_number}: #{e.message}"
+      nil
+    end
+  end
+
+  def format_time(time_ms)
+    return "N/A" unless time_ms && time_ms > 0
+    
+    seconds = time_ms / 1000.0
+    if seconds < 60
+      "#{seconds.round(1)}s"
+    else
+      minutes = (seconds / 60).floor
+      remaining_seconds = (seconds % 60).round(1)
+      "#{minutes}m #{remaining_seconds}s"
+    end
+  end
+  helper_method :format_time
+
+  def get_first_puzzle_for_adventure_set(set_data)
+    # Handle checkmate challenges - they use position_fen instead of puzzles
+    if set_data['challenge'] == 'checkmate' && set_data['position_fen'].present?
+      return {
+        puzzle_id: "checkmate-#{set_data['set_index']}",
+        fen: set_data['position_fen'],
+        initial_fen: set_data['position_fen'],
+        initial_move: nil, # No initial move for checkmate challenges
+        rating: nil,
+        themes: ['checkmate']
+      }
+    end
+
+    # Handle regular puzzle-based challenges
+    return nil unless set_data['puzzles'].present? && set_data['puzzles'].is_a?(Array)
+
+    first_puzzle_id = set_data['puzzles'].first
+    return nil if first_puzzle_id.blank?
+
+    # Try to find the puzzle by puzzle_id
+    puzzle = LichessV2Puzzle.find_by(puzzle_id: first_puzzle_id.to_s)
+    return nil unless puzzle
+
+    {
+      puzzle_id: puzzle.puzzle_id,
+      fen: puzzle.initial_fen,
+      initial_fen: puzzle.initial_fen,
+      initial_move: puzzle.moves_uci[0],
+      rating: puzzle.rating,
+      themes: puzzle.themes
+    }
   end
 end

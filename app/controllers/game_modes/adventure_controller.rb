@@ -5,8 +5,8 @@ class GameModes::AdventureController < ApplicationController
     # Load all adventure levels
     @adventure_levels = []
     
-    # Load levels 1-10 (or however many exist)
-    (1..10).each do |level_number|
+    # Load levels 1-100
+    (1..100).each do |level_number|
       level_data = load_adventure_level(level_number)
       if level_data
         # Check if user can access this level (unlocked)

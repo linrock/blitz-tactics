@@ -32,10 +32,10 @@
 #   rake adventure:analyze                              # Analyze puzzle availability
 
 class AdventureLevelCreator
-  # Manually defined levels 1-10 for fine-tuned onboarding experience
+  # Manually defined levels 1-100 for complete control over difficulty progression
   MANUAL_LEVELS = {
     1 => {
-      description: "Beginner's Journey",
+      description: "Getting started",
       rating_range: (600..800),
       puzzle_sets: [
         { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
@@ -44,7 +44,7 @@ class AdventureLevelCreator
       ]
     },
     2 => {
-      description: "Building Foundations",
+      description: "Just warming up",
       rating_range: (650..850),
       puzzle_sets: [
         { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
@@ -123,18 +123,198 @@ class AdventureLevelCreator
         { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
         { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" }
       ]
+    },
+    11 => {
+      description: "Rising Star",
+      rating_range: (1100..1300),
+      puzzle_sets: [
+        { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 45 seconds" },
+        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" }
+      ]
+    },
+    12 => {
+      description: "Tactical Mastery",
+      rating_range: (1150..1350),
+      puzzle_sets: [
+        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
+        { puzzles: 12, challenge: "without_mistakes", description: "Solve 12 puzzles perfectly" },
+        { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 40 seconds" }
+      ]
+    },
+    13 => {
+      description: "Strategic Depth",
+      rating_range: (1200..1400),
+      puzzle_sets: [
+        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
+        { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
+        { puzzles: 12, challenge: "without_mistakes", description: "Solve 12 puzzles perfectly" }
+      ]
+    },
+    14 => {
+      description: "Pattern Recognition",
+      rating_range: (1250..1450),
+      puzzle_sets: [
+        { puzzles: 18, challenge: "solve", description: "Solve 18 puzzles" },
+        { puzzles: 15, challenge: "speed", description: "Solve 15 puzzles in 60 seconds" },
+        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" }
+      ]
+    },
+    15 => {
+      description: "Endgame Excellence",
+      rating_range: (1300..1500),
+      puzzle_sets: [
+        { puzzles: 25, challenge: "solve", description: "Solve 25 puzzles" },
+        { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
+        { puzzles: 15, challenge: "without_mistakes", description: "Solve 15 puzzles perfectly" }
+      ]
+    },
+    16 => {
+      description: "Opening Precision",
+      rating_range: (1350..1550),
+      puzzle_sets: [
+        { puzzles: 22, challenge: "solve", description: "Solve 22 puzzles" },
+        { puzzles: 18, challenge: "speed", description: "Solve 18 puzzles in 50 seconds" },
+        { puzzles: 25, challenge: "solve", description: "Solve 25 puzzles" }
+      ]
+    },
+    17 => {
+      description: "Middlegame Mastery",
+      rating_range: (1400..1600),
+      puzzle_sets: [
+        { puzzles: 30, challenge: "solve", description: "Solve 30 puzzles" },
+        { puzzles: 25, challenge: "solve", description: "Solve 25 puzzles" },
+        { puzzles: 20, challenge: "without_mistakes", description: "Solve 20 puzzles perfectly" }
+      ]
+    },
+    18 => {
+      description: "Calculation Power",
+      rating_range: (1450..1650),
+      puzzle_sets: [
+        { puzzles: 28, challenge: "solve", description: "Solve 28 puzzles" },
+        { puzzles: 22, challenge: "speed", description: "Solve 22 puzzles in 45 seconds" },
+        { puzzles: 30, challenge: "solve", description: "Solve 30 puzzles" }
+      ]
+    },
+    19 => {
+      description: "Positional Understanding",
+      rating_range: (1500..1700),
+      puzzle_sets: [
+        { puzzles: 35, challenge: "solve", description: "Solve 35 puzzles" },
+        { puzzles: 30, challenge: "solve", description: "Solve 30 puzzles" },
+        { puzzles: 25, challenge: "without_mistakes", description: "Solve 25 puzzles perfectly" }
+      ]
+    },
+    20 => {
+      description: "Advanced Tactics",
+      rating_range: (1550..1750),
+      puzzle_sets: [
+        { puzzles: 40, challenge: "solve", description: "Solve 40 puzzles" },
+        { puzzles: 35, challenge: "solve", description: "Solve 35 puzzles" },
+        { puzzles: 30, challenge: "speed", description: "Solve 30 puzzles in 60 seconds" }
+      ]
+    },
+    21 => {
+      description: "Combinational Vision",
+      rating_range: (1600..1800),
+      puzzle_sets: [
+        { puzzles: 45, challenge: "solve", description: "Solve 45 puzzles" },
+        { puzzles: 40, challenge: "solve", description: "Solve 40 puzzles" },
+        { puzzles: 35, challenge: "without_mistakes", description: "Solve 35 puzzles perfectly" }
+      ]
+    },
+    22 => {
+      description: "Defensive Mastery",
+      rating_range: (1650..1850),
+      puzzle_sets: [
+        { puzzles: 50, challenge: "solve", description: "Solve 50 puzzles" },
+        { puzzles: 45, challenge: "speed", description: "Solve 45 puzzles in 75 seconds" },
+        { puzzles: 40, challenge: "solve", description: "Solve 40 puzzles" }
+      ]
+    },
+    23 => {
+      description: "Attacking Patterns",
+      rating_range: (1700..1900),
+      puzzle_sets: [
+        { puzzles: 55, challenge: "solve", description: "Solve 55 puzzles" },
+        { puzzles: 50, challenge: "solve", description: "Solve 50 puzzles" },
+        { puzzles: 45, challenge: "without_mistakes", description: "Solve 45 puzzles perfectly" }
+      ]
+    },
+    24 => {
+      description: "Time Management",
+      rating_range: (1750..1950),
+      puzzle_sets: [
+        { puzzles: 60, challenge: "solve", description: "Solve 60 puzzles" },
+        { puzzles: 55, challenge: "speed", description: "Solve 55 puzzles in 90 seconds" },
+        { puzzles: 50, challenge: "solve", description: "Solve 50 puzzles" }
+      ]
+    },
+    25 => {
+      description: "Endgame Technique",
+      rating_range: (1800..2000),
+      puzzle_sets: [
+        { puzzles: 65, challenge: "solve", description: "Solve 65 puzzles" },
+        { puzzles: 60, challenge: "solve", description: "Solve 60 puzzles" },
+        { puzzles: 55, challenge: "without_mistakes", description: "Solve 55 puzzles perfectly" }
+      ]
+    },
+    26 => {
+      description: "Opening Theory",
+      rating_range: (1850..2050),
+      puzzle_sets: [
+        { puzzles: 70, challenge: "solve", description: "Solve 70 puzzles" },
+        { puzzles: 65, challenge: "speed", description: "Solve 65 puzzles in 100 seconds" },
+        { puzzles: 60, challenge: "solve", description: "Solve 60 puzzles" }
+      ]
+    },
+    27 => {
+      description: "Middlegame Strategy",
+      rating_range: (1900..2100),
+      puzzle_sets: [
+        { puzzles: 75, challenge: "solve", description: "Solve 75 puzzles" },
+        { puzzles: 70, challenge: "solve", description: "Solve 70 puzzles" },
+        { puzzles: 65, challenge: "without_mistakes", description: "Solve 65 puzzles perfectly" }
+      ]
+    },
+    28 => {
+      description: "Tactical Brilliance",
+      rating_range: (1950..2150),
+      puzzle_sets: [
+        { puzzles: 80, challenge: "solve", description: "Solve 80 puzzles" },
+        { puzzles: 75, challenge: "speed", description: "Solve 75 puzzles in 120 seconds" },
+        { puzzles: 70, challenge: "solve", description: "Solve 70 puzzles" }
+      ]
+    },
+    29 => {
+      description: "Positional Mastery",
+      rating_range: (2000..2200),
+      puzzle_sets: [
+        { puzzles: 85, challenge: "solve", description: "Solve 85 puzzles" },
+        { puzzles: 80, challenge: "solve", description: "Solve 80 puzzles" },
+        { puzzles: 75, challenge: "without_mistakes", description: "Solve 75 puzzles perfectly" }
+      ]
+    },
+    30 => {
+      description: "Calculation Excellence",
+      rating_range: (2050..2250),
+      puzzle_sets: [
+        { puzzles: 90, challenge: "solve", description: "Solve 90 puzzles" },
+        { puzzles: 85, challenge: "speed", description: "Solve 85 puzzles in 150 seconds" },
+        { puzzles: 80, challenge: "solve", description: "Solve 80 puzzles" }
+      ]
     }
   }.freeze
 
-  # Generate level configuration for levels 11-100 with scaled rating ranges
+  # Generate level configuration for levels 31-100 with scaled rating ranges
   def self.generate_level_config
     config = {}
     
-    (11..100).each do |level|
+    (31..100).each do |level|
       # Calculate rating range progression
-      # Level 11: ~800-1222, Level 100: 2400-3200
-      min_rating = 600 + ((level - 1) * 18.18).round  # 18.18 points per level
-      max_rating = 1000 + ((level - 1) * 22.22).round # 22.22 points per level
+      # Level 31: ~2100-2300, Level 100: 2400-3200
+      min_rating = 2100 + ((level - 31) * 4.35).round  # Gradual progression
+      max_rating = 2300 + ((level - 31) * 13.04).round # Faster max progression
       
       # Ensure we don't exceed the target ranges
       min_rating = [min_rating, 2400].min
@@ -247,7 +427,7 @@ class AdventureLevelCreator
     end
   end
 
-  # Level configuration - combines manual levels 1-10 with generated levels 11-100
+  # Level configuration - combines manual levels 1-30 with generated levels 31-100
   LEVEL_CONFIG = MANUAL_LEVELS.merge(generate_level_config).freeze
 
   # Challenge type configurations

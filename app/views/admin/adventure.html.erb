@@ -1,0 +1,149 @@
+<% content_for(:title) { "Admin - Adventure Levels Preview" } %>
+
+<section class="homepage">
+  <div class="admin-nav">
+    <div class="container">
+      <%= link_to "← Back to Admin", admin_path, class: "admin-link" %>
+      <%= link_to "Feature Flags", admin_feature_flags_path, class: "admin-link" %>
+    </div>
+  </div>
+
+  <% if @adventure_levels && @adventure_levels.any? %>
+    <% @adventure_levels.each do |level_info| %>
+      <% level_number = level_info[:level_number] %>
+      <% level_data = level_info[:data] %>
+      <% puzzle_sets = level_info[:puzzle_sets] %>
+      
+      <% if level_data %>
+        <div class="quest-section">
+          <div class="quest-bg" style="background-image: url(<%= asset_path('bg.svg') %>)"></div>
+          
+          <div class="quest-container container">
+            <header class="world-intro">
+              <div class="world-name">Level <%= level_number %>: <%= level_data['description'] %></div>
+            </header>
+
+            <main class="world-levels">
+              <% puzzle_sets.each do |set_data| %>
+                <% if set_data && set_data['set_index'] %>
+                  <% is_locked = !set_data['unlocked'] %>
+                  <% link_href = is_locked ? "#" : "/adventure/level/#{level_number}/set/#{set_data['set_index']}" %>
+                  <% if is_locked %>
+                    <div class="quest-level <%= 'completed' if set_data['completed'] %> <%= 'locked' if is_locked %>">
+                      <% if is_locked %>
+                        <div class="completion-indicator">
+                          <div class="lock-icon">🔒</div>
+                        </div>
+                      <% end %>
+                      <% if set_data['first_puzzle'] %>
+                        <% puzzle_data = set_data['first_puzzle'] %>
+                        <% puzzle_fen = puzzle_data[:fen] if puzzle_data %>
+                        <% puzzle_flip = puzzle_fen&.include?(" w ") || false %>
+                        <% initial_move = puzzle_data[:initial_move] if puzzle_data %>
+                        <div class="board-link">
+                          <%= render(partial: "static/snippets/miniboard",
+                                    locals: { fen: puzzle_fen,
+                                             flip: puzzle_flip,
+                                             initial_move: initial_move,
+                                             title: "First Puzzle" }) %>
+                        </div>
+                      <% end %>
+                      <div class="level-info-bottom">
+                        <div class="success-criteria"><%= "#{level_number}-#{set_data['set_index']}: #{set_data['challenge_description'] || 'Solve ' + set_data['puzzles_count'].to_s + ' puzzles'}" %></div>
+                        <% if set_data['completed'] && set_data['completion_data'] && set_data['completion_data']['best_time_ms'] %>
+                          <div class="best-time">
+                            <div class="checkmark">✓</div>
+                            Best time: <%= (set_data['completion_data']['best_time_ms'] / 100.0).round / 10.0 %>s
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% else %>
+                    <%= link_to link_href, class: "quest-level #{'completed' if set_data['completed']}" do %>
+                      <% if set_data['first_puzzle'] %>
+                        <% puzzle_data = set_data['first_puzzle'] %>
+                        <% puzzle_fen = puzzle_data[:fen] if puzzle_data %>
+                        <% puzzle_flip = puzzle_fen&.include?(" w ") || false %>
+                        <% initial_move = puzzle_data[:initial_move] if puzzle_data %>
+                        <div class="board-link">
+                          <%= render(partial: "static/snippets/miniboard",
+                                    locals: { fen: puzzle_fen,
+                                             flip: puzzle_flip,
+                                             initial_move: initial_move,
+                                             title: "First Puzzle" }) %>
+                        </div>
+                      <% end %>
+                      <div class="level-info-bottom">
+                        <div class="success-criteria"><%= "#{level_number}-#{set_data['set_index']}: #{set_data['challenge_description'] || 'Solve ' + set_data['puzzles_count'].to_s + ' puzzles'}" %></div>
+                        <% if set_data['completed'] && set_data['completion_data'] && set_data['completion_data']['best_time_ms'] %>
+                          <div class="best-time">
+                            <div class="checkmark">✓</div>
+                            Best time: <%= (set_data['completion_data']['best_time_ms'] / 100.0).round / 10.0 %>s
+                          </div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </main>
+          </div>
+        </div>
+      <% else %>
+        <div class="quest-section">
+          <div class="quest-container container">
+            <header class="world-intro">
+              <div class="world-name">Level <%= level_number %>: Error loading level data</div>
+            </header>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="quest-section">
+      <div class="quest-container container">
+        <header class="world-intro">
+          <div class="world-name">No adventure levels found</div>
+        </header>
+        <main class="world-levels">
+          <div class="quest-level">
+            <div class="level-info-bottom">
+              <div class="success-criteria">Generate adventure levels using the rake tasks or AdventureLevelCreator</div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  <% end %>
+</section>
+
+<style>
+.admin-nav {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+  margin-bottom: 20px;
+}
+
+.admin-nav .container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.admin-link {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.admin-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  text-decoration: none;
+  color: #fff;
+}
+</style>

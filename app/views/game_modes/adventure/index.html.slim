@@ -15,7 +15,7 @@ section.adventure-index
           - best_times = level_info[:best_times] || []
           
           .level-card(class="#{'completed' if completed}")
-            a.level-link(href="/?level=#{level_number}")
+            a.level-link(href="/adventure/level/#{level_number}")
               .level-header
                 .level-number Level #{level_number}
                 - if completed
@@ -38,3 +38,5 @@ section.adventure-index
         h3 No levels unlocked yet
         p Complete Level 1 to unlock more adventure levels!
         a.dark-button(href="/?level=1") Start Adventure
+
+= render 'shared/main_footer'
