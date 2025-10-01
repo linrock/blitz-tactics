@@ -14,6 +14,19 @@
 #   Themes are loaded from data/themes/{theme}/ directory and must be generated first
 #   using ThemedLevelCreator.export_theme_pools_to_files(theme: "fork")
 #
+# Background Support:
+#   Each level can specify a custom background using either:
+#   
+#   1. Background Image (SVG/PNG file):
+#      { description: "Getting started", background_image: "bg-forest.svg", ... }
+#      Background images should be placed in app/assets/images/ and referenced by filename.
+#   
+#   2. CSS Gradient:
+#      { description: "Ocean waves", background_gradient: "linear-gradient(90deg, #1CB5E0 0%, #000851 100%)", ... }
+#      Use any valid CSS gradient string (linear-gradient, radial-gradient, etc.)
+#   
+#   If neither is specified, defaults to "bg.svg"
+#
 # Usage Examples:
 #   # Generate a specific level
 #   AdventureLevelCreator.generate_level(1)   # Manual level
@@ -37,6 +50,7 @@ class AdventureLevelCreator
     1 => {
       description: "Getting started",
       rating_range: (600..800),
+      background_image: "bg.svg",
       puzzle_sets: [
         { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
         { puzzles: 2, challenge: "speed", description: "Solve 2 puzzles in 10 seconds", time_limit: 10 },
@@ -46,6 +60,7 @@ class AdventureLevelCreator
     2 => {
       description: "Just warming up",
       rating_range: (650..850),
+      background_gradient: "linear-gradient(90deg, #1CB5E0 0%, #000851 100%)",
       puzzle_sets: [
         { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
         { puzzles: 2, challenge: "solve", description: "Solve 2 puzzles" },
@@ -55,6 +70,7 @@ class AdventureLevelCreator
     3 => {
       description: "Growing Confidence",
       rating_range: (700..900),
+      background_image: "bg-mountain.svg",
       puzzle_sets: [
         { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
         { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
@@ -64,6 +80,7 @@ class AdventureLevelCreator
     4 => {
       description: "Stepping Up",
       rating_range: (750..950),
+      background_image: "bg-castle.svg",
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
@@ -73,6 +90,7 @@ class AdventureLevelCreator
     5 => {
       description: "Intermediate Challenge",
       rating_range: (800..1000),
+      background_image: "bg-ocean.svg",
       puzzle_sets: [
         { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
         { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles perfectly (no mistakes)" },
@@ -82,6 +100,7 @@ class AdventureLevelCreator
     6 => {
       description: "Advanced Tactics",
       rating_range: (850..1050),
+      background_gradient: "radial-gradient(circle, #667eea 0%, #764ba2 100%)",
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
@@ -100,6 +119,7 @@ class AdventureLevelCreator
     8 => {
       description: "Expert Territory",
       rating_range: (950..1150),
+      background_gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
@@ -491,6 +511,8 @@ class AdventureLevelCreator
       level: level_number,
       description: config[:description],
       rating_range: config[:rating_range],
+      background_image: config[:background_image], # May be nil if using gradient
+      background_gradient: config[:background_gradient], # May be nil if using image
       puzzle_sets: []
     }
 

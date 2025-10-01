@@ -14,8 +14,10 @@ section.homepage
   - if @adventure_mode_enabled
     .quest-section
       - if @current_adventure_level && @adventure_puzzle_sets&.any?
-        .quest-bg(
-          style="background-image: url(#{asset_path(@background_img)})")
+        - if @current_adventure_level['background_gradient']
+          .quest-bg(style="background: #{@current_adventure_level['background_gradient']}")
+        - else
+          .quest-bg(style="background-image: url(#{asset_path(@current_adventure_level['background_image'] || @background_img)})")
 
         .quest-container.container
           header.world-intro
@@ -82,8 +84,10 @@ section.homepage
                 .progress-fill(style="width: #{(@completed_sets_count.to_f / @total_sets_count * 100).round}%")
               .progress-text= "#{@completed_sets_count}/#{@total_sets_count} completed - Complete all puzzle sets to continue"
       - elsif @all_adventure_levels_complete
-        .quest-bg(
-          style="background-image: url(#{asset_path(@background_img)})")
+        - if @current_adventure_level && @current_adventure_level['background_gradient']
+          .quest-bg(style="background: #{@current_adventure_level['background_gradient']}")
+        - else
+          .quest-bg(style="background-image: url(#{asset_path(@current_adventure_level['background_image'] || @background_img)})")
 
         .quest-container.container
           header.world-intro
