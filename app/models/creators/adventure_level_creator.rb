@@ -48,7 +48,7 @@ class AdventureLevelCreator
   # Manually defined levels 1-100 for complete control over difficulty progression
   MANUAL_LEVELS = {
     1 => {
-      description: "Getting started",
+      description: "First steps",
       rating_range: (600..800),
       background_image: "bg.svg",
       puzzle_sets: [
@@ -58,7 +58,7 @@ class AdventureLevelCreator
       ]
     },
     2 => {
-      description: "Just warming up",
+      description: "Getting started",
       rating_range: (650..850),
       background_gradient: "linear-gradient(90deg, #1CB5E0 0%, #000851 100%)",
       puzzle_sets: [
@@ -68,7 +68,7 @@ class AdventureLevelCreator
       ]
     },
     3 => {
-      description: "Growing Confidence",
+      description: "Just warming up",
       rating_range: (700..900),
       background_gradient: "linear-gradient(90deg, #3F2B96 0%, #A8C0FF 100%)",
       puzzle_sets: [
@@ -78,7 +78,7 @@ class AdventureLevelCreator
       ]
     },
     4 => {
-      description: "Stepping Up",
+      description: "Ramping on up",
       rating_range: (750..950),
       background_gradient: "linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%)",
       puzzle_sets: [
@@ -100,7 +100,7 @@ class AdventureLevelCreator
     6 => {
       description: "Advanced Tactics",
       rating_range: (850..1050),
-      background_gradient: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)",
+      background_gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       puzzle_sets: [
         { puzzles: 10, challenge: "solve" },
         { puzzles: 10, challenge: "solve" },
@@ -110,7 +110,7 @@ class AdventureLevelCreator
     7 => {
       description: "Master's Path",
       rating_range: (900..1100),
-      background_gradient: "linear-gradient(120deg, #a8edea 0%, #fed6e3 100%)",
+      background_gradient: "linear-gradient(120deg, #f093fb 0%, #f5576c 100%)",
       puzzle_sets: [
         { puzzles: 12, challenge: "solve" },
         { puzzles: 10, challenge: "without_mistakes" },
@@ -120,7 +120,7 @@ class AdventureLevelCreator
     8 => {
       description: "Expert Territory",
       rating_range: (950..1150),
-      background_gradient: "linear-gradient(90deg, #ff8a00 0%, #da1b60 100%)",
+      background_gradient: "linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%)",
       puzzle_sets: [
         { puzzles: 10, challenge: "solve" },
         { puzzles: 10, challenge: "solve" },
@@ -150,6 +150,7 @@ class AdventureLevelCreator
     11 => {
       description: "Rising Star",
       rating_range: (1100..1300),
+      background_gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
       puzzle_sets: [
         { puzzles: 12, challenge: "solve" },
         { puzzles: 10, challenge: "speed", time_limit: 45 },
@@ -159,6 +160,7 @@ class AdventureLevelCreator
     12 => {
       description: "Tactical Mastery",
       rating_range: (1150..1350),
+      background_gradient: "linear-gradient(90deg, #3F2B96 0%, #A8C0FF 100%)",
       puzzle_sets: [
         { puzzles: 15, challenge: "solve" },
         { puzzles: 12, challenge: "without_mistakes" },
@@ -168,6 +170,7 @@ class AdventureLevelCreator
     13 => {
       description: "Strategic Depth",
       rating_range: (1200..1400),
+      background_gradient: "linear-gradient(120deg, #a8edea 0%, #fed6e3 100%)",
       puzzle_sets: [
         { puzzles: 20, challenge: "solve" },
         { puzzles: 15, challenge: "solve" },
@@ -177,6 +180,7 @@ class AdventureLevelCreator
     14 => {
       description: "Pattern Recognition",
       rating_range: (1250..1450),
+      background_gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
       puzzle_sets: [
         { puzzles: 18, challenge: "solve" },
         { puzzles: 15, challenge: "speed", time_limit: 60 },
@@ -186,6 +190,7 @@ class AdventureLevelCreator
     15 => {
       description: "Endgame Excellence",
       rating_range: (1300..1500),
+      background_gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
       puzzle_sets: [
         { puzzles: 25, challenge: "solve" },
         { puzzles: 20, challenge: "solve" },
@@ -195,6 +200,7 @@ class AdventureLevelCreator
     16 => {
       description: "Opening Precision",
       rating_range: (1350..1550),
+      background_gradient: "linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%)",
       puzzle_sets: [
         { puzzles: 22, challenge: "solve" },
         { puzzles: 18, challenge: "speed", time_limit: 50 },
@@ -204,6 +210,7 @@ class AdventureLevelCreator
     17 => {
       description: "Middlegame Mastery",
       rating_range: (1400..1600),
+      background_gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       puzzle_sets: [
         { puzzles: 30, challenge: "solve" },
         { puzzles: 25, challenge: "solve" },
@@ -213,6 +220,7 @@ class AdventureLevelCreator
     18 => {
       description: "Calculation Power",
       rating_range: (1450..1650),
+      background_gradient: "linear-gradient(90deg, #1CB5E0 0%, #000851 100%)",
       puzzle_sets: [
         { puzzles: 28, challenge: "solve" },
         { puzzles: 22, challenge: "speed", time_limit: 45 },
@@ -222,6 +230,7 @@ class AdventureLevelCreator
     19 => {
       description: "Positional Understanding",
       rating_range: (1500..1700),
+      background_gradient: "linear-gradient(90deg, #4facfe 0%, #00f2fe 100%)",
       puzzle_sets: [
         { puzzles: 35, challenge: "solve" },
         { puzzles: 30, challenge: "solve" },
@@ -231,6 +240,7 @@ class AdventureLevelCreator
     20 => {
       description: "Advanced Tactics",
       rating_range: (1550..1750),
+      background_gradient: "linear-gradient(135deg, #667db6 0%, #0082c8 100%)",
       puzzle_sets: [
         { puzzles: 40, challenge: "solve" },
         { puzzles: 35, challenge: "solve" },
@@ -240,6 +250,7 @@ class AdventureLevelCreator
     21 => {
       description: "Combinational Vision",
       rating_range: (1600..1800),
+      background_gradient: "linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%)",
       puzzle_sets: [
         { puzzles: 45, challenge: "solve" },
         { puzzles: 40, challenge: "solve" },
@@ -249,6 +260,7 @@ class AdventureLevelCreator
     22 => {
       description: "Defensive Mastery",
       rating_range: (1650..1850),
+      background_gradient: "linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%)",
       puzzle_sets: [
         { puzzles: 50, challenge: "solve" },
         { puzzles: 45, challenge: "speed", time_limit: 75 },
@@ -258,6 +270,7 @@ class AdventureLevelCreator
     23 => {
       description: "Attacking Patterns",
       rating_range: (1700..1900),
+      background_gradient: "linear-gradient(120deg, #f093fb 0%, #f5576c 100%)",
       puzzle_sets: [
         { puzzles: 55, challenge: "solve" },
         { puzzles: 50, challenge: "solve" },
@@ -267,6 +280,7 @@ class AdventureLevelCreator
     24 => {
       description: "Time Management",
       rating_range: (1750..1950),
+      background_gradient: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)",
       puzzle_sets: [
         { puzzles: 60, challenge: "solve" },
         { puzzles: 55, challenge: "speed", time_limit: 90 },
@@ -276,6 +290,7 @@ class AdventureLevelCreator
     25 => {
       description: "Endgame Technique",
       rating_range: (1800..2000),
+      background_gradient: "linear-gradient(90deg, #4b6cb7 0%, #182848 100%)",
       puzzle_sets: [
         { puzzles: 65, challenge: "solve" },
         { puzzles: 60, challenge: "solve" },
@@ -285,6 +300,7 @@ class AdventureLevelCreator
     26 => {
       description: "Opening Theory",
       rating_range: (1850..2050),
+      background_gradient: "linear-gradient(90deg, #1e3c72 0%, #2a5298 100%)",
       puzzle_sets: [
         { puzzles: 70, challenge: "solve" },
         { puzzles: 65, challenge: "speed", time_limit: 100 },
@@ -294,6 +310,7 @@ class AdventureLevelCreator
     27 => {
       description: "Middlegame Strategy",
       rating_range: (1900..2100),
+      background_gradient: "linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)",
       puzzle_sets: [
         { puzzles: 75, challenge: "solve" },
         { puzzles: 70, challenge: "solve" },
@@ -303,6 +320,7 @@ class AdventureLevelCreator
     28 => {
       description: "Tactical Brilliance",
       rating_range: (1950..2150),
+      background_gradient: "linear-gradient(135deg, #ff8a00 0%, #da1b60 100%)",
       puzzle_sets: [
         { puzzles: 80, challenge: "solve" },
         { puzzles: 75, challenge: "speed", time_limit: 120 },
@@ -312,6 +330,7 @@ class AdventureLevelCreator
     29 => {
       description: "Positional Mastery",
       rating_range: (2000..2200),
+      background_gradient: "linear-gradient(90deg, #9796f0 0%, #fbc7d4 100%)",
       puzzle_sets: [
         { puzzles: 85, challenge: "solve" },
         { puzzles: 80, challenge: "solve" },
@@ -321,6 +340,7 @@ class AdventureLevelCreator
     30 => {
       description: "Calculation Excellence",
       rating_range: (2050..2250),
+      background_gradient: "linear-gradient(135deg, #d53369 0%, #daae51 100%)",
       puzzle_sets: [
         { puzzles: 90, challenge: "solve" },
         { puzzles: 85, challenge: "speed", time_limit: 150 },
