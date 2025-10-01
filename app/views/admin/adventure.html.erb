@@ -16,7 +16,11 @@
       
       <% if level_data %>
         <div class="quest-section">
-          <div class="quest-bg" style="background-image: url(<%= asset_path('bg.svg') %>)"></div>
+          <% if level_data['background_gradient'] %>
+            <div class="quest-bg" style="background: <%= level_data['background_gradient'] %>"></div>
+          <% else %>
+            <div class="quest-bg" style="background-image: url(<%= asset_path(level_data['background_image'] || 'bg.svg') %>)"></div>
+          <% end %>
           
           <div class="quest-container container">
             <header class="world-intro">
@@ -145,5 +149,21 @@
   border-color: rgba(255, 255, 255, 0.3);
   text-decoration: none;
   color: #fff;
+}
+
+/* Fix background overlapping on admin adventure page */
+.homepage .quest-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.homepage .quest-section .quest-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: auto;
+  z-index: 1;
 }
 </style>

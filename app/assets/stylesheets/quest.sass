@@ -1,3 +1,11 @@
+// top of homepage
+.quest-section
+  min-height: 400px
+  overflow: hidden
+  background: black
+  padding-bottom: 3rem
+  position: relative
+
 // background image on top of homepage
 .quest-bg
   width: 100%
@@ -10,25 +18,22 @@
   min-height: 100vh
 
   position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
   max-width: 100%
   min-height: 640px
   z-index: 1
 
-
-// top of homepage
-.quest-section
-  min-height: 400px
-  overflow: hidden
-  background: black
-
-  .quest-container
-    display: flex
-    flex-direction: column
-    flex-align: center
-    margin-top: 2rem
-    align-items: center
-    position: relative
-    z-index: 2
+.quest-container
+  display: flex
+  flex-direction: column
+  flex-align: center
+  margin-top: 2rem
+  align-items: center
+  position: relative
+  z-index: 2
 
   // World 1 - just getting started
   header.world-intro
@@ -139,29 +144,43 @@
 
   .quest-container-bottom
     margin-top: 2rem
-    margin-bottom: 3rem
-    text-align: center
+    margin-bottom: 0
+    padding-bottom: 0
+    text-align: center !important
     position: relative
     z-index: 2
 
   .quest-completed
-    text-align: center
-    margin: 2rem 0
+    text-align: center !important
+    margin: 2rem 0 0 0
+    display: flex !important
+    flex-direction: column !important
+    align-items: center !important
 
     .completion-message
-      margin-bottom: 2rem
+      margin-bottom: 0
+      text-align: center !important
+      display: flex !important
+      flex-direction: column !important
+      align-items: center !important
 
       .title
-        font-size: 1.5rem
+        font-size: 2rem
         font-weight: bold
         margin-bottom: 0.5rem
         color: #ffe800
+        text-align: center !important
+        width: 100% !important
+        margin-left: auto !important
+        margin-right: auto !important
 
       .description
         opacity: 0.8
         margin-bottom: 1rem
 
     .action-buttons
+      text-align: center !important
+      
       .blue-button
         display: inline-block
         background: #007bff
