@@ -70,7 +70,7 @@ class AdventureLevelCreator
     3 => {
       description: "Growing Confidence",
       rating_range: (700..900),
-      background_image: "bg-mountain.svg",
+      background_gradient: "linear-gradient(90deg, #3F2B96 0%, #A8C0FF 100%)",
       puzzle_sets: [
         { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
         { puzzles: 15, challenge: "solve", description: "Solve 15 puzzles" },
@@ -80,7 +80,7 @@ class AdventureLevelCreator
     4 => {
       description: "Stepping Up",
       rating_range: (750..950),
-      background_image: "bg-castle.svg",
+      background_gradient: "linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%)",
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
@@ -90,7 +90,7 @@ class AdventureLevelCreator
     5 => {
       description: "Intermediate Challenge",
       rating_range: (800..1000),
-      background_image: "bg-ocean.svg",
+      background_gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       puzzle_sets: [
         { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
         { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles perfectly (no mistakes)" },
@@ -100,7 +100,7 @@ class AdventureLevelCreator
     6 => {
       description: "Advanced Tactics",
       rating_range: (850..1050),
-      background_gradient: "radial-gradient(circle, #667eea 0%, #764ba2 100%)",
+      background_gradient: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)",
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
@@ -110,6 +110,7 @@ class AdventureLevelCreator
     7 => {
       description: "Master's Path",
       rating_range: (900..1100),
+      background_gradient: "linear-gradient(120deg, #a8edea 0%, #fed6e3 100%)",
       puzzle_sets: [
         { puzzles: 12, challenge: "solve", description: "Solve 12 puzzles" },
         { puzzles: 10, challenge: "without_mistakes", description: "Solve 10 puzzles perfectly (no mistakes)" },
@@ -119,7 +120,7 @@ class AdventureLevelCreator
     8 => {
       description: "Expert Territory",
       rating_range: (950..1150),
-      background_gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+      background_gradient: "linear-gradient(90deg, #ff8a00 0%, #da1b60 100%)",
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
@@ -129,6 +130,7 @@ class AdventureLevelCreator
     9 => {
       description: "Elite Challenges",
       rating_range: (1000..1200),
+      background_gradient: "linear-gradient(60deg, #4facfe 0%, #00f2fe 100%)",
       puzzle_sets: [
         { puzzles: 12, challenge: "without_mistakes", description: "Solve 12 puzzles perfectly (no mistakes)" },
         { puzzles: 10, challenge: "speed", description: "Solve 10 puzzles in 60 seconds" },
@@ -138,6 +140,7 @@ class AdventureLevelCreator
     10 => {
       description: "Grandmaster Quest",
       rating_range: (1050..1250),
+      background_gradient: "linear-gradient(45deg, #1e3c72 0%, #2a5298 100%)",
       puzzle_sets: [
         { puzzles: 10, challenge: "solve", description: "Solve 10 puzzles" },
         { puzzles: 20, challenge: "solve", description: "Solve 20 puzzles" },
