@@ -30,8 +30,14 @@
         <button class="retry-button" @click="retryLevel">Retry</button>
       </div>
       
-      <!-- Progress text (hidden when timer expires) -->
-      <div v-if="!timerExpired" class="progress-text">
+      <!-- Game lost message (stalemate/draw) -->
+      <div v-if="gameLost" class="game-lost-section">
+        <div class="game-lost-message">{{ gameLostMessage }}</div>
+        <button class="retry-button" @click="retryLevel">Retry</button>
+      </div>
+      
+      <!-- Progress text (hidden when timer expires or game lost) -->
+      <div v-if="!timerExpired && !gameLost" class="progress-text">
         <span v-if="!hasStarted" class="solve-text">
           <span v-if="isWithoutMistakesChallenge">
             Solve <span class="total">{{ requiredPuzzles }}</span> puzzles without mistakes
@@ -70,7 +76,7 @@
     </div>
     
     <!-- Board overlay for timer timeout and completion -->
-    <div class="board-modal-container invisible" style="display: none;"></div>
+    <div class="board-modal-container invisible"></div>
   </div>
 </template>
 
@@ -109,6 +115,8 @@ export default {
       startTime: null,
       timerExpired: false,
       completionTime: null,
+      gameLost: false,
+      gameLostMessage: 'Game over! Try again.',
       bestTime: null
     }
   },
@@ -215,6 +223,33 @@ export default {
           if (this.isCheckmateChallenge) {
             console.log('Adventure: Calling handleSetComplete for checkmate challenge')
             this.handleSetComplete()
+          }
+        },
+        'game:lost': () => {
+          console.log('Adventure: game:lost received, isCheckmateChallenge:', this.isCheckmateChallenge)
+          if (this.isCheckmateChallenge) {
+            console.log('Adventure: Game lost, showing retry overlay')
+            this.gameLost = true
+            this.gameLostMessage = 'Game over! Try again.'
+            this.showBoardOverlay()
+          }
+        },
+        'game:stalemate': () => {
+          console.log('Adventure: game:stalemate received, isCheckmateChallenge:', this.isCheckmateChallenge)
+          if (this.isCheckmateChallenge) {
+            console.log('Adventure: Stalemate, showing retry overlay')
+            this.gameLost = true
+            this.gameLostMessage = 'Stalemate! Try again.'
+            this.showBoardOverlay()
+          }
+        },
+        'game:draw': () => {
+          console.log('Adventure: game:draw received, isCheckmateChallenge:', this.isCheckmateChallenge)
+          if (this.isCheckmateChallenge) {
+            console.log('Adventure: Draw, showing retry overlay')
+            this.gameLost = true
+            this.gameLostMessage = 'Game over: Draw'
+            this.showBoardOverlay()
           }
         },
         'timer:stopped': () => {
@@ -496,11 +531,27 @@ export default {
   left: 0;
   top: 0;
   z-index: 2;
+  opacity: 1;
+  transition: opacity 150ms ease-in-out;
+  pointer-events: all;
 }
 
 .adventure-mode .board-modal-container.invisible {
   opacity: 0;
   pointer-events: none;
+}
+
+/* Game lost section styles */
+.adventure-mode .game-lost-section {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.adventure-mode .game-lost-message {
+  font-size: 18px;
+  color: #ff6b6b;
+  margin-bottom: 15px;
+  font-weight: 600;
 }
 
 </style>
