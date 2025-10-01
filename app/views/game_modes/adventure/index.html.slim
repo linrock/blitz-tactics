@@ -15,7 +15,7 @@ section.adventure-index
           - best_times = level_info[:best_times] || []
           
           .level-card(class="#{'completed' if completed}")
-            a.level-link(href="/adventure/level/#{level_number}")
+            a.level-link(href="/?level=#{level_number}")
               .level-header
                 .level-number Level #{level_number}
                 - if completed
