@@ -56,6 +56,8 @@ export default class AdventurePuzzleSource {
           // Set initial FEN for checkmate challenges
           this.currentFen = levelInfo.position_fen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
           console.log('Adventure: Initial FEN set for checkmate challenge:', this.currentFen)
+          // Set the correct instructions based on color to move
+          this.setCheckmateInstructions()
         }
         
         console.log('Adventure: Level loaded', {
@@ -285,14 +287,22 @@ export default class AdventurePuzzleSource {
     const tempChess = new Chess(currentFen)
     console.log('Adventure: Game over?', tempChess.game_over())
     console.log('Adventure: In checkmate?', tempChess.in_checkmate())
+    console.log('Adventure: In stalemate?', tempChess.in_stalemate())
+    console.log('Adventure: In draw?', tempChess.in_draw())
     console.log('Adventure: Turn:', tempChess.turn())
     
     if (tempChess.game_over()) {
       if (tempChess.in_checkmate()) {
         console.log('Adventure: Checkmate achieved!')
         dispatch('game:won')
+      } else if (tempChess.in_stalemate()) {
+        console.log('Adventure: Stalemate!')
+        dispatch('game:stalemate')
+      } else if (tempChess.in_draw()) {
+        console.log('Adventure: Draw!')
+        dispatch('game:draw')
       } else {
-        console.log('Adventure: Game over but not checkmate')
+        console.log('Adventure: Game over but not checkmate/stalemate/draw')
         dispatch('game:lost')
       }
     } else {
@@ -465,5 +475,16 @@ export default class AdventurePuzzleSource {
     this.puzzles.addPuzzles(shuffledPuzzles)
     
     console.log('Adventure: Puzzles shuffled, new order:', puzzleIds.slice(0, 5), '...')
+  }
+
+  private setCheckmateInstructions() {
+    if (!this.currentFen) return
+    
+    // Determine color to move from FEN
+    const toMove = this.currentFen.indexOf(' w ') > 0 ? 'White' : 'Black'
+    const instructionText = `${toMove} to move`
+    
+    console.log('Adventure: Setting checkmate instructions:', instructionText)
+    dispatch('instructions:set', instructionText)
   }
 }
