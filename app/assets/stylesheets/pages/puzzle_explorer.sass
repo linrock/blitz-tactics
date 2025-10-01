@@ -32,6 +32,46 @@
     -webkit-backdrop-filter: blur(4px)
     border: 1px solid rgba(255, 255, 255, 0.18)
 
+    .histogram
+      display: flex
+      align-items: end
+      justify-content: space-between
+      height: 300px
+      padding: 20px 0
+      gap: 2px
+
+      .histogram-bar
+        flex: 1
+        background: linear-gradient(180deg, #4a9eff 0%, #1e3a8a 100%)
+        border-radius: 4px 4px 0 0
+        position: relative
+        min-height: 20px
+        transition: all 0.3s ease
+        cursor: pointer
+
+        &:hover
+          background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%)
+
+        .bar-value
+          position: absolute
+          top: -25px
+          left: 50%
+          transform: translateX(-50%)
+          font-size: 0.8rem
+          font-weight: bold
+          color: #fff
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5)
+          white-space: nowrap
+
+        .bar-label
+          position: absolute
+          bottom: -25px
+          left: 50%
+          transform: translateX(-50%)
+          font-size: 0.7rem
+          color: #a0aec0
+          white-space: nowrap
+
     canvas
       max-width: 100%
       height: auto
@@ -52,6 +92,23 @@
       font-size: 1.8rem
       color: #fff
       font-weight: 600
+
+    .total-puzzles
+      text-align: center
+      padding: 20px
+
+      .total-count
+        display: block
+        font-size: 3rem
+        font-weight: bold
+        color: #4a9eff
+        margin-bottom: 10px
+        text-shadow: 0 0 10px rgba(74, 158, 255, 0.3)
+
+      .total-label
+        font-size: 1.2rem
+        color: #a0aec0
+        opacity: 0.8
 
     #histogram-stats
       display: grid
@@ -76,6 +133,50 @@
           font-weight: bold
           color: #fff
 
+  .themes-container
+    background: rgba(255, 255, 255, 0.08)
+    border-radius: 15px
+    padding: 25px
+    margin-bottom: 30px
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37)
+    backdrop-filter: blur(4px)
+    -webkit-backdrop-filter: blur(4px)
+    border: 1px solid rgba(255, 255, 255, 0.18)
+
+    h2
+      margin-bottom: 20px
+      font-size: 1.8rem
+      color: #fff
+      font-weight: 600
+
+    .themes-grid
+      display: grid
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr))
+      gap: 15px
+
+      .theme-item
+        background: rgba(255, 255, 255, 0.05)
+        border-radius: 10px
+        padding: 20px
+        border: 1px solid rgba(255, 255, 255, 0.1)
+        transition: all 0.3s ease
+        cursor: pointer
+
+        &:hover
+          background: rgba(255, 255, 255, 0.1)
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2)
+
+        .theme-name
+          font-size: 1.1rem
+          font-weight: 600
+          color: #fff
+          margin-bottom: 8px
+
+        .theme-count
+          font-size: 0.9rem
+          color: #4a9eff
+          opacity: 0.9
+
 
 // Responsive design
 @media (max-width: 768px)
@@ -85,9 +186,33 @@
     h1
       font-size: 2rem
 
-    .histogram-container, .stats-container
+    .histogram-container, .stats-container, .themes-container
       padding: 20px
       margin-bottom: 20px
+
+    .histogram
+      height: 200px
+      gap: 1px
+
+      .histogram-bar
+        .bar-value
+          font-size: 0.7rem
+          top: -20px
+
+        .bar-label
+          font-size: 0.6rem
+          bottom: -20px
+
+    .total-puzzles
+      .total-count
+        font-size: 2rem
+
+    .themes-grid
+      grid-template-columns: 1fr
+      gap: 10px
+
+      .theme-item
+        padding: 15px
 
     #histogram-stats
       grid-template-columns: 1fr
