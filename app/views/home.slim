@@ -12,24 +12,24 @@ section.homepage
             span.puzzle-count-label unique puzzles
 
   - if @adventure_mode_enabled
-    .quest-section
+    .adventure-section
       - if @current_adventure_level && @adventure_puzzle_sets&.any?
         - if @current_adventure_level['background_gradient']
-          .quest-bg(style="background: #{@current_adventure_level['background_gradient']}")
+          .adventure-bg(style="background: #{@current_adventure_level['background_gradient']}")
         - else
-          .quest-bg(style="background-image: url(#{asset_path(@current_adventure_level['background_image'] || @background_img)})")
+          .adventure-bg(style="background-image: url(#{asset_path(@current_adventure_level['background_image'] || @background_img)})")
 
-        .quest-container.container
-          header.world-intro
-            .world-name= "Level #{@current_adventure_level_number}: #{@current_adventure_level['description']}"
+        .adventure-container.container
+          header.adventure-intro
+            .adventure-name= "Level #{@current_adventure_level_number}: #{@current_adventure_level['description']}"
 
-          main.world-levels
+          main.adventure-levels
             - @adventure_puzzle_sets.each do |set_data|
               - if set_data && set_data['set_index']
                 - is_locked = !set_data['unlocked']
                 - link_href = is_locked ? "#" : "/adventure/level/#{@current_adventure_level_number}/set/#{set_data['set_index']}"
                 - if is_locked
-                  .quest-level(class="#{'completed' if set_data['completed']} #{'locked' if is_locked}")
+                  .adventure-level(class="#{'completed' if set_data['completed']} #{'locked' if is_locked}")
                     - if is_locked
                       .completion-indicator
                         .lock-icon 🔒
@@ -50,7 +50,7 @@ section.homepage
                           .checkmark ✓
                           | Best time: #{(set_data['completion_data']['best_time_ms'] / 100.0).round / 10.0}s
                 - else
-                  a.quest-level(href=link_href class="#{'completed' if set_data['completed']}")
+                  a.adventure-level(href=link_href class="#{'completed' if set_data['completed']}")
                     - if set_data['first_puzzle']
                       - puzzle_data = set_data['first_puzzle']
                       - puzzle_fen = puzzle_data[:fen] if puzzle_data
@@ -68,9 +68,9 @@ section.homepage
                           .checkmark ✓
                           | Best time: #{(set_data['completion_data']['best_time_ms'] / 100.0).round / 10.0}s
 
-        .quest-container-bottom.container
+        .adventure-container-bottom.container
           - if user_signed_in? && @current_level_completed
-            .quest-completed
+            .adventure-completed
               .completion-message
                 .title You've completed level #{@current_adventure_level_number}!
               .action-buttons
@@ -85,15 +85,15 @@ section.homepage
               .progress-text= "#{@completed_sets_count}/#{@total_sets_count} completed - Complete all puzzle sets to continue"
       - elsif @all_adventure_levels_complete
         - if @current_adventure_level && @current_adventure_level['background_gradient']
-          .quest-bg(style="background: #{@current_adventure_level['background_gradient']}")
+          .adventure-bg(style="background: #{@current_adventure_level['background_gradient']}")
         - else
-          .quest-bg(style="background-image: url(#{asset_path(@current_adventure_level['background_image'] || @background_img)})")
+          .adventure-bg(style="background-image: url(#{asset_path(@current_adventure_level['background_image'] || @background_img)})")
 
-        .quest-container.container
-          header.world-intro
-            .world-name All adventure levels complete!
-          main.world-levels
-            .quest-level
+        .adventure-container.container
+          header.adventure-intro
+            .adventure-name All adventure levels complete!
+          main.adventure-levels
+            .adventure-level
               .level-info-top 🎉 Congratulations! 🎉
               .level-info-bottom You've completed all available adventure levels.
       - else

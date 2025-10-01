@@ -15,25 +15,25 @@
       <% puzzle_sets = level_info[:puzzle_sets] %>
       
       <% if level_data %>
-        <div class="quest-section">
+        <div class="adventure-section">
           <% if level_data['background_gradient'] %>
-            <div class="quest-bg" style="background: <%= level_data['background_gradient'] %>"></div>
+            <div class="adventure-bg" style="background: <%= level_data['background_gradient'] %>"></div>
           <% else %>
-            <div class="quest-bg" style="background-image: url(<%= asset_path(level_data['background_image'] || 'bg.svg') %>)"></div>
+            <div class="adventure-bg" style="background-image: url(<%= asset_path(level_data['background_image'] || 'bg.svg') %>)"></div>
           <% end %>
-          
-          <div class="quest-container container">
-            <header class="world-intro">
-              <div class="world-name">Level <%= level_number %>: <%= level_data['description'] %></div>
+
+          <div class="adventure-container container">
+            <header class="adventure-intro">
+              <div class="adventure-name">Level <%= level_number %>: <%= level_data['description'] %></div>
             </header>
 
-            <main class="world-levels">
+            <main class="adventure-levels">
               <% puzzle_sets.each do |set_data| %>
                 <% if set_data && set_data['set_index'] %>
                   <% is_locked = !set_data['unlocked'] %>
                   <% link_href = is_locked ? "#" : "/adventure/level/#{level_number}/set/#{set_data['set_index']}" %>
                   <% if is_locked %>
-                    <div class="quest-level <%= 'completed' if set_data['completed'] %> <%= 'locked' if is_locked %>">
+                    <div class="adventure-level <%= 'completed' if set_data['completed'] %> <%= 'locked' if is_locked %>">
                       <% if is_locked %>
                         <div class="completion-indicator">
                           <div class="lock-icon">🔒</div>
@@ -63,7 +63,7 @@
                       </div>
                     </div>
                   <% else %>
-                    <%= link_to link_href, class: "quest-level #{'completed' if set_data['completed']}" do %>
+                    <%= link_to link_href, class: "adventure-level #{'completed' if set_data['completed']}" do %>
                       <% if set_data['first_puzzle'] %>
                         <% puzzle_data = set_data['first_puzzle'] %>
                         <% puzzle_fen = puzzle_data[:fen] if puzzle_data %>
@@ -94,9 +94,9 @@
           </div>
         </div>
       <% else %>
-        <div class="quest-section">
-          <div class="quest-container container">
-            <header class="world-intro">
+        <div class="adventure-section">
+          <div class="adventure-container container">
+            <header class="adventure-intro">
               <div class="world-name">Level <%= level_number %>: Error loading level data</div>
             </header>
           </div>
@@ -104,13 +104,13 @@
       <% end %>
     <% end %>
   <% else %>
-    <div class="quest-section">
-      <div class="quest-container container">
-        <header class="world-intro">
-          <div class="world-name">No adventure levels found</div>
+    <div class="adventure-section">
+      <div class="adventure-container container">
+        <header class="adventure-intro">
+          <div class="adventure-name">No adventure levels found</div>
         </header>
-        <main class="world-levels">
-          <div class="quest-level">
+        <main class="adventure-levels">
+          <div class="adventure-level">
             <div class="level-info-bottom">
               <div class="success-criteria">Generate adventure levels using the rake tasks or AdventureLevelCreator</div>
             </div>
@@ -152,12 +152,12 @@
 }
 
 /* Fix background overlapping on admin adventure page */
-.homepage .quest-section {
+.homepage .adventure-section {
   position: relative;
   overflow: hidden;
 }
 
-.homepage .quest-section .quest-bg {
+.homepage .adventure-section .adventure-bg {
   position: absolute;
   top: 0;
   left: 0;
