@@ -74,9 +74,6 @@
         </span>
       </div>
     </div>
-    
-    <!-- Board overlay for timer timeout and completion -->
-    <div class="board-modal-container invisible"></div>
   </div>
 </template>
 
@@ -313,10 +310,16 @@ export default {
     },
     
     showBoardOverlay() {
-      const el = document.querySelector('.board-modal-container')
+      const el = document.querySelector('.board-area .board-modal-container')
       if (el) {
+        // Ensure element is visible but with opacity 0
         el.style.display = ''
-        el.classList.remove('invisible')
+        // Force a reflow to ensure the display change is applied
+        el.offsetHeight
+        // Then remove invisible class to trigger fade-in transition
+        setTimeout(() => {
+          el.classList.remove('invisible')
+        }, 10)
       }
     },
     
@@ -522,24 +525,7 @@ export default {
   background: #2c5aa0;
 }
 
-/* Board overlay for timer timeout */
-.adventure-mode .board-modal-container {
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 2;
-  opacity: 1;
-  transition: opacity 150ms ease-in-out;
-  pointer-events: all;
-}
 
-.adventure-mode .board-modal-container.invisible {
-  opacity: 0;
-  pointer-events: none;
-}
 
 /* Game lost section styles */
 .adventure-mode .game-lost-section {
