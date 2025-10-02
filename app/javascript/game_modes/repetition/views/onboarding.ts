@@ -1,6 +1,6 @@
 // onboarding message on first level of repetition mode
 
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 
 export default class Onboarding {
 
@@ -13,7 +13,7 @@ export default class Onboarding {
       return
     }
     subscribe({
-      'puzzles:start': () => this.el.classList.add(`invisible`)
+      [GameEvent.PUZZLES_START]: () => this.el.classList.add(`invisible`)
     })
   }
 }

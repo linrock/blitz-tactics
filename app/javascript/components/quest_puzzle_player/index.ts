@@ -55,18 +55,18 @@ export default class QuestPuzzlePlayer {
       new QuestPuzzleSource
 
       // Dispatch quest-specific events
-      dispatch('quest:level:loaded', this.levelInfo)
-      dispatch('puzzles:fetched', this.puzzles.puzzles)
+      dispatch(GameEvent.QUEST_LEVEL_LOADED, this.levelInfo)
+      dispatch(GameEvent.PUZZLES_FETCHED, this.puzzles.puzzles)
     }
   }
 
   private setupEventListeners() {
     subscribe({
-      'puzzle:solved': puzzle => {
+      [GameEvent.PUZZLE_SOLVED]: puzzle => {
         trackEvent(`quest puzzle solved`, window.location.pathname, puzzle.id)
         this.handlePuzzleSolved(puzzle)
       },
-      'puzzles:complete': () => {
+      [GameEvent.PUZZLES_COMPLETE]: () => {
         this.handleLevelComplete()
       }
     })

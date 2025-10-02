@@ -1,4 +1,4 @@
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, GameEvent } from '@blitz/events'
 import { UciMove } from '@blitz/types'
 import { PuzzleState } from '../puzzle_source'
 
@@ -27,12 +27,12 @@ export default class PuzzleHint {
       })
     })
     subscribe({
-      'puzzle:loaded': (current: PuzzleState) => {
+      [GameEvent.PUZZLE_LOADED]: (current: PuzzleState) => {
         this.current = current
         this.delayedShowHint()
       },
-      'move:make': () => this.delayedShowHint(),
-      'timer:stopped': () => this.clearHintTimer(),
+      [GameEvent.MOVE_MAKE]: () => this.delayedShowHint(),
+      [GameEvent.TIMER_STOPPED]: () => this.clearHintTimer(),
     })
   }
 
@@ -58,7 +58,7 @@ export default class PuzzleHint {
     this.buttonEl.classList.remove(`invisible`)
     this.moveEl.textContent = ``
     // Hide combo counter when hint button appears
-    dispatch(`combo:drop`)
+    dispatch(GameEvent.COMBO_DROP)
     this.timeout = window.setTimeout(() => {
       dispatch(`move:too_slow`)
       setTimeout(() => this.showHint(), hintDelay)

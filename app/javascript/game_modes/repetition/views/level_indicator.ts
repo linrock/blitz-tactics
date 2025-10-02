@@ -1,4 +1,4 @@
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 
 // Level name, next level, etc.
 //
@@ -14,7 +14,7 @@ export default class LevelIndicator {
     this.levelNameEl = this.el.querySelector(`.level-name`)
     this.nextStageEl = this.el.querySelector(`.next-stage`)
     subscribe({
-      'puzzles:start': () => {
+      [GameEvent.PUZZLES_START]: () => {
         this.levelNameEl.classList.add(`faded`)
       },
       'level:unlocked': () => {

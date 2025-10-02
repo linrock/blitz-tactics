@@ -33,7 +33,7 @@
 import { hasteRoundCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 import { solutionReplay } from '@blitz/utils/solution_replay'
 
 import Timer from './timer.vue'
@@ -64,7 +64,7 @@ export default {
     
     subscribe({
       ...commonSubscriptions,
-      'puzzle:loaded': data => {
+      [GameEvent.PUZZLE_LOADED]: data => {
         // Track each puzzle loaded (including puzzle data)
         this.currentPuzzle = data.puzzle
         this.currentPuzzleData = data
@@ -72,15 +72,15 @@ export default {
         this.currentPuzzleMistakes = 0 // Reset mistakes for new puzzle
         console.log('Puzzle loaded:', data.puzzle.id, 'Start time:', this.currentPuzzleStartTime)
       },
-      'move:fail': () => {
+      [GameEvent.MOVE_FAIL]: () => {
         // Track mistakes for current puzzle
         this.currentPuzzleMistakes++
         console.log('Mistake made on puzzle:', this.currentPuzzle?.id, 'Total mistakes:', this.currentPuzzleMistakes)
       },
-      'puzzles:status': ({ i }) => {
+      [GameEvent.PUZZLES_STATUS]: ({ i }) => {
         this.numPuzzlesSolved = i + 1
       },
-      'puzzle:solved': async (puzzle) => {
+      [GameEvent.PUZZLE_SOLVED]: async (puzzle) => {
         console.log('Puzzle solved:', puzzle)
         if (puzzle && puzzle.id) {
           this.solvedPuzzleIds.push(puzzle.id)
@@ -114,7 +114,7 @@ export default {
           console.log('No puzzle ID found in puzzle:', puzzle)
         }
       },
-      'timer:stopped': async () => {
+      [GameEvent.TIMER_STOPPED]: async () => {
         this.showBoardOverlay()
         console.log('Round completed. Sending puzzle IDs:', this.solvedPuzzleIds)
         // Notify the server that the round has finished. Show high scores

@@ -4,7 +4,7 @@
 import { ShortMove, Move } from 'chess.js'
 
 import { fetchPuzzles } from '@blitz/api/requests'
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, GameEvent } from '@blitz/events'
 import { InitialMove, Puzzle, UciMove } from '@blitz/types'
 import { uciToMove, moveToUci } from '@blitz/utils'
 import Puzzles from './puzzles'
@@ -55,35 +55,35 @@ export default class PuzzleSource {
     subscribe({
       'source:changed': path => this.fetchPuzzles(path),
       'source:changed:add': path => this.fetchAndAddPuzzles(path),
-      'puzzles:fetched': puzzles => {
+      [GameEvent.PUZZLES_FETCHED]: puzzles => {
         this.puzzles = new Puzzles()
         this.addPuzzles(puzzles)
         this.firstPuzzle()
       },
       'puzzles:added': puzzles => this.addPuzzles(puzzles),
-      'puzzles:next': () => {
+      [GameEvent.PUZZLES_NEXT]: () => {
         const n = this.puzzles.count()
-        dispatch(`puzzles:status`, {
+        dispatch(GameEvent.PUZZLES_STATUS, {
           i: this.i,
           lastPuzzleId: this.puzzles.lastPuzzle().id,
           n,
         })
         this.nextPuzzle()
       },
-      'puzzle:get_hint': () => {
+      [GameEvent.PUZZLE_GET_HINT]: () => {
         const hints: string[] = Object.keys(this.current.boardState).filter((move: UciMove) => {
           return this.current.boardState[move] !== 'retry'
         })
-        dispatch('puzzle:hint', hints[~~(Math.random() * hints.length)])
+        dispatch(GameEvent.PUZZLE_HINT, hints[~~(Math.random() * hints.length)])
       },
-      'move:try': move => this.tryUserMove(move),
+      [GameEvent.MOVE_TRY]: move => this.tryUserMove(move),
     })
   }
 
   private fetchPuzzles(source: string) {
     fetchPuzzles(source).then(data => {
-      dispatch(`puzzles:fetched`, data.puzzles)
-      dispatch(`config:init`, data)
+      dispatch(GameEvent.PUZZLES_FETCHED, data.puzzles)
+      dispatch(GameEvent.CONFIG_INIT, data)
     })
   }
 
@@ -108,10 +108,10 @@ export default class PuzzleSource {
       }
       if (this.loopPuzzles) {
         this.i = 0
-        dispatch(`puzzles:lap`)
+        dispatch(GameEvent.PUZZLES_LAP)
         this.loadPuzzleAtIndex(this.i)
       } else {
-        dispatch(`puzzles:complete`)
+        dispatch(GameEvent.PUZZLES_COMPLETE)
       }
     } else {
       this.loadPuzzleAtIndex(this.i)
@@ -134,13 +134,13 @@ export default class PuzzleSource {
       puzzle,
     }
     clearTimeout(this.firstMoveT)
-    dispatch(`puzzle:loaded`, this.current)
-    dispatch(`board:flipped`, !!puzzle.fen.match(/ w /))
-    dispatch(`fen:set`, puzzle.fen)
+    dispatch(GameEvent.PUZZLE_LOADED, this.current)
+    dispatch(GameEvent.BOARD_FLIPPED, !!puzzle.fen.match(/ w /))
+    dispatch(GameEvent.FEN_SET, puzzle.fen)
     this.firstMoveT = window.setTimeout(() => {
       const move = this.getInitialMoveSan(puzzle.initialMove)
-      dispatch(`move:make`, move, { opponent: true })
-      dispatch(`move:sound`, move)
+      dispatch(GameEvent.MOVE_MAKE, move, { opponent: true })
+      dispatch(GameEvent.MOVE_SOUND, move)
       this.firstMoveT = undefined
     }, FIRST_MOVE_DELAY)
   }
@@ -148,44 +148,44 @@ export default class PuzzleSource {
   private tryUserMove(move: Move) {
     if (!this.started) {
       this.started = true
-      dispatch(`puzzles:start`)
+      dispatch(GameEvent.PUZZLES_START)
     }
     const attempt = this.current.boardState[moveToUci(move)]
     if (attempt === `win`) {
-      dispatch(`move:success`)
+      dispatch(GameEvent.MOVE_SUCCESS)
       if (this.mode === `rated`) {
-        dispatch(`move:make`, move)
+        dispatch(GameEvent.MOVE_MAKE, move)
       } else if (this.i === this.puzzles.count() - 1) {
         // TODO look into whether this check is needed
-        dispatch(`move:make`, move)
+        dispatch(GameEvent.MOVE_MAKE, move)
       }
       this.puzzleSolved()
       return
     } else if (attempt === `retry`) {
-      dispatch(`move:almost`, move)
+      dispatch(GameEvent.MOVE_ALMOST, move)
       return
     }
     const response = attempt ? Object.keys(attempt)[0] : null
     if (!response) {
-      dispatch(`move:fail`, move)
+      dispatch(GameEvent.MOVE_FAIL, move)
       return
     }
-    dispatch(`move:make`, move)
-    dispatch(`move:success`)
+    dispatch(GameEvent.MOVE_MAKE, move)
+    dispatch(GameEvent.MOVE_SUCCESS)
     if (attempt[response] === `win`) {
       this.puzzleSolved()
     } else {
-      dispatch(`move:sound`, move)
+      dispatch(GameEvent.MOVE_SOUND, move)
       const responseMove = uciToMove(response)
       setTimeout(() => {
-        dispatch(`move:make`, responseMove, { opponent: true })
+        dispatch(GameEvent.MOVE_MAKE, responseMove, { opponent: true })
         this.current.boardState = attempt[response]
       }, responseDelay)
     }
   }
 
   private puzzleSolved() {
-    dispatch(`puzzle:solved`, this.current.puzzle)
-    dispatch(`puzzles:next`)
+    dispatch(GameEvent.PUZZLE_SOLVED, this.current.puzzle)
+    dispatch(GameEvent.PUZZLES_NEXT)
   }
 }

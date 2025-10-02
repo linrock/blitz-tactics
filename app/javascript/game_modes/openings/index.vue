@@ -34,7 +34,7 @@
 import { openingsRoundCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 
 import Timer from './timer.vue'
 
@@ -58,10 +58,10 @@ export default {
     
     subscribe({
       ...commonSubscriptions,
-      'puzzles:status': ({ i }) => {
+      [GameEvent.PUZZLES_STATUS]: ({ i }) => {
         this.numPuzzlesSolved = i + 1
       },
-      'puzzle:solved': (puzzle) => {
+      [GameEvent.PUZZLE_SOLVED]: (puzzle) => {
         // Track individual puzzle solve
         if (puzzle && puzzle.id) {
           trackSolvedPuzzle(puzzle.id, 'openings').catch(error => {
@@ -69,7 +69,7 @@ export default {
           })
         }
       },
-      'timer:stopped': async () => {
+      [GameEvent.TIMER_STOPPED]: async () => {
         this.showBoardOverlay()
         // Notify the server that the round has finished. Show high scores
         const data = await openingsRoundCompleted(this.numPuzzlesSolved)

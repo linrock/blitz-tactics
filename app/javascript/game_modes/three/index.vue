@@ -52,7 +52,7 @@ aside.three-under-board.game-under-board
 import { threeRoundCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, GameEvent } from '@blitz/events'
 import { solutionReplay } from '@blitz/utils/solution_replay'
 
 import Timer from './timer.vue'
@@ -99,7 +99,7 @@ export default {
       this.highScore = data.best
       this.highScores = data.high_scores
       this.hasFinished = true
-      dispatch('timer:stop')
+      dispatch(GameEvent.TIMER_STOP)
       
       // Add the current unsolved puzzle to the list if there is one and it hasn't been added already
       if (this.currentPuzzle) {
@@ -135,7 +135,7 @@ export default {
     
     subscribe({
       ...commonSubscriptions,
-      'puzzle:loaded': data => {
+      [GameEvent.PUZZLE_LOADED]: data => {
         this.moveHint = null
         this.trackPuzzleLoaded(data.puzzle.id)
         // Store current puzzle data for failed puzzle tracking
@@ -145,13 +145,13 @@ export default {
         this.currentPuzzleMistakes = 0 // Reset mistakes for new puzzle
         console.log('Puzzle loaded:', data.puzzle.id, 'Start time:', this.currentPuzzleStartTime)
       },
-      'puzzle:hint': hint => {
+      [GameEvent.PUZZLE_HINT]: hint => {
         this.numHints -= 1
         const halfHint = Math.random() < 0.5 ? hint.slice(0, 2) : hint.slice(2, 4)
         this.moveHint = halfHint
-        dispatch('shape:draw', halfHint)
+        dispatch(GameEvent.SHAPE_DRAW, halfHint)
       },
-      'puzzles:status': ({ i }) => {
+      [GameEvent.PUZZLES_STATUS]: ({ i }) => {
         // triggered when a puzzle gets loaded onto the board
         if (this.ignoreNextPuzzleScore) {
           // happens after a mistake
@@ -163,7 +163,7 @@ export default {
           setTimeout(() => this.isGainingScore = false, 300)
         }
       },
-      'puzzle:solved': async (puzzle) => {
+      [GameEvent.PUZZLE_SOLVED]: async (puzzle) => {
         if (puzzle && puzzle.id) {
           this.solvedPuzzleIds.push(puzzle.id)
           
@@ -193,13 +193,13 @@ export default {
           }
         }
       },
-      'timer:stopped': () => {
+      [GameEvent.TIMER_STOPPED]: () => {
         gameOver();
       },
-      'move:success': () => {
+      [GameEvent.MOVE_SUCCESS]: () => {
         this.hasStarted = true
       },
-      'move:fail': () => {
+      [GameEvent.MOVE_FAIL]: () => {
         console.log('Move failed - current puzzle:', this.currentPuzzle)
         console.log('Move failed - current puzzle data:', this.currentPuzzleData)
         
@@ -242,13 +242,13 @@ export default {
           this.ignoreNextPuzzleScore = true
           this.isLosingLife = true
           setTimeout(() => this.isLosingLife = false, 500)
-          dispatch('puzzles:next')
+          dispatch(GameEvent.PUZZLES_NEXT)
         } else {
           // if not enough lives, the game is over
           gameOver()
         }
       },
-      'move:try': () => {
+      [GameEvent.MOVE_TRY]: () => {
         this.moveHint = null
         if (!this.hasStarted) {
           this.hasStarted = true
@@ -267,7 +267,7 @@ export default {
 
   methods: {
     viewHint() {
-      dispatch('puzzle:get_hint')
+      dispatch(GameEvent.PUZZLE_GET_HINT)
     },
 
     async trackSolvedPuzzle(puzzleId) {

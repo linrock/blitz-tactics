@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import { subscribe, subscribeOnce } from '@blitz/events'
+import { subscribe, subscribeOnce, GameEvent } from '@blitz/events'
 import TimerMixin from '@blitz/components/timer_mixin'
 
 const updateIntervalMs = 33   // timer updates this frequently
@@ -21,14 +21,14 @@ export default {
     })
 
     subscribe({
-      'timer:stop': () => {
+      [GameEvent.TIMER_STOP]: () => {
         this.gameHasEnded();
       },
-      'move:fail': () => {
+      [GameEvent.MOVE_FAIL]: () => {
         // reset the puzzle combo when making mistakes
         this.resetCombo()
       },
-      'puzzle:solved': () => {
+      [GameEvent.PUZZLE_SOLVED]: () => {
         // increment puzzle combo and give a reward past a threshold
         this.incrementCombo()
         if (this.comboSize > 0 && this.comboSize % rewardThreshold === 0) {
@@ -37,7 +37,7 @@ export default {
           this.showReward()
         }
       },
-      'puzzles:complete': () => {
+      [GameEvent.PUZZLES_COMPLETE]: () => {
         // this happens when all the threes puzzles in a round have been completed
         this.gameHasEnded()
       },

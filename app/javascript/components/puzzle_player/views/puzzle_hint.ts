@@ -1,4 +1,4 @@
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, GameEvent } from '@blitz/events'
 import { UciMove } from '@blitz/types'
 import { PuzzleState } from '../puzzle_source'
 
@@ -23,29 +23,29 @@ export default class PuzzleHint {
     
     // Add click handler to request hint from PuzzleSource
     this.buttonEl.addEventListener('click', () => {
-      dispatch('puzzle:get_hint')
+      dispatch(GameEvent.PUZZLE_GET_HINT)
       // Hide button after click
       this.buttonEl.classList.add(`invisible`)
     })
     
     subscribe({
-      'puzzle:loaded': (current: PuzzleState) => {
+      [GameEvent.PUZZLE_LOADED]: (current: PuzzleState) => {
         this.current = current
         this.delayedShowHint()
       },
-      'puzzle:hint': (hint: string) => {
+      [GameEvent.PUZZLE_HINT]: (hint: string) => {
         this.displayHint(hint)
         // Highlight the "from" square like Three game mode does
         const fromSquare = hint.slice(0, 2)
-        dispatch('shape:draw', fromSquare)
+        dispatch(GameEvent.SHAPE_DRAW, fromSquare)
       },
-      'move:success': () => {
+      [GameEvent.MOVE_SUCCESS]: () => {
         // Hide the hint button after a successful move
         this.buttonEl.classList.add(`invisible`)
       },
-      'move:make': () => this.delayedShowHint(),
-      'puzzle:solved': () => this.hideHint(),
-      'timer:stopped': () => this.clearHintTimer(),
+      [GameEvent.MOVE_MAKE]: () => this.delayedShowHint(),
+      [GameEvent.PUZZLE_SOLVED]: () => this.hideHint(),
+      [GameEvent.TIMER_STOPPED]: () => this.clearHintTimer(),
     })
   }
 
@@ -77,7 +77,7 @@ export default class PuzzleHint {
     this.timeout = window.setTimeout(() => {
       dispatch(`move:too_slow`)
       // Hide combo counter when hint button appears
-      dispatch(`combo:drop`)
+      dispatch(GameEvent.COMBO_DROP)
       setTimeout(() => {
         // Only show the hint button, don't automatically get the hint
         this.el.classList.remove(`invisible`)

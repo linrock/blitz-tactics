@@ -32,7 +32,7 @@ import { countdownCompleted, trackSolvedPuzzle } from '@blitz/api/requests'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
 import MiniChessboard from '@blitz/components/mini_chessboard'
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 import { solutionReplay } from '@blitz/utils/solution_replay'
 
 import Timer from './timer.vue'
@@ -78,8 +78,8 @@ export default {
     
     // Then subscribe to countdown-specific events
     subscribe({
-      'config:init': data => levelName = data.level_name,
-      'puzzle:loaded': data => {
+      [GameEvent.CONFIG_INIT]: data => levelName = data.level_name,
+      [GameEvent.PUZZLE_LOADED]: data => {
         // Track each puzzle loaded (including puzzle data)
         this.currentPuzzle = data.puzzle
         this.currentPuzzleData = data
@@ -87,15 +87,15 @@ export default {
         this.currentPuzzleMistakes = 0 // Reset mistakes for new puzzle
         console.log('Puzzle loaded:', data.puzzle.id, 'Start time:', this.currentPuzzleStartTime)
       },
-      'move:fail': () => {
+      [GameEvent.MOVE_FAIL]: () => {
         // Track mistakes for current puzzle
         this.currentPuzzleMistakes++
         console.log('Mistake made on puzzle:', this.currentPuzzle?.id, 'Total mistakes:', this.currentPuzzleMistakes)
       },
-      'puzzles:status': ({ i }) => {
+      [GameEvent.PUZZLES_STATUS]: ({ i }) => {
         this.nPuzzlesSolved = i + 1
       },
-      'puzzle:solved': (puzzle) => {
+      [GameEvent.PUZZLE_SOLVED]: (puzzle) => {
         // Track individual puzzle solve
         console.log('Countdown puzzle solved:', puzzle)
         if (puzzle && puzzle.id) {
@@ -122,7 +122,7 @@ export default {
           })
         }
       },
-      'timer:stopped': () => {
+      [GameEvent.TIMER_STOPPED]: () => {
         this.showBoardOverlay()
         
         // Add the current unsolved puzzle to the list if there is one
@@ -157,7 +157,7 @@ export default {
         })
         this.saveMistakesToStorage()
       },
-      'move:try': move => {
+      [GameEvent.MOVE_TRY]: move => {
         // Set hasStarted on first move
         if (!this.hasStarted) {
           this.hasStarted = true
@@ -165,7 +165,7 @@ export default {
         // Track total moves for accuracy calculation
         this.totalMoves++
       },
-      'move:success': () => {
+      [GameEvent.MOVE_SUCCESS]: () => {
         // Track correct moves for accuracy calculation
         this.correctMoves++
       }

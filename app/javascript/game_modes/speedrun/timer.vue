@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-  import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
+  import { dispatch, subscribe, subscribeOnce, GameEvent } from '@blitz/events'
   import { formattedTime } from '@blitz/utils'
 
   const updateInterval = 37
@@ -38,10 +38,10 @@
       })
 
       subscribe({
-        'puzzles:complete': () => {
+        [GameEvent.PUZZLES_COMPLETE]: () => {
           clearInterval(timerInterval)
           this.isComplete = true
-          dispatch(`timer:stopped`, this.elapsedTimeMilliseconds)
+          dispatch(GameEvent.TIMER_STOPPED, this.elapsedTimeMilliseconds)
         }
       })
     }

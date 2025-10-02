@@ -22,7 +22,7 @@ import NewPuzzlePlayer from './components/new_puzzle_player/index.vue'
 import PuzzlePlayer from './components/puzzle_player'
 import ChessgroundBoard from './components/chessground_board'
 import ChessboardResizer from './components/puzzle_player/views/chessboard_resizer'
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, GameEvent } from '@blitz/events'
 import QuestMode from './game_modes/quest/index.vue'
 import AdventureMode from './game_modes/adventure/index.vue'
 

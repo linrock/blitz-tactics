@@ -38,7 +38,7 @@ export default class AdventurePuzzleSource {
 
   private setupEventListeners() {
     subscribe({
-      'adventure:level:loaded': levelInfo => {
+      [GameEvent.ADVENTURE_LEVEL_LOADED]: levelInfo => {
         this.levelInfo = levelInfo
         this.requiredPuzzles = levelInfo.puzzle_count || 0
         this.isWithoutMistakesChallenge = levelInfo.challenge === 'without_mistakes'
@@ -72,7 +72,7 @@ export default class AdventurePuzzleSource {
           position_fen: levelInfo.position_fen
         })
       },
-      'puzzles:fetched': puzzles => {
+      [GameEvent.PUZZLES_FETCHED]: puzzles => {
         if (this.isCheckmateChallenge) {
           // For checkmate challenges, we don't use puzzles - we use position trainer mode
           console.log('Adventure: Checkmate challenge detected, skipping puzzle loading')
@@ -83,7 +83,7 @@ export default class AdventurePuzzleSource {
         this.addPuzzles(puzzles)
         this.firstPuzzle()
       },
-      'puzzles:next': () => {
+      [GameEvent.PUZZLES_NEXT]: () => {
         this.i++
         
         // For without_mistakes and move_combo challenges, cycle through puzzles indefinitely
@@ -94,7 +94,7 @@ export default class AdventurePuzzleSource {
             this.i = 0
           }
           const n = this.puzzles.count()
-          dispatch(`puzzles:status`, {
+          dispatch(GameEvent.PUZZLES_STATUS, {
             i: this.i,
             lastPuzzleId: this.puzzles.lastPuzzle().id,
             n,
@@ -103,10 +103,10 @@ export default class AdventurePuzzleSource {
         } else {
           // Normal behavior for other challenge types
           if (this.i >= this.puzzles.count()) {
-            dispatch('puzzles:complete')
+            dispatch(GameEvent.PUZZLES_COMPLETE)
           } else {
             const n = this.puzzles.count()
-            dispatch(`puzzles:status`, {
+            dispatch(GameEvent.PUZZLES_STATUS, {
               i: this.i,
               lastPuzzleId: this.puzzles.lastPuzzle().id,
               n,
@@ -115,51 +115,51 @@ export default class AdventurePuzzleSource {
           }
         }
       },
-      'puzzle:get_hint': () => {
+      [GameEvent.PUZZLE_GET_HINT]: () => {
         const hints: string[] = Object.keys(this.current.boardState).filter((move: UciMove) => {
           return this.current.boardState[move] !== 'retry'
         })
-        dispatch('puzzle:hint', hints[~~(Math.random() * hints.length)])
+        dispatch(GameEvent.PUZZLE_HINT, hints[~~(Math.random() * hints.length)])
       },
-      'move:try': move => {
+      [GameEvent.MOVE_TRY]: move => {
         console.log('Adventure: Received move:try event', move)
         console.log('Adventure: About to call tryUserMove')
         this.tryUserMove(move)
         console.log('Adventure: tryUserMove completed')
       },
-      'move:success': () => {
+      [GameEvent.MOVE_SUCCESS]: () => {
         if (this.isMoveComboChallenge) {
           this.comboCount++
           console.log(`Adventure: Move combo incremented: ${this.comboCount}/${this.comboTarget}`)
           
           if (this.comboCount >= this.comboTarget) {
             console.log('Adventure: Move combo challenge completed!')
-            dispatch('puzzles:complete')
+            dispatch(GameEvent.PUZZLES_COMPLETE)
             return
           }
           
           // Update the combo display
-          dispatch('adventure:combo:update', { comboCount: this.comboCount, comboTarget: this.comboTarget })
+          dispatch(GameEvent.ADVENTURE_COMBO_UPDATE, { comboCount: this.comboCount, comboTarget: this.comboTarget })
           
           // Only restart timer if combo_drop_time is configured
           if (this.comboDropTime !== null) {
-            dispatch('adventure:combo:timer:restart', { dropTime: this.comboDropTime })
+            dispatch(GameEvent.ADVENTURE_COMBO_TIMER_RESTART, { dropTime: this.comboDropTime })
           }
         }
       },
-      'move:fail': move => {
+      [GameEvent.MOVE_FAIL]: move => {
         if (this.isWithoutMistakesChallenge) {
           console.log('Adventure: Mistake made in without_mistakes challenge, resetting counter')
           this.puzzlesSolvedInRow = 0
-          dispatch('adventure:counter:reset', { puzzlesSolvedInRow: this.puzzlesSolvedInRow, requiredPuzzles: this.requiredPuzzles })
+          dispatch(GameEvent.ADVENTURE_COUNTER_RESET, { puzzlesSolvedInRow: this.puzzlesSolvedInRow, requiredPuzzles: this.requiredPuzzles })
         }
         if (this.isMoveComboChallenge) {
           console.log('Adventure: Mistake made in move_combo challenge, resetting combo')
           this.comboCount = 0
-          dispatch('adventure:combo:reset', { comboCount: this.comboCount, comboTarget: this.comboTarget })
+          dispatch(GameEvent.ADVENTURE_COMBO_RESET, { comboCount: this.comboCount, comboTarget: this.comboTarget })
         }
       },
-        'timer:stopped': () => {
+        [GameEvent.TIMER_STOPPED]: () => {
           if (this.isSpeedChallenge) {
             console.log('Adventure: Timer expired in speed challenge - level failed')
             // Do NOT dispatch puzzles:complete when timer runs out
@@ -168,29 +168,29 @@ export default class AdventurePuzzleSource {
           if (this.isMoveComboChallenge && this.comboDropTime !== null) {
             console.log('Adventure: Combo timer expired in move_combo challenge')
             this.comboCount = 0
-            dispatch('adventure:combo:reset', { comboCount: this.comboCount, comboTarget: this.comboTarget })
+            dispatch(GameEvent.ADVENTURE_COMBO_RESET, { comboCount: this.comboCount, comboTarget: this.comboTarget })
           }
         },
-        'game:won': () => {
+        [GameEvent.GAME_WON]: () => {
           if (this.isCheckmateChallenge) {
             console.log('Adventure: Checkmate challenge completed!')
             console.log('Adventure: Dispatching puzzles:complete')
-            dispatch('puzzles:complete')
+            dispatch(GameEvent.PUZZLES_COMPLETE)
           }
         },
-        'game:lost': () => {
+        [GameEvent.GAME_LOST]: () => {
           if (this.isCheckmateChallenge) {
             console.log('Adventure: Checkmate challenge failed')
             // Could add retry logic here if needed
           }
         },
-        'fen:set': (fen) => {
+        [GameEvent.FEN_SET]: (fen) => {
           if (this.isCheckmateChallenge) {
             console.log('Adventure: FEN updated:', fen)
             this.currentFen = fen
           }
         },
-        'move:make': (move, options = {}) => {
+        [GameEvent.MOVE_MAKE]: (move, options = {}) => {
           if (this.isCheckmateChallenge && this.engine) {
             console.log('Adventure: Move made in checkmate challenge:', move, 'opponent:', options.opponent)
             
@@ -263,7 +263,7 @@ export default class AdventurePuzzleSource {
         console.log('Adventure: Computer move calculated:', move)
         console.log('Adventure: UCI move from Stockfish:', evaluation.best)
         // Dispatch the move to update the board
-        dispatch('move:make', move, { opponent: true })
+        dispatch(GameEvent.MOVE_MAKE, move, { opponent: true })
       } else {
         console.error('Adventure: No computer move found')
       }
@@ -289,16 +289,16 @@ export default class AdventurePuzzleSource {
     if (tempChess.game_over()) {
       if (tempChess.in_checkmate()) {
         console.log('Adventure: Checkmate achieved!')
-        dispatch('game:won')
+        dispatch(GameEvent.GAME_WON)
       } else if (tempChess.in_stalemate()) {
         console.log('Adventure: Stalemate!')
-        dispatch('game:stalemate')
+        dispatch(GameEvent.GAME_STALEMATE)
       } else if (tempChess.in_draw()) {
         console.log('Adventure: Draw!')
-        dispatch('game:draw')
+        dispatch(GameEvent.GAME_DRAW)
       } else {
         console.log('Adventure: Game over but not checkmate/stalemate/draw')
-        dispatch('game:lost')
+        dispatch(GameEvent.GAME_LOST)
       }
     } else {
       console.log('Adventure: Game not over, continuing...')
@@ -329,9 +329,9 @@ export default class AdventurePuzzleSource {
     // Track the last puzzle ID for shuffling logic
     this.lastPuzzleId = puzzle.id
 
-    dispatch('puzzle:loaded', puzzle)
-    dispatch('board:flipped', !!puzzle.fen.match(/ w /))
-    dispatch('fen:set', puzzle.fen)
+    dispatch(GameEvent.PUZZLE_LOADED, puzzle)
+    dispatch(GameEvent.BOARD_FLIPPED, !!puzzle.fen.match(/ w /))
+    dispatch(GameEvent.FEN_SET, puzzle.fen)
 
     // Set up the first move delay
     this.firstMoveT = window.setTimeout(() => {
@@ -345,8 +345,8 @@ export default class AdventurePuzzleSource {
     const initialMove: InitialMove = this.current.puzzle.initialMove
     if (initialMove) {
       const move = this.getInitialMoveSan(initialMove)
-      dispatch('move:make', move, { opponent: true })
-      dispatch('move:sound', move)
+      dispatch(GameEvent.MOVE_MAKE, move, { opponent: true })
+      dispatch(GameEvent.MOVE_SOUND, move)
     }
   }
 
@@ -359,7 +359,7 @@ export default class AdventurePuzzleSource {
     if (!this.started) {
       this.started = true
       console.log('Adventure: Dispatching puzzles:start')
-      dispatch('puzzles:start')
+      dispatch(GameEvent.PUZZLES_START)
     } else {
       console.log('Adventure: Already started, not dispatching puzzles:start')
     }
@@ -367,8 +367,8 @@ export default class AdventurePuzzleSource {
     // Handle checkmate challenges differently - they don't use boardState
     if (this.isCheckmateChallenge) {
       console.log('Adventure: Checkmate challenge - accepting move')
-      dispatch('move:success')
-      dispatch('move:make', move)
+      dispatch(GameEvent.MOVE_SUCCESS)
+      dispatch(GameEvent.MOVE_MAKE, move)
       return
     }
     
@@ -376,28 +376,28 @@ export default class AdventurePuzzleSource {
 
     const attempt = this.current.boardState[moveToUci(move)]
     if (attempt === 'win') {
-      dispatch('move:success')
-      dispatch('move:make', move)
+      dispatch(GameEvent.MOVE_SUCCESS)
+      dispatch(GameEvent.MOVE_MAKE, move)
       this.handlePuzzleSolved()
       return
     } else if (attempt === 'retry') {
-      dispatch('move:almost', move)
+      dispatch(GameEvent.MOVE_ALMOST, move)
       return
     }
     const response = attempt ? Object.keys(attempt)[0] : null
     if (!response) {
-      dispatch('move:fail', move)
+      dispatch(GameEvent.MOVE_FAIL, move)
       return
     }
-    dispatch('move:make', move)
-    dispatch('move:success')
+    dispatch(GameEvent.MOVE_MAKE, move)
+    dispatch(GameEvent.MOVE_SUCCESS)
     if (attempt[response] === 'win') {
       this.handlePuzzleSolved()
     } else {
-      dispatch('move:sound', move)
+      dispatch(GameEvent.MOVE_SOUND, move)
       const responseMove = uciToMove(response)
       setTimeout(() => {
-        dispatch('move:make', responseMove, { opponent: true })
+        dispatch(GameEvent.MOVE_MAKE, responseMove, { opponent: true })
         this.current.boardState = attempt[response]
       }, 0)
     }
@@ -405,7 +405,7 @@ export default class AdventurePuzzleSource {
 
   private handlePuzzleSolved() {
     console.log(`Adventure puzzle ${this.i + 1} solved!`)
-    dispatch('puzzle:solved', this.current.puzzle)
+    dispatch(GameEvent.PUZZLE_SOLVED, this.current.puzzle)
     
     if (this.isWithoutMistakesChallenge) {
       this.puzzlesSolvedInRow++
@@ -413,16 +413,16 @@ export default class AdventurePuzzleSource {
       
       if (this.puzzlesSolvedInRow >= this.requiredPuzzles) {
         console.log('Adventure: Without mistakes challenge completed!')
-        dispatch('puzzles:complete')
+        dispatch(GameEvent.PUZZLES_COMPLETE)
         return
       }
       
       // Update the counter display
-      dispatch('adventure:counter:update', { puzzlesSolvedInRow: this.puzzlesSolvedInRow, requiredPuzzles: this.requiredPuzzles })
+      dispatch(GameEvent.ADVENTURE_COUNTER_UPDATE, { puzzlesSolvedInRow: this.puzzlesSolvedInRow, requiredPuzzles: this.requiredPuzzles })
     }
     
     
-    dispatch('puzzles:next')
+    dispatch(GameEvent.PUZZLES_NEXT)
   }
 
   private shufflePuzzles() {
@@ -480,6 +480,6 @@ export default class AdventurePuzzleSource {
     const instructionText = `${toMove} to move`
     
     console.log('Adventure: Setting checkmate instructions:', instructionText)
-    dispatch('instructions:set', instructionText)
+    dispatch(GameEvent.INSTRUCTIONS_SET, instructionText)
   }
 }

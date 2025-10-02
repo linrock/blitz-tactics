@@ -7,9 +7,9 @@ const supportsAudio = !!(<any>window).Audio
 let audioMap: Record<string, HTMLAudioElement> = {}
 if (supportsAudio) {
   audioMap = {
-    'move:sound': new Audio(`/sounds/${theme}/Move.mp3`),
-    'move:fail': new Audio(`/sounds/${theme}/Check.mp3`),
-    'puzzle:solved': new Audio(`/sounds/${theme}/Capture.mp3`),
+    [GameEvent.MOVE_SOUND]: new Audio(`/sounds/${theme}/Move.mp3`),
+    [GameEvent.MOVE_FAIL]: new Audio(`/sounds/${theme}/Check.mp3`),
+    [GameEvent.PUZZLE_SOLVED]: new Audio(`/sounds/${theme}/Capture.mp3`),
   }
 }
 

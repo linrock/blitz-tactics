@@ -45,12 +45,12 @@ export default function RepetitionMode() {
 
   subscribe({
     // In repetition mode, hints should drop the combo indicator
-    'puzzle:hint': () => {
-      dispatch('combo:drop')
+    [GameEvent.PUZZLE_HINT]: () => {
+      dispatch(GameEvent.COMBO_DROP)
     },
 
     // Track individual puzzle solves
-    'puzzle:solved': (puzzle) => {
+    [GameEvent.PUZZLE_SOLVED]: (puzzle) => {
       if (puzzle && puzzle.id) {
         trackSolvedPuzzle(puzzle.id, 'repetition').catch(error => {
           console.error('Failed to track solved puzzle:', error)
@@ -63,11 +63,11 @@ export default function RepetitionMode() {
     },
 
     // level progress events
-    'puzzles:fetched': puzzles => {
+    [GameEvent.PUZZLES_FETCHED]: puzzles => {
       level.setNumPuzzles(puzzles.length)
     },
 
-    'puzzles:next': () => {
+    [GameEvent.PUZZLES_NEXT]: () => {
       level.nextPuzzle()
 
       dispatch(`progress:update`, level.getProgress())
@@ -80,7 +80,7 @@ export default function RepetitionMode() {
       }
     },
 
-    'move:fail': () => {
+    [GameEvent.MOVE_FAIL]: () => {
       level.resetProgress()
       dispatch(`progress:update`, 0)
     },

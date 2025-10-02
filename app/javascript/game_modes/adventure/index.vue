@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { subscribe, dispatch } from '@blitz/events'
+import { subscribe, dispatch, GameEvent } from '@blitz/events'
 import ChessgroundBoard from '@blitz/components/chessground_board'
 import MoveStatus from '@blitz/components/move_status'
 import ComboCounter from '@blitz/components/puzzle_player/views/combo_counter'
@@ -166,7 +166,7 @@ export default {
             new PuzzleHint()
             // Initialize adventure puzzle source for event handling
             new AdventurePuzzleSource()
-            dispatch('adventure:level:loaded', this.levelInfo)
+            dispatch(GameEvent.ADVENTURE_LEVEL_LOADED, this.levelInfo)
           } else {
             console.error('No position_fen found in puzzle data for checkmate challenge')
           }
@@ -180,49 +180,49 @@ export default {
           new PuzzleHint()
           // Use adventure puzzle source
           new AdventurePuzzleSource()
-          dispatch('adventure:level:loaded', this.levelInfo)
-          dispatch('puzzles:fetched', JSON.parse(puzzlesData).puzzles)
+          dispatch(GameEvent.ADVENTURE_LEVEL_LOADED, this.levelInfo)
+          dispatch(GameEvent.PUZZLES_FETCHED, JSON.parse(puzzlesData).puzzles)
         }
       }
     },
     
     setupEventListeners() {
       subscribe({
-        'puzzles:start': () => {
+        [GameEvent.PUZZLES_START]: () => {
           this.hasStarted = true
           this.startTime = Date.now()
         },
-        'puzzle:solved': () => {
+        [GameEvent.PUZZLE_SOLVED]: () => {
           this.puzzlesSolved++
         },
-        'adventure:counter:update': (data) => {
+        [GameEvent.ADVENTURE_COUNTER_UPDATE]: (data) => {
           this.puzzlesSolvedInRow = data.puzzlesSolvedInRow
           this.requiredPuzzles = data.requiredPuzzles
         },
-        'adventure:counter:reset': (data) => {
+        [GameEvent.ADVENTURE_COUNTER_RESET]: (data) => {
           this.puzzlesSolvedInRow = data.puzzlesSolvedInRow
           this.requiredPuzzles = data.requiredPuzzles
         },
-        'adventure:combo:update': (data) => {
+        [GameEvent.ADVENTURE_COMBO_UPDATE]: (data) => {
           this.comboCount = data.comboCount
           this.comboTarget = data.comboTarget
         },
-        'adventure:combo:reset': (data) => {
+        [GameEvent.ADVENTURE_COMBO_RESET]: (data) => {
           this.comboCount = data.comboCount
           this.comboTarget = data.comboTarget
         },
-        'puzzles:complete': () => {
+        [GameEvent.PUZZLES_COMPLETE]: () => {
           console.log('Adventure: puzzles:complete received')
           this.handleSetComplete()
         },
-        'game:won': () => {
+        [GameEvent.GAME_WON]: () => {
           console.log('Adventure: game:won received, isCheckmateChallenge:', this.isCheckmateChallenge)
           if (this.isCheckmateChallenge) {
             console.log('Adventure: Calling handleSetComplete for checkmate challenge')
             this.handleSetComplete()
           }
         },
-        'game:lost': () => {
+        [GameEvent.GAME_LOST]: () => {
           console.log('Adventure: game:lost received, isCheckmateChallenge:', this.isCheckmateChallenge)
           if (this.isCheckmateChallenge) {
             console.log('Adventure: Game lost, showing retry overlay')
@@ -231,7 +231,7 @@ export default {
             this.showBoardOverlay()
           }
         },
-        'game:stalemate': () => {
+        [GameEvent.GAME_STALEMATE]: () => {
           console.log('Adventure: game:stalemate received, isCheckmateChallenge:', this.isCheckmateChallenge)
           if (this.isCheckmateChallenge) {
             console.log('Adventure: Stalemate, showing retry overlay')
@@ -240,7 +240,7 @@ export default {
             this.showBoardOverlay()
           }
         },
-        'game:draw': () => {
+        [GameEvent.GAME_DRAW]: () => {
           console.log('Adventure: game:draw received, isCheckmateChallenge:', this.isCheckmateChallenge)
           if (this.isCheckmateChallenge) {
             console.log('Adventure: Draw, showing retry overlay')
@@ -249,7 +249,7 @@ export default {
             this.showBoardOverlay()
           }
         },
-        'timer:stopped': () => {
+        [GameEvent.TIMER_STOPPED]: () => {
           if (this.isSpeedChallenge) {
             this.timerExpired = true
             this.showBoardOverlay()

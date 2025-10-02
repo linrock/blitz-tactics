@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
+import { dispatch, subscribe, subscribeOnce, GameEvent } from '@blitz/events'
 import { formattedTimeSeconds } from '@blitz/utils'
 
 const updateInterval = 100 // timer updates this frequently
@@ -58,7 +58,7 @@ export default {
             clearInterval(this.timerInterval)
             this.timerInterval = null
           }
-          dispatch('timer:stopped')
+          dispatch(GameEvent.TIMER_STOPPED)
         }
       }, updateInterval)
       })
@@ -67,7 +67,7 @@ export default {
     // Restart timer when combo is updated (puzzle solved) - only if dropTime is configured
     if (this.dropTime !== null) {
       subscribe({
-        'adventure:combo:timer:restart': (data) => {
+        [GameEvent.ADVENTURE_COMBO_TIMER_RESTART]: (data) => {
           if (this.timerInterval !== null) {
             clearInterval(this.timerInterval)
             this.timerInterval = null
@@ -92,11 +92,11 @@ export default {
                 clearInterval(this.timerInterval)
                 this.timerInterval = null
               }
-              dispatch('timer:stopped')
+              dispatch(GameEvent.TIMER_STOPPED)
             }
           }, updateInterval)
         },
-        'puzzles:complete': () => {
+        [GameEvent.PUZZLES_COMPLETE]: () => {
           if (this.timerInterval !== null) {
             clearInterval(this.timerInterval)
             this.timerInterval = null

@@ -1,4 +1,4 @@
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, GameEvent } from '@blitz/events'
 
 const updateInterval = 50
 
@@ -18,9 +18,9 @@ export default class Timer {
     this.timerEl = this.el.querySelector(`.timer`)
     this.lapsEl = this.el.querySelector(`.laps`)
     subscribe({
-      'puzzles:start': () => this.startTimer(),
-      'puzzles:next': () => this.startTimer(),
-      'puzzles:lap': () => this.nextLap(),
+      [GameEvent.PUZZLES_START]: () => this.startTimer(),
+      [GameEvent.PUZZLES_NEXT]: () => this.startTimer(),
+      [GameEvent.PUZZLES_LAP]: () => this.nextLap(),
     })
   }
 

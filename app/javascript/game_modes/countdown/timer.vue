@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
+import { dispatch, subscribe, subscribeOnce, GameEvent } from '@blitz/events'
 import { formattedTimeSeconds } from '@blitz/utils'
 
 const initialTimeMin = 5     // start with this many minutes on the clock
@@ -45,20 +45,20 @@ export default {
         if (this.timeLeftMilliseconds <= 0) {
           this.hasEnded = true
           clearInterval(timerInterval)
-          dispatch('timer:stopped')
+          dispatch(GameEvent.TIMER_STOPPED)
         }
       }, updateInterval)
     })
 
     subscribe({
-      'move:fail': () => {
+      [GameEvent.MOVE_FAIL]: () => {
         this.lostTimeMs += penaltyMs
         this.isPenalized = true
         setTimeout(() => this.isPenalized = false, 200)
       },
       // TODO is this needed?
-      'puzzles:complete': () => {
-        dispatch('timer:stopped')
+      [GameEvent.PUZZLES_COMPLETE]: () => {
+        dispatch(GameEvent.TIMER_STOPPED)
       }
     })
   },

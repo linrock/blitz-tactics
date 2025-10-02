@@ -1,4 +1,4 @@
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 
 const perfectTiming = 2500
 const greatTiming = 5000
@@ -14,9 +14,9 @@ export default class MoveStatus {
   constructor() {
     this.timeSinceSuccess = Date.now()
     subscribe({
-      'move:success': () => this.renderSuccess(),
-      'move:fail': () => this.renderFailure(),
-      'move:almost': () => this.renderAlmost(),
+      [GameEvent.MOVE_SUCCESS]: () => this.renderSuccess(),
+      [GameEvent.MOVE_FAIL]: () => this.renderFailure(),
+      [GameEvent.MOVE_ALMOST]: () => this.renderAlmost(),
     })
   }
 

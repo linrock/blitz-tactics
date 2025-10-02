@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import { ratedPuzzleAttempted } from '@blitz/api/requests'
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, GameEvent } from '@blitz/events'
 import { moveToUci } from '@blitz/utils'
 
 import SidebarVue from './sidebar.vue'
@@ -30,40 +30,40 @@ export default function RatedMode() {
   }
 
   subscribe({
-    'puzzle:loaded': current => {
+    [GameEvent.PUZZLE_LOADED]: current => {
       const puzzle = current.puzzle
       puzzleId = puzzle.id
       t0 = +new Date()
     },
 
-    'puzzles:next': () => gameStarted = true,
+    [GameEvent.PUZZLES_NEXT]: () => gameStarted = true,
 
-    'move:make': move => {
+    [GameEvent.MOVE_MAKE]: move => {
       if (gameStarted) {
         moveSequence.push(move)
       }
     },
 
-    'move:almost': move => {
+    [GameEvent.MOVE_ALMOST]: move => {
       if (gameStarted) {
         moveSequence.push(move)
       }
     },
 
-    'move:fail': move => {
+    [GameEvent.MOVE_FAIL]: move => {
       if (!gameStarted) {
         gameStarted = true
-        dispatch(`puzzles:next`)
+        dispatch(GameEvent.PUZZLES_NEXT)
         moveSequence = []
         return
       }
       moveSequence.push(move)
       attemptPuzzle(puzzleId, moveSequence)
       moveSequence = []
-      dispatch(`puzzles:next`)
+      dispatch(GameEvent.PUZZLES_NEXT)
     },
 
-    'puzzle:solved': () => {
+    [GameEvent.PUZZLE_SOLVED]: () => {
       if (!gameStarted) {
         gameStarted = true
         moveSequence = []
@@ -73,7 +73,7 @@ export default function RatedMode() {
       moveSequence = []
     },
 
-    'puzzles:status': status => {
+    [GameEvent.PUZZLES_STATUS]: status => {
       const { i, n } = status
       console.log(`${i} of ${n}`)
       if (i + fetchThreshold > n) {

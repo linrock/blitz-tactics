@@ -1,4 +1,7 @@
 // Custom event system to replace Backbone.Events
+// Enhanced with type-safe enum support
+
+import { GameEvent, GameEventMap, GameEventPayloads } from './game_events'
 
 interface EventMap {
   [event: string]: (...args: any[]) => void
@@ -40,17 +43,34 @@ class EventEmitter {
 
 const dispatcher = new EventEmitter()
 
-const dispatch = (eventName: string, ...data: any[]) => {
+// Type-safe dispatch function with enum support
+function dispatch<T extends GameEvent>(
+  eventName: T,
+  ...data: GameEventPayloads[T] extends void ? [] : [GameEventPayloads[T]]
+): void;
+function dispatch(eventName: string, ...data: any[]): void;
+function dispatch(eventName: string | GameEvent, ...data: any[]) {
   dispatcher.trigger(eventName, ...data)
 }
 
-const subscribe = (eventMap: EventMap) => {
+// Type-safe subscribe function with enum support
+function subscribe(eventMap: GameEventMap): void;
+function subscribe(eventMap: EventMap): void;
+function subscribe(eventMap: EventMap | GameEventMap) {
   Object.entries(eventMap).forEach(([eventName, handler]) => {
-    dispatcher.on(eventName, handler)
+    if (handler) {
+      dispatcher.on(eventName, handler)
+    }
   })
 }
 
-const subscribeOnce = (eventName: string, cb: (...args: any[]) => void) => {
+// Type-safe subscribeOnce function
+function subscribeOnce<T extends GameEvent>(
+  eventName: T,
+  cb: GameEventPayloads[T] extends void ? () => void : (data: GameEventPayloads[T]) => void
+): void;
+function subscribeOnce(eventName: string, cb: (...args: any[]) => void): void;
+function subscribeOnce(eventName: string | GameEvent, cb: (...args: any[]) => void) {
   dispatcher.once(eventName, cb)
 }
 
@@ -59,3 +79,6 @@ export {
   subscribe,
   subscribeOnce,
 }
+
+// Re-export GameEvent enum for convenience
+export { GameEvent } from './game_events'

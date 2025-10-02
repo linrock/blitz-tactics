@@ -1,6 +1,6 @@
 // Indicates # of successful moves in a row
 
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 
 export default class ComboCounter {
   private counter = 0
@@ -13,15 +13,15 @@ export default class ComboCounter {
   constructor() {
     this.counterEl = this.el.querySelector(`.counter`)
     subscribe({
-      'move:success': () => {
+      [GameEvent.MOVE_SUCCESS]: () => {
         this.counter += 1
         this.el.classList.remove(`invisible`)
         this.setCounter(this.counter)
       },
-      'move:fail': () => this.droppedCombo(),
+      [GameEvent.MOVE_FAIL]: () => this.droppedCombo(),
       'move:too_slow': () => this.droppedCombo(),
       // Allow modes to explicitly drop combo without affecting others
-      'combo:drop': () => this.droppedCombo(),
+      [GameEvent.COMBO_DROP]: () => this.droppedCombo(),
     })
   }
 

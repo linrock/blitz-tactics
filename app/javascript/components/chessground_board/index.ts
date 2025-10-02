@@ -6,7 +6,7 @@ import { Color, Dests, FEN, Key } from 'chessground/types'
 import { createApp } from 'vue'
 
 import PiecePromoModal from '../piece_promo_modal/index.vue'
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, GameEvent } from '@blitz/events'
 
 import './chessground.sass'
 import './theme.sass'
@@ -94,7 +94,7 @@ export default class ChessgroundBoard {
             // handle piece promotions
             const validMoves: Move[] = this.cjs.moves({ verbose: true })
             if (validMoves.find(m => m.from === from && m.to === to)) {
-              dispatch(`move:promotion`, {
+              dispatch(GameEvent.MOVE_PROMOTION, {
                 fen: this.cjs.fen(),
                 move: { from, to },
                 lastMove: this.chessground.state.lastMove
@@ -105,7 +105,7 @@ export default class ChessgroundBoard {
             const cjs = new Chess(this.cjs.fen())
             const moveObj = cjs.move({ from: from as Square, to: to as Square })
             console.log(`Chessground: Move result:`, moveObj)
-            dispatch('move:try', moveObj)
+            dispatch(GameEvent.MOVE_TRY, moveObj)
           }
         },
         
@@ -137,18 +137,18 @@ export default class ChessgroundBoard {
     createApp(PiecePromoModal).mount('.piece-promotion-modal-mount')
 
     subscribe({
-      'board:flipped': shouldBeFlipped => {
+      [GameEvent.BOARD_FLIPPED]: shouldBeFlipped => {
         this.chessground.set({ orientation: shouldBeFlipped ? 'black' : 'white' })
         // Recreate squares when board orientation changes
         this.createChessSquares()
       },
 
-      'board:update': () => {
+      [GameEvent.BOARD_UPDATE]: () => {
         // Update highlights when board state changes
         this.createHighlightOverlays()
       },
 
-      'fen:set': (fen: FEN, lastMove?: [Square, Square]) => {
+      [GameEvent.FEN_SET]: (fen: FEN, lastMove?: [Square, Square]) => {
         console.log(`chessground_board - fen:set - ${fen}`)
         this.cjs.load(fen)
         const turnColor = this.cjs.turn() === 'w' ? 'white' : 'black'
@@ -165,10 +165,10 @@ export default class ChessgroundBoard {
         setTimeout(() => this.createHighlightOverlays(), 10)
       },
 
-      'move:fail': () => this.resetToBeforePlayerMove(),
-      'move:almost': () => this.resetToBeforePlayerMove(),
+      [GameEvent.MOVE_FAIL]: () => this.resetToBeforePlayerMove(),
+      [GameEvent.MOVE_ALMOST]: () => this.resetToBeforePlayerMove(),
 
-      'move:make': (move: Move, options: MoveOptions = {}) => {
+      [GameEvent.MOVE_MAKE]: (move: Move, options: MoveOptions = {}) => {
         console.log(`Chessground: handling move:make ${JSON.stringify(move)} from ${this.cjs.fen()}`)
         console.log(`${options.opponent ? 'opponent' : 'player'} just moved`);
         const moveObj = this.cjs.move(move)
@@ -196,12 +196,12 @@ export default class ChessgroundBoard {
           },
           turnColor,
         })
-        dispatch('fen:updated', this.cjs.fen())
+        dispatch(GameEvent.FEN_UPDATED, this.cjs.fen())
         // Update highlights after move
         setTimeout(() => this.createHighlightOverlays(), 10)
       },
 
-      'shape:draw': (square: Square) => {
+      [GameEvent.SHAPE_DRAW]: (square: Square) => {
         const brushes = ['green', 'red', 'blue', 'yellow']
         this.chessground.setShapes([{
           orig: square,

@@ -1,4 +1,4 @@
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, GameEvent } from '@blitz/events'
 import { FEN, PuzzleLines, UciMove } from '@blitz/types'
 import { moveToUci, uciToMove } from '@blitz/utils'
 
@@ -74,41 +74,41 @@ export default () => {
   originalInstructions = instructionsEl.textContent
 
   subscribe({
-    'puzzle:solved': () => {
+    [GameEvent.PUZZLE_SOLVED]: () => {
       instructionsEl.textContent = 'Puzzle solved!'
       instructionsEl.classList.remove('invisible')
       chessgroundBoard.freeze()
     },
 
     // Handle whenever the player tries a move
-    'move:try': move => {
+    [GameEvent.MOVE_TRY]: move => {
       // Always hide the instructions (White to move) after the player make a move
       instructionsEl.classList.add('invisible')
       const attempt = puzzleStateLines[moveToUci(move)]
       if (attempt === `win`) {
-        dispatch(`move:success`)
-        dispatch(`puzzle:solved`)
-        dispatch(`move:make`, move)
+        dispatch(GameEvent.MOVE_SUCCESS)
+        dispatch(GameEvent.PUZZLE_SOLVED)
+        dispatch(GameEvent.MOVE_MAKE, move)
         return
       } else if (attempt === `retry`) {
-        dispatch(`move:almost`, move)
+        dispatch(GameEvent.MOVE_ALMOST, move)
         return
       } else if (!attempt) {
-        dispatch(`move:fail`, move)
+        dispatch(GameEvent.MOVE_FAIL, move)
         return
       }
       // the puzzle isn't finished yet if we get here
-      dispatch(`move:make`, move)
-      dispatch(`move:success`)
+      dispatch(GameEvent.MOVE_MAKE, move)
+      dispatch(GameEvent.MOVE_SUCCESS)
       const response = Object.keys(attempt)[0]
       const responseMove = uciToMove(response)
       const puzzleLines: PuzzleLines | 'win' | 'retry' = attempt[response]
       if (puzzleLines === `win`) {
-        dispatch(`puzzle:solved`)
+        dispatch(GameEvent.PUZZLE_SOLVED)
       } else {
-        dispatch(`move:sound`, move)
+        dispatch(GameEvent.MOVE_SOUND, move)
         setTimeout(() => {
-          dispatch(`move:make`, responseMove, { opponent: true })
+          dispatch(GameEvent.MOVE_MAKE, responseMove, { opponent: true })
           puzzleStateLines = puzzleLines as PuzzleLines
         }, 0)
       }
@@ -133,7 +133,7 @@ export default () => {
       showSolutionEl.disabled = false
     }
     
-    dispatch('fen:set', puzzleMovesData.initial_fen)
+    dispatch(GameEvent.FEN_SET, puzzleMovesData.initial_fen)
     let firstMove
     if (puzzleMovesData.initial_move_san) {
       firstMove = puzzleMovesData.initial_move_san
@@ -141,7 +141,7 @@ export default () => {
       firstMove = uciToMove(puzzleMovesData.initial_move_uci)
     }
     firstMoveT = setTimeout(() => {
-      dispatch('move:make', firstMove, { opponent: true });
+      dispatch(GameEvent.MOVE_MAKE, firstMove, { opponent: true });
       const instructionsEl: HTMLDivElement = document.querySelector('.instructions')
       if (instructionsEl) {
         instructionsEl.textContent = originalInstructions;
@@ -198,7 +198,7 @@ export default () => {
       const timeoutId = setTimeout(() => {
         // Mark the last move as an opponent move so it gets highlighted
         const isLastMove = index === solutionMoves.length - 1
-        dispatch('move:make', uciToMove(moveUci), { opponent: isLastMove })
+        dispatch(GameEvent.MOVE_MAKE, uciToMove(moveUci), { opponent: isLastMove })
         
         // If this is the last move, re-enable the button
         if (isLastMove) {

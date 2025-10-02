@@ -17,7 +17,7 @@
 <script lang="ts">
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import GameModeMixin from '@blitz/components/game_mode_mixin'
-import { subscribe, dispatch } from '@blitz/events'
+import { subscribe, dispatch, GameEvent } from '@blitz/events'
 import { questLevelCompleted } from '@blitz/api/requests'
 
 
@@ -67,7 +67,7 @@ export default {
           })
           
           // Dispatch puzzle data
-          dispatch('puzzles:fetched', puzzles.puzzles)
+          dispatch(GameEvent.PUZZLES_FETCHED, puzzles.puzzles)
         } catch (error) {
           console.error('Quest Vue: Error parsing data:', error)
         }
@@ -78,7 +78,7 @@ export default {
     
     subscribe({
       ...commonSubscriptions,
-      'puzzles:status': async ({ i }) => {
+      [GameEvent.PUZZLES_STATUS]: async ({ i }) => {
         this.numPuzzlesSolved = i + 1
         
         // Check if we've reached the required number of puzzles
@@ -108,7 +108,7 @@ export default {
           }
         }
       },
-      'puzzles:start': () => {
+      [GameEvent.PUZZLES_START]: () => {
         this.startTime = Date.now()
       }
     })

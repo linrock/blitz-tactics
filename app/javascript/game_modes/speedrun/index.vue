@@ -32,7 +32,7 @@ aside.speedrun-under-board.game-under-board
   import PuzzlePlayer from '@blitz/components/puzzle_player'
   import GameModeMixin from '@blitz/components/game_mode_mixin'
   import MiniChessboard from '@blitz/components/mini_chessboard'
-  import { subscribe } from '@blitz/events'
+  import { subscribe, GameEvent } from '@blitz/events'
   import { formattedTime } from '@blitz/utils'
   import { solutionReplay } from '@blitz/utils/solution_replay'
 
@@ -91,11 +91,11 @@ aside.speedrun-under-board.game-under-board
       
       // Then subscribe to speedrun-specific events
       subscribe({
-        'config:init': data => {
+        [GameEvent.CONFIG_INIT]: data => {
           this.levelName = data.level_name
         },
 
-        'puzzle:loaded': data => {
+        [GameEvent.PUZZLE_LOADED]: data => {
           // Track each puzzle loaded (including puzzle data)
           this.currentPuzzle = data.puzzle
           this.currentPuzzleData = data
@@ -104,7 +104,7 @@ aside.speedrun-under-board.game-under-board
           console.log('Puzzle loaded:', data.puzzle.id, 'Start time:', this.currentPuzzleStartTime)
         },
 
-        'move:try': () => {
+        [GameEvent.MOVE_TRY]: () => {
           // Handle hasStarted for speedrun mode
           if (!this.hasStarted) {
             this.hasStarted = true
@@ -113,18 +113,18 @@ aside.speedrun-under-board.game-under-board
           this.totalMoves++
         },
 
-        'move:fail': () => {
+        [GameEvent.MOVE_FAIL]: () => {
           // Track mistakes for current puzzle
           this.currentPuzzleMistakes++
           console.log('Mistake made on puzzle:', this.currentPuzzle?.id, 'Total mistakes:', this.currentPuzzleMistakes)
         },
 
-        'move:success': () => {
+        [GameEvent.MOVE_SUCCESS]: () => {
           // Track correct moves
           this.correctMoves++
         },
 
-        'puzzle:solved': (puzzle) => {
+        [GameEvent.PUZZLE_SOLVED]: (puzzle) => {
           // Track individual puzzle solve
           if (puzzle && puzzle.id) {
             trackSolvedPuzzle(puzzle.id, 'speedrun').catch(error => {
@@ -151,7 +151,7 @@ aside.speedrun-under-board.game-under-board
           }
         },
         
-        'timer:stopped': elapsedTimeMs => {
+        [GameEvent.TIMER_STOPPED]: elapsedTimeMs => {
           console.log('timer:stopped', elapsedTimeMs)
           const boardOverlayEl: HTMLElement = document.querySelector(`.board-modal-container`)
           boardOverlayEl.style.display = ``
@@ -174,12 +174,12 @@ aside.speedrun-under-board.game-under-board
           })
         },
 
-        'puzzles:fetched': puzzles => {
+        [GameEvent.PUZZLES_FETCHED]: puzzles => {
           this.puzzleIdx = 0
           this.numPuzzles = puzzles.length
         },
 
-        'puzzles:status': ({ i , n }) => {
+        [GameEvent.PUZZLES_STATUS]: ({ i , n }) => {
           this.puzzleIdx = i + 1
           this.numPuzzles = n
         },

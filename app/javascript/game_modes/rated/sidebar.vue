@@ -27,7 +27,7 @@ aside.rated-under-board
 </template>
 
 <script lang="ts">
-  import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
+  import { dispatch, subscribe, subscribeOnce, GameEvent } from '@blitz/events'
 
   export default {
     data() {
@@ -55,20 +55,20 @@ aside.rated-under-board
           this.playerRating = Math.round(data.rated_puzzle_attempt.post_user_rating)
           this.numPuzzlesSeen = data.user_rating.rated_puzzle_attempts_count
         },
-        'move:make': (move, options = {}) => {
+        [GameEvent.MOVE_MAKE]: (move, options = {}) => {
           if (!options.opponent) {
             console.log(JSON.stringify(move))
             this.addPlayerMove(move.san, 'success')
           }
         },
-        'move:almost': move => this.addPlayerMove(move.san, 'almost'),
-        'move:fail': move => this.addPlayerMove(move.san, 'fail')
+        [GameEvent.MOVE_ALMOST]: move => this.addPlayerMove(move.san, 'almost'),
+        [GameEvent.MOVE_FAIL]: move => this.addPlayerMove(move.san, 'fail')
       })
     },
 
     methods: {
       nextPuzzle() {
-        dispatch('puzzles:next')
+        dispatch(GameEvent.PUZZLES_NEXT)
       },
       addPlayerMove(san: string, type: 'success' | 'almost' | 'fail') {
         this.playerMoves.unshift({

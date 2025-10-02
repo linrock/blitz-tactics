@@ -22,11 +22,11 @@ export default class Instructions {
       }
     })
     subscribe({
-      'puzzles:start': () => {
+      [GameEvent.PUZZLES_START]: () => {
         console.log('Instructions: Received puzzles:start, hiding instructions, el:', this.el)
         this.el.classList.add('invisible')
       },
-      'instructions:set': (text) => {
+      [GameEvent.INSTRUCTIONS_SET]: (text) => {
         console.log('Instructions: Setting text to:', text)
         this.el.textContent = text
         this.el.classList.remove('invisible')

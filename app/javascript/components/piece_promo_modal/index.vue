@@ -24,7 +24,7 @@
   import Mousetrap from 'mousetrap'
   import { Chess, ShortMove, Square } from 'chess.js'
 
-  import { dispatch, subscribe } from '@blitz/events'
+  import { dispatch, subscribe, GameEvent } from '@blitz/events'
   import { FEN } from '@blitz/types'
 
   import './style.sass'
@@ -44,7 +44,7 @@
 
     mounted() {
       subscribe({
-        'move:promotion': data => {
+        [GameEvent.MOVE_PROMOTION]: data => {
           this.fen = data.fen
           this.moveIntent = data.move as ShortMove
           this.lastMove = data.lastMove
@@ -69,7 +69,7 @@
 
       cancelMove() {
         this.hide()
-        dispatch('fen:set', this.fen, this.lastMove)
+        dispatch(GameEvent.FEN_SET, this.fen, this.lastMove)
       },
 
       selectPiece(chosenPiece: string) {
@@ -79,7 +79,7 @@
         cjs.load(this.fen)
         const m = cjs.move(move)
         if (m) {
-          dispatch('move:try', m)
+          dispatch(GameEvent.MOVE_TRY, m)
         }
         this.hide()
       },

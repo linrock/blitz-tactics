@@ -18,7 +18,7 @@ aside.puzzle-set-sidebar
 </template>
 
 <script lang="ts">
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 import store from '@blitz/local_storage'
 
 import Timer from '../../game_modes/haste/timer.vue'
@@ -49,14 +49,14 @@ export default {
 
   mounted() {
     subscribe({
-      'puzzle:loaded': data => {
+      [GameEvent.PUZZLE_LOADED]: data => {
         this.currentPuzzleId = data.puzzle.id
         this.puzzleIdsSeen.push(this.currentPuzzleId)
       },
-      'puzzles:status': ({ i }) => {
+      [GameEvent.PUZZLES_STATUS]: ({ i }) => {
         this.numPuzzlesSolved = i + 1
       },
-      'timer:stopped': async () => {
+      [GameEvent.TIMER_STOPPED]: async () => {
         // Show an overlay over the board area after the round completes
         const el: HTMLElement = document.querySelector(`.board-modal-container`)
         el.style.display = ``
@@ -67,7 +67,7 @@ export default {
         // Expires from local storage after 1 hour
         store.set(this.viewPuzzlesLink, puzzleIdsMistakes, new Date().getTime() + 86400 * 1000)
       },
-      'move:fail': (move) => {
+      [GameEvent.MOVE_FAIL]: (move) => {
         console.log(`mistake! - ${this.currentPuzzleId} - ${move.san}`)
         if (!puzzleIdsMistakes[this.currentPuzzleId]) {
           puzzleIdsMistakes[this.currentPuzzleId] = []

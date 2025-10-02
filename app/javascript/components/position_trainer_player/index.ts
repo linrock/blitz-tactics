@@ -78,19 +78,19 @@ export default class PositionTrainerPlayer {
 
   private setupEventSubscriptions() {
     subscribe({
-      'position:reset': () => {
+      [GameEvent.POSITION_RESET]: () => {
         this.resetPosition()
       },
       
-      'fen:updated': (fen: FEN) => {
+      [GameEvent.FEN_UPDATED]: (fen: FEN) => {
         this.handleFenUpdate(fen)
       },
       
-      'move:try': (move: Move) => {
+      [GameEvent.MOVE_TRY]: (move: Move) => {
         this.handlePlayerMove(move)
       },
       
-      'move:make': (move: Move, options: { opponent?: boolean } = {}) => {
+      [GameEvent.MOVE_MAKE]: (move: Move, options: { opponent?: boolean } = {}) => {
         if (options.opponent) {
           this.handleComputerMove(move)
         }
@@ -110,12 +110,12 @@ export default class PositionTrainerPlayer {
       instructionText = `${toMove} to move`
     }
     
-    dispatch('instructions:set', instructionText)
+    dispatch(GameEvent.INSTRUCTIONS_SET, instructionText)
   }
 
   private resetPosition() {
     this.chessgroundBoard.unfreeze()
-    dispatch('fen:set', this.initialFen)
+    dispatch(GameEvent.FEN_SET, this.initialFen)
     this.result = null
     this.hideBoardOverlay()
     this.showInstructions()
@@ -147,7 +147,7 @@ export default class PositionTrainerPlayer {
       // If it's the computer's turn, make the move
       if (this.isComputersTurn(fen)) {
         const computerMove = state.evaluation.best
-        dispatch('move:make', uciToMove(computerMove), { opponent: true })
+        dispatch(GameEvent.MOVE_MAKE, uciToMove(computerMove), { opponent: true })
       }
     })
     
@@ -157,8 +157,8 @@ export default class PositionTrainerPlayer {
 
   private handlePlayerMove(move: Move) {
     // Hide instructions when player makes a move
-    dispatch('instructions:hide')
-    dispatch('move:make', move)
+    dispatch(GameEvent.INSTRUCTIONS_HIDE)
+    dispatch(GameEvent.MOVE_MAKE, move)
   }
 
   private handleComputerMove(move: Move) {
@@ -202,23 +202,23 @@ export default class PositionTrainerPlayer {
       if ((toMove === 'White' && result === '1-0') ||
           (toMove === 'Black' && result === '0-1')) {
         message = 'You win!!'
-        dispatch('game:won')
+        dispatch(GameEvent.GAME_WON)
       } else {
         message = 'You failed :('
-        dispatch('game:lost')
+        dispatch(GameEvent.GAME_LOST)
       }
     } else if (this.goal === 'draw' && result === '1/2-1/2') {
       message = 'Success!!'
-      dispatch('game:drawn')
+      dispatch(GameEvent.GAME_DRAWN)
     } else {
       message = 'Game over'
-      dispatch('game:lost')
+      dispatch(GameEvent.GAME_LOST)
     }
     
     // Show the board overlay
     this.showBoardOverlay()
     
-    dispatch('instructions:set', message)
+    dispatch(GameEvent.INSTRUCTIONS_SET, message)
   }
 
   private showBoardOverlay() {

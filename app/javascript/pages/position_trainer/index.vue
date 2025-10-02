@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { dispatch, subscribe } from '@blitz/events'
+import { dispatch, subscribe, GameEvent } from '@blitz/events'
 import PositionTrainerPlayer from '@blitz/components/position_trainer_player'
 import './style.sass'
 
@@ -31,7 +31,7 @@ export default {
 
   methods: {
     resetPosition() {
-      dispatch('position:reset')
+      dispatch(GameEvent.POSITION_RESET)
     },
     analyzeOnLichess() {
       if (positionTrainerPlayer) {
@@ -43,12 +43,12 @@ export default {
   mounted() {
     // Subscribe to instruction updates first
     subscribe({
-      'instructions:set': (text: string) => {
+      [GameEvent.INSTRUCTIONS_SET]: (text: string) => {
         this.instructionsText = text
         this.showInstructions = true
         this.showGameOver = false
       },
-      'instructions:hide': () => {
+      [GameEvent.INSTRUCTIONS_HIDE]: () => {
         this.showInstructions = false
       }
     })

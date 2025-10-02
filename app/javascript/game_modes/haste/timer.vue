@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 import TimerMixin from '@blitz/components/timer_mixin'
 
 const updateIntervalMs = 100  // timer updates this frequently
@@ -21,7 +21,7 @@ export default {
     this.startTimer(updateIntervalMs)
 
     subscribe({
-      'move:success': () => {
+      [GameEvent.MOVE_SUCCESS]: () => {
         // gain time with higher combos
         this.incrementCombo()
         if (this.comboSize % rewardThreshold !== 0) {
@@ -31,13 +31,13 @@ export default {
         this.addTime(comboRewardMs * (this.comboSize / rewardThreshold - 1))
         this.showReward()
       },
-      'move:fail': () => {
+      [GameEvent.MOVE_FAIL]: () => {
         // lose time when making mistakes
         this.resetCombo()
         this.subtractTime(penaltyMs)
         this.showPenalty()
       },
-      'puzzles:complete': () => {
+      [GameEvent.PUZZLES_COMPLETE]: () => {
         // this happens when all the haste puzzles in a round have been completed
         this.gameHasEnded()
       },

@@ -34,7 +34,7 @@ export default {
         clearInterval(this.timerInterval)
         this.timerInterval = null
       }
-      dispatch('timer:stopped')
+      dispatch(GameEvent.TIMER_STOPPED)
     },
 
     startTimer(updateIntervalMs: number = 100) {

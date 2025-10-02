@@ -1,6 +1,6 @@
 // bar under main header showing how close you are to the next level
 
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 
 export default class ProgressBar {
   private progressEl: HTMLElement

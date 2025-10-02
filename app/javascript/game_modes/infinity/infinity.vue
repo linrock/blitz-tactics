@@ -24,7 +24,7 @@ aside.infinity-under-board.game-under-board
 <script lang="ts">
   import { infinityPuzzleSolved, trackSolvedPuzzle } from '@blitz/api/requests'
   import PuzzlePlayer from '@blitz/components/puzzle_player'
-  import { dispatch, subscribe } from '@blitz/events'
+  import { dispatch, subscribe, GameEvent } from '@blitz/events'
 
   import { InfinityPuzzleDifficulty } from './index'
 
@@ -131,12 +131,12 @@ aside.infinity-under-board.game-under-board
 
     mounted() {
       subscribe({
-        'config:init': data => {
+        [GameEvent.CONFIG_INIT]: data => {
           this.currentDifficulty = data.difficulty
           this.nPuzzlesSolved = data.num_solved
         },
 
-        'puzzle:solved': puzzle => {
+        [GameEvent.PUZZLE_SOLVED]: puzzle => {
           console.log('Puzzle solved event:', puzzle)
           console.log('Puzzle ID:', puzzle.id)
           console.log('Puzzle object keys:', Object.keys(puzzle))
@@ -164,7 +164,7 @@ aside.infinity-under-board.game-under-board
           })
         },
 
-        'puzzles:status': status => {
+        [GameEvent.PUZZLES_STATUS]: status => {
           const { i, n, lastPuzzleId } = status
           if (i + fetchThreshold > n) {
             dispatch(
@@ -174,7 +174,7 @@ aside.infinity-under-board.game-under-board
           }
         },
 
-        'puzzles:complete': () => {
+        [GameEvent.PUZZLES_COMPLETE]: () => {
           this.noMoreLeft = true
         }
       })

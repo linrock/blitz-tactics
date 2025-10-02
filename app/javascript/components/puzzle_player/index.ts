@@ -1,4 +1,4 @@
-import { subscribe } from '@blitz/events'
+import { subscribe, GameEvent } from '@blitz/events'
 import { trackEvent } from '@blitz/utils'
 import ChessgroundBoard from '../chessground_board'
 import MoveStatus from '../move_status'
@@ -38,7 +38,7 @@ export default class PuzzlePlayer {
     new PuzzleSource(options)
 
     subscribe({
-      'puzzle:solved': puzzle => {
+      [GameEvent.PUZZLE_SOLVED]: puzzle => {
         trackEvent(`puzzle solved`, window.location.pathname, puzzle.id)
       }
     })
