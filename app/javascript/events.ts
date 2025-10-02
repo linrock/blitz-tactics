@@ -1,11 +1,7 @@
-// Custom event system to replace Backbone.Events
-// Enhanced with type-safe enum support
+// Type-safe event system using enums
+// Simplified after migration from string-based events
 
 import { GameEvent, GameEventMap, GameEventPayloads } from './game_events'
-
-interface EventMap {
-  [event: string]: (...args: any[]) => void
-}
 
 class EventEmitter {
   private listeners: { [event: string]: ((...args: any[]) => void)[] } = {}
@@ -43,20 +39,16 @@ class EventEmitter {
 
 const dispatcher = new EventEmitter()
 
-// Type-safe dispatch function with enum support
-function dispatch<T extends GameEvent>(
+// Type-safe dispatch function - enum only
+export function dispatch<T extends GameEvent>(
   eventName: T,
   ...data: GameEventPayloads[T] extends void ? [] : [GameEventPayloads[T]]
-): void;
-function dispatch(eventName: string, ...data: any[]): void;
-function dispatch(eventName: string | GameEvent, ...data: any[]) {
+): void {
   dispatcher.trigger(eventName, ...data)
 }
 
-// Type-safe subscribe function with enum support
-function subscribe(eventMap: GameEventMap): void;
-function subscribe(eventMap: EventMap): void;
-function subscribe(eventMap: EventMap | GameEventMap) {
+// Type-safe subscribe function - enum only
+export function subscribe(eventMap: GameEventMap): void {
   Object.entries(eventMap).forEach(([eventName, handler]) => {
     if (handler) {
       dispatcher.on(eventName, handler)
@@ -64,20 +56,12 @@ function subscribe(eventMap: EventMap | GameEventMap) {
   })
 }
 
-// Type-safe subscribeOnce function
-function subscribeOnce<T extends GameEvent>(
+// Type-safe subscribeOnce function - enum only
+export function subscribeOnce<T extends GameEvent>(
   eventName: T,
   cb: GameEventPayloads[T] extends void ? () => void : (data: GameEventPayloads[T]) => void
-): void;
-function subscribeOnce(eventName: string, cb: (...args: any[]) => void): void;
-function subscribeOnce(eventName: string | GameEvent, cb: (...args: any[]) => void) {
+): void {
   dispatcher.once(eventName, cb)
-}
-
-export {
-  dispatch,
-  subscribe,
-  subscribeOnce,
 }
 
 // Re-export GameEvent enum for convenience
