@@ -82,8 +82,6 @@ export default class ChessgroundBoard {
       events: {
         // handle player moves
         move: (from: Key, to: Key) => {
-          console.log(`Chessground: Attempting move from ${from} to ${to}`)
-          console.log(`Chessground: Current FEN: ${this.cjs.fen()}`)
           console.log(`Chessground: Piece on ${from}:`, this.cjs.get(from as Square))
           
           // TODO ideally we never update the board based on the player move right away

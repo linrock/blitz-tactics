@@ -26,9 +26,4 @@ module HastePuzzleLoader
     end
   end
 
-  def self.destroy_haste_puzzles_from_old_lichess_batch
-    ActiveRecord::Base.transaction do
-      HastePuzzle.where("(data ->> 'id')::int <= 60120").destroy_all
-    end
-  end
 end

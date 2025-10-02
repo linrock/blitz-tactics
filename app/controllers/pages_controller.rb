@@ -32,6 +32,12 @@ class PagesController < ApplicationController
   def pawn_endgames
   end
 
+  def endgame_studies
+  end
+
+  def mate_in_two
+  end
+
   def about
   end
 

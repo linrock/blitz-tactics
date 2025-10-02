@@ -285,11 +285,6 @@ export default class AdventurePuzzleSource {
     
     // Create a temporary chess instance to check game state
     const tempChess = new Chess(currentFen)
-    console.log('Adventure: Game over?', tempChess.game_over())
-    console.log('Adventure: In checkmate?', tempChess.in_checkmate())
-    console.log('Adventure: In stalemate?', tempChess.in_stalemate())
-    console.log('Adventure: In draw?', tempChess.in_draw())
-    console.log('Adventure: Turn:', tempChess.turn())
     
     if (tempChess.game_over()) {
       if (tempChess.in_checkmate()) {
