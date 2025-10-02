@@ -3,12 +3,6 @@ Rails.application.routes.draw do
 
   root 'homepage#home'
   post '/next-level' => 'homepage#next_level'
-  get '/world-1' => 'pages#world1'
-  get '/world-2' => 'pages#world2'
-  get '/world-3' => 'pages#world3'
-  get '/world-4' => 'pages#world4'
-  get '/world-5' => 'pages#world5'
-  get '/world-6' => 'pages#world6'
   get '/puzzle-player' => 'pages#puzzle_player'
   
   # Puzzle tracking

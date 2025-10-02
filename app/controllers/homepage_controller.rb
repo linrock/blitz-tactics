@@ -5,8 +5,6 @@ class HomepageController < ApplicationController
   def home
     @background_img = "bg.svg"
     @background_overlay = "rgba(0, 0, 0, 0.1)"
-    @world_number = 1
-    @world_name = "Just getting started"
     
     # Adventure mode enabled flag - controlled by feature flag
     @adventure_mode_enabled = FeatureFlag.enabled?(:adventure_mode)
