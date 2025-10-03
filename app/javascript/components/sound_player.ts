@@ -1,5 +1,6 @@
 import { toggleSound } from '../api/requests'
 import { dispatch, subscribe } from '../events'
+import { GameEvent } from '../game_events'
 
 const theme = 'sfx'
 const supportsAudio = !!(<any>window).Audio
