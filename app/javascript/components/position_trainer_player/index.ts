@@ -1,4 +1,4 @@
-import { subscribe, dispatch } from '@blitz/events'
+import { subscribe, dispatch, GameEvent } from '@blitz/events'
 import { getConfig } from '@blitz/utils'
 import ChessgroundBoard from '../chessground_board'
 import ChessboardResizer from '../puzzle_player/views/chessboard_resizer'

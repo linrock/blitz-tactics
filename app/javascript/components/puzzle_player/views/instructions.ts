@@ -1,6 +1,6 @@
 // white to move
 
-import { subscribeOnce, subscribe } from '@blitz/events'
+import { subscribeOnce, subscribe, GameEvent } from '@blitz/events'
 
 export default class Instructions {
 
