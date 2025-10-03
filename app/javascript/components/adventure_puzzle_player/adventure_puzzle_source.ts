@@ -1,4 +1,4 @@
-import { subscribe, dispatch } from '@blitz/events'
+import { subscribe, dispatch, GameEvent } from '@blitz/events'
 import { InitialMove, Puzzle, UciMove } from '@blitz/types'
 import { uciToMove, moveToUci } from '@blitz/utils'
 import Puzzles from '../puzzle_player/puzzles'

@@ -3,6 +3,7 @@ import {
   repetitionLevelCompleted,
   trackSolvedPuzzle
 } from '@blitz/api/requests'
+import { GameEvent } from '@blitz/events'
 import PuzzlePlayer from '@blitz/components/puzzle_player'
 import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
 

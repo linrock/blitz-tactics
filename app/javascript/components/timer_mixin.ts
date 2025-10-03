@@ -1,4 +1,4 @@
-import { dispatch, subscribe, subscribeOnce } from '@blitz/events'
+import { dispatch, subscribe, subscribeOnce, GameEvent } from '@blitz/events'
 import { formattedTimeSeconds } from '@blitz/utils'
 
 export default {
