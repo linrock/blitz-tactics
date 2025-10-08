@@ -54,29 +54,25 @@ export default class BoardStyles {
       css += `.cg-wrap.orientation-white coords.files coord:nth-child(2n + 1) { color: ${light} !important; }`
       css += `.cg-wrap.orientation-black coords.ranks coord:nth-child(2n) { color: ${light} !important; }`
       css += `.cg-wrap.orientation-black coords.files coord:nth-child(2n) { color: ${light} !important; }`
+      // Apply to the actual chess square divs
+      css += `.chess-square.light { background-color: ${light} !important; }`
     }
     if (dark) {
       css += `.cg-wrap.orientation-white coords.ranks coord:nth-child(2n) { color: ${dark} !important; }`
       css += `.cg-wrap.orientation-white coords.files coord:nth-child(2n) { color: ${dark} !important; }`
       css += `.cg-wrap.orientation-black coords.ranks coord:nth-child(2n + 1) { color: ${dark} !important; }`
       css += `.cg-wrap.orientation-black coords.files coord:nth-child(2n + 1) { color: ${dark} !important; }`
-    }
-    if (light || dark) {
-      // Use CSS custom properties for board colors
-      css += `:root { --chessboard-light: ${light || '#F3E4CF'}; --chessboard-dark: ${dark || '#CEB3A2'}; }`
-      css += `cg-board::before { 
-        background-image: conic-gradient(var(--chessboard-dark) 0deg, var(--chessboard-dark) 90deg, var(--chessboard-light) 90deg, var(--chessboard-light) 180deg, var(--chessboard-dark) 180deg, var(--chessboard-dark) 270deg, var(--chessboard-light) 270deg, var(--chessboard-light) 360deg);
-        background-size: 25% 25%;
-      }`
+      // Apply to the actual chess square divs
+      css += `.chess-square.dark { background-color: ${dark} !important; }`
     }
     if (from) {
-      css += `cg-board square.last-move.move-from { background-color: ${from} !important; }`
+      css += `.chess-square.move-from { background-color: ${from} !important; }`
     }
     if (to) {
-      css += `cg-board square.last-move.move-to { background-color: ${to} !important; }`
+      css += `.chess-square.move-to { background-color: ${to} !important; }`
     }
     if (selected) {
-      css += `cg-board square.selected { background: ${selected} !important; }`
+      css += `.chess-square.selected { background: ${selected} !important; }`
     }
     return css
   }
