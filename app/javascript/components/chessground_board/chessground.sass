@@ -92,26 +92,26 @@ cg-board
     user-select: none
     opacity: 0.8
     font-family: Orbitron, Arial, sans-serif
-    font-size: 12px
+    font-size: calc(var(--board-size) * 0.024)  // Scale with board size (12px at 500px board)
     font-weight: bold
     z-index: 1
 
     &.ranks
-      left: 3px
-      top: -20px
+      left: calc(var(--board-size) * 0.006)  // Scale with board size (3px at 500px board)
+      top: calc(var(--board-size) * -0.04)   // Scale with board size (-20px at 500px board)
       flex-flow: column-reverse
       height: 100%
-      width: 12px
+      width: calc(var(--board-size) * 0.024)  // Scale with board size (12px at 500px board)
 
     &.ranks.black
       flex-flow: column
 
     &.files
-      bottom: -2px
-      left: 21px
+      bottom: calc(var(--board-size) * -0.004)  // Scale with board size (-2px at 500px board)
+      left: calc(var(--board-size) * 0.042)     // Scale with board size (21px at 500px board)
       flex-flow: row
       width: 100%
-      height: 16px
+      height: calc(var(--board-size) * 0.032)   // Scale with board size (16px at 500px board)
       text-transform: uppercase
       text-align: center
 
