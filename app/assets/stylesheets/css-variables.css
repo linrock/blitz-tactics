@@ -14,6 +14,8 @@
   
   /* Main chessboard variables */
   --square-size: 60px;
+  --mini-square-size: 22px;
+  --mini-board-size: 176px;  /* 8 * 22px */
   
   /* Puzzle player */
   --user-preferences-panel-width: 380px;

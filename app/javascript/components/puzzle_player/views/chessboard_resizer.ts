@@ -103,10 +103,6 @@ export default class ChessboardResizer {
     const belowBoardEl = document.querySelector('.below-board')
     const belowBoardHeight = belowBoardEl ? belowBoardEl.getBoundingClientRect().height : 0
     
-    // Account for description section (if it exists - for position trainer)
-    const descriptionEl = document.querySelector('.description-section')
-    const descriptionHeight = descriptionEl ? descriptionEl.getBoundingClientRect().height : 0
-    
     // Account for actions/buttons area (if it exists)
     const actionsEl = document.querySelector('.actions')
     const actionsHeight = actionsEl ? actionsEl.getBoundingClientRect().height : 0
@@ -116,7 +112,7 @@ export default class ChessboardResizer {
     const verticalPadding = 40 // 20px top and bottom
     
     const maxWidth = viewportWidth - horizontalPadding
-    const maxHeight = viewportHeight - headerHeight - aboveBoardHeight - belowBoardHeight - descriptionHeight - actionsHeight - verticalPadding
+    const maxHeight = viewportHeight - headerHeight - aboveBoardHeight - belowBoardHeight - actionsHeight - verticalPadding
     
     // Use the smaller dimension since the board is square
     const maxSize = Math.min(maxWidth, maxHeight)
