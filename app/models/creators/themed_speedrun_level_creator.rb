@@ -15,16 +15,31 @@ module ThemedSpeedrunLevelCreator
   }.freeze
 
   # Get available themes dynamically from data/themes/ directories
+  # Only return themes that are both available in filesystem AND valid according to ThemedLevelCreator
   def self.available_themes
     themes_dir = Rails.root.join("data/themes/")
     return [] unless Dir.exist?(themes_dir)
     
     # Get all subdirectories in data/themes/
-    Dir.glob(File.join(themes_dir, "*")).select do |path|
+    filesystem_themes = Dir.glob(File.join(themes_dir, "*")).select do |path|
       File.directory?(path)
     end.map do |path|
       File.basename(path)
     end.sort
+    
+    # Filter to only include themes that are valid according to ThemedLevelCreator
+    valid_themes = filesystem_themes.select do |theme|
+      ThemedLevelCreator::VALID_THEMES.include?(theme)
+    end
+    
+    # Log any invalid themes found in filesystem for debugging
+    invalid_themes = filesystem_themes - valid_themes
+    if invalid_themes.any?
+      puts "Warning: Found invalid theme directories in data/themes/: #{invalid_themes.join(', ')}"
+      puts "These themes are not in ThemedLevelCreator::VALID_THEMES and will be ignored."
+    end
+    
+    valid_themes
   end
 
   # Cache available themes for performance
@@ -73,6 +88,15 @@ module ThemedSpeedrunLevelCreator
     # Select a random theme based on the date (deterministic)
     Random.srand(date.yday + date.year * 1000) # Use day of year + year as seed
     selected_theme = speedrun_themes.sample
+    
+    # Safety check: ensure we have a valid theme
+    if selected_theme.nil?
+      raise "No valid themes available for speedrun generation. Check that theme directories exist and are valid."
+    end
+    
+    unless ThemedLevelCreator::VALID_THEMES.include?(selected_theme)
+      raise "Selected theme '#{selected_theme}' is not in VALID_THEMES. This should not happen."
+    end
     
     # Determine color to move based on date.day % 2
     # Even days = white to move, odd days = black to move
