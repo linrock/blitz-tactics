@@ -8,6 +8,10 @@
   --above-board-height: 90px;
   --below-board-height: 140px;
   
+  /* Board colors */
+  --chessboard-light: #F3E4CF;
+  --chessboard-dark: #CEB3A2;
+  
   /* Sidebar dimensions */
   --main-width: 700px;
   --right-sidebar-width: 300px;

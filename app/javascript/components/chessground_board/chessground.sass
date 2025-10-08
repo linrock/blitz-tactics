@@ -141,10 +141,10 @@ cg-board
   box-sizing: border-box
   
   &.light
-    background-color: #F3E4CF !important
+    background-color: var(--chessboard-light, #F3E4CF) !important
   
   &.dark
-    background-color: #CEB3A2 !important
+    background-color: var(--chessboard-dark, #CEB3A2) !important
 
   // Highlight styles applied directly to squares
   &.move-dest

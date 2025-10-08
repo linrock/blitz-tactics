@@ -92,25 +92,25 @@ cg-board square
   // Completely hide Chessground square elements since we're using div overlays
   display: none !important
 
-// Alternating colors in rank/file labels
+// Alternating colors in rank/file labels - use CSS variables to match square colors
 .cg-wrap.orientation-white coords
   &.ranks coord:nth-child(2n)
-    color: #CEB3A2
+    color: var(--chessboard-dark, #CEB3A2)
   &.ranks coord:nth-child(2n + 1)
-    color: #F3E4CF
+    color: var(--chessboard-light, #F3E4CF)
   &.files coord:nth-child(2n)
-    color: #CEB3A2
+    color: var(--chessboard-dark, #CEB3A2)
   &.files coord:nth-child(2n + 1)
-    color: #F3E4CF
+    color: var(--chessboard-light, #F3E4CF)
 
 .cg-wrap.orientation-black coords
   &.ranks coord:nth-child(2n)
-    color: #F3E4CF
+    color: var(--chessboard-light, #F3E4CF)
   &.ranks coord:nth-child(2n + 1)
-    color: #CEB3A2
+    color: var(--chessboard-dark, #CEB3A2)
   &.files coord:nth-child(2n)
-    color: #F3E4CF
+    color: var(--chessboard-light, #F3E4CF)
   &.files coord:nth-child(2n + 1)
-    color: #CEB3A2
+    color: var(--chessboard-dark, #CEB3A2)
 
 // Removed - now handled by div overlays
