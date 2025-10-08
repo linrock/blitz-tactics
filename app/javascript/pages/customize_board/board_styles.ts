@@ -66,10 +66,10 @@ export default class BoardStyles {
       css += `.chess-square.dark { background-color: ${dark} !important; }`
     }
     if (from) {
-      css += `.chess-square.move-from { background-color: ${from} !important; }`
+      css += `.chess-square.last-move-from { background-color: ${from} !important; }`
     }
     if (to) {
-      css += `.chess-square.move-to { background-color: ${to} !important; }`
+      css += `.chess-square.last-move-to { background-color: ${to} !important; }`
     }
     if (selected) {
       css += `.chess-square.selected { background: ${selected} !important; }`
