@@ -45,11 +45,17 @@ export default class DragChessboardResizer {
 
     window.addEventListener("resize", (event) => {
       // console.dir(event)
-      const size = RESIZE_GRAIN * Math.round(Math.min(
+      const maxSize = RESIZE_GRAIN * Math.round(Math.min(
         window.innerWidth - 128,
         window.innerHeight - 256
       ) / RESIZE_GRAIN)
-      this.resizeBoard(size)
+      
+      const currentSize = parseInt(this.boardAreaEl.style.width) || 512
+      
+      // Only resize if current size exceeds the new maximum
+      if (currentSize > maxSize) {
+        this.resizeBoard(maxSize)
+      }
     })
   }
 
@@ -65,9 +71,11 @@ export default class DragChessboardResizer {
       return;
     }
     requestAnimationFrame(() => {
-      console.log(`board size: ${size}`)
       this.boardAreaEl.style.height = `${size}px`
       this.boardAreaEl.style.width = `${size}px`
+      
+      // Also set the CSS variable to override any CSS rules
+      document.documentElement.style.setProperty('--board-size', `${size}px`)
     })
   }
 }

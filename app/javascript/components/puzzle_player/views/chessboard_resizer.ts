@@ -71,9 +71,12 @@ export default class ChessboardResizer {
   }
 
   private applyBoardSize(size: number) {
-    // Apply the size to the chessboard
+    // Apply the size to the chessboard using both inline styles and CSS variables
     this.chessboardEl.style.width = `${size}px`
     this.chessboardEl.style.height = `${size}px`
+    
+    // Also set the CSS variable to override any CSS rules
+    document.documentElement.style.setProperty('--board-size', `${size}px`)
     
     // Update all containers to match
     this.updateAllContainers(size)
@@ -194,27 +197,30 @@ export default class ChessboardResizer {
 
   private updateBoardSize(newSize: number) {
     // Update the chessboard size during drag
-    this.chessboardEl.style.width = `${newSize}px`
-    this.chessboardEl.style.height = `${newSize}px`
+    this.chessboardEl.style.setProperty('width', `${newSize}px`, 'important')
+    this.chessboardEl.style.setProperty('height', `${newSize}px`, 'important')
+    
+    // Also set the CSS variable to override any CSS rules
+    document.documentElement.style.setProperty('--board-size', `${newSize}px`)
     
     // Also resize the chessground wrapper if it exists
     const cgWrap = this.chessboardEl.querySelector('.cg-wrap')
     if (cgWrap) {
-      cgWrap.style.width = `${newSize}px`
-      cgWrap.style.height = `${newSize}px`
+      cgWrap.style.setProperty('width', `${newSize}px`, 'important')
+      cgWrap.style.setProperty('height', `${newSize}px`, 'important')
     }
     
     // Update all container elements in real-time for smooth movement (only if they exist)
     if (this.boardAreaEl) {
-      this.boardAreaEl.style.width = `${newSize}px`
-      this.boardAreaEl.style.height = `${newSize}px`
+      this.boardAreaEl.style.setProperty('width', `${newSize}px`, 'important')
+      this.boardAreaEl.style.setProperty('height', `${newSize}px`, 'important')
     }
     
     if (this.belowBoardEl) {
-      this.belowBoardEl.style.width = `${newSize}px`
+      this.belowBoardEl.style.setProperty('width', `${newSize}px`, 'important')
     }
 
-    // Update repetition mode stats position to follow board resize (only if it exists)
+    // Update repetition mode stats position to follow board resize (only if they exist)
     if (this.rightStatsEl) {
       this.rightStatsEl.style.left = `calc(50% + ${newSize / 2}px + 1rem)`
     }
@@ -247,9 +253,10 @@ export default class ChessboardResizer {
     if (currentSize > maxSize) {
       // Board is too large for new viewport, resize it down
       const newSize = maxSize
-      this.applyBoardSize(newSize)
-      this.saveBoardSize(newSize)
+      this.updateBoardSize(newSize)
     }
+    // Note: We don't automatically grow the board when window gets larger
+    // to respect user's manual sizing preferences
   }
 
   private updateAllContainers(size: number) {

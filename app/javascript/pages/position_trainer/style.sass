@@ -9,7 +9,7 @@
   $board-size-sm: 8 * $square-size-sm
 
   .above-board
-    width: $board-size-sm
+    width: var(--board-size, $board-size-sm)
     height: 90px
     position: relative
     text-align: center
@@ -32,8 +32,8 @@
 
   .chessground-board
     margin: 0 auto
-    width: $board-size-sm
-    height: $board-size-sm
+    width: var(--board-size, $board-size-sm)
+    height: var(--board-size, $board-size-sm)
     position: relative
 
     .cg-wrap
@@ -169,8 +169,8 @@
     display: flex
 
   .chessboard, .chessground-board
-    width: $small-board-size
-    height: $small-board-size
+    width: var(--board-size, $small-board-size)
+    height: var(--board-size, $small-board-size)
 
   .chessground-board .cg-wrap coords
     &.ranks
