@@ -275,29 +275,61 @@ export class SolutionReplay {
         return
       }
 
-      // For now, let's just recreate the miniboard completely since the reset isn't working
       console.log('Recreating miniboard with original FEN:', originalFen)
       
       // Clear existing highlights first
       this.clearExistingHighlights(miniboard)
       
-      // Create a completely new MiniChessboard instance
+      // Create miniboard at original FEN (without initial move animation)
       const newMiniboard = new MiniChessboard({
         el: miniboard,
         fen: originalFen,
-        initialMove: originalMove && originalMove !== '' ? originalMove : undefined,
+        // Don't pass initialMove here - we'll apply it manually
         flip: flip === 'true'
       })
       
       // Store the new instance
       ;(miniboard as any).miniboardInstance = newMiniboard
-      console.log('New miniboard created with original FEN, waiting for initialization...')
+      console.log('New miniboard created, applying initial move immediately...')
       
-      // Wait for the new miniboard to fully initialize (it has a 1000ms delay for initial move)
+      // If there's an initial move, apply it immediately (no animation)
+      if (originalMove && originalMove !== '') {
+        const cjs = (newMiniboard as any).cjs
+        if (cjs) {
+          try {
+            const moveResult = cjs.move({
+              from: originalMove.slice(0, 2),
+              to: originalMove.slice(2, 4),
+              promotion: originalMove.length > 4 ? originalMove[4] : undefined
+            })
+            
+            if (moveResult) {
+              // Highlight the move
+              const highlightSquare = (newMiniboard as any).highlightSquare
+              if (highlightSquare) {
+                highlightSquare.call(newMiniboard, moveResult.from, 'move-from')
+                highlightSquare.call(newMiniboard, moveResult.to, 'move-to')
+              }
+              
+              // Render at the position after the move
+              const renderFen = (newMiniboard as any).renderFen
+              if (renderFen) {
+                renderFen.call(newMiniboard, cjs.fen())
+              }
+              
+              console.log('Initial move applied immediately, board at position after setup move')
+            }
+          } catch (error) {
+            console.warn('Failed to apply initial move:', error)
+          }
+        }
+      }
+      
+      // Shorter wait time since we're not animating the initial move
       setTimeout(() => {
-        console.log('Miniboard initialization complete, board should be at starting position')
+        console.log('Miniboard reset complete, ready for solution replay')
         resolve()
-      }, 1200)
+      }, 100)
     })
   }
 
