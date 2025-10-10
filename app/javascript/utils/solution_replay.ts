@@ -246,8 +246,12 @@ export class SolutionReplay {
       // Board has been played before, reset to initial position first
       console.log('Board has been played before, resetting to initial position')
       this.resetBoardToOriginalPosition(miniboard).then(() => {
-        console.log('Starting move playback after reset')
-        playNextMove()
+        console.log('Reset complete, waiting 1s before replaying solution')
+        // Wait 1 second to let user see the puzzle position
+        setTimeout(() => {
+          console.log('Starting move playback after 1s delay')
+          playNextMove()
+        }, 1000)
       })
     } else {
       // First time playing, start from current position
