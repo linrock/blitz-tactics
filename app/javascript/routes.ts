@@ -17,6 +17,7 @@ import PuzzleSet from './pages/puzzle_set'
 import PuzzleList from './pages/puzzle_list'
 import PuzzlePage from './pages/puzzle_page'
 import UserProfile from './pages/user_profile'
+import PuzzleThemesSolutionPlayer from './pages/puzzle_themes'
 
 import NewPuzzlePlayer from './components/new_puzzle_player/index.vue'
 import PuzzlePlayer from './components/puzzle_player'
@@ -82,6 +83,9 @@ const routes: RouteMap = {
   "pages#puzzle_explorer": () => {
     // The puzzle explorer initializes itself via DOMContentLoaded event
   },
+
+  // puzzle themes
+  "pages#puzzle_themes": () => PuzzleThemesSolutionPlayer(),
 }
 
 export default routes
