@@ -51,10 +51,12 @@ interface BoardOptions {
 export default class ChessgroundBoard {
   private readonly cjs: ChessInstance
   private readonly chessground: Api
+  private readonly boardElement: HTMLElement
   private lastOpponentMove: any /* ChessJsMove */
 
   constructor(options: BoardOptions = {}, selector = '.chessground') {
     this.cjs = new Chess()
+    this.boardElement = document.querySelector(selector) as HTMLElement
     if (options.fen && !this.cjs.load(options.fen)) {
       console.warn(`failed to load fen: ${options.fen}`)
     }
@@ -122,16 +124,11 @@ export default class ChessgroundBoard {
     } else if (options.fen) {
       cgOptions.orientation = options.fen?.includes(' w ') ? 'black' : 'white' as Color
     }
-    this.chessground = Chessground(document.querySelector(selector), cgOptions);
+    this.chessground = Chessground(this.boardElement, cgOptions);
     
-    // Create 64 individual squares after a short delay to ensure chessground is fully initialized
-    setTimeout(() => {
-      this.createChessSquares()
-      // Also create highlights after a longer delay to ensure chessground is fully ready
-      setTimeout(() => {
-        this.createHighlightOverlays()
-      }, 200)
-    }, 100)
+    // Create 64 individual squares and highlights immediately to prevent flash
+    this.createChessSquares()
+    this.createHighlightOverlays()
 
 
     createApp(PiecePromoModal).mount('.piece-promotion-modal-mount')
